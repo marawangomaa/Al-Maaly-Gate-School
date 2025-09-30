@@ -1,0 +1,95 @@
+/* --- GENERAL NAVBAR STYLING --- */
+.navbar {
+  transition: background-color 0.4s ease, color 0.4s ease;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.navbar .navbar-brand {
+  display: flex;
+  align-items: center;
+  color: #007bff;
+  transition: color 0.3s ease;
+}
+
+.navbar .navbar-brand:hover {
+  color: #0056b3;
+}
+
+.brand-logo {
+  font-size: 1.4rem;
+  margin-right: 0.4rem;
+}
+
+/* --- NAV LINKS --- */
+.nav-link {
+  position: relative;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  transition: color 0.3s ease;
+}
+
+/* Cool underline effect */
+.cool-link::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  left: 0;
+  bottom: 0;
+  background-color: currentColor;
+  transition: width 0.3s ease;
+}
+
+.cool-link:hover::after {
+  width: 100%;
+}
+
+.cool-link:hover {
+  color: #007bff;
+}
+
+/* --- THEME TOGGLE BUTTON --- */
+.theme-toggle-btn {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #007bff, #00d4ff);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 123, 255, 0.3);
+}
+
+.theme-toggle-btn:hover {
+  background: linear-gradient(135deg, #0062cc, #00b4cc);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.5);
+}
+
+.theme-toggle-btn .icon {
+  font-size: 1.2rem;
+  margin-right: 0.4rem;
+  transition: transform 0.3s ease;
+}
+
+.theme-toggle-btn:hover .icon {
+  transform: rotate(20deg);
+}
+
+/* --- DARK MODE --- */
+[data-theme="dark"] {
+  --navbar-bg: #212529;
+  --text-color: #ffffff;
+}
+
+[data-theme="dark"] .cool-link:hover {
+  color: #00d4ff;
+}
+
+/* Smooth transition for all elements */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}

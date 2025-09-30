@@ -1,0 +1,60 @@
+<nav class="navbar navbar-expand-lg px-3 shadow-sm"
+     [class.bg-light]="!isDarkMode" [class.bg-dark]="isDarkMode"
+     [class.navbar-light]="!isDarkMode" [class.navbar-dark]="isDarkMode">
+
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold fs-4" routerLink="/">
+      ⚡ MyApp
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNav">
+      <!-- Wait until translations are loaded -->
+<ul class="navbar-nav ms-auto align-items-lg-center">
+
+   <!-- Visitor Menu -->
+        <ng-container *ngIf="!isLoggedIn">
+          <li class="nav-item">
+            <a class="nav-link cool-link" routerLink="/" routerLinkActive="active">{{ 'NAV.HOME' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link cool-link" routerLink="/login" routerLinkActive="active">{{ 'NAV.LOGIN' | translate }}</a>
+          </li>
+        </ng-container>
+
+        <!-- Logged-In Menu -->
+        <ng-container *ngIf="isLoggedIn">
+          <li class="nav-item">
+            <a class="nav-link cool-link" routerLink="/app" routerLinkActive="active">{{ 'NAV.DASHBOARD' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link cool-link" routerLink="/app/profile" routerLinkActive="active">{{ 'NAV.PROFILE' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link cool-link" routerLink="/app/settings" routerLinkActive="active">{{ 'NAV.SETTINGS' | translate }}</a>
+          </li>
+        </ng-container>
+
+  <!-- Theme Toggle -->
+  <li class="nav-item ms-3">
+    <button class="btn btn-outline-secondary" (click)="toggleTheme()">
+      {{ isDarkMode ? '☀️ Light' : '🌙 Dark' }}
+    </button>
+  </li>
+
+  <!-- Language Toggle -->
+  <li class="nav-item ms-3">
+    <button class="btn btn-outline-primary" (click)="toggleLanguage()">
+      {{ currentLang === 'ar' ? 'English' : 'العربية' }}
+    </button>
+  </li>
+
+</ul>
+
+
+    </div>
+  </div>
+</nav>

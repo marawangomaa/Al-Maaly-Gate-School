@@ -1,1 +1,230 @@
-/* You can add global styles to this file, and also import other style files */
+/* =========================================================
+   GLOBAL STYLES & THEMES
+   ========================================================= */
+
+/* ====== RESET ====== */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%; /* 1rem = 10px */
+  scroll-behavior: smooth;
+}
+
+body {
+  font-size: 1.6rem; /* Default body font size = 16px */
+  font-family: var(--font-body, 'sans-serif');
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  transition: background-color 0.3s ease, color 0.3s ease, direction 0.3s ease;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   LIGHT THEME VARIABLES
+   ========================================================= */
+:root {
+  /* Background & Text */
+  --color-bg: #ffffff;
+  --color-bg-secondary: #f7f9fc;
+  --color-text: #0a0a0a;
+  --color-text-muted: #555555;
+
+  /* Primary Blue Shades */
+  --color-primary-100: #e6f0ff; /* lightest for hover backgrounds */
+  --color-primary-200: #99c2ff;
+  --color-primary-300: #4d94ff;
+  --color-primary-400: #0066ff; /* main blue */
+  --color-primary-500: #0047b3; /* darker for hover/pressed */
+
+  /* Neutral Grays */
+  --color-gray-100: #f0f0f0;
+  --color-gray-200: #d9d9d9;
+  --color-gray-300: #bfbfbf;
+  --color-gray-400: #808080;
+  --color-gray-500: #404040;
+
+  /* Borders & Shadows */
+  --color-border: var(--color-gray-200);
+
+  /* Typography */
+  --font-body: 'Roboto', sans-serif;
+  --font-heading: 'Poppins', sans-serif;
+}
+
+/* =========================================================
+   DARK THEME VARIABLES
+   ========================================================= */
+[data-theme="dark"] {
+  /* Background & Text */
+  --color-bg: #0d1117;
+  --color-bg-secondary: #161b22;
+  --color-text: #e6e6e6;
+  --color-text-muted: #a3a3a3;
+
+  /* Primary Blue Shades for dark mode */
+  --color-primary-100: #1e3a8a; 
+  --color-primary-200: #2563eb;
+  --color-primary-300: #3b82f6;
+  --color-primary-400: #60a5fa; /* main blue */
+  --color-primary-500: #93c5fd; /* lighter for hover */
+
+  /* Neutral Grays */
+  --color-gray-100: #1f2937;
+  --color-gray-200: #374151;
+  --color-gray-300: #4b5563;
+  --color-gray-400: #6b7280;
+  --color-gray-500: #9ca3af;
+
+  /* Borders & Shadows */
+  --color-border: var(--color-gray-200);
+}
+
+/* =========================================================
+   LANGUAGE DIRECTION SUPPORT
+   ========================================================= */
+
+/* Default (LTR) */
+html[dir="ltr"] {
+  direction: ltr;
+  text-align: left;
+}
+
+/* Arabic (RTL) */
+html[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Flip margins/paddings automatically for RTL */
+html[dir="rtl"] .ml-auto {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+html[dir="rtl"] .mr-auto {
+  margin-right: 0;
+  margin-left: auto;
+}
+
+/* Flip icons for RTL if needed */
+html[dir="rtl"] .icon-flip {
+  transform: scaleX(-1);
+}
+
+/* =========================================================
+   UTILITY CLASSES
+   ========================================================= */
+
+/* Spacing */
+.m-1 { margin: 1rem; }
+.p-1 { padding: 1rem; }
+.p-2 { padding: 2rem; }
+.p-3 { padding: 3rem; }
+
+/* Font Sizes */
+.text-sm { font-size: 1.4rem; }
+.text-base { font-size: 1.6rem; }
+.text-lg { font-size: 1.8rem; }
+.text-xl { font-size: 2.4rem; }
+.text-2xl { font-size: 3rem; }
+
+/* Flex utilities */
+.flex { display: flex; }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+
+/* Button Reset */
+button {
+  font-family: inherit;
+  font-size: inherit;
+  border: none;
+  cursor: pointer;
+  background: none;
+}
+
+/* =========================================================
+   COMPONENT BASE STYLES
+   ========================================================= */
+
+/* Buttons */
+.btn {
+  background-color: var(--color-primary-400);
+  color: #fff;
+  border: 1px solid var(--color-primary-300);
+  padding: 1rem 2rem;
+  font-size: 1.6rem;
+  cursor: pointer;
+  border-radius: 0.8rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+  background-color: var(--color-primary-500);
+  transform: translateY(-2px);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Language toggle button */
+.lang-toggle-btn {
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.6rem;
+  background-color: var(--color-primary-300);
+  color: #fff;
+  font-size: 1.4rem;
+  transition: background-color 0.3s ease;
+}
+
+.lang-toggle-btn:hover {
+  background-color: var(--color-primary-500);
+}
+
+/* Card Example */
+.card {
+  background-color: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 1.2rem;
+  padding: 2rem;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.card:hover {
+  border-color: var(--color-primary-300);
+}
+
+/* =========================================================
+   TYPOGRAPHY BASE
+   ========================================================= */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  margin-bottom: 1rem;
+}
+
+p {
+  margin-bottom: 1.6rem;
+  color: var(--color-text);
+}
+
+/* =========================================================
+   MEDIA QUERIES
+   ========================================================= */
+@media (max-width: 768px) {
+  html {
+    font-size: 56.25%; /* 1rem = 9px on tablets */
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 50%; /* 1rem = 8px on mobile */
+  }
+}

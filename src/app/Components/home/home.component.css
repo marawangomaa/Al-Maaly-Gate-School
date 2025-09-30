@@ -1,0 +1,16 @@
+.card {
+  border-radius: 12px;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+h1 {
+  color: var(--text-primary);
+}
+
+p {
+  color: var(--text-secondary);
+}

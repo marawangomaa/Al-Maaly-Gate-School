@@ -1,0 +1,27 @@
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+  <div class="card shadow p-4" style="width: 400px;">
+    <h3 class="text-center mb-4">Login</h3>
+
+    <!-- Error Message -->
+    @if (errorMessage) {
+        <div class="alert alert-danger p-2">
+        {{ errorMessage }}
+        </div>
+    }
+
+    <!-- Email -->
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input type="email" class="form-control" [(ngModel)]="email" placeholder="Enter your email">
+    </div>
+
+    <!-- Password -->
+    <div class="mb-3">
+      <label class="form-label">Password</label>
+      <input type="password" class="form-control" [(ngModel)]="password" placeholder="Enter your password">
+    </div>
+
+    <!-- Login Button -->
+    <button class="btn btn-primary w-100 mt-2" (click)="onLogin()">Login</button>
+  </div>
+</div>

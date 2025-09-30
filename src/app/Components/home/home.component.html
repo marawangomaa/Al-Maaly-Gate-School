@@ -1,0 +1,55 @@
+@if (isBrowser) {
+    <div class="container mt-4">
+        <!-- Welcome Section -->
+        <div class="mb-4">
+            <h1 class="display-6 fw-bold">Welcome, {{ username }} 👋</h1>
+            <p class="text-muted">Here's an overview of your activity and quick actions.</p>
+        </div>
+
+        <!-- Quick Actions Cards -->
+        <div class="row g-4">
+            <!-- Profile Card -->
+            <div class="col-md-4">
+            <div class="card shadow-sm h-100 p-3">
+                <h5 class="card-title">Profile</h5>
+                <p class="card-text">View and edit your personal information.</p>
+                <button class="btn btn-primary btn-sm">Go to Profile</button>
+            </div>
+            </div>
+
+            <!-- Settings Card -->
+            <div class="col-md-4">
+            <div class="card shadow-sm h-100 p-3">
+                <h5 class="card-title">Settings</h5>
+                <p class="card-text">Manage your preferences and account settings.</p>
+                <button class="btn btn-primary btn-sm">Go to Settings</button>
+            </div>
+            </div>
+
+            <!-- Logout Card -->
+            <div class="col-md-4">
+            <div class="card shadow-sm h-100 p-3">
+                <h5 class="card-title">Logout</h5>
+                <p class="card-text">Securely log out of your account.</p>
+                <button class="btn btn-danger btn-sm" (click)="logout()">Logout</button>
+            </div>
+            </div>
+        </div>
+
+        <!-- Future Section -->
+        <div class="mt-5">
+            <h3 class="fw-bold">Recent Activity</h3>
+            <p class="text-muted">This section will show your recent activity in the future.</p>
+            <div class="alert alert-info">No recent activity available yet.</div>
+        </div>
+    </div>
+}
+
+<!-- When running in SSR mode -->
+@if (!isBrowser) {
+    <div class="container mt-4">
+        <div class="alert alert-secondary">
+            <strong>Loading...</strong> This page is loading.
+        </div>
+    </div>
+}

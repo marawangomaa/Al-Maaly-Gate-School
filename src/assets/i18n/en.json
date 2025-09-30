@@ -1,0 +1,20 @@
+{
+    "HOME": {
+        "TITLE": "Welcome to our website",
+        "DESCRIPTION": "Explore our features and services"
+    },
+    "LOGIN": {
+        "TITLE": "Login to your account",
+        "USERNAME": "Username",
+        "PASSWORD": "Password",
+        "SUBMIT": "Login"
+    },
+    "NAV": {
+        "HOME": "Home",
+        "LOGIN": "Login",
+        "DASHBOARD": "Dashboard",
+        "PROFILE": "Profile",
+        "LOGOUT": "Logout",
+        "LANGUAGE": "عربي"
+    }
+}
