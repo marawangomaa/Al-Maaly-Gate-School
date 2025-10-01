@@ -1,0 +1,33 @@
+<footer class="app-footer">
+  <div class="container">
+    <div class="footer-content">
+      <!-- Brand / About -->
+      <div class="footer-section">
+        <h5 class="footer-title">{{ 'FOOTER.LOGO' | translate }}</h5>
+        <p class="footer-text">
+          {{ 'FOOTER.DISC' | translate:{ year: currentYear } }}
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-section">
+        <h6 class="footer-title">{{ 'FOOTER.LINKS' | translate }}</h6>
+        <ul class="footer-links">
+          <li><a routerLink="/" class="footer-link">{{ 'FOOTER.HOME' | translate }}</a></li>
+          <li><a routerLink="/about" class="footer-link">{{ 'FOOTER.ABOUT' | translate }}</a></li>
+          <li><a routerLink="/contact" class="footer-link">{{ 'FOOTER.CONTACT' | translate }}</a></li>
+        </ul>
+      </div>
+
+      <!-- Social -->
+      <div class="footer-section">
+        <h6 class="footer-title">{{ 'FOOTER.FOLLOW' | translate }}</h6>
+        <div class="footer-social">
+          <a href="#" class="footer-icon"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="footer-icon"><i class="bi bi-twitter"></i></a>
+          <a href="#" class="footer-icon"><i class="bi bi-github"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

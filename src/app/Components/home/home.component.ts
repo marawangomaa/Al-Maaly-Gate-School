@@ -1,10 +1,16 @@
 import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { HeroSectionComponent } from "./Components/hero-section/hero-section.component";
+import { AboutComponent } from "./Components/about/about.component";
+import { OurProgramsComponent } from "./Components/our-programs/our-programs.component";
+import { CommunitySaysComponent } from "./Components/community-says/community-says.component";
+import { AdmissionsComponent } from "./Components/admissions/admissions.component";
+import { ContactUsComponent } from "./Components/contact-us/contact-us.component";
 
 @Component({
   selector: 'app-home',
   standalone: true, // This makes it standalone
-  imports: [],
+  imports: [HeroSectionComponent, AboutComponent, OurProgramsComponent, CommunitySaysComponent, AdmissionsComponent, ContactUsComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'] // fixed "styleUrl" -> "styleUrls"
 })

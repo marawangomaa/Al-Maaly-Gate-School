@@ -1,0 +1,61 @@
+.register-wrapper {
+  background-color: var(--color-bg-secondary);
+  transition: background-color 0.3s ease;
+}
+
+.register-card {
+  width: 400px;
+  border-radius: 12px;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.register-card h3 {
+  font-weight: 700;
+  color: var(--color-primary-400);
+}
+
+.register-card .form-label {
+  color: var(--color-text);
+}
+
+.register-card .form-control {
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text);
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.register-card .form-control:focus {
+  border-color: var(--color-primary-400);
+  box-shadow: 0 0 8px rgba(0, 120, 255, 0.2);
+}
+
+.register-btn {
+  font-weight: bold;
+  border-radius: 8px;
+  background: var(--color-primary-400);
+  color: #fff;
+  border: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.register-btn:hover {
+  background-color: var(--color-primary-500);
+  transform: translateY(-2px);
+}
+
+.text-danger {
+  font-size: 1.2rem;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .register-card {
+    width: 90%;
+    padding: 2rem;
+  }
+}

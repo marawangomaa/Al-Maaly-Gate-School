@@ -22,19 +22,16 @@ export class NavBarComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const savedLang = isPlatformBrowser(this.platformId)
-      ? localStorage.getItem('lang') || 'ar'
-      : 'ar';
-
-    this.currentLang = savedLang;
-
-    // ✅ Preload translations
-    preloadTranslations(this.translate, savedLang);
-
     if (isPlatformBrowser(this.platformId)) {
+      // Load saved language
+      const savedLang = localStorage.getItem('lang') || 'ar';
+      this.currentLang = savedLang;
+      preloadTranslations(this.translate, savedLang);
+
       document.documentElement.setAttribute('lang', savedLang);
       document.documentElement.setAttribute('dir', savedLang === 'ar' ? 'rtl' : 'ltr');
 
+      // Load saved theme
       const savedTheme = localStorage.getItem('theme') || 'light';
       this.isDarkMode = savedTheme === 'dark';
       document.body.setAttribute('data-theme', savedTheme);
@@ -44,7 +41,6 @@ export class NavBarComponent implements OnInit {
   toggleLanguage() {
     this.currentLang = this.currentLang === 'ar' ? 'en' : 'ar';
     this.translate.use(this.currentLang);
-
     if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem('lang', this.currentLang);
       document.documentElement.setAttribute('lang', this.currentLang);

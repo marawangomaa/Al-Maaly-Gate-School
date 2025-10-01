@@ -3,6 +3,55 @@
         "TITLE": "Welcome to our website",
         "DESCRIPTION": "Explore our features and services"
     },
+    "ABOUT": {
+        "TITLE": "About Us",
+        "SUBTITLE": "Who We Are",
+        "DESCRIPTION": "We are a school dedicated to empowering students with knowledge, creativity, and innovation. Our mission is to provide a supportive and inspiring environment where every learner can achieve their full potential."
+    },
+    "programs": {
+        "title": "Our Programs",
+        "learningMethods": "Effective Learning Methods",
+        "learningMethodsDesc": "We provide modern and practical learning approaches.",
+        "quizzes": "Quizzes",
+        "quizzesDesc": "Interactive quizzes to reinforce your understanding.",
+        "exams": "Exams",
+        "examsDesc": "Structured exams to evaluate your progress."
+    },
+    "community": {
+        "title": "What Our Community Says",
+        "testimonial1": "The teachers here truly care about every student and go above and beyond to make sure they succeed. I have seen my child grow not only in academic performance but also in self-confidence, teamwork, and critical thinking. The personalized attention each student receives makes a huge difference in their overall development, and we are so grateful for this supportive community.",
+        "author1": "Ahmed S.",
+        "testimonial2": "This school provides an outstanding environment for learning. The modern teaching methods, combined with innovative technology and engaging activities, ensure that students are not just memorizing but actually understanding concepts deeply. My daughter has become more creative, more independent, and more excited about learning. The staff genuinely invests in every student’s success, and that makes all the difference.",
+        "author2": "Sarah K.",
+        "testimonial3": "Joining this school community was truly the best decision for our family. My children look forward to attending every day because the lessons are interactive, the teachers are approachable, and the atmosphere encourages curiosity and growth. Beyond academics, they are learning life skills such as responsibility, problem-solving, and empathy. I feel confident knowing they are in the best hands.",
+        "author3": "Omar A."
+    },
+    "admission": {
+        "title": "Admissions Made Simple",
+        "description": "Applying to our school is a straightforward and stress-free process designed with families in mind. We believe that education should begin with a welcoming and transparent admissions journey. All you need to do is visit our admissions page, where you will find detailed step-by-step instructions on how to complete your application. From filling out the required forms to submitting necessary documents, every step is explained clearly to ensure there is no confusion. Our admissions team is always ready to assist you with any questions or concerns you may have, and we encourage families to reach out if they need guidance. We are committed to making this process smooth, supportive, and accessible, because choosing the right school is one of the most important decisions for your child’s future.",
+        "button": "Visit Admissions Page"
+    },
+    "contact": {
+        "title": "Contact Us",
+        "subtitle": "We’d love to hear from you! Whether you have questions, suggestions, or need assistance, feel free to reach out to us using the form below or through our contact details.",
+        "infoTitle": "Our Contact Information",
+        "address": "123 Main Street, City, Country",
+        "phone": "+1 234 567 890",
+        "email": "info@school.com",
+        "form": {
+        "name": "Your Name",
+        "email": "Your Email",
+        "subject": "Subject",
+        "message": "Your Message",
+        "button": "Send Message"
+        },
+        "errors": {
+        "name": "Please enter at least 3 characters.",
+        "email": "Please enter a valid email address.",
+        "subject": "Please enter a subject.",
+        "message": "Message must be at least 10 characters."
+        }
+    },
     "LOGIN": {
         "TITLE": "Login to your account",
         "USERNAME": "Username",
@@ -10,11 +59,24 @@
         "SUBMIT": "Login"
     },
     "NAV": {
+        "LOGO": "LOGO",
         "HOME": "Home",
         "LOGIN": "Login",
+        "REGISTER": "Register",
         "DASHBOARD": "Dashboard",
         "PROFILE": "Profile",
         "LOGOUT": "Logout",
-        "LANGUAGE": "عربي"
+        "LANGUAGE": "عربي",
+        "THEMEDARK": "Dark",
+        "THEMELIGHT": "Light"
+    },
+    "FOOTER": {
+        "LOGO": "LOGO",
+        "DISC": "Building modern web apps with Angular & Bootstrap. © {{year}} MyApp. All rights reserved.",
+        "LINKS": "Quick Links",
+        "HOME": "Home",
+        "ABOUT": "About",
+        "CONTACT": "Contact",
+        "FOLLOW": "Follow Us"
     }
 }

@@ -14,3 +14,21 @@ h1 {
 p {
   color: var(--text-secondary);
 }
+.home-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 6rem; /* vertical spacing between sections */
+}
+
+/* Optional: reduce spacing on smaller screens */
+@media (max-width: 768px) {
+  .home-sections {
+    gap: 4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-sections {
+    gap: 3rem;
+  }
+}

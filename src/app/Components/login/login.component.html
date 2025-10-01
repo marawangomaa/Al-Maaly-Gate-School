@@ -1,12 +1,12 @@
-<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
-  <div class="card shadow p-4" style="width: 400px;">
+<div class="d-flex justify-content-center align-items-center vh-100 login-wrapper">
+  <div class="card shadow p-4 login-card">
     <h3 class="text-center mb-4">Login</h3>
 
     <!-- Error Message -->
     @if (errorMessage) {
-        <div class="alert alert-danger p-2">
+      <div class="alert alert-danger p-2">
         {{ errorMessage }}
-        </div>
+      </div>
     }
 
     <!-- Email -->
@@ -22,6 +22,6 @@
     </div>
 
     <!-- Login Button -->
-    <button class="btn btn-primary w-100 mt-2" (click)="onLogin()">Login</button>
+    <button class="btn w-100 mt-2 login-btn" (click)="onLogin()">Login</button>
   </div>
 </div>

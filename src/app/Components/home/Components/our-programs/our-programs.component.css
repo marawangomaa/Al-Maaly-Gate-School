@@ -1,0 +1,61 @@
+.programs-section {
+  background-color: var(--color-bg-secondary);
+  border-radius: 1rem;
+  padding: 3rem;
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.programs-title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--color-primary-400);
+  transition: color 0.3s ease;
+}
+
+/* Card Styling */
+.program-card {
+  border-radius: 15px;
+  overflow: hidden;
+  border: none;
+  background: var(--color-bg); /* use theme variable */
+  color: var(--color-text); /* adapt text color */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.3s ease, color 0.3s ease;
+  animation: floatCard 5s ease-in-out infinite;
+}
+
+.program-card:hover {
+  transform: translateY(-12px) scale(1.03);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+}
+
+/* Image flush with edges */
+.program-img {
+  height: 200px;
+  object-fit: cover;
+  margin: 0;
+  display: block;
+}
+
+/* Floating animation */
+@keyframes floatCard {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Text inside cards */
+.card-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--color-primary-400);
+  transition: color 0.3s ease;
+}
+
+.card-text {
+  font-size: 1.2rem;
+  color: var(--color-text-muted);
+  transition: color 0.3s ease;
+}

@@ -1,95 +1,113 @@
-/* --- GENERAL NAVBAR STYLING --- */
-.navbar {
-  transition: background-color 0.4s ease, color 0.4s ease;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* --- NAVBAR BASE --- */
+.custom-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1100;
+  padding: 1.4rem 2rem;
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.75);
+  transition: all 0.35s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
 }
 
-.navbar .navbar-brand {
-  display: flex;
-  align-items: center;
-  color: #007bff;
-  transition: color 0.3s ease;
+[data-theme="dark"] .custom-navbar {
+  background: rgba(20, 20, 20, 0.8);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
 }
 
-.navbar .navbar-brand:hover {
-  color: #0056b3;
+.custom-navbar.shrink {
+  padding: 0.7rem 2rem;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+}
+[data-theme="dark"] .custom-navbar.shrink {
+  background: rgba(20, 20, 20, 0.95);
 }
 
-.brand-logo {
+/* Brand Glow */
+.brand-glow {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--color-primary-400, #007bff);
+  text-shadow: 0 0 6px rgba(0, 123, 255, 0.6);
+  transition: text-shadow 0.3s ease, transform 0.3s ease;
+}
+.custom-navbar.shrink .brand-glow {
   font-size: 1.4rem;
-  margin-right: 0.4rem;
 }
 
-/* --- NAV LINKS --- */
+/* Nav links */
 .nav-link {
   position: relative;
   font-weight: 500;
-  padding: 0.5rem 1rem;
-  transition: color 0.3s ease;
+  font-size: 1.05rem;
+  padding: 0.4rem 0.8rem;
+  line-height: 1.2;
+  display: inline-block;
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
-/* Cool underline effect */
+/* Cool underline animation */
 .cool-link::after {
   content: "";
   position: absolute;
+  bottom: 0;
+  left: 0;
   width: 0;
   height: 2px;
-  left: 0;
-  bottom: 0;
-  background-color: currentColor;
-  transition: width 0.3s ease;
+  background: linear-gradient(90deg, #007bff, #00d4ff);
+  transition: width 0.35s ease;
 }
 
-.cool-link:hover::after {
+[dir="rtl"] .cool-link::after {
+  right: 0;
+  left: auto;
+}
+
+/* Only show underline on hover or active */
+.cool-link:hover::after,
+.cool-link.active::after {
   width: 100%;
 }
 
 .cool-link:hover {
   color: #007bff;
+  transform: translateY(-2px);
 }
 
-/* --- THEME TOGGLE BUTTON --- */
-.theme-toggle-btn {
+/* Toggle Buttons */
+.theme-toggle-btn,
+.lang-toggle-btn {
   display: flex;
   align-items: center;
+  gap: 0.4rem;
   background: linear-gradient(135deg, #007bff, #00d4ff);
   color: #fff;
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1.2rem;
   border-radius: 50px;
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 0.95rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 10px rgba(0, 123, 255, 0.3);
+  box-shadow: 0 3px 10px rgba(0, 123, 255, 0.35);
 }
 
-.theme-toggle-btn:hover {
-  background: linear-gradient(135deg, #0062cc, #00b4cc);
-  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.5);
+.theme-toggle-btn:hover,
+.lang-toggle-btn:hover {
+  background: linear-gradient(135deg, #0056b3, #00aabb);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.55);
 }
 
 .theme-toggle-btn .icon {
   font-size: 1.2rem;
-  margin-right: 0.4rem;
   transition: transform 0.3s ease;
 }
-
 .theme-toggle-btn:hover .icon {
-  transform: rotate(20deg);
-}
-
-/* --- DARK MODE --- */
-[data-theme="dark"] {
-  --navbar-bg: #212529;
-  --text-color: #ffffff;
-}
-
-[data-theme="dark"] .cool-link:hover {
-  color: #00d4ff;
-}
-
-/* Smooth transition for all elements */
-* {
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transform: rotate(25deg);
 }
