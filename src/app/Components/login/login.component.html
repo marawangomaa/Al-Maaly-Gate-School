@@ -1,27 +1,70 @@
-<div class="d-flex justify-content-center align-items-center vh-100 login-wrapper">
-  <div class="card shadow p-4 login-card">
-    <h3 class="text-center mb-4">Login</h3>
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+  <div class="card shadow p-4" style="width: 400px">
+    <h3 class="main-title text-center mb-4">Login</h3>
 
     <!-- Error Message -->
     @if (errorMessage) {
-      <div class="alert alert-danger p-2">
-        {{ errorMessage }}
-      </div>
+    <div class="alert alert-danger p-2">
+      {{ errorMessage }}
+    </div>
     }
 
     <!-- Email -->
-    <div class="mb-3">
+    <div class="div-input mb-3">
       <label class="form-label">Email</label>
-      <input type="email" class="form-control" [(ngModel)]="email" placeholder="Enter your email">
+      <input
+        type="email"
+        class="form-control"
+        [(ngModel)]="email"
+        placeholder="Enter your email"
+      />
     </div>
 
     <!-- Password -->
-    <div class="mb-3">
+    <div class="div-input mb-3">
       <label class="form-label">Password</label>
-      <input type="password" class="form-control" [(ngModel)]="password" placeholder="Enter your password">
+      <input
+        type="password"
+        class="form-control"
+        [(ngModel)]="password"
+        placeholder="Enter your password"
+      />
     </div>
 
     <!-- Login Button -->
-    <button class="btn w-100 mt-2 login-btn" (click)="onLogin()">Login</button>
+    <button class="primary-btn w-100 mt-2" (click)="onLogin()">Login</button>
   </div>
+</div>
+
+<div class="d-flex flex-center flex-column w-25 gap-2 m-auto">
+  <h1 class="hero-title">
+    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Obcaecati
+    laudantium repudiandae iste incidunt natus itaque
+  </h1>
+  <h2 class="main-title">Title</h2>
+  <button class="primary-btn">اضغط هنا</button>
+  <button class="outline-btn">اضغط هنا</button>
+  <button class="danger-btn">اضغط هنا</button>
+  <a href="#" class="custom-link">link</a>
+  <p class="text-muted">text here</p>
+</div>
+<div class="standard-section-layout">
+  <p>
+    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Obcaecati
+    laudantium repudiandae iste incidunt natus itaque explicabo nesciunt ea
+    commodi, magni porro odio id voluptatem rerum asperiores ullam mollitia
+    dolorum est?
+  </p>
+  <p>
+    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Obcaecati
+    laudantium repudiandae iste incidunt natus itaque explicabo nesciunt ea
+    commodi, magni porro odio id voluptatem rerum asperiores ullam mollitia
+    dolorum est?
+  </p>
+  <p>
+    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Obcaecati
+    laudantium repudiandae iste incidunt natus itaque explicabo nesciunt ea
+    commodi, magni porro odio id voluptatem rerum asperiores ullam mollitia
+    dolorum est?
+  </p>
 </div>

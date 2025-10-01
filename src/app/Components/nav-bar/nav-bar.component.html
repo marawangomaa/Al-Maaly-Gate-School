@@ -1,47 +1,58 @@
-<nav class="navbar navbar-expand-lg px-4 shadow-sm custom-navbar"
-     [class.bg-dark]="isDarkMode"
-     [class.navbar-dark]="isDarkMode"
-     [class.bg-light]="!isDarkMode"
-     [class.navbar-light]="!isDarkMode">
-
+<nav
+  class="navbar navbar-expand-lg px-4 shadow-sm custom-navbar"
+  [class.bg-dark]="isDarkMode"
+  [class.navbar-dark]="isDarkMode"
+  [class.bg-light]="!isDarkMode"
+  [class.navbar-light]="!isDarkMode"
+>
   <div class="container-fluid">
     <!-- Brand -->
     <a class="navbar-brand fw-bold fs-3 brand-glow" routerLink="/">
-      ⚡ {{ 'NAV.LOGO' | translate }}
+      ⚡ {{ "NAV.LOGO" | translate }}
     </a>
 
     <!-- Mobile Toggler -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#mainNav"
+    >
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse justify-content-end" id="mainNav">
       <ul class="navbar-nav align-items-lg-center gap-3">
-
         <!-- Visitor Menu -->
         <ng-container *ngIf="!isLoggedIn">
           <li class="nav-item">
-            <a class="nav-link cool-link" 
-               routerLink="/home" 
-               routerLinkActive="active" 
-               [routerLinkActiveOptions]="{ exact: true }">
-               {{ 'NAV.HOME' | translate }}
+            <a
+              class="nav-link cool-link"
+              routerLink="/home"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+            >
+              {{ "NAV.HOME" | translate }}
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link cool-link" 
-               routerLink="/login" 
-               routerLinkActive="active" 
-               [routerLinkActiveOptions]="{ exact: true }">
-               {{ 'NAV.LOGIN' | translate }}
+            <a
+              class="nav-link cool-link"
+              routerLink="/login"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+            >
+              {{ "NAV.LOGIN" | translate }}
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link cool-link" 
-               routerLink="/register" 
-               routerLinkActive="active" 
-               [routerLinkActiveOptions]="{ exact: true }">
-               {{ 'NAV.REGISTER' | translate }}
+            <a
+              class="nav-link cool-link"
+              routerLink="/register"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+            >
+              {{ "NAV.REGISTER" | translate }}
             </a>
           </li>
         </ng-container>
@@ -49,27 +60,33 @@
         <!-- Logged-In Menu -->
         <ng-container *ngIf="isLoggedIn">
           <li class="nav-item">
-            <a class="nav-link cool-link" 
-               routerLink="/app" 
-               routerLinkActive="active" 
-               [routerLinkActiveOptions]="{ exact: true }">
-               {{ 'NAV.DASHBOARD' | translate }}
+            <a
+              class="nav-link cool-link"
+              routerLink="/app"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+            >
+              {{ "NAV.DASHBOARD" | translate }}
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link cool-link" 
-               routerLink="/app/profile" 
-               routerLinkActive="active" 
-               [routerLinkActiveOptions]="{ exact: true }">
-               {{ 'NAV.PROFILE' | translate }}
+            <a
+              class="nav-link cool-link"
+              routerLink="/app/profile"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+            >
+              {{ "NAV.PROFILE" | translate }}
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link cool-link" 
-               routerLink="/app/settings" 
-               routerLinkActive="active" 
-               [routerLinkActiveOptions]="{ exact: true }">
-               {{ 'NAV.SETTINGS' | translate }}
+            <a
+              class="nav-link cool-link"
+              routerLink="/app/settings"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+            >
+              {{ "NAV.SETTINGS" | translate }}
             </a>
           </li>
         </ng-container>
@@ -77,18 +94,17 @@
         <!-- Theme Toggle -->
         <li class="nav-item">
           <button class="theme-toggle-btn" (click)="toggleTheme()">
-            <span class="icon">{{ isDarkMode ? '☀️' : '🌙' }}</span>
-            {{ (isDarkMode ? 'NAV.THEMELIGHT': 'NAV.THEMEDARK') | translate }}
+            <span class="icon">{{ isDarkMode ? "☀️" : "🌙" }}</span>
+            {{ (isDarkMode ? "NAV.THEMELIGHT" : "NAV.THEMEDARK") | translate }}
           </button>
         </li>
 
         <!-- Language Toggle -->
         <li class="nav-item">
           <button class="lang-toggle-btn" (click)="toggleLanguage()">
-            {{ currentLang === 'ar' ? 'English' : 'العربية' }}
+            {{ currentLang === "ar" ? "English" : "العربية" }}
           </button>
         </li>
-
       </ul>
     </div>
   </div>
