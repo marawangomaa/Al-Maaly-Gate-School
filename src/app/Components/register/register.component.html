@@ -1,63 +1,81 @@
-<div class="d-flex justify-content-center align-items-center vh-100 register-wrapper">
+<div
+  class="d-flex justify-content-center align-items-center vh-100 register-wrapper"
+>
   <div class="card shadow p-4 register-card">
     <h3 class="text-center mb-4">Register</h3>
 
     <!-- Error Message -->
     @if (errorMessage) {
-        <div class="alert alert-danger p-2">
-        {{ errorMessage }}
-        </div>
+    <div class="alert alert-danger p-2">
+      {{ errorMessage }}
+    </div>
     }
 
     <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
-
       <!-- Full Name -->
       <div class="mb-3">
         <label class="form-label">Full Name</label>
-        <input type="text" class="form-control" formControlName="fullName" placeholder="Enter your full name">
-        @if (registerForm.get('fullName')?.touched && registerForm.get('fullName')?.invalid) {
-            <div class="text-danger mt-1">
-                Name is required (min 3 chars)
-            </div>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="fullName"
+          placeholder="Enter your full name"
+        />
+        @if (registerForm.get('fullName')?.touched &&
+        registerForm.get('fullName')?.invalid) {
+        <div class="text-danger mt-1">Name is required (min 3 chars)</div>
         }
       </div>
 
       <!-- Email -->
       <div class="mb-3">
         <label class="form-label">Email</label>
-        <input type="email" class="form-control" formControlName="email" placeholder="Enter your email">
-        @if (registerForm.get('email')?.touched && registerForm.get('email')?.invalid) {
-            <div class="text-danger mt-1">
-                Enter a valid email
-            </div>
+        <input
+          type="email"
+          class="form-control"
+          formControlName="email"
+          placeholder="Enter your email"
+        />
+        @if (registerForm.get('email')?.touched &&
+        registerForm.get('email')?.invalid) {
+        <div class="text-danger mt-1">Enter a valid email</div>
         }
       </div>
 
       <!-- Password -->
       <div class="mb-3">
         <label class="form-label">Password</label>
-        <input type="password" class="form-control" formControlName="password" placeholder="Enter your password">
-        @if (registerForm.get('password')?.touched && registerForm.get('password')?.invalid) {
-            <div class="text-danger mt-1">
-                Password is required (min 6 chars)
-            </div>
+        <input
+          type="password"
+          class="form-control"
+          formControlName="password"
+          placeholder="Enter your password"
+        />
+        @if (registerForm.get('password')?.touched &&
+        registerForm.get('password')?.invalid) {
+        <div class="text-danger mt-1">Password is required (min 6 chars)</div>
         }
       </div>
 
       <!-- Confirm Password -->
       <div class="mb-3">
         <label class="form-label">Confirm Password</label>
-        <input type="password" class="form-control" formControlName="confirmPassword" placeholder="Confirm your password">
+        <input
+          type="password"
+          class="form-control"
+          formControlName="confirmPassword"
+          placeholder="Confirm your password"
+        />
 
-        @if (registerForm.errors?.['mismatch'] && registerForm.get('confirmPassword')?.touched) {
-           <div class="text-danger mt-1">
-                Passwords do not match
-            </div>
+        @if (registerForm.errors?.['mismatch'] &&
+        registerForm.get('confirmPassword')?.touched) {
+        <div class="text-danger mt-1">Passwords do not match</div>
         }
       </div>
 
-
-      <button type="submit" class="btn w-100 mt-2 register-btn">Register</button>
+      <button type="submit" class="btn w-100 mt-2 register-btn">
+        Register
+      </button>
     </form>
   </div>
 </div>

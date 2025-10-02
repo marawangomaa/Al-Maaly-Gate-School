@@ -1,87 +1,99 @@
 <div class="contact-section">
   <div class="row mb-5 text-center">
-    <h2 class="contact-title">{{ 'contact.title' | translate }}</h2>
-    <p class="contact-subtitle">{{ 'contact.subtitle' | translate }}</p>
+    <h2 class="contact-title">{{ "contact.title" | translate }}</h2>
+    <p class="contact-subtitle">{{ "contact.subtitle" | translate }}</p>
   </div>
 
   <div class="row">
     <!-- Contact Info -->
     <div class="col-lg-4 mb-4">
       <div class="contact-info">
-        <h4>{{ 'contact.infoTitle' | translate }}</h4>
-        <p><i class="bi bi-geo-alt"></i> {{ 'contact.address' | translate }}</p>
-        <p><i class="bi bi-telephone"></i> {{ 'contact.phone' | translate }}</p>
-        <p><i class="bi bi-envelope"></i> {{ 'contact.email' | translate }}</p>
+        <h4>{{ "contact.infoTitle" | translate }}</h4>
+        <p><i class="bi bi-geo-alt"></i> {{ "contact.address" | translate }}</p>
+        <p><i class="bi bi-telephone"></i> {{ "contact.phone" | translate }}</p>
+        <p><i class="bi bi-envelope"></i> {{ "contact.email" | translate }}</p>
       </div>
     </div>
 
     <!-- Reactive Form -->
     <div class="col-lg-8">
-      <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form">
+      <form
+        [formGroup]="contactForm"
+        (ngSubmit)="onSubmit()"
+        class="contact-form"
+      >
         <div class="row mb-3">
           <div class="col-md-6">
-            <input 
-              type="text" 
-              formControlName="name" 
+            <input
+              type="text"
+              formControlName="name"
               class="form-control"
-              [placeholder]="'contact.form.name' | translate">
+              [placeholder]="'contact.form.name' | translate"
+            />
 
-            @if (contactForm.get('name')?.touched && contactForm.get('name')?.invalid) {
-              <div class="text-danger small">
-                {{ 'contact.errors.name' | translate }}
-              </div>
+            @if (contactForm.get('name')?.touched &&
+            contactForm.get('name')?.invalid) {
+            <div class="text-danger small">
+              {{ "contact.errors.name" | translate }}
+            </div>
             }
           </div>
 
           <div class="col-md-6">
-            <input 
-              type="email" 
-              formControlName="email" 
+            <input
+              type="email"
+              formControlName="email"
               class="form-control"
-              [placeholder]="'contact.form.email' | translate">
+              [placeholder]="'contact.form.email' | translate"
+            />
 
-            @if (contactForm.get('email')?.touched && contactForm.get('email')?.invalid) {
-              <div class="text-danger small">
-                {{ 'contact.errors.email' | translate }}
-              </div>
+            @if (contactForm.get('email')?.touched &&
+            contactForm.get('email')?.invalid) {
+            <div class="text-danger small">
+              {{ "contact.errors.email" | translate }}
+            </div>
             }
           </div>
         </div>
 
         <div class="mb-3">
-          <input 
-            type="text" 
-            formControlName="subject" 
+          <input
+            type="text"
+            formControlName="subject"
             class="form-control"
-            [placeholder]="'contact.form.subject' | translate">
+            [placeholder]="'contact.form.subject' | translate"
+          />
 
-          @if (contactForm.get('subject')?.touched && contactForm.get('subject')?.invalid) {
-            <div class="text-danger small">
-              {{ 'contact.errors.subject' | translate }}
-            </div>
+          @if (contactForm.get('subject')?.touched &&
+          contactForm.get('subject')?.invalid) {
+          <div class="text-danger small">
+            {{ "contact.errors.subject" | translate }}
+          </div>
           }
         </div>
 
         <div class="mb-3">
-          <textarea 
-            rows="5" 
-            formControlName="message" 
+          <textarea
+            rows="5"
+            formControlName="message"
             class="form-control"
-            [placeholder]="'contact.form.message' | translate">
-          </textarea>
+            placeholder="{{ 'contact.form.message' | translate }}"
+          ></textarea>
 
-          @if (contactForm.get('message')?.touched && contactForm.get('message')?.invalid) {
-            <div class="text-danger small">
-              {{ 'contact.errors.message' | translate }}
-            </div>
+          @if (contactForm.get('message')?.touched &&
+          contactForm.get('message')?.invalid) {
+          <div class="text-danger small">
+            {{ "contact.errors.message" | translate }}
+          </div>
           }
         </div>
 
-        <button 
-          type="submit" 
-          class="btn contact-btn" 
-          [disabled]="contactForm.invalid">
-          {{ 'contact.form.button' | translate }}
+        <button
+          type="submit"
+          class="btn contact-btn"
+          [disabled]="contactForm.invalid"
+        >
+          {{ "contact.form.button" | translate }}
         </button>
       </form>
     </div>

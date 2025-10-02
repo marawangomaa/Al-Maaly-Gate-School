@@ -12,12 +12,13 @@ export const routes: Routes = [
     path: '',
     component: VisitorComponent,
     children: [
-      { path: '', redirectTo: 'login', pathMatch: 'full'},
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
       { path: 'login', component: LoginComponent },
-      { path: 'register', component: RegisterComponent }
+      { path: 'register', component: RegisterComponent },
     ]
   },
+
   {
     path: 'app',
     component: LogedInComponent,
