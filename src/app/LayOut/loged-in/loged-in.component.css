@@ -17,3 +17,7 @@ body {
 .flex-grow-1 {
   flex: 1; /* pushes footer down */
 }
+
+.padding{
+  padding-top: 63.25px;
+}

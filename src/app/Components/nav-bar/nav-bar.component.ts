@@ -1,4 +1,4 @@
-import { Component, Input, Inject, PLATFORM_ID, OnInit } from '@angular/core';
+import { Component, Inject, PLATFORM_ID, OnInit } from '@angular/core';
 import { isPlatformBrowser, NgIf } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -12,7 +12,7 @@ import { preloadTranslations } from '../../preload-translations';
   styleUrls: ['./nav-bar.component.css'],
 })
 export class NavBarComponent implements OnInit {
-  @Input() isLoggedIn = false;
+  isLoggedIn = false;
   isDarkMode = false;
   currentLang = 'ar';
 
@@ -29,12 +29,19 @@ export class NavBarComponent implements OnInit {
       preloadTranslations(this.translate, savedLang);
 
       document.documentElement.setAttribute('lang', savedLang);
-      document.documentElement.setAttribute('dir', savedLang === 'ar' ? 'rtl' : 'ltr');
+      document.documentElement.setAttribute(
+        'dir',
+        savedLang === 'ar' ? 'rtl' : 'ltr'
+      );
 
       // Load saved theme
       const savedTheme = localStorage.getItem('theme') || 'light';
       this.isDarkMode = savedTheme === 'dark';
       document.body.setAttribute('data-theme', savedTheme);
+
+      // Load saved login state
+      const savedLogin = localStorage.getItem('isLoggedIn');
+      this.isLoggedIn = savedLogin === 'true';
     }
   }
 
@@ -44,7 +51,10 @@ export class NavBarComponent implements OnInit {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem('lang', this.currentLang);
       document.documentElement.setAttribute('lang', this.currentLang);
-      document.documentElement.setAttribute('dir', this.currentLang === 'ar' ? 'rtl' : 'ltr');
+      document.documentElement.setAttribute(
+        'dir',
+        this.currentLang === 'ar' ? 'rtl' : 'ltr'
+      );
     }
   }
 
@@ -54,6 +64,13 @@ export class NavBarComponent implements OnInit {
       const newTheme = this.isDarkMode ? 'dark' : 'light';
       document.body.setAttribute('data-theme', newTheme);
       localStorage.setItem('theme', newTheme);
+    }
+  }
+
+  toggleLogin() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.isLoggedIn = !this.isLoggedIn;
+      localStorage.setItem('isLoggedIn', String(this.isLoggedIn));
     }
   }
 }

@@ -15,7 +15,12 @@ export const appConfig: ApplicationConfig = {
 
     importProvidersFrom(
       TranslateModule.forRoot({
-        fallbackLang: 'ar', // fallback only, SSR-friendly
+        fallbackLang: 'ar',   // ✅ used only if key missing
+        loader: {
+          provide: TranslateLoader,
+          useFactory: HttpLoaderFactory,
+          deps: [HttpClient],
+        },
       })
     ),
   ],

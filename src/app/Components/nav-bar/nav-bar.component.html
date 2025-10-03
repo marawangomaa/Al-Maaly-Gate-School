@@ -62,9 +62,18 @@
           <li class="nav-item">
             <a
               class="nav-link cool-link"
-              routerLink="/app"
+              routerLink="/app/home"
               routerLinkActive="active"
               [routerLinkActiveOptions]="{ exact: true }"
+            >
+              {{ "NAV.HOME" | translate }}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link cool-link"
+              routerLink="/app/dashboard/overview"
+              routerLinkActive="active"
             >
               {{ "NAV.DASHBOARD" | translate }}
             </a>
@@ -77,16 +86,6 @@
               [routerLinkActiveOptions]="{ exact: true }"
             >
               {{ "NAV.PROFILE" | translate }}
-            </a>
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link cool-link"
-              routerLink="/app/settings"
-              routerLinkActive="active"
-              [routerLinkActiveOptions]="{ exact: true }"
-            >
-              {{ "NAV.SETTINGS" | translate }}
             </a>
           </li>
         </ng-container>
@@ -103,6 +102,13 @@
         <li class="nav-item">
           <button class="lang-toggle-btn" (click)="toggleLanguage()">
             {{ currentLang === "ar" ? "English" : "العربية" }}
+          </button>
+        </li>
+
+        <!-- Login/Logout Toggle -->
+        <li class="nav-item">
+          <button class="login-toggle-btn" (click)="toggleLogin()">
+            {{ isLoggedIn ? ("NAV.LOGOUT" | translate) : ("NAV.LOGIN" | translate) }}
           </button>
         </li>
       </ul>

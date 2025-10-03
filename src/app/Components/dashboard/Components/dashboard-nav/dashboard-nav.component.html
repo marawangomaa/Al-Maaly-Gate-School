@@ -1,0 +1,43 @@
+<nav class="dashboard-nav d-flex flex-column p-3">
+  <!-- Logo -->
+  <a routerLink="/app" class="navbar-brand mb-4 hero-title">{{ "DASH.TITLE" | translate }}</a>
+
+  <!-- Nav Links -->
+  <ul class="nav nav-pills flex-column mb-auto">
+    <li class="nav-item">
+      <a 
+        routerLink="/app/dashboard/overview" 
+        routerLinkActive="active" 
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="nav-link custom-link"
+      >
+        {{ "DASH.OVERVIEW" | translate }}
+      </a>
+    </li>
+    <li>
+      <a 
+        routerLink="/app/dashboard/analytics" 
+        routerLinkActive="active" 
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="nav-link custom-link"
+      >
+        {{ "DASH.ANALYTICS" | translate }}
+      </a>
+    </li>
+    <li>
+      <a 
+        routerLink="/app/dashboard/settings" 
+        routerLinkActive="active" 
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="nav-link custom-link"
+      >
+        {{ "DASH.SETTINGS" | translate }}
+      </a>
+    </li>
+  </ul>
+
+  <!-- Bottom (Logout) -->
+  <div class="mt-auto">
+    <button class="danger-btn w-100">{{ "DASH.LOGOUT" | translate }}</button>
+  </div>
+</nav>

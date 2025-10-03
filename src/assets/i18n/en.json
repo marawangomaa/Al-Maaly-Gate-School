@@ -58,6 +58,13 @@
         "PASSWORD": "Password",
         "SUBMIT": "Login"
     },
+    "DASH": {
+        "TITLE": "MyDashboard",
+        "OVERVIEW": "Overview",
+        "ANALYTICS": "Analytics",
+        "SETTINGS": "Settings",
+        "LOGOUT": "Logout"
+    },
     "NAV": {
         "LOGO": "LOGO",
         "HOME": "Home",
@@ -65,6 +72,7 @@
         "REGISTER": "Register",
         "DASHBOARD": "Dashboard",
         "PROFILE": "Profile",
+        "SETTINGS": "Settings",
         "LOGOUT": "Logout",
         "LANGUAGE": "عربي",
         "THEMEDARK": "Dark",
