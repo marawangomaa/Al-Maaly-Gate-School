@@ -39,17 +39,17 @@
         "phone": "+1 234 567 890",
         "email": "info@school.com",
         "form": {
-        "name": "Your Name",
-        "email": "Your Email",
-        "subject": "Subject",
-        "message": "Your Message",
-        "button": "Send Message"
+            "name": "Your Name",
+            "email": "Your Email",
+            "subject": "Subject",
+            "message": "Your Message",
+            "button": "Send Message"
         },
         "errors": {
-        "name": "Please enter at least 3 characters.",
-        "email": "Please enter a valid email address.",
-        "subject": "Please enter a subject.",
-        "message": "Message must be at least 10 characters."
+            "name": "Please enter at least 3 characters.",
+            "email": "Please enter a valid email address.",
+            "subject": "Please enter a subject.",
+            "message": "Message must be at least 10 characters."
         }
     },
     "LOGIN": {
@@ -63,19 +63,17 @@
         "OVERVIEW": "Overview",
         "ANALYTICS": "Analytics",
         "SETTINGS": "Settings",
-        "LOGOUT": "Logout",
         "TEACHER": "Teacher",
         "STUDENT": "Student",
         "ADMIN": "Admin",
-
         "ACCEPT_TEACHERS": "Accept Teachers",
         "FOLLOW_CLASSES": "Follow Classes",
-
         "MAKE_TESTS": "Create Tests",
         "ONLINE_CLASSES": "Online Classes",
-
         "TESTS": "Tests",
-        "GRADES": "Grades"
+        "GRADES": "Grades",
+        "SUBTITLE": "Admin",
+        "LOGOUT": "Logout"
     },
     "NAV": {
         "LOGO": "LOGO",
