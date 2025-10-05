@@ -29,9 +29,23 @@ export const routes: Routes = [
       path: 'dashboard',
       component: DashboardComponent,
       children: [
+        // Shared
         { path: 'overview', loadComponent: () => import('./Components/dashboard/Components/overview/overview.component').then(m => m.OverviewComponent) },
-        { path: 'analytics', loadComponent: () => import('./Components/dashboard/Components/analytics/analytics.component').then(m => m.AnalyticsComponent) },
         { path: 'settings', loadComponent: () => import('./Components/dashboard/Components/settings/settings.component').then(m => m.SettingsComponent) },
+
+        // Admin-only
+        { path: 'teachers', loadComponent: () => import('./Components/dashboard/Components/teachers/teachers.component').then(m => m.TeachersComponent) },
+        { path: 'classes', loadComponent: () => import('./Components/dashboard/Components/classes/classes.component').then(m => m.ClassesComponent) },
+
+        // Teacher-only
+        { path: 'tests', loadComponent: () => import('./Components/dashboard/Components/creating-tests/creating-tests.component').then(m => m.CreatingTestsComponent) },
+        { path: 'classes', loadComponent: () => import('./Components/dashboard/Components/classes/classes.component').then(m => m.ClassesComponent) },
+
+        // Student-only
+        { path: 'grades', loadComponent: () => import('./Components/dashboard/Components/student-grades/student-grades.component').then(m => m.StudentGradesComponent) },
+        { path: 'classes', loadComponent: () => import('./Components/dashboard/Components/student-classes/student-classes.component').then(m => m.StudentClassesComponent) },
+        { path: 'tests', loadComponent: () => import('./Components/dashboard/Components/student-tests/student-tests.component').then(m => m.StudentTestsComponent) },
+
         { path: '', redirectTo: 'overview', pathMatch: 'full' }
       ]
     },

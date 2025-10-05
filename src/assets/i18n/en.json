@@ -63,7 +63,19 @@
         "OVERVIEW": "Overview",
         "ANALYTICS": "Analytics",
         "SETTINGS": "Settings",
-        "LOGOUT": "Logout"
+        "LOGOUT": "Logout",
+        "TEACHER": "Teacher",
+        "STUDENT": "Student",
+        "ADMIN": "Admin",
+
+        "ACCEPT_TEACHERS": "Accept Teachers",
+        "FOLLOW_CLASSES": "Follow Classes",
+
+        "MAKE_TESTS": "Create Tests",
+        "ONLINE_CLASSES": "Online Classes",
+
+        "TESTS": "Tests",
+        "GRADES": "Grades"
     },
     "NAV": {
         "LOGO": "LOGO",

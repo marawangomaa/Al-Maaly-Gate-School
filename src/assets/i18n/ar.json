@@ -63,7 +63,19 @@
         "OVERVIEW": "نظرة عامة",
         "ANALYTICS": "احصائيات",
         "SETTINGS": "الاعدادات",
-        "LOGOUT": "تسجيل الخروج"
+        "LOGOUT": "تسجيل الخروج",
+        "TEACHER": "معلم",
+        "STUDENT": "طالب",
+        "ADMIN": "مسؤول",
+
+        "ACCEPT_TEACHERS": "قبول المعلمين",
+        "FOLLOW_CLASSES": "متابعة الفصول",
+
+        "MAKE_TESTS": "إنشاء اختبارات",
+        "ONLINE_CLASSES": "حصص أونلاين",
+
+        "TESTS": "الاختبارات",
+        "GRADES": "الدرجات"
     },
     "NAV": {
         "LOGO": "اللوجو",
