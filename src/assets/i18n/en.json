@@ -73,6 +73,7 @@
         "TESTS": "Tests",
         "GRADES": "Grades",
         "SUBTITLE": "Admin",
+        "PROFILE": "Profile",
         "LOGOUT": "Logout"
     },
     "NAV": {

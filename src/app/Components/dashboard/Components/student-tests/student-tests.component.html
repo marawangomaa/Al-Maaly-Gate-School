@@ -1,1 +1,56 @@
-<p>student-tests works!</p>
+<div class="container mt-4">
+    <h3 class="main-title">قائمة الاختبارات</h3>
+  
+    <!-- أزرار الفلترة -->
+    <div class="mb-3 d-flex gap-2">
+      <button class="outline-btn" [class.primary-btn]="filter==='all'" (click)="filter='all'">الكل</button>
+      <button class="outline-btn" [class.primary-btn]="filter==='available'" (click)="filter='available'">المتاحة</button>
+      <button class="outline-btn" [class.primary-btn]="filter==='ongoing'" (click)="filter='ongoing'">الجارية</button>
+      <button class="outline-btn" [class.primary-btn]="filter==='finished'" (click)="filter='finished'">المنتهية</button>
+    </div>
+  
+    <!-- عرض الاختبارات -->
+    <div class="row g-3">
+      <div *ngFor="let exam of filteredExams" class="col-md-6">
+        <div class="card p-3">
+          <h5 class="sub-title mb-1">{{ exam.subject }}</h5>
+          <p class="text-muted mb-1">المعلم: {{ exam.teacher }}</p>
+          <p class="text-muted mb-1">
+            من: {{ exam.startTime | date:'shortTime' }} إلى: {{ exam.endTime | date:'shortTime' }}
+          </p>
+  
+          <div class="d-flex justify-content-between align-items-center mt-2">
+            <span
+              class="badge"
+              [ngClass]="{
+                'bg-success': exam.status === 'finished',
+                'bg-warning': exam.status === 'ongoing',
+                'bg-info': exam.status === 'available'
+              }"
+            >
+              {{
+                exam.status === 'finished'
+                  ? 'منتهٍ'
+                  : exam.status === 'ongoing'
+                  ? 'جارٍ الآن'
+                  : 'متاح للبدء'
+              }}
+            </span>
+  
+            <button
+              class="primary-btn"
+              [disabled]="!exam.canStart || exam.status === 'finished'"
+              (click)="startExam(exam)"
+            >
+              بدء الحل
+            </button>
+          </div>
+  
+          <div *ngIf="exam.score !== null" class="mt-2">
+            <strong>النتيجة:</strong> {{ exam.score }} / 100
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

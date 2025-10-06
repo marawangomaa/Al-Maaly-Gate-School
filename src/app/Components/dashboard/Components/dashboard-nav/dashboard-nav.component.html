@@ -111,9 +111,18 @@
     <h4 class="text-muted">{{ "DASH.STUDENT" | translate }}</h4>
   </div>
   <ul class="nav flex-column mb-auto gap-2">
+    <li>
+      <a
+        routerLink="/app/dashboard/profile"
+        routerLinkActive="active"
+        class="nav-link d-flex flex-row align-items-center gap-2"
+      >
+        <i class="bi bi-award"></i> {{ "DASH.PROFILE" | translate }}
+      </a>
+    </li>
     <li class="nav-item">
       <a
-        routerLink="/app/dashboard/classes"
+        routerLink="/app/dashboard/student-classes"
         routerLinkActive="active"
         class="nav-link d-flex flex-row align-items-center gap-2"
       >
@@ -122,7 +131,7 @@
     </li>
     <li>
       <a
-        routerLink="/app/dashboard/tests"
+        routerLink="/app/dashboard/student-tests"
         routerLinkActive="active"
         class="nav-link d-flex flex-row align-items-center gap-2"
       >
@@ -140,7 +149,7 @@
     </li>
   </ul>
   }
-  
+
   <!-- Bottom (Logout) -->
   <ul class="nav flex-column mt-auto gap-2">
     <li>

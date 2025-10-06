@@ -67,15 +67,13 @@
         "TEACHER": "معلم",
         "STUDENT": "طالب",
         "ADMIN": "مسؤول",
-
         "ACCEPT_TEACHERS": "قبول المعلمين",
         "FOLLOW_CLASSES": "متابعة الفصول",
-
         "MAKE_TESTS": "إنشاء اختبارات",
         "ONLINE_CLASSES": "حصص أونلاين",
-
         "TESTS": "الاختبارات",
-        "GRADES": "الدرجات"
+        "GRADES": "الدرجات",
+        "PROFILE": "الملف الشخصي"
     },
     "NAV": {
         "LOGO": "اللوجو",
