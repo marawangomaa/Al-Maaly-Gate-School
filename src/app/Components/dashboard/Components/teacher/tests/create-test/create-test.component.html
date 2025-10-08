@@ -1,0 +1,216 @@
+<section class="standard-section-layout test-creator">
+  <div class="container">
+    <h3 class="main-title mb-3">{{ 'TEST.CREATE_TITLE' | translate }}</h3>
+
+    <div class="card p-0 overflow-hidden">
+      <form (ngSubmit)="createTest()" #testForm="ngForm" class="test-form">
+        <div class="row g-0">
+          <!-- Left: Test Settings -->
+          <div class="col-lg-4 p-4 border-end settings-column">
+            <div class="settings-card mb-4">
+              <h4 class="sub-title mb-3">
+                <i class="bi bi-gear me-2"></i>{{ 'TEST.SETTINGS' | translate }}
+              </h4>
+
+              <div class="mb-3">
+                <label class="form-label small-label">{{ 'TEST.TITLE' | translate }}</label>
+                <input
+                  type="text"
+                  class="form-control input-lg"
+                  [(ngModel)]="testTitle"
+                  name="testTitle"
+                  required
+                  placeholder="{{ 'TEST.TITLE_PLACEHOLDER' | translate }}"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label small-label">{{ 'TEST.CLASS' | translate }}</label>
+                <input
+                  type="text"
+                  class="form-control input-lg"
+                  [(ngModel)]="className"
+                  name="className"
+                  required
+                  placeholder="{{ 'TEST.CLASS_PLACEHOLDER' | translate }}"
+                />
+              </div>
+
+              <div class="row g-2 mb-3">
+                <div class="col-4">
+                  <label class="form-label small-label">{{ 'TEST.DURATION' | translate }}</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    [(ngModel)]="duration"
+                    name="duration"
+                    placeholder="—"
+                    aria-label="duration"
+                  />
+                </div>
+                <div class="col-4">
+                  <label class="form-label small-label">{{ 'TEST.MAX' | translate }}</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    [(ngModel)]="maxDegree"
+                    name="maxDegree"
+                    placeholder="—"
+                    aria-label="maxDegree"
+                  />
+                </div>
+                <div class="col-4">
+                  <label class="form-label small-label">{{ 'TEST.MIN' | translate }}</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    [(ngModel)]="minDegree"
+                    name="minDegree"
+                    placeholder="—"
+                    aria-label="minDegree"
+                  />
+                </div>
+              </div>
+
+              <p class="text-muted small mb-0">
+                <i class="bi bi-info-circle me-1"></i>
+                {{ 'TEST.SETTINGS_DESC' | translate }}
+              </p>
+            </div>
+
+            <!-- Quick actions / Tips -->
+            <div class="hint-card p-3">
+              <h6 class="sub-title mb-2">{{ 'TEST.TIPS_TITLE' | translate }}</h6>
+              <ul class="small text-muted mb-0">
+                <li>{{ 'TEST.TIP_ONE' | translate }}</li>
+                <li>{{ 'TEST.TIP_TWO' | translate }}</li>
+              </ul>
+            </div>
+
+            <!-- Submit -->
+            <div class="mt-4 d-grid">
+              <button type="submit" class="primary-btn">
+                <i class="bi bi-save me-2"></i>{{ 'TEST.CREATE_BTN' | translate }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Right: Question Groups -->
+          <div class="col-lg-8 p-4 questions-column">
+            <ng-container *ngIf="(questions$ | async) as grouped; else loading">
+              <!-- MCQ -->
+              <div class="question-group mb-4">
+                <div class="group-header d-flex align-items-center justify-content-between">
+                  <h5 class="mb-0">
+                    <i class="bi bi-ui-radios-grid me-2"></i>
+                    {{ 'TEST.MCQ_QUESTIONS' | translate }}
+                  </h5>
+                  <span class="badge">{{ grouped.mcq.length }}</span>
+                </div>
+
+                <div class="list-grid mt-3">
+                  <div *ngIf="grouped.mcq.length > 0; else noMcq">
+                    <div *ngFor="let q of grouped.mcq" class="form-check q-item mb-2">
+                      <input
+                        class="form-check-input visually-hidden"
+                        type="checkbox"
+                        [checked]="isSelected(q.id)"
+                        (change)="toggleQuestion(q.id, $event)"
+                        id="mcq-{{ q.id }}"
+                      />
+                      <label class="form-check-label q-label" for="mcq-{{ q.id }}">
+                        <div class="q-left">
+                          <i class="bi bi-question-circle q-icon"></i>
+                          <div class="q-text">{{ q.text }}</div>
+                        </div>
+                        <div class="q-right">
+                          <span class="chip">{{ q.difficulty }}</span>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- True/False -->
+              <div class="question-group mb-4">
+                <div class="group-header d-flex align-items-center justify-content-between">
+                  <h5 class="mb-0">
+                    <i class="bi bi-toggle2-on me-2"></i>
+                    {{ 'TEST.TRUE_FALSE_QUESTIONS' | translate }}
+                  </h5>
+                  <span class="badge">{{ grouped.truefalse.length }}</span>
+                </div>
+
+                <div class="list-grid mt-3">
+                  <div *ngIf="grouped.truefalse.length > 0; else noTf">
+                    <div *ngFor="let q of grouped.truefalse" class="form-check q-item mb-2">
+                      <input
+                        class="form-check-input visually-hidden"
+                        type="checkbox"
+                        [checked]="isSelected(q.id)"
+                        (change)="toggleQuestion(q.id, $event)"
+                        id="tf-{{ q.id }}"
+                      />
+                      <label class="form-check-label q-label" for="tf-{{ q.id }}">
+                        <div class="q-left">
+                          <i class="bi bi-check2-circle q-icon"></i>
+                          <div class="q-text">{{ q.text }}</div>
+                        </div>
+                        <div class="q-right">
+                          <span class="chip">{{ q.correctOptionId === 'true' ? ('QUESTIONS.TRUE' | translate) : ('QUESTIONS.FALSE' | translate) }}</span>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Text -->
+              <div class="question-group">
+                <div class="group-header d-flex align-items-center justify-content-between">
+                  <h5 class="mb-0">
+                    <i class="bi bi-chat-text-fill me-2"></i>
+                    {{ 'TEST.TEXT_QUESTIONS' | translate }}
+                  </h5>
+                  <span class="badge">{{ grouped.text.length }}</span>
+                </div>
+
+                <div class="list-grid mt-3">
+                  <div *ngIf="grouped.text.length > 0; else noText">
+                    <div *ngFor="let q of grouped.text" class="form-check q-item mb-2">
+                      <input
+                        class="form-check-input visually-hidden"
+                        type="checkbox"
+                        [checked]="isSelected(q.id)"
+                        (change)="toggleQuestion(q.id, $event)"
+                        id="text-{{ q.id }}"
+                      />
+                      <label class="form-check-label q-label" for="text-{{ q.id }}">
+                        <div class="q-left">
+                          <i class="bi bi-file-text q-icon"></i>
+                          <div class="q-text">{{ q.text }}</div>
+                        </div>
+                        <div class="q-right">
+                          <span class="chip">{{ q.tags?.length ? q.tags?.join(', ') : '-' }}</span>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+
+            <ng-template #loading>
+              <p class="text-muted small">{{ 'COMMON.LOADING' | translate }}</p>
+            </ng-template>
+
+            <ng-template #noMcq><p class="text-muted">{{ 'TEST.NO_MCQ' | translate }}</p></ng-template>
+            <ng-template #noTf><p class="text-muted">{{ 'TEST.NO_TRUEFALSE' | translate }}</p></ng-template>
+            <ng-template #noText><p class="text-muted">{{ 'TEST.NO_TEXT' | translate }}</p></ng-template>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

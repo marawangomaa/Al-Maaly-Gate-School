@@ -1,0 +1,202 @@
+/* ========== Test Creator Component ========== */
+.test-creator .card {
+  overflow: hidden;
+}
+
+/* Columns */
+.settings-column {
+  background: linear-gradient(180deg, rgba(0,0,0,0.02), transparent);
+  min-height: 540px;
+}
+
+/* Settings card */
+.settings-card {
+  background: transparent;
+  border-radius: var(--radius-sm);
+  padding: 0;
+}
+
+.small-label {
+  font-size: 1.3rem;
+  color: var(--color-text-muted);
+  display: block;
+  margin-bottom: .4rem;
+}
+
+/* Inputs */
+.input-lg {
+  padding: .9rem .85rem;
+  font-size: var(--font-base);
+  border-radius: .6rem;
+  border: 1px solid var(--color-border, var(--color-gray-200));
+  background: var(--color-bg);
+  color: var(--color-text-light-bg);
+  transition: box-shadow .18s ease, border-color .18s ease, transform .12s ease;
+}
+.input-lg:focus {
+  outline: none;
+  border-color: var(--color-primary-400);
+  box-shadow: 0 6px 18px rgba(0, 103, 255, 0.08);
+  transform: translateY(-1px);
+}
+
+/* Hint card */
+.hint-card {
+  margin-top: 1rem;
+  border-radius: .55rem;
+  background: rgba(0,0,0,0.03);
+  padding: 1rem;
+  color: var(--color-text-muted);
+}
+
+/* Questions column */
+.questions-column {
+  max-height: 70vh;
+  overflow-y: auto;
+  padding-left: 2.2rem;
+  padding-right: 0.8rem;
+}
+
+@media (max-width: 992px) {
+  .questions-column {
+    max-height: none;
+    padding-left: 1.25rem;
+  }
+}
+
+/* Group header */
+.group-header h5 {
+  font-size: var(--font-base);
+  color: var(--color-text-light-bg);
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
+.group-header .badge {
+  background: var(--color-primary-300);
+  color: var(--color-text-dark-bg);
+  font-weight: 600;
+  padding: .35rem .65rem;
+  border-radius: .6rem;
+}
+
+/* List grid - vertical list with subtle card style */
+.list-grid {
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+}
+
+/* Individual question item (styled checkbox) */
+.q-item {
+  position: relative;
+}
+
+/* Hide native checkbox but keep it accessible (visually-hidden applied) */
+.visually-hidden {
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}
+
+/* The label looks like a selectable card/chip */
+.q-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .8rem 1rem;
+  border-radius: .6rem;
+  border: 1px solid var(--color-border, var(--color-gray-200));
+  background: linear-gradient(180deg, var(--color-bg), var(--color-bg-secondary));
+  transition: all .18s ease;
+  cursor: pointer;
+  color: var(--color-text-light-bg);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+}
+
+/* left side */
+.q-left {
+  display:flex;
+  gap:.9rem;
+  align-items: center;
+  min-width: 0;
+}
+.q-icon {
+  font-size: 1.35rem;
+  color: var(--color-primary-300);
+  min-width: 28px;
+}
+
+/* text trimming */
+.q-text {
+  font-size: 1.45rem;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  color: var(--color-text-light-bg);
+}
+
+/* right side small chip */
+.chip {
+  font-size: 1.25rem;
+  padding: .35rem .6rem;
+  border-radius: .5rem;
+  background: rgba(0,0,0,0.03);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+/* Hover */
+.q-label:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.06);
+}
+
+/* Checked style: when input is checked, style the adjacent label */
+.form-check-input:checked + .form-check-label.q-label,
+.form-check-input:checked + .q-label {
+  border-color: var(--color-primary-400);
+  background: linear-gradient(180deg, var(--color-primary-100), var(--color-primary-200));
+  color: var(--color-text-dark-bg);
+  box-shadow: 0 10px 30px rgba(2, 64, 144, 0.12);
+}
+
+/* Make chips more prominent when selected */
+.form-check-input:checked + .form-check-label .chip,
+.form-check-input:checked + .q-label .chip {
+  background: var(--color-text-dark-bg);
+  color: var(--color-primary-500);
+  font-weight: 600;
+}
+
+/* accessibility focus state */
+.form-check-input:focus + .q-label,
+.q-label:focus {
+  outline: 3px solid rgba(0,102,255,0.12);
+  outline-offset: 2px;
+}
+
+/* small screens: stack and spacing */
+@media (max-width: 991.98px) {
+  .settings-column { min-height: auto; }
+  .questions-column { max-height: none; padding-left: 1rem; }
+  .settings-column .primary-btn { width: 100%; padding: .9rem; }
+}
+
+/* RTL support — use logical props and flip spacing where necessary */
+html[dir="rtl"] .q-label { direction: rtl; }
+html[dir="rtl"] .q-left { flex-direction: row-reverse; }
+html[dir="rtl"] .group-header { flex-direction: row-reverse; }
+html[dir="rtl"] .settings-column { border-left: 1px solid var(--color-border); border-right: none; }
+html[dir="ltr"] .settings-column { border-right: 1px solid var(--color-border); }
+
+/* Dark/light compatibility handled by your theme variables; small tweaks */
+[data-theme="dark"] .hint-card {
+  background: rgba(255,255,255,0.02);
+}

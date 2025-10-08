@@ -1,0 +1,37 @@
+.test-list .test-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+}
+
+.test-list .test-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark mode */
+body.dark .test-card {
+  background: var(--color-bg-dark-secondary);
+  border-color: var(--color-border-dark);
+}
+
+body.dark .test-list .test-card:hover {
+  box-shadow: 0 6px 18px rgba(255, 255, 255, 0.08);
+}
+
+.test-list ul li {
+  margin-bottom: 0.4rem;
+}
+
+/* Empty state */
+.empty-state {
+  color: var(--color-text-muted);
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .test-list .test-card {
+    padding: 1rem;
+  }
+}

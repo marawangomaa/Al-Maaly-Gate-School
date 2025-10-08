@@ -56,13 +56,38 @@
     <!-- Teacher Nav -->
     @if (currentRole === 'teacher') {
       <li class="nav-item">
-        <a routerLink="/app/dashboard/tests" routerLinkActive="active" class="nav-link custom-link">
-          <i class="bi bi-ui-checks"></i> {{ "DASH.MAKE_TESTS" | translate }}
+        <a routerLink="/app/dashboard/teacher-overview" routerLinkActive="active" class="nav-link custom-link">
+          <i class="bi bi-speedometer"></i> {{ "DASH.TEACHER_OVERVIEW" | translate }}
         </a>
       </li>
       <li>
-        <a routerLink="/app/dashboard/classes" routerLinkActive="active" class="nav-link custom-link">
-          <i class="bi bi-camera-video"></i> {{ "DASH.ONLINE_CLASSES" | translate }}
+        <a routerLink="/app/dashboard/create-class" routerLinkActive="active" class="nav-link custom-link">
+          <i class="bi bi-cloud-plus"></i> {{ "DASH.CREATE_CLASS" | translate }}
+        </a>
+      </li>
+      <li>
+        <a routerLink="/app/dashboard/class-list" routerLinkActive="active" class="nav-link custom-link">
+          <i class="bi bi-camera-video"></i> {{ "DASH.CLASS_LIST" | translate }}
+        </a>
+      </li>
+      <li>
+        <a routerLink="/app/dashboard/create-question" routerLinkActive="active" class="nav-link custom-link">
+          <i class="bi bi-plus-circle"></i> {{ "DASH.CREATE_QUESTION" | translate }}
+        </a>
+      </li>
+      <li>
+        <a routerLink="/app/dashboard/question-list" routerLinkActive="active" class="nav-link custom-link">
+          <i class="bi bi-list-columns-reverse"></i> {{ "DASH.QUESTION_LIST" | translate }}
+        </a>
+      </li>
+      <li>
+        <a routerLink="/app/dashboard/create-test" routerLinkActive="active" class="nav-link custom-link">
+          <i class="bi bi-stack"></i> {{ "DASH.CREATE_TEST" | translate }}
+        </a>
+      </li>
+      <li>
+        <a routerLink="/app/dashboard/test-list" routerLinkActive="active" class="nav-link custom-link">
+          <i class="bi bi-card-list"></i> {{ "DASH.TEST_LIST" | translate }}
         </a>
       </li>
     }

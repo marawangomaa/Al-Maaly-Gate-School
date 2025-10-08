@@ -1,0 +1,95 @@
+/* Teacher Overview */
+.teacher-overview .card {
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-light-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.teacher-overview .card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+}
+
+/* Header */
+.teacher-overview .overview-header .main-title {
+  font-weight: 700;
+  font-size: 1.8rem;
+}
+.teacher-overview .last-updated {
+  font-style: italic;
+}
+
+/* Profile */
+.teacher-overview .profile-wrapper {
+  display: flex;
+  justify-content: center;
+}
+.teacher-overview .profile-img,
+.teacher-overview .profile-placeholder {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--color-primary-200);
+}
+.teacher-overview .profile-placeholder {
+  background-color: var(--color-bg);
+  border: 2px dashed var(--color-border);
+  color: var(--color-text-muted);
+  font-size: 2.8rem;
+}
+.teacher-overview .profile-name {
+  font-weight: 600;
+}
+.teacher-overview .subject {
+  font-size: 0.95rem;
+}
+
+/* Stats */
+.teacher-overview .stat-card {
+  padding: 1.2rem 0.8rem;
+}
+.teacher-overview .stat-icon {
+  font-size: 2rem;
+  color: var(--color-primary-400);
+  margin-bottom: 0.4rem;
+}
+.teacher-overview .stat-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.teacher-overview .stat-label {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+/* Recent Activities */
+.teacher-overview .recent-activities {
+  background: var(--color-bg-secondary);
+}
+.teacher-overview .recent-list li {
+  border-left: 3px solid var(--color-primary-200);
+  padding-left: 0.8rem;
+}
+.teacher-overview .activity-date {
+  min-width: 90px;
+  font-weight: 500;
+}
+.teacher-overview .activity-text {
+  flex: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .teacher-overview .profile-img,
+  .teacher-overview .profile-placeholder {
+    width: 90px;
+    height: 90px;
+  }
+  .teacher-overview .stat-number {
+    font-size: 1.2rem;
+  }
+}

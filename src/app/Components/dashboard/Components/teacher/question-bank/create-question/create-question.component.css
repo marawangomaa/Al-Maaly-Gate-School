@@ -1,0 +1,33 @@
+/* modest styling using your variables */
+.card .form-control.div-input {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-light-bg);
+}
+
+/* radio alignment */
+.list-group .form-check {
+  flex: 0 0 auto;
+}
+
+.list-group-item {
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* smaller icon buttons */
+.list-group-item .btn-link {
+  padding: 0.2rem;
+  font-size: 1.4rem;
+}
+
+/* ensure outline-btn and primary-btn look correct */
+.primary-btn {
+  padding: 0.6rem 1.2rem;
+}
+
+.outline-btn {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
