@@ -55,21 +55,40 @@
   <ul class="nav flex-column mb-auto gap-2">
     <li class="nav-item">
       <a
-        routerLink="/app/dashboard/teachers"
+        routerLink="/app/dashboard/admin-teachers-accounts"
         routerLinkActive="active"
         class="nav-link d-flex flex-row align-items-center gap-2"
       >
         <i class="bi bi-person-check"></i>
-        {{ "DASH.ACCEPT_TEACHERS" | translate }}
+        {{ "DASH.Admin_Teachers_Accounts" | translate }}
       </a>
     </li>
     <li>
       <a
-        routerLink="/app/dashboard/classes"
+        routerLink="/app/dashboard/admin-all-classes"
         routerLinkActive="active"
         class="nav-link d-flex flex-row align-items-center gap-2"
       >
         <i class="bi bi-people"></i> {{ "DASH.FOLLOW_CLASSES" | translate }}
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/app/dashboard/admin-all-student-tests-result"
+        routerLinkActive="active"
+        class="nav-link d-flex flex-row align-items-center gap-2"
+      >
+        <i class="bi bi-people"></i> {{ "DASH.Admin_Follow_Tests" | translate }}
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/app/dashboard/admin-students-accounts"
+        routerLinkActive="active"
+        class="nav-link d-flex flex-row align-items-center gap-2"
+      >
+        <i class="bi bi-people"></i>
+        {{ "DASH.Admin_Students_Accounts" | translate }}
       </a>
     </li>
   </ul>

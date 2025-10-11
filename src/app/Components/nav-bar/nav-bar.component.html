@@ -7,8 +7,12 @@
 >
   <div class="container-fluid">
     <!-- Brand -->
-    <a class="navbar-brand fw-bold fs-3 brand-glow" routerLink="/">
-      ⚡ {{ "NAV.LOGO" | translate }}
+    <a class="navbar-brand d-flex align-items-center" routerLink="/">
+      <img
+        src="assets/images/logo (4).jpeg"
+        alt="Logo"
+        class="navbar-logo me-2"
+      />
     </a>
 
     <!-- Mobile Toggler -->
@@ -92,15 +96,27 @@
 
         <!-- Theme Toggle -->
         <li class="nav-item">
-          <button class="theme-toggle-btn" (click)="toggleTheme()">
-            <span class="icon">{{ isDarkMode ? "☀️" : "🌙" }}</span>
-            {{ (isDarkMode ? "NAV.THEMELIGHT" : "NAV.THEMEDARK") | translate }}
+          <button
+            class="outline-btn d-flex align-items-center gap-2"
+            (click)="toggleTheme()"
+          >
+            <i
+              class="bi"
+              [ngClass]="
+                isDarkMode
+                  ? 'bi-sun-fill text-warning '
+                  : 'bi-moon-stars-fill text-primary'
+              "
+            ></i>
+            <span>{{
+              (isDarkMode ? "NAV.THEMELIGHT" : "NAV.THEMEDARK") | translate
+            }}</span>
           </button>
         </li>
 
         <!-- Language Toggle -->
         <li class="nav-item">
-          <button class="lang-toggle-btn" (click)="toggleLanguage()">
+          <button class="outline-btn" (click)="toggleLanguage()">
             {{ currentLang === "ar" ? "English" : "العربية" }}
           </button>
         </li>
@@ -108,7 +124,11 @@
         <!-- Login/Logout Toggle -->
         <li class="nav-item">
           <button class="login-toggle-btn" (click)="toggleLogin()">
-            {{ isLoggedIn ? ("NAV.LOGOUT" | translate) : ("NAV.LOGIN" | translate) }}
+            {{
+              isLoggedIn
+                ? ("NAV.LOGOUT" | translate)
+                : ("NAV.LOGIN" | translate)
+            }}
           </button>
         </li>
       </ul>

@@ -1,5 +1,5 @@
 import { Component, Inject, PLATFORM_ID, OnInit } from '@angular/core';
-import { isPlatformBrowser, NgIf } from '@angular/common';
+import { isPlatformBrowser, NgIf, CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { preloadTranslations } from '../../preload-translations';
@@ -7,7 +7,7 @@ import { preloadTranslations } from '../../preload-translations';
 @Component({
   selector: 'app-nav-bar',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, TranslateModule, NgIf],
+  imports: [CommonModule, RouterLink, RouterLinkActive, TranslateModule, NgIf],
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.css'],
 })
@@ -19,7 +19,7 @@ export class NavBarComponent implements OnInit {
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private translate: TranslateService
-  ) {}
+  ) { }
 
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {

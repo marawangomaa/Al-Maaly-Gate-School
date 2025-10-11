@@ -1,0 +1,103 @@
+<div class="container mt-4">
+  <h3 class="main-title">إدارة الطلاب الجدد</h3>
+
+  <!-- أزرار الفلترة -->
+  <div class="mb-3 d-flex gap-2 flex-wrap">
+    <button
+      class="outline-btn"
+      [class.primary-btn]="selectedStatus === 'all'"
+      (click)="selectedStatus = 'all'"
+    >
+      الكل
+    </button>
+    <button
+      class="outline-btn"
+      [class.primary-btn]="selectedStatus === 'pending'"
+      (click)="selectedStatus = 'pending'"
+    >
+      قيد المراجعة
+    </button>
+    <button
+      class="outline-btn"
+      [class.primary-btn]="selectedStatus === 'accepted'"
+      (click)="selectedStatus = 'accepted'"
+    >
+      المقبولون
+    </button>
+    <button
+      class="outline-btn"
+      [class.primary-btn]="selectedStatus === 'rejected'"
+      (click)="selectedStatus = 'rejected'"
+    >
+      المرفوضون
+    </button>
+    <button
+      class="outline-btn"
+      [class.primary-btn]="selectedStatus === 'suspended'"
+      (click)="selectedStatus = 'suspended'"
+    >
+      الموقوفون
+    </button>
+  </div>
+
+  <!-- عرض الطلاب -->
+  <div class="row g-3">
+    <div *ngFor="let student of filteredStudents()" class="col-md-6 col-lg-4">
+      <div class="card p-3 h-100 d-flex flex-column justify-content-between">
+        <div>
+          <h5 class="sub-title mb-1">{{ student.name }}</h5>
+          <p class="text-muted mb-1">القسم: {{ student.department }}</p>
+          <p class="text-muted mb-1">البريد الإلكتروني: {{ student.email }}</p>
+        </div>
+
+        <div class="mt-3 d-flex justify-content-between align-items-center">
+          <span
+            class="badge"
+            [ngClass]="{
+              'bg-warning': student.status === 'pending',
+              'bg-success': student.status === 'accepted',
+              'bg-danger': student.status === 'rejected',
+              'bg-secondary': student.status === 'suspended'
+            }"
+          >
+            {{
+              student.status === "pending"
+                ? "قيد المراجعة"
+                : student.status === "accepted"
+                ? "مقبول"
+                : student.status === "rejected"
+                ? "مرفوض"
+                : "موقوف"
+            }}
+          </span>
+
+          <div class="d-flex gap-2 flex-wrap">
+            <button
+              class="primary-btn"
+              *ngIf="student.status === 'pending'"
+              (click)="acceptStudent(student)"
+            >
+               قبول
+            </button>
+
+            <button
+              class="outline-btn"
+              *ngIf="student.status === 'pending'"
+              (click)="rejectStudent(student)"
+            >
+               رفض
+            </button>
+
+            <button
+              class="danger-btn"
+              *ngIf="student.status === 'accepted'"
+              (click)="suspendStudent(student)"
+            >
+               إيقاف الحساب
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
