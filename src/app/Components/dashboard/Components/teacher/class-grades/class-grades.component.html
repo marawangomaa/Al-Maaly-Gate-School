@@ -1,0 +1,41 @@
+<section class="teacher-classes container py-4">
+  <h3 class="main-title mb-3">{{ 'TEACHER_CLASSES.TITLE' | translate }}</h3>
+
+  <div *ngFor="let cls of classes" class="class-card card mb-3 shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center" (click)="toggleExpand(cls.id)">
+      <div>
+        <strong>{{ cls.grade }} - {{ cls.section }}</strong> | {{ cls.subject }}
+      </div>
+      <button class="btn btn-sm btn-outline-primary">
+        {{ expandedClassId === cls.id ? ('COMMON.COLLAPSE' | translate) : ('COMMON.EXPAND' | translate) }}
+      </button>
+    </div>
+
+    <div *ngIf="expandedClassId === cls.id" class="card-body">
+      <form [formGroup]="gradeForms[cls.id]" (ngSubmit)="saveGrades(cls.id)">
+        <table class="table table-bordered text-center align-middle">
+          <thead>
+            <tr>
+              <th>{{ 'TEACHER_CLASSES.STUDENT_NAME' | translate }}</th>
+              <th>{{ 'TEACHER_CLASSES.TEST_GRADE' | translate }}</th>
+              <th>{{ 'TEACHER_CLASSES.MIDTERM_GRADE' | translate }}</th>
+              <th>{{ 'TEACHER_CLASSES.ATTENDANCE' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody formArrayName="students">
+            <tr *ngFor="let student of getStudentArray(cls.id).controls; let i = index" [formGroupName]="i">
+              <td>{{ student.value.name }}</td>
+              <td><input type="number" class="form-control" formControlName="testGrade" /></td>
+              <td><input type="number" class="form-control" formControlName="midtermGrade" /></td>
+              <td><input type="number" class="form-control" formControlName="attendance" /></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <button class="btn btn-success mt-2" type="submit">
+          {{ 'COMMON.SAVE' | translate }}
+        </button>
+      </form>
+    </div>
+  </div>
+</section>

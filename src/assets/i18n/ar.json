@@ -58,6 +58,22 @@
         "PASSWORD": "كلمة المرور",
         "SUBMIT": "تسجيل الدخول"
     },
+    "REGISTER": {
+        "TITLE": "إنشاء حساب جديد",
+        "FULLNAME": "الاسم الكامل",
+        "FULLNAME_REQUIRED": "الاسم الكامل مطلوب",
+        "EMAIL": "البريد الإلكتروني",
+        "EMAIL_INVALID": "يرجى إدخال بريد إلكتروني صحيح",
+        "PASSWORD": "كلمة المرور",
+        "PASSWORD_REQUIRED": "كلمة المرور مطلوبة (على الأقل 6 أحرف)",
+        "ROLE": "الدور",
+        "ROLE_SELECT": "اختر الدور",
+        "ROLE_STUDENT": "طالب",
+        "ROLE_TEACHER": "معلم",
+        "ROLE_REQUIRED": "يجب اختيار الدور",
+        "SUBMIT": "تسجيل",
+        "LOADING": "جارٍ إنشاء الحساب..."
+    },
     "DASH": {
         "TITLE": "لوحة تحكمى",
         "OVERVIEW": "نظرة عامة",
@@ -78,6 +94,7 @@
         "QUESTION_LIST": "قائمة الاسالة",
         "CREATE_TEST": "انشاء اختبار",
         "TEST_LIST": "قائمة الاختبارات",
+        "CLASS_GRADES": "درجات الصف",
 
         "TESTS": "الاختبارات",
         "GRADES": "الدرجات"
@@ -135,7 +152,17 @@
         "DIFF": "الصعوبة"
     },
     "COMMON": {
-        "LOADING": "جارٍ التحميل..."
+        "LOADING": "جارٍ التحميل...",
+        "SAVE": "حفظ",
+        "EXPAND": "عرض",
+        "COLLAPSE": "إخفاء"
+    },
+    "TEACHER_CLASSES": {
+        "TITLE": "صفوفي وطلابي",
+        "STUDENT_NAME": "اسم الطالب",
+        "TEST_GRADE": "درجة الاختبار",
+        "MIDTERM_GRADE": "درجة منتصف الترم",
+        "ATTENDANCE": "الحضور"
     },
     "TEST": {
         "LIST_TITLE": "الاختبارات المتاحة",

@@ -44,6 +44,7 @@ export const routes: Routes = [
         { path: 'question-list', loadComponent: () => import('./Components/dashboard/Components/teacher/question-bank/question-list/question-list.component').then(m => m.QuestionListComponent), title: 'Questions List' },
         { path: 'create-test', loadComponent: () => import('./Components/dashboard/Components/teacher/tests/create-test/create-test.component').then(m => m.CreateTestComponent), title: 'Creating Test' },
         { path: 'test-list', loadComponent: () => import('./Components/dashboard/Components/teacher/tests/test-list/test-list.component').then(m => m.TestListComponent), title: 'Tests List' },
+        { path: 'class-grades', loadComponent: () => import('./Components/dashboard/Components/teacher/class-grades/class-grades.component').then(m => m.ClassGradesComponent), title: 'Class Grades' },
 
         // Student-only
         { path: 'grades', loadComponent: () => import('./Components/dashboard/Components/student/student-grades/student-grades.component').then(m => m.StudentGradesComponent) },

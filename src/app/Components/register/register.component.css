@@ -1,61 +1,210 @@
-.register-wrapper {
-  background-color: var(--color-bg-secondary);
-  transition: background-color 0.3s ease;
-}
-
-.register-card {
-  width: 400px;
-  border-radius: 12px;
+/* === Layout === */
+.register-page {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
   background-color: var(--color-bg);
   color: var(--color-text);
-  transition: background-color 0.3s ease, color 0.3s ease;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s ease-in-out;
 }
 
-.register-card h3 {
-  font-weight: 700;
-  color: var(--color-primary-400);
+/* === Left Visual Section (65%) === */
+.register-visual {
+  flex: 0 0 65%;
+  position: relative;
+  overflow: hidden;
 }
 
-.register-card .form-label {
-  color: var(--color-text);
+.register-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: zoomFade 14s ease-in-out infinite alternate;
+  filter: brightness(0.9);
+  transition: all 0.4s ease-in-out;
 }
 
-.register-card .form-control {
+@keyframes zoomFade {
+  0% {
+    transform: scale(1);
+    opacity: 0.95;
+  }
+  100% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+/* === Right Form Section (35%) === */
+.register-content {
+  flex: 0 0 35%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 3rem;
+  background-color: var(--color-bg);
+  overflow: hidden;
+  transition: all 0.4s ease-in-out;
+}
+
+/* === Logo === */
+.register-logo {
+  width: 80px;
+  height: 80px;
+  transition: transform 0.4s ease, filter 0.3s ease;
+}
+.register-logo:hover {
+  transform: rotate(-8deg) scale(1.1);
+  filter: brightness(1.15);
+}
+
+/* === Inputs & Select === */
+.cool-input {
   border-radius: 8px;
   border: 1px solid var(--color-border);
-  background-color: var(--color-bg-secondary);
+  background: var(--color-bg-secondary);
   color: var(--color-text);
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  transition: all 0.3s ease;
 }
-
-.register-card .form-control:focus {
+.cool-input:focus {
   border-color: var(--color-primary-400);
-  box-shadow: 0 0 8px rgba(0, 120, 255, 0.2);
-}
-
-.register-btn {
-  font-weight: bold;
-  border-radius: 8px;
-  background: var(--color-primary-400);
-  color: #fff;
-  border: none;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.register-btn:hover {
-  background-color: var(--color-primary-500);
+  box-shadow: 0 0 12px rgba(0, 102, 255, 0.3);
   transform: translateY(-2px);
 }
 
-.text-danger {
-  font-size: 1.2rem;
+/* === Button === */
+.cool-btn {
+  background: linear-gradient(135deg, var(--color-primary-400), var(--color-primary-500));
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+  transition: transform 0.25s ease, box-shadow 0.35s ease, filter 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.cool-btn:hover:not(:disabled) {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 6px 18px rgba(0, 102, 255, 0.4);
+  filter: brightness(1.1);
 }
 
-/* Responsive */
-@media (max-width: 480px) {
-  .register-card {
-    width: 90%;
+/* === Floating Shapes === */
+.decorative-shape {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.12;
+  z-index: 0;
+  transition: transform 0.6s ease;
+}
+.shape-1 {
+  width: 120px;
+  height: 120px;
+  background: var(--color-primary-400);
+  top: 10%;
+  right: 15%;
+  animation: float 7s ease-in-out infinite alternate;
+}
+.shape-2 {
+  width: 90px;
+  height: 90px;
+  background: var(--color-primary-200);
+  bottom: 15%;
+  left: 20%;
+  animation: float 8s ease-in-out infinite alternate-reverse;
+}
+.shape-3 {
+  width: 70px;
+  height: 70px;
+  background: var(--color-primary-300);
+  bottom: 5%;
+  right: 10%;
+  animation: float 6s ease-in-out infinite alternate;
+}
+
+.register-form:hover .shape-1 {
+  transform: rotate(25deg) scale(1.2);
+}
+.register-form:hover .shape-2 {
+  transform: rotate(-20deg) scale(1.1);
+}
+.register-form:hover .shape-3 {
+  transform: rotate(15deg) scale(1.05);
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-25px);
+  }
+}
+
+/* === Alerts === */
+.text-danger {
+  font-size: 1.3rem;
+  color: var(--color-danger-400);
+}
+.alert {
+  font-size: var(--font-sm);
+  border-radius: var(--radius-md);
+}
+
+/* === Responsive === */
+@media (max-width: 992px) {
+  .register-visual {
+    display: none;
+  }
+  .register-content {
+    flex: 1;
     padding: 2rem;
   }
+}
+
+/* === RTL & LTR Support === */
+
+/* Default (LTR) — Image Left, Form Right */
+:host-context([dir='ltr']) .register-page {
+  flex-direction: row;
+  text-align: left;
+}
+
+/* RTL — Image Right, Form Left */
+:host-context([dir='rtl']) .register-page {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+/* Fix shape positions for RTL */
+:host-context([dir='rtl']) .shape-1 {
+  left: 15%;
+  right: auto;
+}
+:host-context([dir='rtl']) .shape-2 {
+  right: 20%;
+  left: auto;
+}
+:host-context([dir='rtl']) .shape-3 {
+  left: 10%;
+  right: auto;
+}
+
+/* === Dark Mode === */
+[data-theme='dark'] .register-content {
+  background-color: var(--color-bg-secondary);
+}
+[data-theme='dark'] .cool-input {
+  background-color: var(--color-bg);
+  color: var(--color-text-light-bg);
+  border-color: var(--color-gray-300);
+}
+[data-theme='dark'] .cool-btn {
+  background: linear-gradient(135deg, var(--color-primary-300), var(--color-primary-500));
+}
+[data-theme='dark'] .register-logo:hover {
+  filter: brightness(1.25);
 }
