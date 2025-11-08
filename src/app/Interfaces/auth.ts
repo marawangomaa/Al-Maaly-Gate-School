@@ -1,28 +1,35 @@
-export interface RegisterRequest {
-  fullName: string;
-  email: string;
-  password: string;
-  role: string;
-}
-
 export interface LoginRequest {
   email: string;
   password: string;
 }
 
-export interface AuthResponse {
-  token: string;
-  email: string;
+export interface RegisterRequest {
+  userName: string;
   fullName: string;
-  roles: string[];
+  contactInfo: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  role: string;
 }
 
-export interface CreateRoleRequest {
-  roleName: string;
+export interface AuthResponse {
+  userId: string;
+  token: string;
+  refreshToken: string;
+  email: string;
+  fullName: string;
+  userName: string;
+  roles: string[];
 }
 
 export interface ApiResponse<T> {
   success: boolean;
-  message?: string;
-  data?: T;
+  message: string;
+  data: T;
+}
+
+export interface RefreshTokenRequest {
+  token: string;
+  refreshToken: string;
 }

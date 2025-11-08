@@ -1,45 +1,13 @@
 <nav class="dashboard-nav d-flex flex-column p-3">
+
   <!-- Logo -->
   <a routerLink="/app/dashboard" class="navbar-brand mb-4 hero-title">
     {{ "DASH.TITLE" | translate }}
   </a>
 
-  <!-- Role Switcher -->
-  <div class="btn-group role-switcher mb-3" role="group" aria-label="Role Switcher">
-    <button
-      type="button"
-      class="btn role-btn"
-      [ngClass]="{ 'btn-primary': currentRole === 'teacher', 'btn-outline-primary': currentRole !== 'teacher' }"
-      (click)="switchRole('teacher')"
-      title="{{ 'DASH.TEACHER' | translate }}"
-    >
-      <i class="bi bi-mortarboard"></i>
-    </button>
-
-    <button
-      type="button"
-      class="btn role-btn"
-      [ngClass]="{ 'btn-primary': currentRole === 'student', 'btn-outline-primary': currentRole !== 'student' }"
-      (click)="switchRole('student')"
-      title="{{ 'DASH.STUDENT' | translate }}"
-    >
-      <i class="bi bi-person"></i>
-    </button>
-
-    <button
-      type="button"
-      class="btn role-btn"
-      [ngClass]="{ 'btn-primary': currentRole === 'admin', 'btn-outline-primary': currentRole !== 'admin' }"
-      (click)="switchRole('admin')"
-      title="{{ 'DASH.ADMIN' | translate }}"
-    >
-      <i class="bi bi-shield-lock"></i>
-    </button>
-  </div>
-
-  <!-- Nav Links by Role -->
   <ul class="nav nav-pills flex-column mb-auto">
-    <!-- Admin Nav -->
+
+    <!-- ✅ Admin Nav -->
     @if (currentRole === 'admin') {
       <li class="nav-item">
         <a routerLink="/app/dashboard/teachers" routerLinkActive="active" class="nav-link custom-link">
@@ -53,7 +21,7 @@
       </li>
     }
 
-    <!-- Teacher Nav -->
+    <!-- ✅ Teacher Nav -->
     @if (currentRole === 'teacher') {
       <li class="nav-item">
         <a routerLink="/app/dashboard/teacher-overview" routerLinkActive="active" class="nav-link custom-link">
@@ -97,7 +65,7 @@
       </li>
     }
 
-    <!-- Student Nav -->
+    <!-- ✅ Student Nav -->
     @if (currentRole === 'student') {
       <li class="nav-item">
         <a routerLink="/app/dashboard/classes" routerLinkActive="active" class="nav-link custom-link">
@@ -115,12 +83,14 @@
         </a>
       </li>
     }
+
   </ul>
 
-  <!-- Bottom (Logout) -->
+  <!-- Bottom -->
   <div class="mt-auto">
-    <button class="danger-btn w-100">
+    <button class="danger-btn w-100" (click)="logout()">
       {{ "DASH.LOGOUT" | translate }}
     </button>
   </div>
+
 </nav>

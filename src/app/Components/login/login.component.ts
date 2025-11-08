@@ -1,19 +1,22 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../../Services/auth.service';
+import { ApiResponse, AuthResponse, LoginRequest } from '../../Interfaces/auth';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
   imports: [FormsModule, TranslateModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+  
   loginForm!: FormGroup;
-  loading: boolean = false;
-  errorMessage: string = '';
+  loading = false;
+  errorMessage = '';
 
   constructor(
     private fb: FormBuilder,
@@ -42,33 +45,30 @@ export class LoginComponent {
     }
 
     this.loading = true;
-    const loginData = this.loginForm.value;
+    const loginData: LoginRequest = this.loginForm.value;
 
     this.authService.login(loginData).subscribe({
-      next: (response) => {
-        if (response.success && response.data) {
-          // Save login info
-          localStorage.setItem('token', response.data.token);
-          localStorage.setItem('userEmail', response.data.email);
-          localStorage.setItem('userName', response.data.fullName);
-          localStorage.setItem('roles', JSON.stringify(response.data.roles));
-          localStorage.setItem('isLoggedIn', 'true');
+      next: (response: ApiResponse<AuthResponse>) => {
+        this.loading = false;
 
-          this.router.navigate(['/app']);
+        if (response.success && response.data) {
+          // ✅ Tokens + user are already saved in AuthService.handleAuth()
+          this.router.navigate(['/app']);  
         } else {
           this.errorMessage = response.message || 'Invalid email or password';
         }
-        this.loading = false;
       },
       error: (err) => {
-        console.error('Login error:', err);
+        this.loading = false;
+        
         if (err.status === 0) {
-          this.errorMessage = 'Cannot connect to the server. Please ensure the backend is running.';
+          this.errorMessage = 'Cannot reach the server. Make sure the backend is running.';
         } else {
           this.errorMessage = err.error?.message || 'Invalid credentials';
         }
-        this.loading = false;
-      },
+
+        console.error('Login error:', err);
+      }
     });
   }
 }

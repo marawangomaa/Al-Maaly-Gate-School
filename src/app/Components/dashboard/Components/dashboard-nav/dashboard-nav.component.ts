@@ -1,38 +1,47 @@
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser, NgClass } from '@angular/common';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from '../../../../Services/AuthService';
+import { PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard-nav',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, TranslateModule, NgClass],
+  imports: [RouterLink, RouterLinkActive, TranslateModule],
   templateUrl: './dashboard-nav.component.html',
   styleUrls: ['./dashboard-nav.component.css']
 })
 export class DashboardNavComponent {
-  currentRole: 'teacher' | 'student' | 'admin' = 'student';
-  private isBrowser: boolean;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
-    this.isBrowser = isPlatformBrowser(this.platformId);
-    this.loadRole();
-  }
+  currentRole: 'admin' | 'teacher' | 'student' | null = null;
 
-  loadRole(): void {
-    if (this.isBrowser) {
-      const storedRole = localStorage.getItem('userRole');
-      if (storedRole === 'teacher' || storedRole === 'student' || storedRole === 'admin') {
-        this.currentRole = storedRole as any;
-      }
+  private platformId = inject(PLATFORM_ID);
+
+  constructor(private auth: AuthService, private router: Router) {}
+
+  ngOnInit() {
+    // ✅ Only run on the browser
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    // ✅ Only read role in browser
+    const role = this.auth.role?.toLowerCase() || null;
+
+    if (role === 'admin' || role === 'teacher' || role === 'student') {
+      this.currentRole = role;
+    }
+
+    console.log("Dashboard role (browser):", this.currentRole);
+
+    if (!this.auth.isLoggedIn() || !this.currentRole) {
+      this.router.navigate(['/login']);
     }
   }
 
-  switchRole(role: 'teacher' | 'student' | 'admin'): void {
-    this.currentRole = role;
-    if (this.isBrowser) {
-      localStorage.setItem('userRole', role);
-    }
-    console.log(`Switched role to: ${role}`);
+  logout() {
+    this.auth.logout();
   }
 }

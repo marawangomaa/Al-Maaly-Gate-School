@@ -6,6 +6,7 @@
   [class.navbar-light]="!isDarkMode"
 >
   <div class="container-fluid">
+
     <!-- Brand -->
     <span class="navbar-brand fw-bold fs-3 brand-glow">
       <img src="../../../assets/images/logo.png" width="70px" alt="">
@@ -22,50 +23,34 @@
     </button>
 
     <div class="collapse navbar-collapse justify-content-end" id="mainNav">
+
       <ul class="navbar-nav align-items-lg-center gap-3">
-        <!-- Visitor Menu -->
+
+        <!-- 🚫 Visitor Menu -->
         <ng-container *ngIf="!isLoggedIn">
           <li class="nav-item">
-            <a
-              class="nav-link cool-link"
-              routerLink="/home"
-              routerLinkActive="active"
-              [routerLinkActiveOptions]="{ exact: true }"
-            >
+            <a class="nav-link cool-link" routerLink="/home" routerLinkActive="active">
               {{ "NAV.HOME" | translate }}
             </a>
           </li>
           <li class="nav-item">
-            <a
-              class="nav-link cool-link"
-              routerLink="/login"
-              routerLinkActive="active"
-              [routerLinkActiveOptions]="{ exact: true }"
-            >
+            <a class="nav-link cool-link" routerLink="/login" routerLinkActive="active">
               {{ "NAV.LOGIN" | translate }}
             </a>
           </li>
           <li class="nav-item">
-            <a
-              class="nav-link cool-link"
-              routerLink="/register"
-              routerLinkActive="active"
-              [routerLinkActiveOptions]="{ exact: true }"
-            >
+            <a class="nav-link cool-link" routerLink="/register" routerLinkActive="active">
               {{ "NAV.REGISTER" | translate }}
             </a>
           </li>
         </ng-container>
 
-        <!-- Logged-In Menu -->
+        <!-- ✅ Logged-In Menu -->
         <ng-container *ngIf="isLoggedIn">
+
+          <!-- Shared -->
           <li class="nav-item">
-            <a
-              class="nav-link cool-link"
-              routerLink="/app/home"
-              routerLinkActive="active"
-              [routerLinkActiveOptions]="{ exact: true }"
-            >
+            <a class="nav-link cool-link" routerLink="/app/home" routerLinkActive="active">
               {{ "NAV.HOME" | translate }}
             </a>
           </li>
@@ -78,16 +63,35 @@
               {{ "NAV.DASHBOARD" | translate }}
             </a>
           </li>
+
+          <!-- ✅ Admin -->
+          <li class="nav-item" *ngIf="role === 'admin'">
+            <a class="nav-link cool-link" routerLink="/app/dashboard/overview" routerLinkActive="active">
+              {{ "NAV.DASHBOARD" | translate }} (Admin)
+            </a>
+          </li>
+
+          <!-- ✅ Teacher -->
+          <li class="nav-item" *ngIf="role === 'teacher'">
+            <a class="nav-link cool-link" routerLink="/app/dashboard/teacher-overview" routerLinkActive="active">
+              {{ "NAV.DASHBOARD" | translate }} (Teacher)
+            </a>
+          </li>
+
+          <!-- ✅ Student -->
+          <li class="nav-item" *ngIf="role === 'student'">
+            <a class="nav-link cool-link" routerLink="/app/dashboard/grades" routerLinkActive="active">
+              {{ "NAV.DASHBOARD" | translate }} (Student)
+            </a>
+          </li>
+
+          <!-- Profile -->
           <li class="nav-item">
-            <a
-              class="nav-link cool-link"
-              routerLink="/app/profile"
-              routerLinkActive="active"
-              [routerLinkActiveOptions]="{ exact: true }"
-            >
+            <a class="nav-link cool-link" routerLink="/app/profile" routerLinkActive="active">
               {{ "NAV.PROFILE" | translate }}
             </a>
           </li>
+
         </ng-container>
 
         <!-- Theme Toggle -->
@@ -105,13 +109,15 @@
           </button>
         </li>
 
-        <!-- Login/Logout Toggle -->
-        <li class="nav-item">
-          <button class="login-toggle-btn" (click)="toggleLogin()">
-            {{ isLoggedIn ? ("NAV.LOGOUT" | translate) : ("NAV.LOGIN" | translate) }}
+        <!-- Logout -->
+        <li class="nav-item" *ngIf="isLoggedIn">
+          <button class="login-toggle-btn" (click)="logout()">
+            {{ "NAV.LOGOUT" | translate }}
           </button>
         </li>
+
       </ul>
+
     </div>
   </div>
 </nav>
