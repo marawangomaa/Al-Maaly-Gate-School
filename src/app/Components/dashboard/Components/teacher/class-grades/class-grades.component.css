@@ -1,0 +1,23 @@
+.teacher-classes .class-card {
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.teacher-classes .card-header {
+  background-color: #f5f9ff;
+  cursor: pointer;
+}
+
+.teacher-classes .card-header:hover {
+  background-color: #e8f1ff;
+}
+
+.teacher-classes table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.teacher-classes th {
+  background: #269b7e;
+  color: #fff;
+}

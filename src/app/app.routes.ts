@@ -67,6 +67,15 @@ export const routes: Routes = [
               import('./Components/dashboard/Components/admin-student-accounts/admin-student-accounts.component').then(m => m.AdminStudentAccountsComponent)
           },
 
+        // Teacher-only
+        { path: 'teacher-overview', loadComponent: () => import('./Components/dashboard/Components/teacher/overview/overview.component').then(m => m.OverviewComponent), title: 'Teacher Overview' },
+        { path: 'create-class', loadComponent: () => import('./Components/dashboard/Components/teacher/class/creating-classes/creating-classes.component').then(m => m.CreatingClassesComponent), title: 'Creating Classes' },
+        { path: 'class-list', loadComponent: () => import('./Components/dashboard/Components/teacher/class/class-list/class-list.component').then(m => m.ClassListComponent), title: 'Classes List' },
+        { path: 'create-question', loadComponent: () => import('./Components/dashboard/Components/teacher/question-bank/create-question/create-question.component').then(m => m.CreateQuestionComponent), title: 'Creating Questions' },
+        { path: 'question-list', loadComponent: () => import('./Components/dashboard/Components/teacher/question-bank/question-list/question-list.component').then(m => m.QuestionListComponent), title: 'Questions List' },
+        { path: 'create-test', loadComponent: () => import('./Components/dashboard/Components/teacher/tests/create-test/create-test.component').then(m => m.CreateTestComponent), title: 'Creating Test' },
+        { path: 'test-list', loadComponent: () => import('./Components/dashboard/Components/teacher/tests/test-list/test-list.component').then(m => m.TestListComponent), title: 'Tests List' },
+        { path: 'class-grades', loadComponent: () => import('./Components/dashboard/Components/teacher/class-grades/class-grades.component').then(m => m.ClassGradesComponent), title: 'Class Grades' },
           // Teacher
           {
             path: 'teacher-overview',

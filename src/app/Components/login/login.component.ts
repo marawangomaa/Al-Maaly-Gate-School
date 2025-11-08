@@ -1,33 +1,74 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { AuthService } from '../../Services/auth.service';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, TranslateModule],
+  imports: [FormsModule, TranslateModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  email: string = '';
-  password: string = '';
+  loginForm!: FormGroup;
+  loading: boolean = false;
   errorMessage: string = '';
 
-  constructor(private router: Router) { }
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private authService: AuthService
+  ) {}
+
+  ngOnInit() {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+    });
+  }
+
+  get f() {
+    return this.loginForm.controls;
+  }
 
   onLogin() {
-    if (!this.email || !this.password) {
-      this.errorMessage = 'Please fill in all fields';
+    this.errorMessage = '';
+
+    if (this.loginForm.invalid) {
+      this.errorMessage = 'Please fill in all fields correctly';
+      this.loginForm.markAllAsTouched();
       return;
     }
 
-    // Mock authentication (replace with real API call)
-    if (this.email === 'admin@test.com' && this.password === '123456') {
-      localStorage.setItem('isLoggedIn', 'true');
-      this.router.navigate(['/app']); // Go to logged-in layout
-    } else {
-      this.errorMessage = 'Invalid email or password';
-    }
+    this.loading = true;
+    const loginData = this.loginForm.value;
+
+    this.authService.login(loginData).subscribe({
+      next: (response) => {
+        if (response.success && response.data) {
+          // Save login info
+          localStorage.setItem('token', response.data.token);
+          localStorage.setItem('userEmail', response.data.email);
+          localStorage.setItem('userName', response.data.fullName);
+          localStorage.setItem('roles', JSON.stringify(response.data.roles));
+          localStorage.setItem('isLoggedIn', 'true');
+
+          this.router.navigate(['/app']);
+        } else {
+          this.errorMessage = response.message || 'Invalid email or password';
+        }
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Login error:', err);
+        if (err.status === 0) {
+          this.errorMessage = 'Cannot connect to the server. Please ensure the backend is running.';
+        } else {
+          this.errorMessage = err.error?.message || 'Invalid credentials';
+        }
+        this.loading = false;
+      },
+    });
   }
 }

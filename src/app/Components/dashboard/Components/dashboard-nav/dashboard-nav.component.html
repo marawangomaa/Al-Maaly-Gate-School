@@ -94,81 +94,49 @@
   </ul>
   }
 
-  <!-- Teacher Nav -->
-  @if (currentRole === 'teacher') {
-  <div class="d-flex flex-column align-items-start">
-    <h2 class="main-title">{{ "DASH.TITLE" | translate }}</h2>
-    <h4 class="text-muted">{{ "DASH.TEACHER" | translate }}</h4>
-  </div>
-  <ul class="nav flex-column mb-auto gap-2">
-    <li class="nav-item">
-      <a
-        routerLink="/app/dashboard/teacher-overview"
-        routerLinkActive="active"
-        class="nav-link custom-link"
-      >
-        <i class="bi bi-speedometer"></i>
-        {{ "DASH.TEACHER_OVERVIEW" | translate }}
-      </a>
-    </li>
-    <li>
-      <a
-        routerLink="/app/dashboard/create-class"
-        routerLinkActive="active"
-        class="nav-link custom-link"
-      >
-        <i class="bi bi-cloud-plus"></i> {{ "DASH.CREATE_CLASS" | translate }}
-      </a>
-    </li>
-    <li>
-      <a
-        routerLink="/app/dashboard/class-list"
-        routerLinkActive="active"
-        class="nav-link custom-link"
-      >
-        <i class="bi bi-camera-video"></i> {{ "DASH.CLASS_LIST" | translate }}
-      </a>
-    </li>
-    <li>
-      <a
-        routerLink="/app/dashboard/create-question"
-        routerLinkActive="active"
-        class="nav-link custom-link"
-      >
-        <i class="bi bi-plus-circle"></i>
-        {{ "DASH.CREATE_QUESTION" | translate }}
-      </a>
-    </li>
-    <li>
-      <a
-        routerLink="/app/dashboard/question-list"
-        routerLinkActive="active"
-        class="nav-link custom-link"
-      >
-        <i class="bi bi-list-columns-reverse"></i>
-        {{ "DASH.QUESTION_LIST" | translate }}
-      </a>
-    </li>
-    <li>
-      <a
-        routerLink="/app/dashboard/create-test"
-        routerLinkActive="active"
-        class="nav-link custom-link"
-      >
-        <i class="bi bi-stack"></i> {{ "DASH.CREATE_TEST" | translate }}
-      </a>
-    </li>
-    <li>
-      <a
-        routerLink="/app/dashboard/test-list"
-        routerLinkActive="active"
-        class="nav-link custom-link"
-      >
-        <i class="bi bi-card-list"></i> {{ "DASH.TEST_LIST" | translate }}
-      </a>
-    </li>
-  </ul>
-  }
+    <!-- Teacher Nav -->
+    @if (currentRole === 'teacher') {
+      <li class="nav-item">
+        <a routerLink="/app/dashboard/teacher-overview" routerLinkActive="active" class="nav-link custom-link">
+          <i class="bi bi-speedometer"></i> {{ "DASH.TEACHER_OVERVIEW" | translate }}
+        </a>
+      </li>
+      <li>
+        <a routerLink="/app/dashboard/create-class" routerLinkActive="active" class="nav-link custom-link">
+          <i class="bi bi-cloud-plus"></i> {{ "DASH.CREATE_CLASS" | translate }}
+        </a>
+      </li>
+      <li>
+        <a routerLink="/app/dashboard/class-list" routerLinkActive="active" class="nav-link custom-link">
+          <i class="bi bi-camera-video"></i> {{ "DASH.CLASS_LIST" | translate }}
+        </a>
+      </li>
+      <li>
+        <a routerLink="/app/dashboard/create-question" routerLinkActive="active" class="nav-link custom-link">
+          <i class="bi bi-plus-circle"></i> {{ "DASH.CREATE_QUESTION" | translate }}
+        </a>
+      </li>
+      <li>
+        <a routerLink="/app/dashboard/question-list" routerLinkActive="active" class="nav-link custom-link">
+          <i class="bi bi-list-columns-reverse"></i> {{ "DASH.QUESTION_LIST" | translate }}
+        </a>
+      </li>
+      <li>
+        <a routerLink="/app/dashboard/create-test" routerLinkActive="active" class="nav-link custom-link">
+          <i class="bi bi-stack"></i> {{ "DASH.CREATE_TEST" | translate }}
+        </a>
+      </li>
+      <li>
+        <a routerLink="/app/dashboard/test-list" routerLinkActive="active" class="nav-link custom-link">
+          <i class="bi bi-card-list"></i> {{ "DASH.TEST_LIST" | translate }}
+        </a>
+      </li>
+      <li>
+        <a routerLink="/app/dashboard/class-grades" routerLinkActive="active" class="nav-link custom-link">
+          <i class="bi bi-file-earmark-text"></i> {{ "DASH.CLASS_GRADES" | translate }}
+        </a>
+      </li>
+    }
 
   <!-- Student Nav -->
   @if (currentRole === 'student') {

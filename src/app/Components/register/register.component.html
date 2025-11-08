@@ -1,81 +1,97 @@
-<div
-  class="d-flex justify-content-center align-items-center vh-100 register-wrapper"
->
-  <div class="card shadow p-4 register-card">
-    <h3 class="text-center mb-4">Register</h3>
+<div class="register-page d-flex min-vh-100">
+  <!-- Left: Visual (65%) -->
+  <div class="register-visual">
+    <img src="assets/images/register.png" alt="Register Visual" class="register-bg" />
+  </div>
 
-    <!-- Error Message -->
-    @if (errorMessage) {
-    <div class="alert alert-danger p-2">
-      {{ errorMessage }}
+  <!-- Right: Form (35%) -->
+  <div class="register-content d-flex align-items-center justify-content-center">
+    <div class="register-form w-100" style="max-width: 450px; position: relative;">
+      <!-- Floating Decorative Elements -->
+      <div class="decorative-shape shape-1"></div>
+      <div class="decorative-shape shape-2"></div>
+      <div class="decorative-shape shape-3"></div>
+
+      <!-- Title -->
+      <div class="text-center mb-4">
+        <img src="assets/images/logo.png" alt="Logo" class="register-logo mb-3" />
+        <h2 class="fw-bold main-title">{{ 'REGISTER.TITLE' | translate }}</h2>
+      </div>
+
+      <!-- Messages -->
+      @if (errorMessage) {
+        <div class="alert alert-danger text-center py-2 mb-3">{{ errorMessage }}</div>
+      }
+      @if (successMessage) {
+        <div class="alert alert-success text-center py-2 mb-3">{{ successMessage }}</div>
+      }
+
+      <!-- Form -->
+      <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+        <!-- Full Name -->
+        <div class="mb-3">
+          <label class="form-label">{{ 'REGISTER.FULLNAME' | translate }}</label>
+          <input
+            type="text"
+            formControlName="fullName"
+            class="form-control cool-input"
+            placeholder="{{ 'REGISTER.FULLNAME' | translate }}"
+          />
+          @if (registerForm.get('fullName')?.touched && registerForm.get('fullName')?.invalid) {
+            <div class="text-danger small mt-1">{{ 'REGISTER.FULLNAME_REQUIRED' | translate }}</div>
+          }
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+          <label class="form-label">{{ 'REGISTER.EMAIL' | translate }}</label>
+          <input
+            type="email"
+            formControlName="email"
+            class="form-control cool-input"
+            placeholder="{{ 'REGISTER.EMAIL' | translate }}"
+          />
+          @if (registerForm.get('email')?.touched && registerForm.get('email')?.invalid) {
+            <div class="text-danger small mt-1">{{ 'REGISTER.EMAIL_INVALID' | translate }}</div>
+          }
+        </div>
+
+        <!-- Password -->
+        <div class="mb-3">
+          <label class="form-label">{{ 'REGISTER.PASSWORD' | translate }}</label>
+          <input
+            type="password"
+            formControlName="password"
+            class="form-control cool-input"
+            placeholder="{{ 'REGISTER.PASSWORD' | translate }}"
+          />
+          @if (registerForm.get('password')?.touched && registerForm.get('password')?.invalid) {
+            <div class="text-danger small mt-1">{{ 'REGISTER.PASSWORD_REQUIRED' | translate }}</div>
+          }
+        </div>
+
+        <!-- Role -->
+        <div class="mb-3">
+          <label class="form-label">{{ 'REGISTER.ROLE' | translate }}</label>
+          <select class="form-select cool-input" formControlName="role">
+            <option value="">{{ 'REGISTER.ROLE_SELECT' | translate }}</option>
+            <option value="Student">{{ 'REGISTER.ROLE_STUDENT' | translate }}</option>
+            <option value="Teacher">{{ 'REGISTER.ROLE_TEACHER' | translate }}</option>
+          </select>
+          @if (registerForm.get('role')?.touched && registerForm.get('role')?.invalid) {
+            <div class="text-danger small mt-1">{{ 'REGISTER.ROLE_REQUIRED' | translate }}</div>
+          }
+        </div>
+
+        <!-- Button -->
+        <button
+          class="cool-btn w-100 mt-3"
+          type="submit"
+          [disabled]="isLoading || registerForm.invalid"
+        >
+          {{ isLoading ? ('REGISTER.LOADING' | translate) : ('REGISTER.SUBMIT' | translate) }}
+        </button>
+      </form>
     </div>
-    }
-
-    <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
-      <!-- Full Name -->
-      <div class="div-input mb-3">
-        <label class="form-label">Full Name</label>
-        <input
-          type="text"
-          class="form-control"
-          formControlName="fullName"
-          placeholder="Enter your full name"
-        />
-        @if (registerForm.get('fullName')?.touched &&
-        registerForm.get('fullName')?.invalid) {
-        <div class="text-danger mt-1">Name is required (min 3 chars)</div>
-        }
-      </div>
-
-      <!-- Email -->
-      <div class="div-input mb-3">
-        <label class="form-label">Email</label>
-        <input
-          type="email"
-          class="form-control"
-          formControlName="email"
-          placeholder="Enter your email"
-        />
-        @if (registerForm.get('email')?.touched &&
-        registerForm.get('email')?.invalid) {
-        <div class="text-danger mt-1">Enter a valid email</div>
-        }
-      </div>
-
-      <!-- Password -->
-      <div class="div-input mb-3">
-        <label class="form-label">Password</label>
-        <input
-          type="password"
-          class="form-control"
-          formControlName="password"
-          placeholder="Enter your password"
-        />
-        @if (registerForm.get('password')?.touched &&
-        registerForm.get('password')?.invalid) {
-        <div class="text-danger mt-1">Password is required (min 6 chars)</div>
-        }
-      </div>
-
-      <!-- Confirm Password -->
-      <div class="div-input mb-3">
-        <label class="form-label">Confirm Password</label>
-        <input
-          type="password"
-          class="form-control"
-          formControlName="confirmPassword"
-          placeholder="Confirm your password"
-        />
-
-        @if (registerForm.errors?.['mismatch'] &&
-        registerForm.get('confirmPassword')?.touched) {
-        <div class="text-danger mt-1">Passwords do not match</div>
-        }
-      </div>
-
-      <button type="submit" class="primary-btn btn w-100 mt-2 register-btn">
-        Register
-      </button>
-    </form>
   </div>
 </div>

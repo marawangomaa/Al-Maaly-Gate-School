@@ -1,37 +1,80 @@
-<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
-  <div class="card shadow p-4" style="width: 400px">
-    <h3 class="main-title text-center mb-4">Login</h3>
+<div class="login-page d-flex min-vh-100">
+  <!-- Left: Visual (65%) -->
+  <div class="login-visual">
+    <img src="assets/images/login.png" alt="Login Visual" class="login-bg" />
+  </div>
 
-    <!-- Error Message -->
-    @if (errorMessage) {
-    <div class="alert alert-danger p-2">
-      {{ errorMessage }}
+  <!-- Right: Form (35%) -->
+  <div class="login-content d-flex align-items-center justify-content-center">
+    <div class="login-form w-100" style="max-width: 450px; position: relative;">
+      <!-- Floating Decorative Elements -->
+      <div class="decorative-shape shape-1"></div>
+      <div class="decorative-shape shape-2"></div>
+      <div class="decorative-shape shape-3"></div>
+
+      <!-- Logo -->
+      <div class="text-center mb-4">
+        <img src="assets/images/logo.png" alt="Logo" class="login-logo mb-3" />
+        <h2 class="fw-bold main-title">{{ 'LOGIN.TITLE' | translate }}</h2>
+      </div>
+
+      <!-- Error Message -->
+      @if (errorMessage) {
+      <div class="alert alert-danger text-center py-2 mb-3">{{ errorMessage }}</div>
+      }
+
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <!-- Username -->
+        <div class="mb-3">
+          <label class="form-label">{{ 'LOGIN.USERNAME' | translate }}</label>
+          <input
+            type="email"
+            formControlName="email"
+            class="form-control cool-input"
+            placeholder="{{ 'LOGIN.USERNAME' | translate }}"
+          />
+          @if (f['email'].touched && f['email'].invalid) {
+          <div class="text-danger small mt-1">
+            @if (f['email'].errors?.['required']) {
+            <span>{{ 'LOGIN.USERNAME' | translate }} is required</span>
+            }
+            @if (f['email'].errors?.['email']) {
+            <span>Enter a valid email</span>
+            }
+          </div>
+          }
+        </div>
+
+        <!-- Password -->
+        <div class="mb-3">
+          <label class="form-label">{{ 'LOGIN.PASSWORD' | translate }}</label>
+          <input
+            type="password"
+            formControlName="password"
+            class="form-control cool-input"
+            placeholder="{{ 'LOGIN.PASSWORD' | translate }}"
+          />
+          @if (f['password'].touched && f['password'].invalid) {
+          <div class="text-danger small mt-1">
+            @if (f['password'].errors?.['required']) {
+            <span>{{ 'LOGIN.PASSWORD' | translate }} is required</span>
+            }
+            @if (f['password'].errors?.['minlength']) {
+            <span>Password must be at least 6 characters</span>
+            }
+          </div>
+          }
+        </div>
+
+        <!-- Button -->
+        <button
+          class="cool-btn w-100 mt-3"
+          type="submit"
+          [disabled]="loading || loginForm.invalid"
+        >
+          {{ loading ? '...' : ('LOGIN.SUBMIT' | translate) }}
+        </button>
+      </form>
     </div>
-    }
-
-    <!-- Email -->
-    <div class="div-input mb-3">
-      <label class="form-label">Email</label>
-      <input
-        type="email"
-        class="form-control"
-        [(ngModel)]="email"
-        placeholder="Enter your email"
-      />
-    </div>
-
-    <!-- Password -->
-    <div class="div-input mb-3">
-      <label class="form-label">Password</label>
-      <input
-        type="password"
-        class="form-control"
-        [(ngModel)]="password"
-        placeholder="Enter your password"
-      />
-    </div>
-
-    <!-- Login Button -->
-    <button class="primary-btn w-100 mt-2" (click)="onLogin()">Login</button>
   </div>
 </div>
