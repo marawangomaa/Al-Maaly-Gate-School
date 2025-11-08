@@ -125,21 +125,10 @@
           </button>
         </li>
 
-<<<<<<< HEAD
         <!-- Logout -->
         <li class="nav-item" *ngIf="isLoggedIn">
           <button class="login-toggle-btn" (click)="logout()">
             {{ "NAV.LOGOUT" | translate }}
-=======
-        <!-- Login/Logout Toggle -->
-        <li class="nav-item">
-          <button class="login-toggle-btn" (click)="toggleLogin()">
-            {{
-              isLoggedIn
-                ? ("NAV.LOGOUT" | translate)
-                : ("NAV.LOGIN" | translate)
-            }}
->>>>>>> 12bfee2602b4536a27da9f07cb10dbe0fbc84ecc
           </button>
         </li>
 
