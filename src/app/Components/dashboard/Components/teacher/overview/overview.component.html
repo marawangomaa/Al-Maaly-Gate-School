@@ -1,0 +1,112 @@
+<section class="teacher-overview standard-section-layout">
+  <div class="container">
+    <!-- Header -->
+    <div class="overview-header d-flex flex-wrap align-items-center justify-content-between mb-4">
+      <h2 class="main-title">
+        {{ 'TEACHER_OVERVIEW.TITLE' | translate }}
+      </h2>
+      <div class="last-updated text-muted small">
+        {{ 'TEACHER_OVERVIEW.LAST_UPDATED' | translate }}:
+        <span *ngIf="!loading; else loadingTpl">
+          {{ teacher?.recentActivities?.[0]?.date || ('TEACHER_OVERVIEW.NO_RECENT' | translate) }}
+        </span>
+        <ng-template #loadingTpl>
+          {{ 'TEACHER_OVERVIEW.LOADING' | translate }}
+        </ng-template>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <!-- Profile card -->
+      <div class="col-12 col-lg-4">
+        <div class="profile-card card p-4 text-center">
+          <div class="profile-wrapper mb-3">
+            @if (teacher?.profileImage) {
+              <img [src]="teacher?.profileImage"
+                   alt="{{ 'TEACHER_OVERVIEW.PROFILE_ALT' | translate }}"
+                   class="profile-img shadow" />
+            } @else {
+              <div class="profile-placeholder d-flex align-items-center justify-content-center shadow-sm">
+                <i class="bi bi-person-circle profile-icon"></i>
+              </div>
+            }
+          </div>
+
+          <h3 class="profile-name mb-1">
+            {{ teacher?.name || ('TEACHER_OVERVIEW.NO_NAME' | translate) }}
+          </h3>
+          <p class="text-muted small mb-1">
+            <i class="bi bi-telephone me-1"></i>
+            {{ teacher?.phone || ('TEACHER_OVERVIEW.NO_PHONE' | translate) }}
+          </p>
+          <p class="text-muted small mb-3">
+            <i class="bi bi-envelope me-1"></i>
+            {{ teacher?.email || ('TEACHER_OVERVIEW.NO_EMAIL' | translate) }}
+          </p>
+
+          <p class="subject mb-3">
+            <strong>{{ 'TEACHER_OVERVIEW.SUBJECT' | translate }}:</strong>
+            <span class="text-muted"> {{ teacher?.subject || ('TEACHER_OVERVIEW.NO_SUBJECT' | translate) }} </span>
+          </p>
+
+          <div class="d-grid gap-2">
+            <button class="primary-btn">{{ 'TEACHER_OVERVIEW.VIEW_PROFILE' | translate }}</button>
+            <button class="outline-btn">{{ 'TEACHER_OVERVIEW.EDIT_PROFILE' | translate }}</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats + Activities -->
+      <div class="col-12 col-lg-8">
+        <div class="row g-3">
+          <!-- Stats -->
+          <div class="col-6 col-md-3">
+            <div class="stat-card card text-center">
+              <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
+              <div class="stat-number">{{ numberOrZero(teacher?.classesCount) }}</div>
+              <div class="stat-label">{{ 'TEACHER_OVERVIEW.CLASSES' | translate }}</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="stat-card card text-center">
+              <div class="stat-icon"><i class="bi bi-file-earmark-text-fill"></i></div>
+              <div class="stat-number">{{ numberOrZero(teacher?.testsCount) }}</div>
+              <div class="stat-label">{{ 'TEACHER_OVERVIEW.TESTS' | translate }}</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="stat-card card text-center">
+              <div class="stat-icon"><i class="bi bi-question-square-fill"></i></div>
+              <div class="stat-number">{{ numberOrZero(teacher?.questionsCount) }}</div>
+              <div class="stat-label">{{ 'TEACHER_OVERVIEW.QUESTIONS' | translate }}</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="stat-card card text-center">
+              <div class="stat-icon"><i class="bi bi-clock-history"></i></div>
+              <div class="stat-number">{{ (teacher?.recentActivities?.length) || 0 }}</div>
+              <div class="stat-label">{{ 'TEACHER_OVERVIEW.ACTIVITIES' | translate }}</div>
+            </div>
+          </div>
+
+          <!-- Recent Activities -->
+          <div class="col-12">
+            <div class="card p-4 recent-activities">
+              <h4 class="sub-title mb-3">{{ 'TEACHER_OVERVIEW.RECENT_ACTIVITY' | translate }}</h4>
+              @if (teacher?.recentActivities?.length) {
+                <ul class="recent-list list-unstyled">
+                  <li *ngFor="let act of (teacher?.recentActivities || [])" class="d-flex mb-3">
+                    <div class="activity-date text-muted small me-3">{{ act.date }}</div>
+                    <div class="activity-text">{{ act.text }}</div>
+                  </li>
+                </ul>
+              } @else {
+                <p class="text-muted small">{{ 'TEACHER_OVERVIEW.NO_RECENT' | translate }}</p>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

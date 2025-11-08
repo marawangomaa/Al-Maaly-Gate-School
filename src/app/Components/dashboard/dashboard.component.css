@@ -1,21 +1,123 @@
+/* ========== DASHBOARD LAYOUT ========== */
 .dashboard-layout {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
   background-color: var(--color-bg);
   color: var(--color-text-light-bg);
+  overflow: hidden;
 }
 
-/* Sidebar width */
+/* Sidebar host (the custom element) */
 app-dashboard-nav {
   width: 240px;
   flex-shrink: 0;
   background-color: var(--color-bg-secondary);
   border-right: 1px solid var(--color-gray-200);
+  transition: width 0.25s ease, transform 0.25s ease;
 }
 
-/* Main content */
+/* Make the inner nav sticky and scrollable */
+app-dashboard-nav .dashboard-nav {
+  height: 100vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 1rem;
+  box-sizing: border-box;
+  position: sticky;
+  top: 0;
+}
+
+/* Main content area */
 .dashboard-content {
   flex: 1;
-  padding: var(--space-lg);
+  padding: var(--space-lg, 1.5rem);
   overflow-y: auto;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+
+/* Slight visual polish */
+.dashboard-layout .card,
+app-dashboard-nav .card {
+  border-radius: 0.5rem;
+}
+
+/* ========== RESPONSIVE BEHAVIOR (CSS-only) ========== */
+
+/* Reduce sidebar width on medium-large screens */
+@media (max-width: 1200px) {
+  app-dashboard-nav { width: 220px; }
+}
+
+/* At tablet & below: stack nav on top and make nav horizontal for quick access */
+@media (max-width: 992px) {
+  .dashboard-layout {
+    flex-direction: column;
+  }
+
+  app-dashboard-nav {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--color-gray-200);
+  }
+
+  /* Make the nav sticky to top (acts like topbar) */
+  app-dashboard-nav .dashboard-nav {
+    position: sticky;
+    top: 0;
+    height: auto; /* allow content height */
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem;
+    z-index: 1000;
+    background: var(--color-bg-secondary);
+  }
+
+  /* Keep main content spacing so content isn't hidden under sticky nav */
+  .dashboard-content {
+    padding-top: calc(var(--space-lg, 1.5rem) + 3.5rem);
+  }
+}
+
+/* At small mobile: allow horizontal scroll for nav links (preserve functionality, no JS) */
+@media (max-width: 768px) {
+  /* Make the top nav links horizontally scrollable */
+  .dashboard-nav .nav {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+  }
+
+  .dashboard-nav .nav-link {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  /* Make role-switcher compact and left-aligned in small screens */
+  .role-switcher {
+    display: flex;
+    gap: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  /* Ensure logout button remains accessible and fits */
+  .dashboard-nav .mt-auto {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    box-sizing: border-box;
+  }
+}
+
+/* Small visual corrections for extremely small screens */
+@media (max-width: 420px) {
+  app-dashboard-nav { font-size: 0.95rem; }
+  .dashboard-content { padding-top: calc(var(--space-lg,1rem) + 3.25rem); }
 }

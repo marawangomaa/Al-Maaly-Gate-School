@@ -10,7 +10,7 @@ describe('AdminAllClassesComponent', () => {
     await TestBed.configureTestingModule({
       imports: [AdminAllClassesComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(AdminAllClassesComponent);
     component = fixture.componentInstance;

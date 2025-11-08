@@ -1,0 +1,65 @@
+<section class="standard-section-layout scheduled-classes">
+  <div class="container">
+    <h3 class="main-title mb-4">{{ 'CLASSES.SCHEDULED_TITLE' | translate }}</h3>
+
+    <div class="card scheduled-card">
+      <div class="table-responsive">
+        <table class="table align-middle text-center mb-0 scheduled-table">
+          <thead>
+            <tr>
+              <th>{{ 'CLASSES.TABLE.GRADE' | translate }}</th>
+              <th>{{ 'CLASSES.TABLE.SECTION' | translate }}</th>
+              <th>{{ 'CLASSES.TABLE.SUBJECT' | translate }}</th>
+              <th>{{ 'CLASSES.TABLE.MEETING' | translate }}</th>
+              <th>{{ 'CLASSES.TABLE.START_TIME' | translate }}</th>
+              <th>{{ 'CLASSES.TABLE.DURATION' | translate }}</th>
+              <th>{{ 'CLASSES.TABLE.STATUS' | translate }}</th>
+              <th>{{ 'CLASSES.TABLE.ACTION' | translate }}</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let cls of classes$ | async">
+              <td>{{ cls.grade }}</td>
+              <td>{{ cls.section }}</td>
+              <td>{{ cls.subject }}</td>
+              <td>
+                <a
+                  [href]="cls.meetingLink"
+                  target="_blank"
+                  class="outline-btn btn-sm rounded-pill"
+                >
+                  {{ 'CLASSES.TABLE.JOIN' | translate }}
+                </a>
+              </td>
+              <td>{{ cls.startTime | date: 'short' }}</td>
+              <td>{{ cls.duration }} min</td>
+              <td>
+                <span
+                  class="status-badge"
+                  [class.active]="!cls.ended"
+                  [class.inactive]="cls.ended"
+                >
+                  {{ cls.ended ? ('CLASSES.TABLE.ENDED' | translate) : ('CLASSES.TABLE.ONGOING' | translate) }}
+                </span>
+              </td>
+              <td>
+                <button
+                  *ngIf="!cls.ended"
+                  class="danger-btn btn-sm rounded-pill"
+                  (click)="endClass(cls.id)"
+                >
+                  {{ 'CLASSES.TABLE.END' | translate }}
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p *ngIf="(classes$ | async)?.length === 0" class="text-muted text-center py-4 mb-0">
+        {{ 'CLASSES.TABLE.NO_CLASSES' | translate }}
+      </p>
+    </div>
+  </div>
+</section>
