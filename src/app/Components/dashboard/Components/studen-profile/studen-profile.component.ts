@@ -36,4 +36,6 @@ export class StudenProfileComponent {
     "notes": "طالب مجدّ في الأنشطة الرياضية. يحتاج متابعة في الرياضيات."
   }
 
+  
+
 }
