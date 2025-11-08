@@ -1,15 +1,17 @@
-<nav class="dashboard-nav d-flex flex-column p-3">
-  <!-- Logo -->
-  <a routerLink="/app/dashboard" class="navbar-brand mb-4 hero-title">
-    {{ "DASH.TITLE" | translate }}
-  </a>
-
+<nav class="dashboard-nav d-flex flex-column p-4">
   <!-- Role Switcher -->
-  <div class="btn-group role-switcher mb-3" role="group" aria-label="Role Switcher">
+  <div
+    class="btn-group role-switcher mb-3"
+    role="group"
+    aria-label="Role Switcher"
+  >
     <button
       type="button"
       class="btn role-btn"
-      [ngClass]="{ 'btn-primary': currentRole === 'teacher', 'btn-outline-primary': currentRole !== 'teacher' }"
+      [ngClass]="{
+        'btn-primary': currentRole === 'teacher',
+        'btn-outline-primary': currentRole !== 'teacher'
+      }"
       (click)="switchRole('teacher')"
       title="{{ 'DASH.TEACHER' | translate }}"
     >
@@ -19,7 +21,10 @@
     <button
       type="button"
       class="btn role-btn"
-      [ngClass]="{ 'btn-primary': currentRole === 'student', 'btn-outline-primary': currentRole !== 'student' }"
+      [ngClass]="{
+        'btn-primary': currentRole === 'student',
+        'btn-outline-primary': currentRole !== 'student'
+      }"
       (click)="switchRole('student')"
       title="{{ 'DASH.STUDENT' | translate }}"
     >
@@ -29,7 +34,10 @@
     <button
       type="button"
       class="btn role-btn"
-      [ngClass]="{ 'btn-primary': currentRole === 'admin', 'btn-outline-primary': currentRole !== 'admin' }"
+      [ngClass]="{
+        'btn-primary': currentRole === 'admin',
+        'btn-outline-primary': currentRole !== 'admin'
+      }"
       (click)="switchRole('admin')"
       title="{{ 'DASH.ADMIN' | translate }}"
     >
@@ -38,20 +46,53 @@
   </div>
 
   <!-- Nav Links by Role -->
-  <ul class="nav nav-pills flex-column mb-auto">
-    <!-- Admin Nav -->
-    @if (currentRole === 'admin') {
-      <li class="nav-item">
-        <a routerLink="/app/dashboard/teachers" routerLinkActive="active" class="nav-link custom-link">
-          <i class="bi bi-person-check"></i> {{ "DASH.ACCEPT_TEACHERS" | translate }}
-        </a>
-      </li>
-      <li>
-        <a routerLink="/app/dashboard/classes" routerLinkActive="active" class="nav-link custom-link">
-          <i class="bi bi-people"></i> {{ "DASH.FOLLOW_CLASSES" | translate }}
-        </a>
-      </li>
-    }
+  <!-- Admin Nav -->
+  @if (currentRole === 'admin') {
+  <div class="d-flex flex-column align-items-start">
+    <h2 class="main-title">{{ "DASH.TITLE" | translate }}</h2>
+    <h4 class="text-muted">{{ "DASH.ADMIN" | translate }}</h4>
+  </div>
+  <ul class="nav flex-column mb-auto gap-2">
+    <li class="nav-item">
+      <a
+        routerLink="/app/dashboard/admin-teachers-accounts"
+        routerLinkActive="active"
+        class="nav-link d-flex flex-row align-items-center gap-2"
+      >
+        <i class="bi bi-person-check"></i>
+        {{ "DASH.Admin_Teachers_Accounts" | translate }}
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/app/dashboard/admin-all-classes"
+        routerLinkActive="active"
+        class="nav-link d-flex flex-row align-items-center gap-2"
+      >
+        <i class="bi bi-people"></i> {{ "DASH.FOLLOW_CLASSES" | translate }}
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/app/dashboard/admin-all-student-tests-result"
+        routerLinkActive="active"
+        class="nav-link d-flex flex-row align-items-center gap-2"
+      >
+        <i class="bi bi-people"></i> {{ "DASH.Admin_Follow_Tests" | translate }}
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/app/dashboard/admin-students-accounts"
+        routerLinkActive="active"
+        class="nav-link d-flex flex-row align-items-center gap-2"
+      >
+        <i class="bi bi-people"></i>
+        {{ "DASH.Admin_Students_Accounts" | translate }}
+      </a>
+    </li>
+  </ul>
+  }
 
     <!-- Teacher Nav -->
     @if (currentRole === 'teacher') {
@@ -97,30 +138,64 @@
       </li>
     }
 
-    <!-- Student Nav -->
-    @if (currentRole === 'student') {
-      <li class="nav-item">
-        <a routerLink="/app/dashboard/classes" routerLinkActive="active" class="nav-link custom-link">
-          <i class="bi bi-laptop"></i> {{ "DASH.ONLINE_CLASSES" | translate }}
-        </a>
-      </li>
-      <li>
-        <a routerLink="/app/dashboard/tests" routerLinkActive="active" class="nav-link custom-link">
-          <i class="bi bi-file-earmark-text"></i> {{ "DASH.TESTS" | translate }}
-        </a>
-      </li>
-      <li>
-        <a routerLink="/app/dashboard/grades" routerLinkActive="active" class="nav-link custom-link">
-          <i class="bi bi-award"></i> {{ "DASH.GRADES" | translate }}
-        </a>
-      </li>
-    }
+  <!-- Student Nav -->
+  @if (currentRole === 'student') {
+  <div class="d-flex flex-column align-items-start">
+    <h2 class="main-title">{{ "DASH.TITLE" | translate }}</h2>
+    <h4 class="text-muted">{{ "DASH.STUDENT" | translate }}</h4>
+  </div>
+  <ul class="nav flex-column mb-auto gap-2">
+    <li>
+      <a
+        routerLink="/app/dashboard/student-profile"
+        routerLinkActive="active"
+        class="nav-link d-flex flex-row align-items-center gap-2"
+      >
+        <i class="bi bi-award"></i> {{ "DASH.PROFILE" | translate }}
+      </a>
+    </li>
+    <li class="nav-item">
+      <a
+        routerLink="/app/dashboard/student-classes"
+        routerLinkActive="active"
+        class="nav-link d-flex flex-row align-items-center gap-2"
+      >
+        <i class="bi bi-laptop"></i> {{ "DASH.ONLINE_CLASSES" | translate }}
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/app/dashboard/student-tests"
+        routerLinkActive="active"
+        class="nav-link d-flex flex-row align-items-center gap-2"
+      >
+        <i class="bi bi-file-earmark-text"></i> {{ "DASH.TESTS" | translate }}
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/app/dashboard/grades"
+        routerLinkActive="active"
+        class="nav-link d-flex flex-row align-items-center gap-2"
+      >
+        <i class="bi bi-award"></i> {{ "DASH.GRADES" | translate }}
+      </a>
+    </li>
   </ul>
+  }
 
   <!-- Bottom (Logout) -->
-  <div class="mt-auto">
-    <button class="danger-btn w-100">
-      {{ "DASH.LOGOUT" | translate }}
-    </button>
-  </div>
+  <ul class="nav flex-column mt-auto gap-2">
+    <li>
+      <a
+        routerLink="/app/dashboard/settings"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="nav-link d-flex flex-row align-items-center gap-2"
+      >
+        <i class="bi bi-bootstrap mt-1"></i>
+        {{ "DASH.SETTINGS" | translate }}
+      </a>
+    </li>
+  </ul>
 </nav>

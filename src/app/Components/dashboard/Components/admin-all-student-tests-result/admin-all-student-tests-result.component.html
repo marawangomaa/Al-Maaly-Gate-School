@@ -1,0 +1,80 @@
+<div class="container mt-4">
+  <h3 class="main-title mb-4">نتائج الطلاب في الاختبارات</h3>
+
+  <!-- أزرار الفلترة -->
+  <div class="mb-3 d-flex gap-2 flex-wrap justify-content-start">
+    <button
+      class="outline-btn"
+      [class.primary-btn]="selectedType === 'الكل'"
+      (click)="selectedType = 'الكل'"
+    >
+      الكل
+    </button>
+    <button
+      class="outline-btn"
+      [class.primary-btn]="selectedType === 'أعمال السنة'"
+      (click)="selectedType = 'أعمال السنة'"
+    >
+      أعمال السنة
+    </button>
+    <button
+      class="outline-btn"
+      [class.primary-btn]="selectedType === 'نهاية السنة'"
+      (click)="selectedType = 'نهاية السنة'"
+    >
+      نهاية السنة
+    </button>
+  </div>
+
+  <!-- جدول النتائج -->
+  <div class="table-responsive mt-4">
+    <table class="table table-striped align-middle text-center">
+      <thead>
+        <tr>
+          <th>اسم الطالب</th>
+          <th>اسم المدرس</th>
+          <th>اسم المادة</th>
+          <th>نوع الاختبار</th>
+          <th>طريقة الاختبار</th>
+          <th>الدرجة</th>
+          <th>الحالة</th>
+          <th>تفاصيل</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let result of filteredResults()">
+          <td>{{ result.studentName }}</td>
+          <td>{{ result.teacherName }}</td>
+          <td>{{ result.subject }}</td>
+          <td>{{ result.examType }}</td>
+          <td>
+            <span
+              [ngClass]="{
+                'text-success': result.mode === 'أونلاين',
+                'text-primary': result.mode === 'أوفلاين'
+              }"
+            >
+              {{ result.mode }}
+            </span>
+          </td>
+          <td>{{ result.score }} / {{ result.total }}</td>
+          <td>
+            <span
+              [ngClass]="{
+                'text-success': result.score >= result.total * 0.5,
+                'text-danger': result.score < result.total * 0.5
+              }"
+            >
+              {{ result.score >= result.total * 0.5 ? "ناجح" : "راسب" }}
+            </span>
+          </td>
+          <td>
+            <button class="outline-btn" (click)="viewDetails(result)">
+              عرض التفاصيل
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

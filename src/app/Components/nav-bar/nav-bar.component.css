@@ -20,8 +20,9 @@
 .custom-navbar.shrink {
   padding: 0.7rem 2rem;
   background: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
 }
+
 [data-theme="dark"] .custom-navbar.shrink {
   background: rgba(20, 20, 20, 0.95);
 }
@@ -34,6 +35,7 @@
   text-shadow: 0 0 6px rgba(0, 123, 255, 0.6);
   transition: text-shadow 0.3s ease, transform 0.3s ease;
 }
+
 .custom-navbar.shrink .brand-glow {
   font-size: 1.4rem;
 }
@@ -108,6 +110,18 @@
   font-size: 1.2rem;
   transition: transform 0.3s ease;
 }
+
 .theme-toggle-btn:hover .icon {
   transform: rotate(25deg);
+}
+
+.navbar-logo {
+  height: 45px;
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.navbar-logo:hover {
+  transform: scale(1.05);
 }

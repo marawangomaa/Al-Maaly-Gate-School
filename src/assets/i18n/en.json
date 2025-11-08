@@ -39,17 +39,17 @@
         "phone": "+1 234 567 890",
         "email": "info@school.com",
         "form": {
-        "name": "Your Name",
-        "email": "Your Email",
-        "subject": "Subject",
-        "message": "Your Message",
-        "button": "Send Message"
+            "name": "Your Name",
+            "email": "Your Email",
+            "subject": "Subject",
+            "message": "Your Message",
+            "button": "Send Message"
         },
         "errors": {
-        "name": "Please enter at least 3 characters.",
-        "email": "Please enter a valid email address.",
-        "subject": "Please enter a subject.",
-        "message": "Message must be at least 10 characters."
+            "name": "Please enter at least 3 characters.",
+            "email": "Please enter a valid email address.",
+            "subject": "Please enter a subject.",
+            "message": "Message must be at least 10 characters."
         }
     },
     "LOGIN": {
@@ -79,14 +79,15 @@
         "OVERVIEW": "Overview",
         "ANALYTICS": "Analytics",
         "SETTINGS": "Settings",
-        "LOGOUT": "Logout",
         "TEACHER": "Teacher",
         "STUDENT": "Student",
         "ADMIN": "Admin",
-
-        "ACCEPT_TEACHERS": "Accept Teachers",
+        "Admin_Teachers_Accounts": "Teachers Accounts",
         "FOLLOW_CLASSES": "Follow Classes",
-
+        "MAKE_TESTS": "Create Tests",
+        "ONLINE_CLASSES": "Online Classes",
+        "Admin_Follow_Tests": "Student Tests",
+        "Admin_Students_Accounts": "Students Accounts Acceptance",
         "TEACHER_OVERVIEW": "Overview",
         "CREATE_CLASS": "Create Online Classes",
         "CLASS_LIST": "Online Classes List",
@@ -98,7 +99,10 @@
 
 
         "TESTS": "Tests",
-        "GRADES": "Grades"
+        "GRADES": "Grades",
+        "SUBTITLE": "Admin",
+        "PROFILE": "Profile",
+        "LOGOUT": "Logout"
     },
     "TEACHER_OVERVIEW": {
         "TITLE": "Teacher Overview",
@@ -195,7 +199,7 @@
         "CREATE_TITLE": "Create a New Class",
         "SCHEDULED_TITLE": "Scheduled Classes",
         "FORM": {
-        "GRADE": "Grade",
+            "GRADE": "Grade",
             "SECTION": "Section",
             "SUBJECT": "Subject",
             "MEETING_LINK": "Meeting Link",
