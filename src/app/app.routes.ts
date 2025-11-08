@@ -31,7 +31,6 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeloggedinComponent },
-
       {
         path: 'dashboard',
         component: DashboardComponent,
@@ -46,24 +45,30 @@ export const routes: Routes = [
             title: 'Overview'
           },
 
-          // ✅ Admin-only
+          // Admin
           {
-            path: 'teachers',
+            path: 'admin-all-classes',
             canActivate: [AdminGuard],
-            data: { role: 'admin' },
             loadComponent: () =>
-              import('./Components/dashboard/Components/admin/teachers/teachers.component')
-                .then(m => m.TeachersComponent),
-            title: 'Teachers'
+              import('./Components/dashboard/Components/admin-all-classes/admin-all-classes.component').then(m => m.AdminAllClassesComponent)
           },
           {
-            path: 'classes',
+            path: 'admin-all-student-tests-result',
             canActivate: [AdminGuard],
-            data: { role: 'admin' },
             loadComponent: () =>
-              import('./Components/dashboard/Components/admin/teachers/classes/classes.component')
-                .then(m => m.ClassesComponent),
-            title: 'Classes'
+              import('./Components/dashboard/Components/admin-all-student-tests-result/admin-all-student-tests-result.component').then(m => m.AdminAllStudentTestsResultComponent)
+          },
+          {
+            path: 'admin-teachers-accounts',
+            canActivate: [AdminGuard],
+            loadComponent: () =>
+              import('./Components/dashboard/Components/admin-teacher-accounts/admin-teacher-accounts.component').then(m => m.AdminTeacherAccountsComponent)
+          },
+          {
+            path: 'admin-students-accounts',
+            canActivate: [AdminGuard],
+            loadComponent: () =>
+              import('./Components/dashboard/Components/admin-student-accounts/admin-student-accounts.component').then(m => m.AdminStudentAccountsComponent)
           },
 
           // ✅ Teacher-only
@@ -140,30 +145,30 @@ export const routes: Routes = [
             title: 'Class Grades'
           },
 
-          // ✅ Student-only
+          // Student
           {
             path: 'grades',
             canActivate: [StudentGuard],
-            data: { role: 'student' },
             loadComponent: () =>
-              import('./Components/dashboard/Components/student/student-grades/student-grades.component')
-                .then(m => m.StudentGradesComponent)
+              import('./Components/dashboard/Components/student/student-grades/student-grades.component').then(m => m.StudentGradesComponent)
           },
           {
-            path: 'classes',
+            path: 'student-classes',
             canActivate: [StudentGuard],
-            data: { role: 'student' },
             loadComponent: () =>
-              import('./Components/dashboard/Components/student/student-classes/student-classes.component')
-                .then(m => m.StudentClassesComponent)
+              import('./Components/dashboard/Components/student/student-classes/student-classes.component').then(m => m.StudentClassesComponent)
           },
           {
-            path: 'tests',
+            path: 'student-tests',
             canActivate: [StudentGuard],
-            data: { role: 'student' },
             loadComponent: () =>
-              import('./Components/dashboard/Components/student/student-tests/student-tests.component')
-                .then(m => m.StudentTestsComponent)
+              import('./Components/dashboard/Components/student/student-tests/student-tests.component').then(m => m.StudentTestsComponent)
+          },
+          {
+            path: 'student-profile',
+            canActivate: [StudentGuard],
+            loadComponent: () =>
+              import('./Components/dashboard/Components/studen-profile/studen-profile.component').then(m => m.StudenProfileComponent)
           },
 
           { path: '', redirectTo: 'overview', pathMatch: 'full' }

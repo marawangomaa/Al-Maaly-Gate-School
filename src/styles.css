@@ -18,8 +18,6 @@ html {
 }
 
 body {
-  font-size: 1.6rem;
-  /* Default body font size = 16px */
   font-family: var(--font-body, 'sans-serif');
   background-color: var(--color-bg);
   color: var(--color-text);
@@ -132,7 +130,7 @@ button {
   /* reverse for dark mode */
   --color-text-dark-bg: #0d1117;
   /* reverse for dark mode */
-  --color-text-muted: #a3a3a3;
+  --color-text-muted: #9b9b9b;
 
   /* Primary Blue Shades for dark mode */
   --color-primary-100: #1e3a8a;
@@ -157,7 +155,7 @@ button {
   --font-sm: 1.5rem;
   --font-base: 1.7rem;
   --font-lg: 1.9rem;
-  --font-xl: 2..6rem;
+  --font-xl: 2.6rem;
   --font-2xl: 3.2rem;
 }
 
@@ -299,8 +297,8 @@ html[dir="rtl"] .icon-flip {
 }
 
 /* =========================================================
-   TYPOGRAPHY BASE
-   ========================================================= */
+  TYPOGRAPHY BASE
+========================================================= */
 .hero-title {
   font-size: var(--font-2xl);
   font-weight: var(--font-weight-bold);
@@ -329,7 +327,7 @@ html[dir="rtl"] .icon-flip {
 }
 
 .text-muted {
-  color: var(--color-text-muted);
+  color: var(--color-text-muted) !important;
   font-size: var(--font-sm);
 }
 

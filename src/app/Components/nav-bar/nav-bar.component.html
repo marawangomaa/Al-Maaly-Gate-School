@@ -8,9 +8,13 @@
   <div class="container-fluid">
 
     <!-- Brand -->
-    <span class="navbar-brand fw-bold fs-3 brand-glow">
-      <img src="../../../assets/images/logo.png" width="70px" alt="">
-    </span>
+    <a class="navbar-brand d-flex align-items-center" routerLink="/">
+      <img
+        src="assets/images/logo (4).jpeg"
+        alt="Logo"
+        class="navbar-logo me-2"
+      />
+    </a>
 
     <!-- Mobile Toggler -->
     <button
@@ -96,23 +100,46 @@
 
         <!-- Theme Toggle -->
         <li class="nav-item">
-          <button class="theme-toggle-btn" (click)="toggleTheme()">
-            <span class="icon">{{ isDarkMode ? "☀️" : "🌙" }}</span>
-            {{ (isDarkMode ? "NAV.THEMELIGHT" : "NAV.THEMEDARK") | translate }}
+          <button
+            class="outline-btn d-flex align-items-center gap-2"
+            (click)="toggleTheme()"
+          >
+            <i
+              class="bi"
+              [ngClass]="
+                isDarkMode
+                  ? 'bi-sun-fill text-warning '
+                  : 'bi-moon-stars-fill text-primary'
+              "
+            ></i>
+            <span>{{
+              (isDarkMode ? "NAV.THEMELIGHT" : "NAV.THEMEDARK") | translate
+            }}</span>
           </button>
         </li>
 
         <!-- Language Toggle -->
         <li class="nav-item">
-          <button class="lang-toggle-btn" (click)="toggleLanguage()">
+          <button class="outline-btn" (click)="toggleLanguage()">
             {{ currentLang === "ar" ? "English" : "العربية" }}
           </button>
         </li>
 
+<<<<<<< HEAD
         <!-- Logout -->
         <li class="nav-item" *ngIf="isLoggedIn">
           <button class="login-toggle-btn" (click)="logout()">
             {{ "NAV.LOGOUT" | translate }}
+=======
+        <!-- Login/Logout Toggle -->
+        <li class="nav-item">
+          <button class="login-toggle-btn" (click)="toggleLogin()">
+            {{
+              isLoggedIn
+                ? ("NAV.LOGOUT" | translate)
+                : ("NAV.LOGIN" | translate)
+            }}
+>>>>>>> 12bfee2602b4536a27da9f07cb10dbe0fbc84ecc
           </button>
         </li>
 

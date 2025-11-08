@@ -65,7 +65,7 @@
       </li>
     }
 
-    <!-- ✅ Student Nav -->
+    <!-- Student Nav -->
     @if (currentRole === 'student') {
       <li class="nav-item">
         <a routerLink="/app/dashboard/classes" routerLinkActive="active" class="nav-link custom-link">
@@ -83,14 +83,13 @@
         </a>
       </li>
     }
-
   </ul>
+ 
 
-  <!-- Bottom -->
+  <!-- Bottom (Logout) -->
   <div class="mt-auto">
-    <button class="danger-btn w-100" (click)="logout()">
+    <button class="danger-btn w-100">
       {{ "DASH.LOGOUT" | translate }}
     </button>
   </div>
-
 </nav>
