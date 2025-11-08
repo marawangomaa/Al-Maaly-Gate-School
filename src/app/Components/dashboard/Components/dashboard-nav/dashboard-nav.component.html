@@ -9,14 +9,39 @@
 
     <!-- ✅ Admin Nav -->
     @if (currentRole === 'admin') {
+      <li>
+        <a routerLink="/app/dashboard/admin-overview" routerLinkActive="active" class="nav-link custom-link">
+          <i class="bi bi-people"></i> {{ "DASH.ALL_CLASSES" | translate }}
+        </a>
+      </li>
       <li class="nav-item">
-        <a routerLink="/app/dashboard/teachers" routerLinkActive="active" class="nav-link custom-link">
+        <a routerLink="/app/dashboard/admin-teachers" routerLinkActive="active" class="nav-link custom-link">
           <i class="bi bi-person-check"></i> {{ "DASH.ACCEPT_TEACHERS" | translate }}
         </a>
       </li>
       <li>
-        <a routerLink="/app/dashboard/classes" routerLinkActive="active" class="nav-link custom-link">
-          <i class="bi bi-people"></i> {{ "DASH.FOLLOW_CLASSES" | translate }}
+        <a routerLink="/app/dashboard/admin-all-classes" routerLinkActive="active" class="nav-link custom-link">
+          <i class="bi bi-people"></i> {{ "DASH.ALL_CLASSES" | translate }}
+        </a>
+      </li>
+      <li>
+        <a routerLink="/app/dashboard/admin-all-student-tests-result" routerLinkActive="active" class="nav-link custom-link">
+          <i class="bi bi-people"></i> {{ "DASH.ALL_STUDENT_TEST_RESULT" | translate }}
+        </a>
+      </li>
+      <li>
+        <a routerLink="/app/dashboard/admin-students-accounts" routerLinkActive="active" class="nav-link custom-link">
+          <i class="bi bi-people"></i> {{ "DASH.STUDENT_ACCOUNTS" | translate }}
+        </a>
+      </li>
+      <li>
+        <a routerLink="/app/dashboard/admin-teachers-accounts" routerLinkActive="active" class="nav-link custom-link">
+          <i class="bi bi-people"></i> {{ "DASH.TEACHER_ACCOUNTS" | translate }}
+        </a>
+      </li>
+      <li>
+        <a routerLink="/app/dashboard/admin-analytics" routerLinkActive="active" class="nav-link custom-link">
+          <i class="bi bi-people"></i> {{ "DASH.ADMIN_ANALYTICS" | translate }}
         </a>
       </li>
     }
@@ -29,37 +54,37 @@
         </a>
       </li>
       <li>
-        <a routerLink="/app/dashboard/create-class" routerLinkActive="active" class="nav-link custom-link">
+        <a routerLink="/app/dashboard/teacher-create-class" routerLinkActive="active" class="nav-link custom-link">
           <i class="bi bi-cloud-plus"></i> {{ "DASH.CREATE_CLASS" | translate }}
         </a>
       </li>
       <li>
-        <a routerLink="/app/dashboard/class-list" routerLinkActive="active" class="nav-link custom-link">
+        <a routerLink="/app/dashboard/teacher-class-list" routerLinkActive="active" class="nav-link custom-link">
           <i class="bi bi-camera-video"></i> {{ "DASH.CLASS_LIST" | translate }}
         </a>
       </li>
       <li>
-        <a routerLink="/app/dashboard/create-question" routerLinkActive="active" class="nav-link custom-link">
+        <a routerLink="/app/dashboard/teacher-create-question" routerLinkActive="active" class="nav-link custom-link">
           <i class="bi bi-plus-circle"></i> {{ "DASH.CREATE_QUESTION" | translate }}
         </a>
       </li>
       <li>
-        <a routerLink="/app/dashboard/question-list" routerLinkActive="active" class="nav-link custom-link">
+        <a routerLink="/app/dashboard/teacher-question-list" routerLinkActive="active" class="nav-link custom-link">
           <i class="bi bi-list-columns-reverse"></i> {{ "DASH.QUESTION_LIST" | translate }}
         </a>
       </li>
       <li>
-        <a routerLink="/app/dashboard/create-test" routerLinkActive="active" class="nav-link custom-link">
+        <a routerLink="/app/dashboard/teacher-create-test" routerLinkActive="active" class="nav-link custom-link">
           <i class="bi bi-stack"></i> {{ "DASH.CREATE_TEST" | translate }}
         </a>
       </li>
       <li>
-        <a routerLink="/app/dashboard/test-list" routerLinkActive="active" class="nav-link custom-link">
+        <a routerLink="/app/dashboard/teacher-test-list" routerLinkActive="active" class="nav-link custom-link">
           <i class="bi bi-card-list"></i> {{ "DASH.TEST_LIST" | translate }}
         </a>
       </li>
       <li>
-        <a routerLink="/app/dashboard/class-grades" routerLinkActive="active" class="nav-link custom-link">
+        <a routerLink="/app/dashboard/teacher-class-grades" routerLinkActive="active" class="nav-link custom-link">
           <i class="bi bi-file-earmark-text"></i> {{ "DASH.CLASS_GRADES" | translate }}
         </a>
       </li>
@@ -68,18 +93,23 @@
     <!-- Student Nav -->
     @if (currentRole === 'student') {
       <li class="nav-item">
-        <a routerLink="/app/dashboard/classes" routerLinkActive="active" class="nav-link custom-link">
+        <a routerLink="/app/dashboard/student-profile" routerLinkActive="active" class="nav-link custom-link">
+          <i class="bi bi-laptop"></i> {{ "DASH.STUDENT_PROFILE" | translate }}
+        </a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/app/dashboard/student-classes" routerLinkActive="active" class="nav-link custom-link">
           <i class="bi bi-laptop"></i> {{ "DASH.ONLINE_CLASSES" | translate }}
         </a>
       </li>
       <li>
-        <a routerLink="/app/dashboard/tests" routerLinkActive="active" class="nav-link custom-link">
-          <i class="bi bi-file-earmark-text"></i> {{ "DASH.TESTS" | translate }}
+        <a routerLink="/app/dashboard/student-grades" routerLinkActive="active" class="nav-link custom-link">
+          <i class="bi bi-file-earmark-text"></i> {{ "DASH.GRADES" | translate }}
         </a>
       </li>
       <li>
-        <a routerLink="/app/dashboard/grades" routerLinkActive="active" class="nav-link custom-link">
-          <i class="bi bi-award"></i> {{ "DASH.GRADES" | translate }}
+        <a routerLink="/app/dashboard/student-tests" routerLinkActive="active" class="nav-link custom-link">
+          <i class="bi bi-award"></i> {{ "DASH.TESTS" | translate }}
         </a>
       </li>
     }

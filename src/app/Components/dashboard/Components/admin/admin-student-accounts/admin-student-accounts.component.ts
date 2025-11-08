@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-admin-student-accounts',
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './admin-student-accounts.component.html',
   styleUrl: './admin-student-accounts.component.css'

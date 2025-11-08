@@ -47,28 +47,46 @@ export const routes: Routes = [
 
           // Admin
           {
+            path: 'admin-overview',
+            canActivate: [AdminGuard],
+            loadComponent: () =>
+              import('./Components/dashboard/Components/admin/overview/overview.component').then(m => m.OverviewComponent)
+          },
+          {
+            path: 'admin-teachers',
+            canActivate: [AdminGuard],
+            loadComponent: () =>
+              import('./Components/dashboard/Components/admin/teachers/teachers.component').then(m => m.TeachersComponent)
+          },
+          {
             path: 'admin-all-classes',
             canActivate: [AdminGuard],
             loadComponent: () =>
-              import('./Components/dashboard/Components/admin-all-classes/admin-all-classes.component').then(m => m.AdminAllClassesComponent)
+              import('./Components/dashboard/Components/admin/admin-all-classes/admin-all-classes.component').then(m => m.AdminAllClassesComponent)
           },
           {
             path: 'admin-all-student-tests-result',
             canActivate: [AdminGuard],
             loadComponent: () =>
-              import('./Components/dashboard/Components/admin-all-student-tests-result/admin-all-student-tests-result.component').then(m => m.AdminAllStudentTestsResultComponent)
+              import('./Components/dashboard/Components/admin/admin-all-student-tests-result/admin-all-student-tests-result.component').then(m => m.AdminAllStudentTestsResultComponent)
           },
           {
             path: 'admin-teachers-accounts',
             canActivate: [AdminGuard],
             loadComponent: () =>
-              import('./Components/dashboard/Components/admin-teacher-accounts/admin-teacher-accounts.component').then(m => m.AdminTeacherAccountsComponent)
+              import('./Components/dashboard/Components/admin/admin-teacher-accounts/admin-teacher-accounts.component').then(m => m.AdminTeacherAccountsComponent)
           },
           {
             path: 'admin-students-accounts',
             canActivate: [AdminGuard],
             loadComponent: () =>
-              import('./Components/dashboard/Components/admin-student-accounts/admin-student-accounts.component').then(m => m.AdminStudentAccountsComponent)
+              import('./Components/dashboard/Components/admin/admin-student-accounts/admin-student-accounts.component').then(m => m.AdminStudentAccountsComponent)
+          },
+          {
+            path: 'admin-analytics',
+            canActivate: [AdminGuard],
+            loadComponent: () =>
+              import('./Components/dashboard/Components/admin/analytics/analytics.component').then(m => m.AnalyticsComponent)
           },
 
           // ✅ Teacher-only
@@ -82,7 +100,7 @@ export const routes: Routes = [
             title: 'Teacher Overview'
           },
           {
-            path: 'create-class',
+            path: 'teacher-create-class',
             canActivate: [TeacherGuard],
             data: { role: 'teacher' },
             loadComponent: () =>
@@ -91,7 +109,7 @@ export const routes: Routes = [
             title: 'Creating Classes'
           },
           {
-            path: 'class-list',
+            path: 'teacher-class-list',
             canActivate: [TeacherGuard],
             data: { role: 'teacher' },
             loadComponent: () =>
@@ -100,7 +118,7 @@ export const routes: Routes = [
             title: 'Classes List'
           },
           {
-            path: 'create-question',
+            path: 'teacher-create-question',
             canActivate: [TeacherGuard],
             data: { role: 'teacher' },
             loadComponent: () =>
@@ -109,7 +127,7 @@ export const routes: Routes = [
             title: 'Creating Questions'
           },
           {
-            path: 'question-list',
+            path: 'teacher-question-list',
             canActivate: [TeacherGuard],
             data: { role: 'teacher' },
             loadComponent: () =>
@@ -118,7 +136,7 @@ export const routes: Routes = [
             title: 'Questions List'
           },
           {
-            path: 'create-test',
+            path: 'teacher-create-test',
             canActivate: [TeacherGuard],
             data: { role: 'teacher' },
             loadComponent: () =>
@@ -127,7 +145,7 @@ export const routes: Routes = [
             title: 'Creating Test'
           },
           {
-            path: 'test-list',
+            path: 'teacher-test-list',
             canActivate: [TeacherGuard],
             data: { role: 'teacher' },
             loadComponent: () =>
@@ -136,7 +154,7 @@ export const routes: Routes = [
             title: 'Tests List'
           },
           {
-            path: 'class-grades',
+            path: 'teacher-class-grades',
             canActivate: [TeacherGuard],
             data: { role: 'teacher' },
             loadComponent: () =>
@@ -168,7 +186,13 @@ export const routes: Routes = [
             path: 'student-profile',
             canActivate: [StudentGuard],
             loadComponent: () =>
-              import('./Components/dashboard/Components/studen-profile/studen-profile.component').then(m => m.StudenProfileComponent)
+              import('./Components/dashboard/Components/student/studen-profile/studen-profile.component').then(m => m.StudenProfileComponent)
+          },
+          {
+            path: 'student-grades',
+            canActivate: [StudentGuard],
+            loadComponent: () =>
+              import('./Components/dashboard/Components/student/student-grades/student-grades.component').then(m => m.StudentGradesComponent)
           },
 
           { path: '', redirectTo: 'overview', pathMatch: 'full' }

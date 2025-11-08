@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-admin-all-classes',
+  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './admin-all-classes.component.html',
   styleUrl: './admin-all-classes.component.css'
