@@ -12,22 +12,22 @@
     </button>
     <button
       class="outline-btn"
-      [class.primary-btn]="filter === 'ongoing'"
-      (click)="filter = 'ongoing'"
+      [class.primary-btn]="filter === 'Running'"
+      (click)="filter = 'Running'"
     >
       الحصة الجارية
     </button>
     <button
       class="outline-btn"
-      [class.primary-btn]="filter === 'available'"
-      (click)="filter = 'available'"
+      [class.primary-btn]="filter === 'Upcoming'"
+      (click)="filter = 'Upcoming'"
     >
       يمكن حضورها
     </button>
     <button
       class="outline-btn"
-      [class.primary-btn]="filter === 'attended'"
-      (click)="filter = 'attended'"
+      [class.primary-btn]="filter === 'Finished'"
+      (click)="filter = 'Finished'"
     >
       التي حضرتها
     </button>
@@ -37,36 +37,19 @@
   <div class="row g-3">
     <div *ngFor="let lec of filteredLectures" class="col-md-6">
       <div class="card p-3">
-        <h5 class="sub-title mb-1">{{ lec.subject }}</h5>
-        <p class="text-muted mb-1">المعلم: {{ lec.teacher }}</p>
+        <h5 class="sub-title mb-1">{{ lec.subjectName }}</h5>
+        <p class="text-muted mb-1">المعلم: {{ lec.teacherName }}</p>
         <p class="text-muted mb-2">
-          التاريخ: {{ lec.dateTime | date : "fullDate" }} الساعة
-          {{ lec.dateTime | date : "shortTime" }}
+          التاريخ: {{ lec.startTime | date : "fullDate" }} الساعة
+          {{ lec.endTime | date : "shortTime" }}
         </p>
-
         <div class="d-flex justify-content-between align-items-center">
-          <span
-            class="badge"
-            [ngClass]="{
-              'bg-success': lec.attended,
-              'bg-warning': lec.isOngoing,
-              'bg-secondary': !lec.canAttend && !lec.attended
-            }"
-          >
-            {{
-              lec.attended
-                ? "حضرتها"
-                : lec.isOngoing
-                ? "جارية الآن"
-                : lec.canAttend
-                ? "يمكن حضورها"
-                : "منتهية"
-            }}
+          <span class="badge">
+            {{ lec.status }}
           </span>
-
           <button
             class="primary-btn"
-            [disabled]="!lec.canAttend || lec.attended"
+            [disabled]="lec.status === 'Finished' || lec.status === 'Upcoming'"
             (click)="attendLecture(lec)"
           >
             حضور المحاضرة

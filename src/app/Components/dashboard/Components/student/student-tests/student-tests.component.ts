@@ -1,5 +1,8 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { ClassExamsService } from '../../../../../Services/class-exams.service';
+import { iclassExams } from '../../../../../Interfaces/iclassExams';
+import { ApiResponse } from '../../../../../Interfaces/auth';
 
 @Component({
   selector: 'app-student-tests',
@@ -7,71 +10,47 @@ import { Component } from '@angular/core';
   templateUrl: './student-tests.component.html',
   styleUrl: './student-tests.component.css'
 })
-export class StudentTestsComponent {
-  tests: any[] = [
-    {
-      "id": "exam-001",
-      "subject": "الرياضيات",
-      "teacher": "أ. خالد عبد الله",
-      "startTime": "2025-10-06T09:00:00",
-      "endTime": "2025-10-06T10:00:00",
-      "status": "finished",
-      "score": 85,
-      "canStart": false,
-      "link": "https://school-platform.com/exams/exam-001"
-    },
-    {
-      "id": "exam-002",
-      "subject": "اللغة العربية",
-      "teacher": "أ. منى محمود",
-      "startTime": "2025-10-06T12:00:00",
-      "endTime": "2025-10-06T13:00:00",
-      "status": "ongoing",
-      "score": null,
-      "canStart": true,
-      "link": "https://school-platform.com/exams/exam-002"
-    },
-    {
-      "id": "exam-003",
-      "subject": "العلوم",
-      "teacher": "أ. سامي نجيب",
-      "startTime": "2025-10-07T09:00:00",
-      "endTime": "2025-10-07T10:30:00",
-      "status": "available",
-      "score": null,
-      "canStart": true,
-      "link": "https://school-platform.com/exams/exam-003"
-    },
-    {
-      "id": "exam-004",
-      "subject": "اللغة الإنجليزية",
-      "teacher": "أ. مها عبد السلام",
-      "startTime": "2025-10-05T10:00:00",
-      "endTime": "2025-10-05T11:00:00",
-      "status": "finished",
-      "score": 92,
-      "canStart": false,
-      "link": "https://school-platform.com/exams/exam-004"
-    }
-  ]
-  exams = this.tests;
-  filter: 'all' | 'available' | 'ongoing' | 'finished' = 'all';
+export class StudentTestsComponent implements OnInit {
+
+  tests?: iclassExams[];
+  _ClassExams = inject(ClassExamsService);
+
+  ngOnInit() {
+    this.GetClassExams();
+  }
+
+  filter: 'all' | 'Upcoming' | 'Running' | 'Finished' = 'all';
+  
   get filteredExams() {
     switch (this.filter) {
-      case 'available':
-        return this.exams.filter(e => e.status === 'available');
-      case 'ongoing':
-        return this.exams.filter(e => e.status === 'ongoing');
-      case 'finished':
-        return this.exams.filter(e => e.status === 'finished');
+      case 'Upcoming':
+        return this.tests?.filter(e => e.status === 'Upcoming');
+      case 'Running':
+        return this.tests?.filter(e => e.status === 'Running');
+      case 'Finished':
+        return this.tests?.filter(e => e.status === 'Finished');
       default:
-        return this.exams;
+        return this.tests;
     }
   }
+
   startExam(exam: any) {
     if (exam.canStart && exam.status !== 'finished') {
       alert(`بدأ اختبار ${exam.subject} الآن!`);
       exam.status = 'ongoing';
     }
   }
+
+  GetClassExams() {
+    this._ClassExams.GetClassExamsForStudent("ecc98cc7-debe-486e-863a-7c2b032ffc2e").subscribe({
+      next: (response: ApiResponse<iclassExams[]>) => {
+        this.tests = response.data;
+        console.log(response.data, response.success);
+      },
+      error: (error: ApiResponse<iclassExams[]>) => {
+        console.log(error.message);
+      }
+    });
+  }
+
 }

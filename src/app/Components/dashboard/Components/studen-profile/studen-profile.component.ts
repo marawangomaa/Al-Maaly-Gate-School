@@ -1,5 +1,8 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { StudentProfileService } from '../../../../Services/student-profile.service';
+import { ApiResponse } from '../../../../Interfaces/auth';
+import { istudentProfile } from '../../../../Interfaces/istudentProfile';
 
 @Component({
   selector: 'app-studen-profile',
@@ -7,7 +10,10 @@ import { Component } from '@angular/core';
   templateUrl: './studen-profile.component.html',
   styleUrl: './studen-profile.component.css'
 })
-export class StudenProfileComponent {
+export class StudenProfileComponent implements OnInit {
+
+  studentProfile?: istudentProfile;
+  _StudentProfile = inject(StudentProfileService);
 
   student: any = {
     "id": "stu-2025-00123",
@@ -36,6 +42,20 @@ export class StudenProfileComponent {
     "notes": "طالب مجدّ في الأنشطة الرياضية. يحتاج متابعة في الرياضيات."
   }
 
-  
+  ngOnInit() {
+    this.GetProfileInformation();
+  }
+
+  GetProfileInformation() {
+    this._StudentProfile.GetStudentProfile("4f98823e-254c-474e-ae5c-6c799ac05551").subscribe({
+      next: (response: ApiResponse<istudentProfile>) => {
+        this.studentProfile = response.data;
+        console.log(response.data, response.success);
+      },
+      error: (error: ApiResponse<istudentProfile>) => {
+        console.log(error.message);
+      }
+    });
+  }
 
 }

@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 export class AuthService {
   private baseUrl = `${environment.apiBaseUrl}/Authentication`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   register(request: RegisterRequest): Observable<ApiResponse<AuthResponse>> {
     return this.http.post<ApiResponse<AuthResponse>>(`${this.baseUrl}/register`, request);

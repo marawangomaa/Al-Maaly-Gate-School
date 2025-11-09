@@ -1,69 +1,77 @@
 <div class="container mt-4">
-    <h3 class="main-title">درجات الطالب</h3>
-  
-    <!-- أزرار الفلترة -->
-    <div class="mb-3 d-flex gap-2 flex-wrap">
-      <button class="outline-btn" [class.primary-btn]="filter==='all'" (click)="filter='all'">الكل</button>
-      <button class="outline-btn" [class.primary-btn]="filter==='assignments'" (click)="filter='assignments'">أعمال السنة</button>
-      <button class="outline-btn" [class.primary-btn]="filter==='finals'" (click)="filter='finals'">الاختبارات النهائية</button>
-      <button class="outline-btn" [class.primary-btn]="filter==='online'" (click)="filter='online'">الاختبارات الأونلاين</button>
-      <button class="outline-btn" [class.primary-btn]="filter==='offline'" (click)="filter='offline'">الاختبارات الأوفلاين</button>
-    </div>
-  
-    <!-- جدول الدرجات -->
-    <div class="table-responsive">
-      <table class="table table-hover align-middle">
-        <thead class="table-dark">
-          <tr>
-            <th>المادة</th>
-            <th>المعلم</th>
-            <th>النوع</th>
-            <th>العنوان</th>
-            <th>التاريخ</th>
-            <th>الدرجة</th>
-            <th>التقدير</th>
-            <th>الحالة</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let g of filteredGrades">
-            <td>{{ g.subject }}</td>
-            <td>{{ g.teacher }}</td>
-            <td>
-              {{
-                g.type === 'assignment'
-                  ? 'عمل سنة'
-                  : g.type === 'final'
-                  ? 'اختبار نهائي'
-                  : g.type === 'online_test'
-                  ? 'اختبار أونلاين'
-                  : 'اختبار أوفلاين'
-              }}
-            </td>
-            <td>{{ g.title }}</td>
-            <td>{{ g.date | date:'dd/MM/yyyy' }}</td>
-            <td>
-              <ng-container *ngIf="g.score !== null; else pending">
-                {{ g.score }} / {{ g.total }}
-                <span class="text-muted">({{ calcPercentage(g) }}%)</span>
-              </ng-container>
-              <ng-template #pending>—</ng-template>
-            </td>
-            <td>{{ g.grade || '—' }}</td>
-            <td>
-              <span
-                class="badge"
-                [ngClass]="{
-                  'bg-success': g.status === 'graded',
-                  'bg-warning': g.status === 'pending'
-                }"
-              >
-                {{ g.status === 'graded' ? 'تم التصحيح' : 'قيد التصحيح' }}
-              </span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <h3 class="main-title">درجات الطالب</h3>
+
+  <!-- أزرار الفلترة -->
+  <div class="mb-3 d-flex gap-2 flex-wrap">
+    <button
+      class="outline-btn"
+      [class.primary-btn]="filter === 'all'"
+      (click)="filter = 'all'"
+    >
+      الكل
+    </button>
+    <button
+      class="outline-btn"
+      [class.primary-btn]="filter === 'assignments'"
+      (click)="filter = 'assignments'"
+    >
+      أعمال السنة
+    </button>
+    <button
+      class="outline-btn"
+      [class.primary-btn]="filter === 'finals'"
+      (click)="filter = 'finals'"
+    >
+      الاختبارات النهائية
+    </button>
+    <button
+      class="outline-btn"
+      [class.primary-btn]="filter === 'online'"
+      (click)="filter = 'online'"
+    >
+      الاختبارات الأونلاين
+    </button>
+    <button
+      class="outline-btn"
+      [class.primary-btn]="filter === 'offline'"
+      (click)="filter = 'offline'"
+    >
+      الاختبارات الأوفلاين
+    </button>
   </div>
-  
+
+  <!-- جدول الدرجات -->
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>المادة</th>
+          <th>المعلم</th>
+          <th>النوع</th>
+          <th>العنوان</th>
+          <th>التاريخ</th>
+          <th>الدرجة</th>
+          <th>التقدير</th>
+          <th>الحالة</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let result of ExamsResults">
+          <td>{{ result.subjectName }}</td>
+          <td>{{ result.teacherName }}</td>
+          <td>{{ result.examName }}</td>
+          <td>{{ result.examName }}</td>
+          <td>{{ result.date | date : "dd/MM/yyyy" }}</td>
+          <td>
+            {{ result.totalMark }} / {{ result.fullMark }}
+            <span class="text-muted">{{ result.percentage }}%</span>
+          </td>
+          <td>{{ result.totalMark }}</td>
+          <td>
+            {{ result.status }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

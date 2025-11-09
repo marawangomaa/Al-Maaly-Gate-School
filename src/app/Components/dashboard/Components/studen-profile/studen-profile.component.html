@@ -27,13 +27,10 @@
         <h4 class="sub-title">معلومات الاتصال</h4>
         <div class="row">
           <div class="col-sm-6 div-input">
-            <label>البريد الإلكتروني</label>
-            <input
-              type="email"
-              [value]="student.email"
-              readonly
-              class="form-control"
-            />
+            <strong>البريد الإلكتروني</strong>
+            <div class="text-muted">
+              {{ studentProfile?.email }}
+            </div>
           </div>
           <div class="col-sm-6 div-input">
             <strong>سنة الالتحاق</strong>
@@ -51,10 +48,6 @@
             </div>
           </div>
         </div>
-
-        <p class="paragraph mt-3">
-          <strong>ملاحظات:</strong> {{ student.notes }}
-        </p>
       </div>
     </div>
   </div>

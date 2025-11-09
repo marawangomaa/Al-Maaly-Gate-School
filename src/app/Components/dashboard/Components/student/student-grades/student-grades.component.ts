@@ -1,5 +1,8 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { istudentExamResults } from '../../../../../Interfaces/istudentExamResults';
+import { ApiResponse } from '../../../../../Interfaces/auth';
+import { StudentExamsResultsService } from '../../../../../Services/student-exams-results.service';
 
 @Component({
   selector: 'app-student-grades',
@@ -7,7 +10,16 @@ import { Component } from '@angular/core';
   templateUrl: './student-grades.component.html',
   styleUrl: './student-grades.component.css'
 })
-export class StudentGradesComponent {
+export class StudentGradesComponent implements OnInit {
+
+  ExamsResults?: istudentExamResults[];
+
+  _StudentExamsResults = inject(StudentExamsResultsService);
+
+  ngOnInit() {
+    this.GetProfileInformation();
+  }
+
   Stgrades: any[] = [
     {
       "id": "gr-001",
@@ -75,8 +87,11 @@ export class StudentGradesComponent {
       "method": "online"
     }
   ]
+
   grades = this.Stgrades;
+
   filter: 'all' | 'assignments' | 'finals' | 'online' | 'offline' = 'all';
+
   get filteredGrades() {
     switch (this.filter) {
       case 'assignments':
@@ -91,7 +106,16 @@ export class StudentGradesComponent {
         return this.grades;
     }
   }
-  calcPercentage(grade: any): number {
-    return Math.round((grade.score / grade.total) * 100);
+
+  GetProfileInformation() {
+    this._StudentExamsResults.GetStudentExamsResults("4f98823e-254c-474e-ae5c-6c799ac05551").subscribe({
+      next: (response: ApiResponse<istudentExamResults[]>) => {
+        this.ExamsResults = response.data;
+        console.log(response.data, response.success);
+      },
+      error: (error: ApiResponse<istudentExamResults[]>) => {
+        console.log(error.message);
+      }
+    });
   }
 }
