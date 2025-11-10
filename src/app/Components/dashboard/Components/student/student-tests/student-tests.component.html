@@ -52,7 +52,7 @@
             [disabled]="
               test.status === 'Upcoming' || test.status === 'Finished'
             "
-            (click)="startExam(test)"
+            (click)="startExam(test.examId)"
           >
             بدء الحل
           </button>

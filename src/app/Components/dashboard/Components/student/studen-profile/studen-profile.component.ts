@@ -1,8 +1,9 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { StudentProfileService } from '../../../../Services/student-profile.service';
-import { ApiResponse } from '../../../../Interfaces/auth';
-import { istudentProfile } from '../../../../Interfaces/istudentProfile';
+import { istudentProfile } from '../../../../../Interfaces/istudentProfile';
+import { StudentProfileService } from '../../../../../Services/student-profile.service';
+import { ApiResponse } from '../../../../../Interfaces/auth';
+
 
 @Component({
   selector: 'app-studen-profile',
@@ -47,12 +48,12 @@ export class StudenProfileComponent implements OnInit {
   }
 
   GetProfileInformation() {
-    this._StudentProfile.GetStudentProfile("4f98823e-254c-474e-ae5c-6c799ac05551").subscribe({
-      next: (response: ApiResponse<istudentProfile>) => {
+    this._StudentProfile.GetStudentProfile().subscribe({
+      next: (response: ApiResponse<any>) => {
         this.studentProfile = response.data;
         console.log(response.data, response.success);
       },
-      error: (error: ApiResponse<istudentProfile>) => {
+      error: (error: ApiResponse<any>) => {
         console.log(error.message);
       }
     });

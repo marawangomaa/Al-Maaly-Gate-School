@@ -1,15 +1,12 @@
 export interface iclassExams {
-    examName: string;
-    subjectId: string;
-    subjectName: string | null;
-    classId: string;
-    class: string | null;
-    teacherId: string;
-    teacherName: string | null;
+    examId: string;
     start: string;
     end: string;
-    status: string;
     minMark: number;
     fullMark: number;
-    questions: any[];
+    status: 'Upcoming' | 'Running' | 'Finished';
+    examName: string;
+    subjectName: string;
+    teacherName: string;
 }
+

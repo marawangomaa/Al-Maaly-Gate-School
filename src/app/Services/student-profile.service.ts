@@ -1,21 +1,40 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../src/environments/environment';
 import { Observable } from 'rxjs/internal/Observable';
 import { ApiResponse } from '../Interfaces/auth';
-import { HttpClient } from '@angular/common/http';
-import { istudentProfile } from '../Interfaces/istudentProfile';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthService } from './auth.service';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentProfileService {
 
-  private apiUrl = `${environment.apiUrl}/Student`;
+  private apiUrl = `${environment.apiUrl}/AfterAuthentication/profile`;
+  private StudentEntity = `${environment.apiUrl}/Student`;
+  _Auth = inject(AuthService);
 
   constructor(private http: HttpClient) { }
 
-  GetStudentProfile(studentId: string): Observable<ApiResponse<istudentProfile>> {
-    return this.http.get<ApiResponse<istudentProfile>>(`${this.apiUrl}/${studentId}`);
+  GetStudentProfile(): Observable<ApiResponse<any>> {
+
+    const token = this._Auth?.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.get<ApiResponse<any>>(this.apiUrl, { headers });
+  }
+
+  GetStudentEntity(studentId: string): Observable<ApiResponse<any>> {
+
+    const token = this._Auth?.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.get<ApiResponse<any>>(`${this.StudentEntity}/${studentId}`, { headers });
   }
 
 }

@@ -3,6 +3,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { istudentExamResults } from '../../../../../Interfaces/istudentExamResults';
 import { ApiResponse } from '../../../../../Interfaces/auth';
 import { StudentExamsResultsService } from '../../../../../Services/student-exams-results.service';
+import { AuthService } from '../../../../../Services/auth.service';
 
 @Component({
   selector: 'app-student-grades',
@@ -11,13 +12,15 @@ import { StudentExamsResultsService } from '../../../../../Services/student-exam
   styleUrl: './student-grades.component.css'
 })
 export class StudentGradesComponent implements OnInit {
-
+  studentId!: string;
   ExamsResults?: istudentExamResults[];
 
   _StudentExamsResults = inject(StudentExamsResultsService);
+  _Auth = inject(AuthService);
 
   ngOnInit() {
-    this.GetProfileInformation();
+    this.studentId = this._Auth.getStudentId()!;
+    this.GetProfileInformation(this.studentId);
   }
 
   Stgrades: any[] = [
@@ -107,8 +110,8 @@ export class StudentGradesComponent implements OnInit {
     }
   }
 
-  GetProfileInformation() {
-    this._StudentExamsResults.GetStudentExamsResults("4f98823e-254c-474e-ae5c-6c799ac05551").subscribe({
+  GetProfileInformation(studentId: string) {
+    this._StudentExamsResults.GetStudentExamsResults(studentId).subscribe({
       next: (response: ApiResponse<istudentExamResults[]>) => {
         this.ExamsResults = response.data;
         console.log(response.data, response.success);

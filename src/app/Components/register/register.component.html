@@ -1,72 +1,81 @@
 <div class="register-page d-flex min-vh-100">
-  <!-- Left: Visual (65%) -->
+  <!-- Left: Visual -->
   <div class="register-visual">
     <img src="assets/images/register.png" alt="Register Visual" class="register-bg" />
   </div>
 
-  <!-- Right: Form (35%) -->
+  <!-- Right: Form -->
   <div class="register-content d-flex align-items-center justify-content-center">
     <div class="register-form w-100" style="max-width: 450px; position: relative;">
-      <!-- Floating Decorative Elements -->
-      <div class="decorative-shape shape-1"></div>
-      <div class="decorative-shape shape-2"></div>
-      <div class="decorative-shape shape-3"></div>
 
-      <!-- Title -->
       <div class="text-center mb-4">
         <img src="assets/images/logo.png" alt="Logo" class="register-logo mb-3" />
         <h2 class="fw-bold main-title">{{ 'REGISTER.TITLE' | translate }}</h2>
       </div>
 
-      <!-- Messages -->
+      <!-- Error -->
       @if (errorMessage) {
         <div class="alert alert-danger text-center py-2 mb-3">{{ errorMessage }}</div>
       }
+
+      <!-- Success -->
       @if (successMessage) {
         <div class="alert alert-success text-center py-2 mb-3">{{ successMessage }}</div>
       }
 
-      <!-- Form -->
       <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+
         <!-- Full Name -->
         <div class="mb-3">
           <label class="form-label">{{ 'REGISTER.FULLNAME' | translate }}</label>
-          <input
-            type="text"
-            formControlName="fullName"
-            class="form-control cool-input"
-            placeholder="{{ 'REGISTER.FULLNAME' | translate }}"
-          />
+          <input type="text" formControlName="fullName" class="form-control cool-input" />
           @if (registerForm.get('fullName')?.touched && registerForm.get('fullName')?.invalid) {
-            <div class="text-danger small mt-1">{{ 'REGISTER.FULLNAME_REQUIRED' | translate }}</div>
+            <div class="text-danger small mt-1">Full name must be at least 3 characters</div>
+          }
+        </div>
+
+        <!-- Username -->
+        <div class="mb-3">
+          <label class="form-label">{{ 'REGISTER.USERNAME' | translate }}</label>
+          <input type="text" formControlName="userName" class="form-control cool-input" />
+          @if (registerForm.get('userName')?.touched && registerForm.get('userName')?.invalid) {
+            <div class="text-danger small mt-1">Username is required</div>
           }
         </div>
 
         <!-- Email -->
         <div class="mb-3">
           <label class="form-label">{{ 'REGISTER.EMAIL' | translate }}</label>
-          <input
-            type="email"
-            formControlName="email"
-            class="form-control cool-input"
-            placeholder="{{ 'REGISTER.EMAIL' | translate }}"
-          />
+          <input type="email" formControlName="email" class="form-control cool-input" />
           @if (registerForm.get('email')?.touched && registerForm.get('email')?.invalid) {
-            <div class="text-danger small mt-1">{{ 'REGISTER.EMAIL_INVALID' | translate }}</div>
+            <div class="text-danger small mt-1">Invalid email</div>
+          }
+        </div>
+
+        <!-- Contact Info -->
+        <div class="mb-3">
+          <label class="form-label">{{ 'REGISTER.CONTACT' | translate }}</label>
+          <input type="text" formControlName="contactInfo" class="form-control cool-input" placeholder="Optional" />
+          @if (registerForm.get('contactInfo')?.touched && registerForm.get('contactInfo')?.invalid) {
+            <div class="text-danger small mt-1">Must be at least 10 characters</div>
           }
         </div>
 
         <!-- Password -->
         <div class="mb-3">
           <label class="form-label">{{ 'REGISTER.PASSWORD' | translate }}</label>
-          <input
-            type="password"
-            formControlName="password"
-            class="form-control cool-input"
-            placeholder="{{ 'REGISTER.PASSWORD' | translate }}"
-          />
+          <input type="password" formControlName="password" class="form-control cool-input" />
           @if (registerForm.get('password')?.touched && registerForm.get('password')?.invalid) {
-            <div class="text-danger small mt-1">{{ 'REGISTER.PASSWORD_REQUIRED' | translate }}</div>
+            <div class="text-danger small mt-1">Password must be at least 6 characters</div>
+          }
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="mb-3">
+          <label class="form-label">{{ 'REGISTER.CONFIRMPASSWORD' | translate }}</label>
+          <input type="password" formControlName="confirmPassword" class="form-control cool-input" />
+          @if (registerForm.get('confirmPassword')?.errors?.['mismatch']) {
+            <div class="text-danger small mt-1">Passwords do not match</div>
           }
         </div>
 
@@ -74,23 +83,20 @@
         <div class="mb-3">
           <label class="form-label">{{ 'REGISTER.ROLE' | translate }}</label>
           <select class="form-select cool-input" formControlName="role">
-            <option value="">{{ 'REGISTER.ROLE_SELECT' | translate }}</option>
-            <option value="Student">{{ 'REGISTER.ROLE_STUDENT' | translate }}</option>
-            <option value="Teacher">{{ 'REGISTER.ROLE_TEACHER' | translate }}</option>
+            <option value="">Select role</option>
+            <option value="student">Student</option>
+            <option value="teacher">Teacher</option>
           </select>
           @if (registerForm.get('role')?.touched && registerForm.get('role')?.invalid) {
-            <div class="text-danger small mt-1">{{ 'REGISTER.ROLE_REQUIRED' | translate }}</div>
+            <div class="text-danger small mt-1">Role is required</div>
           }
         </div>
 
-        <!-- Button -->
-        <button
-          class="cool-btn w-100 mt-3"
-          type="submit"
-          [disabled]="isLoading || registerForm.invalid"
-        >
+        <!-- Submit -->
+        <button class="cool-btn w-100 mt-3" type="submit" [disabled]="isLoading || registerForm.invalid">
           {{ isLoading ? ('REGISTER.LOADING' | translate) : ('REGISTER.SUBMIT' | translate) }}
         </button>
+
       </form>
     </div>
   </div>

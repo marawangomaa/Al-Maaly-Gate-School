@@ -50,8 +50,8 @@
           <th>النوع</th>
           <th>العنوان</th>
           <th>التاريخ</th>
+          <th>(أقل/النهائية) النسبة</th>
           <th>الدرجة</th>
-          <th>التقدير</th>
           <th>الحالة</th>
         </tr>
       </thead>
@@ -63,7 +63,7 @@
           <td>{{ result.examName }}</td>
           <td>{{ result.date | date : "dd/MM/yyyy" }}</td>
           <td>
-            {{ result.totalMark }} / {{ result.fullMark }}
+            {{ result.minMark }} / {{ result.fullMark }}
             <span class="text-muted">{{ result.percentage }}%</span>
           </td>
           <td>{{ result.totalMark }}</td>
