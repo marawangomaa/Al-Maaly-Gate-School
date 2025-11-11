@@ -23,7 +23,7 @@ export class StudentTestsComponent implements OnInit {
 
   ngOnInit() {
     this.StudentEntityId = this._Auth.getStudentId()!;
-    this.GetStudentEntity(this.StudentEntityId);
+      this.GetStudentEntity(this.StudentEntityId);
   }
   constructor(private router: Router) { }
 
