@@ -124,6 +124,16 @@ export class AuthService {
       email: auth.email,
       fullName: auth.fullName,
       userName: auth.userName,
+      roleEntityIds: auth.roleEntityIds.studentId
     }));
+  }
+
+  getStudentId(): string | null {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const userStr = localStorage.getItem('user')!;
+      const user = JSON.parse(userStr);
+      return user.roleEntityIds
+    }
+    return null;
   }
 }

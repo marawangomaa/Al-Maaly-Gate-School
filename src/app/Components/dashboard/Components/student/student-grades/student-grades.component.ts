@@ -1,5 +1,9 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { istudentExamResults } from '../../../../../Interfaces/istudentExamResults';
+import { ApiResponse } from '../../../../../Interfaces/auth';
+import { StudentExamsResultsService } from '../../../../../Services/student-exams-results.service';
+import { AuthService } from '../../../../../Services/auth.service';
 
 @Component({
   selector: 'app-student-grades',
@@ -7,7 +11,18 @@ import { Component } from '@angular/core';
   templateUrl: './student-grades.component.html',
   styleUrl: './student-grades.component.css'
 })
-export class StudentGradesComponent {
+export class StudentGradesComponent implements OnInit {
+  studentId!: string;
+  ExamsResults?: istudentExamResults[];
+
+  _StudentExamsResults = inject(StudentExamsResultsService);
+  _Auth = inject(AuthService);
+
+  ngOnInit() {
+    this.studentId = this._Auth.getStudentId()!;
+    this.GetProfileInformation(this.studentId);
+  }
+
   Stgrades: any[] = [
     {
       "id": "gr-001",
@@ -75,8 +90,11 @@ export class StudentGradesComponent {
       "method": "online"
     }
   ]
+
   grades = this.Stgrades;
+
   filter: 'all' | 'assignments' | 'finals' | 'online' | 'offline' = 'all';
+
   get filteredGrades() {
     switch (this.filter) {
       case 'assignments':
@@ -91,7 +109,16 @@ export class StudentGradesComponent {
         return this.grades;
     }
   }
-  calcPercentage(grade: any): number {
-    return Math.round((grade.score / grade.total) * 100);
+
+  GetProfileInformation(studentId: string) {
+    this._StudentExamsResults.GetStudentExamsResults(studentId).subscribe({
+      next: (response: ApiResponse<istudentExamResults[]>) => {
+        this.ExamsResults = response.data;
+        console.log(response.data, response.success);
+      },
+      error: (error: ApiResponse<istudentExamResults[]>) => {
+        console.log(error.message);
+      }
+    });
   }
 }

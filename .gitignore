@@ -39,4 +39,8 @@ testem.log
 
 # System files
 .DS_Store
-Thumbs.db
+Thumbs.db 
+
+
+package.json
+package-lock.json

@@ -11,6 +11,7 @@ import { DashboardComponent } from './Components/dashboard/dashboard.component';
 import { AdminGuard } from './Guards/admin.guard';
 import { TeacherGuard } from './Guards/teacher.guard';
 import { StudentGuard } from './Guards/student.guard';
+import { ExamComponent } from './Components/exam/exam.component';
 
 export const routes: Routes = [
 
@@ -31,6 +32,7 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeloggedinComponent },
+      { path: 'exam/:id', component: ExamComponent },
       {
         path: 'dashboard',
         component: DashboardComponent,

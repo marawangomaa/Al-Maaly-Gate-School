@@ -1,1 +1,38 @@
-<p>teachers works!</p>
+<div class="container mt-4">
+  <h3>Teacher Management</h3>
+  <p>Total Teachers: <strong>{{ teacherCount }}</strong></p>
+
+  <!-- Search Form -->
+  <form (ngSubmit)="LoadTeachersBySubjectName()" #searchForm="ngForm" class="mb-3">
+    <div class="input-group">
+      <input
+        type="text"
+        name="subjectName"
+        [(ngModel)]="subjectName"
+        placeholder="Enter subject name"
+        required
+        class="form-control"
+      />
+      <button type="submit" class="btn btn-primary" [disabled]="!searchForm.valid">
+        Search
+      </button>
+    </div>
+  </form>
+
+  <!-- Results -->
+  <div *ngIf="teachersBySubject.length > 0; else noResults">
+    <h5>Teachers for "{{ subjectName }}":</h5>
+    <ul class="list-group">
+      <li *ngFor="let teacher of teachersBySubject" class="list-group-item">
+        <strong>{{ teacher.fullName }}</strong>
+        <div>Email: {{ teacher.email }}</div>
+        <div *ngIf="teacher.contactInfo">Contact: {{ teacher.contactInfo }}</div>
+        <div>Status: {{ teacher.profileStatus }}</div>
+      </li>
+    </ul>
+  </div>
+
+  <ng-template #noResults>
+    <p *ngIf="subjectName">No teachers found for "{{ subjectName }}".</p>
+  </ng-template>
+</div>
