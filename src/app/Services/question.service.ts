@@ -1,87 +1,107 @@
+// ✅ FINAL WORKING VERSION
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-
-// 🧩 Exported types and model directly from the service
-export type QuestionType = 'mcq' | 'truefalse' | 'text';
+import { map } from 'rxjs/operators';
+import {
+  CreateQuestionDto,
+  QuestionViewDto,
+  UpdateQuestionDto,
+  QuestionTypes
+} from '../Interfaces/iquestoin';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../Environment/Environment';
 
 export interface QuestionModel {
   id: string;
-  type: QuestionType;
   text: string;
-  options?: { id: string; text: string }[];
-  correctOptionId?: string;
-  difficulty?: 'easy' | 'medium' | 'hard';
-  tags?: string[];
-  createdAt: string;
+  type: 'Choices' | 'TrueOrFalse' | 'Text';
+  degree: number;
+  choices?: { id: string; text: string; isCorrect: boolean }[];
+  trueAndFalses?: boolean | null;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class QuestionService {
-  private storageKey = 'app_questions';
-  private subject = new BehaviorSubject<QuestionModel[]>(this.loadFromStorage());
 
-  get questions$(): Observable<QuestionModel[]> {
-    return this.subject.asObservable();
+  private baseUrl = `${environment.apiBaseUrl}/question`;
+
+  // ✅ STREAM OF QUESTIONS
+  private _questions$ = new BehaviorSubject<QuestionModel[]>([]);
+  public questions$ = this._questions$.asObservable();
+
+  constructor(private http: HttpClient) {}
+
+  // ✅ LOAD QUESTIONS FROM API AND MAP TYPES FOR FRONTEND
+  loadAll() {
+  this.getAll().pipe(
+    map(res => res.data.map(q => this.mapToUI(q))) // map over res.data
+  ).subscribe(q => this._questions$.next(q));
+}
+
+
+  // ✅ MAP BACKEND → FRONTEND TYPES
+  private mapToUI(q: QuestionViewDto): QuestionModel {
+  let type: 'Choices' | 'TrueOrFalse' | 'Text';
+
+  // if backend sends string, normalize it to enum number first
+ const typeStr = q.type as unknown as string; // cast number → unknown → string
+
+let typeNum: QuestionTypes;
+
+switch (typeStr.toLowerCase()) {
+  case 'choices': typeNum = QuestionTypes.Choices; break;
+  case 'trueorfalse': typeNum = QuestionTypes.TrueOrFalse; break;
+  default: typeNum = QuestionTypes.Text; break;
+}
+
+
+  // map enum → UI string
+  switch (typeNum) {
+    case QuestionTypes.Choices:
+      type = 'Choices';
+      break;
+    case QuestionTypes.TrueOrFalse:
+      type = 'TrueOrFalse';
+      break;
+    case QuestionTypes.Text:
+    default:
+      type = 'Text';
+      break;
   }
 
-  get snapshot(): QuestionModel[] {
-    return this.subject.getValue();
+  return {
+    id: q.id,
+    text: q.content,
+    type,
+    degree: q.degree,
+    choices: q.choices ?? [],
+    trueAndFalses: q.trueAndFalses ?? null
+  };
+}
+
+
+
+  // ✅ API ENDPOINTS
+  getAll(): Observable<{ success: boolean; message: string; data: QuestionViewDto[] }> {
+  return this.http.get<{ success: boolean; message: string; data: QuestionViewDto[] }>(`${this.baseUrl}`);
+}
+
+
+  getById(id: string): Observable<QuestionViewDto> {
+    return this.http.get<QuestionViewDto>(`${this.baseUrl}/${id}`);
   }
 
-  add(question: Omit<QuestionModel, 'id' | 'createdAt'>) {
-    const newQ: QuestionModel = {
-      ...question,
-      id: 'q_' + Date.now().toString(36),
-      createdAt: new Date().toISOString(),
-    };
-    const next = [newQ, ...this.snapshot];
-    this.save(next);
+  create(dto: CreateQuestionDto): Observable<QuestionViewDto> {
+    return this.http.post<QuestionViewDto>(`${this.baseUrl}`, dto);
   }
 
-  update(id: string, patch: Partial<QuestionModel>) {
-    const next = this.snapshot.map((q) => (q.id === id ? { ...q, ...patch } : q));
-    this.save(next);
+  update(id: string, dto: UpdateQuestionDto): Observable<QuestionViewDto> {
+    return this.http.put<QuestionViewDto>(`${this.baseUrl}/${id}`, dto);
   }
 
-  delete(id: string) {
-    const next = this.snapshot.filter((q) => q.id !== id);
-    this.save(next);
-  }
-
-  private save(list: QuestionModel[]) {
-    try {
-      localStorage.setItem(this.storageKey, JSON.stringify(list));
-    } catch {
-      // ignore storage errors
-    }
-    this.subject.next(list);
-  }
-
-  private loadFromStorage(): QuestionModel[] {
-    try {
-      const raw = localStorage.getItem(this.storageKey);
-      if (!raw) return [];
-      const parsed = JSON.parse(raw) as QuestionModel[];
-      if (!Array.isArray(parsed)) return [];
-      return parsed;
-    } catch {
-      return [];
-    }
-  }
-
-  // 🆕 Helper: Get questions by type
-  getByType(type: QuestionType): QuestionModel[] {
-    return this.snapshot.filter((q) => q.type === type);
-  }
-
-  // 🆕 Helper: Get questions grouped by type
-  getGroupedByType(): Record<QuestionType, QuestionModel[]> {
-    return {
-      mcq: this.getByType('mcq'),
-      truefalse: this.getByType('truefalse'),
-      text: this.getByType('text'),
-    };
+  delete(id: string): Observable<boolean> {
+    return this.http.delete<boolean>(`${this.baseUrl}/${id}`);
   }
 }

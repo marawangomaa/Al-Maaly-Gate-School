@@ -1,172 +1,90 @@
-<section class="standard-section-layout questions-overview">
-  <div class="container">
-    <!-- Header -->
-    <div class="d-flex align-items-center justify-content-between mb-4">
-      <h3 class="main-title d-flex align-items-center gap-2">
-        <i class="bi bi-question-circle-fill text-primary fs-4"></i>
-        {{ 'QUESTIONS.LIST_TITLE' | translate }}
-      </h3>
-    </div>
+<div class="container">
+  <div class="card p-4 shadow-lg">
 
-    <!-- Questions Wrapper -->
-    <div class="card p-4 shadow-lg">
-      <div *ngIf="(questions$ | async) as questions">
-        @if (questions.length > 0) {
+    <!-- Reactive async pipe -->
+    <ng-container *ngIf="questions$ | async as questions">
 
-          <!-- Responsive grid for sections -->
-          <div class="row g-4 question-sections">
-
-            <!-- ========== MCQ Section ========== -->
-            <div class="col-lg-4 col-md-6">
-              <section *ngIf="getByType(questions, 'mcq').length > 0" class="question-section">
-                <h4 class="section-title text-primary border-primary">
-                  <i class="bi bi-ui-radios-grid me-2"></i>{{ 'QUESTIONS.TYPE_MCQ' | translate }}
-                </h4>
-                <div class="question-list">
-                  <div *ngFor="let q of getByType(questions, 'mcq')" class="question-card p-4 border rounded shadow-sm bg-card">
-                    
-                    <!-- Edit mode -->
-                    <div *ngIf="editingId === q.id; else mcqView">
-                      <input [(ngModel)]="editText" class="form-control mb-3" />
-                      <div class="d-flex flex-wrap gap-2">
-                        <button class="btn btn-sm btn-success" (click)="saveEdit(q)">
-                          <i class="bi bi-check-circle me-1"></i>{{ 'QUESTIONS.SAVE' | translate }}
-                        </button>
-                        <button class="btn btn-sm btn-secondary" (click)="cancelEdit()">
-                          <i class="bi bi-x-circle me-1"></i>{{ 'QUESTIONS.CANCEL' | translate }}
-                        </button>
-                      </div>
-                    </div>
-
-                    <!-- View mode -->
-                    <ng-template #mcqView>
-                      <h5 class="fw-semibold mb-3">{{ q.text }}</h5>
-                      <ul class="list-unstyled mb-3">
-                        <li *ngFor="let o of q.options" class="d-flex align-items-center gap-2 mb-1">
-                          <i class="bi fs-5"
-                            [class.bi-circle]="q.correctOptionId !== o.id"
-                            [class.bi-check-circle-fill]="q.correctOptionId === o.id"
-                            [class.text-success]="q.correctOptionId === o.id"></i>
-                          <span>{{ o.text }}</span>
-                        </li>
-                      </ul>
-                      <div class="question-meta text-muted small mb-3">
-                        <i class="bi bi-graph-up me-1"></i>
-                        {{ 'QUESTIONS.DIFF' | translate }}: {{ q.difficulty }} |
-                        <i class="bi bi-tags-fill me-1 ms-2"></i>
-                        {{ 'QUESTIONS.TAGS' | translate }}: {{ q.tags?.join(', ') || '-' }}
-                      </div>
-                      <div class="d-flex flex-wrap gap-2">
-                        <button class="btn btn-sm btn-outline-primary" (click)="startEdit(q)">
-                          <i class="bi bi-pencil-square me-1"></i>{{ 'QUESTIONS.EDIT' | translate }}
-                        </button>
-                        <button class="btn btn-sm btn-outline-danger" (click)="delete(q.id)">
-                          <i class="bi bi-trash3 me-1"></i>{{ 'QUESTIONS.DELETE' | translate }}
-                        </button>
-                      </div>
-                    </ng-template>
-                  </div>
-                </div>
-              </section>
-            </div>
-
-            <!-- ========== TRUE/FALSE Section ========== -->
-            <div class="col-lg-4 col-md-6">
-              <section *ngIf="getByType(questions, 'truefalse').length > 0" class="question-section">
-                <h4 class="section-title text-success border-success">
-                  <i class="bi bi-toggle2-on me-2"></i>{{ 'QUESTIONS.TYPE_TRUEFALSE' | translate }}
-                </h4>
-                <div class="question-list">
-                  <div *ngFor="let q of getByType(questions, 'truefalse')" class="question-card p-4 border rounded shadow-sm bg-card">
-                    
-                    <!-- Edit mode -->
-                    <div *ngIf="editingId === q.id; else tfView">
-                      <input [(ngModel)]="editText" class="form-control mb-3" />
-                      <div class="d-flex flex-wrap gap-2">
-                        <button class="btn btn-sm btn-success" (click)="saveEdit(q)">
-                          <i class="bi bi-check-circle me-1"></i>{{ 'QUESTIONS.SAVE' | translate }}
-                        </button>
-                        <button class="btn btn-sm btn-secondary" (click)="cancelEdit()">
-                          <i class="bi bi-x-circle me-1"></i>{{ 'QUESTIONS.CANCEL' | translate }}
-                        </button>
-                      </div>
-                    </div>
-
-                    <!-- View mode -->
-                    <ng-template #tfView>
-                      <h5 class="fw-semibold mb-3">{{ q.text }}</h5>
-                      <p class="mb-3">
-                        {{ 'QUESTIONS.ANSWER_PLACEHOLDER' | translate }}:
-                        <strong [class.text-success]="q.correctOptionId === 'true'"
-                                [class.text-danger]="q.correctOptionId === 'false'">
-                          {{ q.correctOptionId === 'true'
-                            ? ('QUESTIONS.TRUE' | translate)
-                            : ('QUESTIONS.FALSE' | translate) }}
-                        </strong>
-                      </p>
-                      <div class="d-flex flex-wrap gap-2">
-                        <button class="btn btn-sm btn-outline-primary" (click)="startEdit(q)">
-                          <i class="bi bi-pencil-square me-1"></i>{{ 'QUESTIONS.EDIT' | translate }}
-                        </button>
-                        <button class="btn btn-sm btn-outline-danger" (click)="delete(q.id)">
-                          <i class="bi bi-trash3 me-1"></i>{{ 'QUESTIONS.DELETE' | translate }}
-                        </button>
-                      </div>
-                    </ng-template>
-                  </div>
-                </div>
-              </section>
-            </div>
-
-            <!-- ========== TEXT Section ========== -->
-            <div class="col-lg-4 col-md-12">
-              <section *ngIf="getByType(questions, 'text').length > 0" class="question-section">
-                <h4 class="section-title text-info border-info">
-                  <i class="bi bi-chat-text-fill me-2"></i>{{ 'QUESTIONS.TYPE_TEXT' | translate }}
-                </h4>
-                <div class="question-list">
-                  <div *ngFor="let q of getByType(questions, 'text')" class="question-card p-4 border rounded shadow-sm bg-card">
-                    
-                    <!-- Edit mode -->
-                    <div *ngIf="editingId === q.id; else textView">
-                      <input [(ngModel)]="editText" class="form-control mb-3" />
-                      <div class="d-flex flex-wrap gap-2">
-                        <button class="btn btn-sm btn-success" (click)="saveEdit(q)">
-                          <i class="bi bi-check-circle me-1"></i>{{ 'QUESTIONS.SAVE' | translate }}
-                        </button>
-                        <button class="btn btn-sm btn-secondary" (click)="cancelEdit()">
-                          <i class="bi bi-x-circle me-1"></i>{{ 'QUESTIONS.CANCEL' | translate }}
-                        </button>
-                      </div>
-                    </div>
-
-                    <!-- View mode -->
-                    <ng-template #textView>
-                      <h5 class="fw-semibold mb-3">{{ q.text }}</h5>
-                      <p class="text-muted small mb-3">
-                        <i class="bi bi-info-circle me-1"></i>{{ 'QUESTIONS.TEXT_INFO' | translate }}
-                      </p>
-                      <div class="d-flex flex-wrap gap-2">
-                        <button class="btn btn-sm btn-outline-primary" (click)="startEdit(q)">
-                          <i class="bi bi-pencil-square me-1"></i>{{ 'QUESTIONS.EDIT' | translate }}
-                        </button>
-                        <button class="btn btn-sm btn-outline-danger" (click)="delete(q.id)">
-                          <i class="bi bi-trash3 me-1"></i>{{ 'QUESTIONS.DELETE' | translate }}
-                        </button>
-                      </div>
-                    </ng-template>
-                  </div>
-                </div>
-              </section>
-            </div>
-          </div>
-
-        } @else {
-          <p class="text-muted text-center py-5">
-            <i class="bi bi-inboxes me-2"></i>{{ 'QUESTIONS.NO_QUESTIONS' | translate }}
-          </p>
-        }
+      <!-- Empty State -->
+      <div *ngIf="questions.length === 0">
+        <p class="text-center text-muted py-4">
+          {{ 'QUESTIONS.NO_QUESTIONS' | translate }}
+        </p>
       </div>
-    </div>
+
+      <!-- Questions Display -->
+      <div *ngIf="questions.length > 0" class="row g-4">
+
+        <!-- MCQ QUESTIONS -->
+        <div class="col-lg-4 col-md-6" *ngIf="getByType(questions, QuestionTypes.Choices).length > 0">
+          <h4 class="section-title text-primary">MCQ</h4>
+
+          <div class="question-card" *ngFor="let q of getByType(questions, QuestionTypes.Choices)">
+            <div *ngIf="editingId === q.id; else mcqView">
+              <input [(ngModel)]="editContent" class="form-control mb-3">
+              <button class="btn btn-success btn-sm" (click)="saveEdit(q)">Save</button>
+              <button class="btn btn-secondary btn-sm" (click)="cancelEdit()">Cancel</button>
+            </div>
+
+            <ng-template #mcqView>
+              <h5>{{ q.text }}</h5>
+              <ul>
+                <li *ngFor="let c of q.choices">
+                  <span [class.text-success]="c.isCorrect">{{ c.text }}</span>
+                </li>
+              </ul>
+              <button class="btn btn-outline-primary btn-sm" (click)="startEdit(q)">Edit</button>
+              <button class="btn btn-outline-danger btn-sm" (click)="delete(q.id)">Delete</button>
+            </ng-template>
+          </div>
+        </div>
+
+        <!-- TRUE / FALSE QUESTIONS -->
+        <div class="col-lg-4 col-md-6" *ngIf="getByType(questions, QuestionTypes.TrueOrFalse).length > 0">
+          <h4 class="section-title text-success">True / False</h4>
+
+          <div class="question-card" *ngFor="let q of getByType(questions, QuestionTypes.TrueOrFalse)">
+            <div *ngIf="editingId === q.id; else tfView">
+              <input [(ngModel)]="editContent" class="form-control mb-3">
+              <button class="btn btn-success btn-sm" (click)="saveEdit(q)">Save</button>
+              <button class="btn btn-secondary btn-sm" (click)="cancelEdit()">Cancel</button>
+            </div>
+
+            <ng-template #tfView>
+              <h5>{{ q.text }}</h5>
+              <p>
+                Answer:
+                <strong [class.text-success]="q.trueAndFalses === true"
+                        [class.text-danger]="q.trueAndFalses === false">
+                  {{ q.trueAndFalses ? 'True' : 'False' }}
+                </strong>
+              </p>
+              <button class="btn btn-outline-primary btn-sm" (click)="startEdit(q)">Edit</button>
+              <button class="btn btn-outline-danger btn-sm" (click)="delete(q.id)">Delete</button>
+            </ng-template>
+          </div>
+        </div>
+
+        <!-- TEXT QUESTIONS -->
+        <div class="col-lg-4 col-md-12" *ngIf="getByType(questions, QuestionTypes.Text).length > 0">
+          <h4 class="section-title text-info">Text Questions</h4>
+
+          <div class="question-card" *ngFor="let q of getByType(questions, QuestionTypes.Text)">
+            <div *ngIf="editingId === q.id; else textView">
+              <input [(ngModel)]="editContent" class="form-control mb-3">
+              <button class="btn btn-success btn-sm" (click)="saveEdit(q)">Save</button>
+              <button class="btn btn-secondary btn-sm" (click)="cancelEdit()">Cancel</button>
+            </div>
+
+            <ng-template #textView>
+              <h5>{{ q.text }}</h5>
+              <p class="text-muted">Open text question</p>
+              <button class="btn btn-outline-primary btn-sm" (click)="startEdit(q)">Edit</button>
+              <button class="btn btn-outline-danger btn-sm" (click)="delete(q.id)">Delete</button>
+            </ng-template>
+          </div>
+        </div>
+
+      </div>
+    </ng-container>
   </div>
-</section>
+</div>

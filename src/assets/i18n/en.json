@@ -181,9 +181,12 @@
         "TITLE_PLACEHOLDER": "Enter test title",
         "CLASS": "Class Name",
         "CLASS_PLACEHOLDER": "Enter class name",
+        "SUBJECT": "Subject Name",
         "DURATION": "Duration",
         "MAX": "Max Degree",
         "MIN": "Min Degree",
+        "START": "Start",
+        "END": "End",
         "CREATE_BTN": "Create Test",
         "TIPS_TITLE": "Quick Tips",
         "TIP_ONE": "Select questions from different categories to balance difficulty.",
@@ -193,7 +196,8 @@
         "TEXT_QUESTIONS": "Text Questions",
         "NO_MCQ": "No multiple-choice questions available.",
         "NO_TRUEFALSE": "No true/false questions available.",
-        "NO_TEXT": "No text questions available."
+        "NO_TEXT": "No text questions available.",
+        "VIEW": "View"
     },
     "CLASSES": {
         "CREATE_TITLE": "Create a New Class",
@@ -208,6 +212,7 @@
             "PLACEHOLDERS": {
                 "GRADE": "Enter grade",
                 "SECTION": "Enter section",
+                "CLASS": "Enter class",
                 "SUBJECT": "Enter subject",
                 "MEETING_LINK": "https://...",
                 "DURATION": "e.g. 45"
@@ -215,6 +220,7 @@
             "ERRORS": {
                 "GRADE_REQUIRED": "Grade is required.",
                 "SECTION_REQUIRED": "Section is required.",
+                "CLASS_REQUIRED": "Class is required.",
                 "SUBJECT_REQUIRED": "Subject is required.",
                 "MEETING_LINK_INVALID": "Please enter a valid link.",
                 "START_TIME_REQUIRED": "Start time is required.",
@@ -240,6 +246,26 @@
             "NO_CLASSES": "No classes scheduled yet."
         }
     },
+    "CLASSAPPOINTMENT": {
+    "SCHEDULED_TITLE": "Scheduled Class Appointments",
+    "TABLE": {
+      "GRADE": "Grade",
+      "SECTION": "Section",
+      "SUBJECT": "Subject",
+      "CLASS": "Classes",
+      "MEETING": "Meeting",
+      "START_TIME": "Start Time",
+      "DURATION": "Duration",
+      "STATUS": "Status",
+      "ACTION": "Action",
+      "JOIN": "Join",
+      "ENDED": "Ended",
+      "ONGOING": "Ongoing",
+      "END": "End",
+      "NO_CLASSES": "No class appointments available"
+    }
+  }
+    ,
     "NAV": {
         "LOGO": "LOGO",
         "HOME": "Home",

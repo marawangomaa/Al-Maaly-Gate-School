@@ -1,19 +1,7 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-
-type TeacherModel = {
-  id?: string;
-  name?: string;
-  phone?: string;
-  email?: string;
-  subject?: string;
-  profileImage?: string | null;
-  classesCount?: number;
-  testsCount?: number;
-  questionsCount?: number;
-  recentActivities?: Array<{ date: string; text: string }>;
-};
+import { TeacherService } from '../../../../../Services/teacher.service';
 
 @Component({
   selector: 'app-overview',
@@ -23,39 +11,69 @@ type TeacherModel = {
   styleUrls: ['./overview.component.css'],
 })
 export class OverviewComponent {
-  teacher?: TeacherModel; // now it's possibly undefined
+  teacher: any = null;
   loading = true;
+  teacherId: string | null = null;
 
-  constructor() {}
+  constructor(
+    private teacherService: TeacherService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   ngOnInit(): void {
-    this.loadTeacherData();
+    this.getTeacherIdSafely();
+
+    if (this.teacherId) {
+      this.loadTeacherData();
+    } else {
+      console.warn("No teacherId found in localStorage.");
+      this.loading = false;
+    }
+  }
+
+  // ✅ SSR-safe
+  getTeacherIdSafely(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.teacherId = localStorage.getItem("teacherId");
+    }
   }
 
   loadTeacherData(): void {
-    // TODO: replace with real API call
-    setTimeout(() => {
-      this.teacher = {
-        id: 't-1001',
-        name: 'Mohamed Ali',
-        phone: '+20 100 123 4567',
-        email: 'm.ali@school.edu',
-        subject: 'Mathematics',
-        profileImage: '../../../../../../assets/images/photo.JPG', // or a url if exists
-        classesCount: 4,
-        testsCount: 12,
-        questionsCount: 108,
-        recentActivities: [
-          { date: '2025-09-28', text: 'Created Test: Algebra Midterm' },
-          { date: '2025-09-22', text: 'Added 15 questions to Geometry set' },
-          { date: '2025-09-18', text: 'Started Live Class: Trigonometry' },
-        ],
-      };
-      this.loading = false;
-    }, 500);
+    this.loading = true;
+
+    this.teacherService.getById(this.teacherId!).subscribe({
+      next: (res) => {
+        console.log("API RESPONSE:", res);
+
+        if (res.success && res.data) {
+          this.teacher = this.normalizeTeacher(res.data);
+        }
+
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error("Failed to load teacher data:", err);
+        this.loading = false;
+      }
+    });
   }
 
-  numberOrZero(n?: number): number {
-    return typeof n === 'number' ? n : 0;
+  // ✅ Normalize the backend response for the HTML
+  normalizeTeacher(dto: any) {
+    return {
+      id: dto.id,
+      name: dto.fullName,
+      email: dto.email,
+      phone: dto.contactInfo,
+      subject: dto.subjects?.[0] || "Unknown",
+      classesCount: dto.classNames?.length || 0,
+      testsCount: 0,
+      questionsCount: 0,
+      recentActivities: []
+    };
+  }
+
+  numberOrZero(n: any): number {
+    return Number(n) || 0;
   }
 }

@@ -21,6 +21,8 @@ export interface AuthResponse {
   fullName: string;
   userName: string;
   roles: string[];
+  profileImageUrl: string;
+  roleEntityIds: any;
 }
 
 export interface ApiResponse<T> {

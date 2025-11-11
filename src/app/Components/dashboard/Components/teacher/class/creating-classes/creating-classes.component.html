@@ -5,36 +5,25 @@
     <div class="card create-card">
       <form [formGroup]="classForm" (ngSubmit)="createClass()">
         <div class="row g-4">
-          <!-- Grade -->
-          <div class="col-md-4">
-            <div class="div-input">
-              <label for="grade">{{ 'CLASSES.FORM.GRADE' | translate }}</label>
-              <input
-                id="grade"
-                type="text"
-                formControlName="grade"
-                [class.invalid]="f.grade.touched && f.grade.invalid"
-                [placeholder]="'CLASSES.FORM.PLACEHOLDERS.GRADE' | translate"
-              />
-              <small *ngIf="f.grade.touched && f.grade.invalid" class="error-text">
-                {{ 'CLASSES.FORM.ERRORS.GRADE_REQUIRED' | translate }}
-              </small>
-            </div>
-          </div>
 
-          <!-- Section -->
+          <!-- Class -->
           <div class="col-md-4">
             <div class="div-input">
-              <label for="section">{{ 'CLASSES.FORM.SECTION' | translate }}</label>
-              <input
-                id="section"
-                type="text"
-                formControlName="section"
-                [class.invalid]="f.section.touched && f.section.invalid"
-                [placeholder]="'CLASSES.FORM.PLACEHOLDERS.SECTION' | translate"
-              />
-              <small *ngIf="f.section.touched && f.section.invalid" class="error-text">
-                {{ 'CLASSES.FORM.ERRORS.SECTION_REQUIRED' | translate }}
+              <label for="classId">{{ 'CLASSES.TABLE.CLASS' | translate }}</label>
+              <select
+                id="classId"
+                formControlName="classId"
+                [class.invalid]="f.classId.touched && f.classId.invalid"
+              >
+                <option value="" disabled selected>
+                  {{ 'CLASSES.FORM.PLACEHOLDERS.CLASS' | translate }}
+                </option>
+                <option *ngFor="let c of classes" [value]="c.id">
+                  {{ c.className }} - {{ c.classYear }}
+                </option>
+              </select>
+              <small *ngIf="f.classId.touched && f.classId.invalid" class="error-text">
+                {{ 'CLASSES.FORM.ERRORS.CLASS_REQUIRED' | translate }}
               </small>
             </div>
           </div>
@@ -42,69 +31,67 @@
           <!-- Subject -->
           <div class="col-md-4">
             <div class="div-input">
-              <label for="subject">{{ 'CLASSES.FORM.SUBJECT' | translate }}</label>
-              <input
-                id="subject"
-                type="text"
-                formControlName="subject"
-                [class.invalid]="f.subject.touched && f.subject.invalid"
-                [placeholder]="'CLASSES.FORM.PLACEHOLDERS.SUBJECT' | translate"
-              />
-              <small *ngIf="f.subject.touched && f.subject.invalid" class="error-text">
+              <label for="subjectId">{{ 'CLASSES.FORM.SUBJECT' | translate }}</label>
+              <select
+                id="subjectId"
+                formControlName="subjectId"
+                [class.invalid]="f.subjectId.touched && f.subjectId.invalid"
+              >
+                <option value="" disabled selected>
+                  {{ 'CLASSES.FORM.PLACEHOLDERS.SUBJECT' | translate }}
+                </option>
+                <option *ngFor="let s of subjects" [value]="s.id">
+                  {{ s.subjectName }}
+                </option>
+              </select>
+              <small *ngIf="f.subjectId.touched && f.subjectId.invalid" class="error-text">
                 {{ 'CLASSES.FORM.ERRORS.SUBJECT_REQUIRED' | translate }}
               </small>
             </div>
           </div>
 
           <!-- Meeting Link -->
-          <div class="col-md-6">
+          <div class="col-md-4">
             <div class="div-input">
-              <label for="meetingLink">{{ 'CLASSES.FORM.MEETING_LINK' | translate }}</label>
+              <label for="link">{{ 'CLASSES.FORM.MEETING_LINK' | translate }}</label>
               <input
-                id="meetingLink"
+                id="link"
                 type="url"
-                formControlName="meetingLink"
-                [class.invalid]="f.meetingLink.touched && f.meetingLink.invalid"
-                [placeholder]="'CLASSES.FORM.PLACEHOLDERS.MEETING_LINK' | translate"
+                formControlName="link"
+                [class.invalid]="f.link.touched && f.link.invalid"
+                placeholder="https://..."
               />
-              <small *ngIf="f.meetingLink.touched && f.meetingLink.invalid" class="error-text">
-                {{ 'CLASSES.FORM.ERRORS.MEETING_LINK_INVALID' | translate }}
+              <small *ngIf="f.link.touched && f.link.invalid" class="error-text">
+                Meeting link invalid
               </small>
             </div>
           </div>
 
           <!-- Start Time -->
-          <div class="col-md-3">
+          <div class="col-md-4">
             <div class="div-input">
               <label for="startTime">{{ 'CLASSES.FORM.START_TIME' | translate }}</label>
               <input
                 id="startTime"
                 type="datetime-local"
                 formControlName="startTime"
-                [class.invalid]="f.startTime.touched && f.startTime.invalid"
               />
-              <small *ngIf="f.startTime.touched && f.startTime.invalid" class="error-text">
-                {{ 'CLASSES.FORM.ERRORS.START_TIME_REQUIRED' | translate }}
-              </small>
             </div>
           </div>
 
           <!-- Duration -->
-          <div class="col-md-3">
+          <div class="col-md-4">
             <div class="div-input">
               <label for="duration">{{ 'CLASSES.FORM.DURATION' | translate }}</label>
               <input
                 id="duration"
                 type="number"
                 formControlName="duration"
-                [class.invalid]="f.duration.touched && f.duration.invalid"
-                [placeholder]="'CLASSES.FORM.PLACEHOLDERS.DURATION' | translate"
+                placeholder="Duration in minutes"
               />
-              <small *ngIf="f.duration.touched && f.duration.invalid" class="error-text">
-                {{ 'CLASSES.FORM.ERRORS.DURATION_INVALID' | translate }}
-              </small>
             </div>
           </div>
+
         </div>
 
         <div class="form-actions text-end mt-4">
