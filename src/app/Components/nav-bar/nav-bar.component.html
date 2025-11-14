@@ -10,7 +10,7 @@
     <!-- Brand -->
     <a class="navbar-brand d-flex align-items-center" routerLink="/">
       <img
-        src="assets/images/logo (4).jpeg"
+        src="assets/images/logo.png"
         alt="Logo"
         class="navbar-logo me-2"
       />
@@ -127,7 +127,7 @@
 
         <!-- Logout -->
         <li class="nav-item" *ngIf="isLoggedIn">
-          <button class="login-toggle-btn" (click)="logout()">
+          <button class="login-toggle-btn outline-btn" (click)="logout()">
             {{ "NAV.LOGOUT" | translate }}
           </button>
         </li>

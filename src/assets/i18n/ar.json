@@ -180,9 +180,12 @@
         "TITLE_PLACEHOLDER": "أدخل عنوان الاختبار",
         "CLASS": "اسم الفصل",
         "CLASS_PLACEHOLDER": "أدخل اسم الفصل",
+        "SUBJECT": "اسم المادة",
         "DURATION": "المدة الزمنية",
         "MAX": "الدرجة العظمى",
         "MIN": "الدرجة الصغرى",
+        "START": "البداية",
+        "END": "النهاية",
         "CREATE_BTN": "إنشاء الاختبار",
         "TIPS_TITLE": "نصائح سريعة",
         "TIP_ONE": "اختر أسئلة من فئات مختلفة لتحقيق توازن في مستوى الصعوبة.",
@@ -192,7 +195,8 @@
         "TEXT_QUESTIONS": "أسئلة النصوص",
         "NO_MCQ": "لا توجد أسئلة اختيار من متعدد متاحة.",
         "NO_TRUEFALSE": "لا توجد أسئلة صح أو خطأ متاحة.",
-        "NO_TEXT": "لا توجد أسئلة نصية متاحة."
+        "NO_TEXT": "لا توجد أسئلة نصية متاحة.",
+        "VIEW": "عرض"
     },
     "CLASSES": {
         "CREATE_TITLE": "إنشاء حصة جديدة",
@@ -207,6 +211,7 @@
             "PLACEHOLDERS": {
                 "GRADE": "أدخل الصف",
                 "SECTION": "أدخل القسم",
+                "CLASS": "أدخل الفصل",
                 "SUBJECT": "أدخل المادة",
                 "MEETING_LINK": "https://...",
                 "DURATION": "مثال: 45"
@@ -214,7 +219,8 @@
             "ERRORS": {
                 "GRADE_REQUIRED": "الصف مطلوب.",
                 "SECTION_REQUIRED": "القسم مطلوب.",
-                "SUBJECT_REQUIRED": "المادة مطلوبة.",
+                "CLASS_REQUIRED": "الفصل مطلوب.",
+                "SUBJECT_REQUIRED": "الفصل مطلوب.",
                 "MEETING_LINK_INVALID": "يرجى إدخال رابط صالح.",
                 "START_TIME_REQUIRED": "وقت البدء مطلوب.",
                 "DURATION_INVALID": "يرجى إدخال مدة صحيحة (لا تقل عن 10 دقائق)."
@@ -223,10 +229,30 @@
                 "CREATE": "إنشاء الحصة"
             }
         },
+        "CLASSAPPOINTMENT": {
+    "SCHEDULED_TITLE": "المواعيد المجدولة للصفوف",
+    "TABLE": {
+      "GRADE": "الصف",
+      "SECTION": "الشعبة",
+      "SUBJECT": "المادة",
+      "MEETING": "الاجتماع",
+      "START_TIME": "وقت البدء",
+      "DURATION": "المدة",
+      "STATUS": "الحالة",
+      "ACTION": "الإجراء",
+      "JOIN": "انضم",
+      "ENDED": "انتهى",
+      "ONGOING": "جاري",
+      "END": "إنهاء",
+      "NO_CLASSES": "لا توجد مواعيد للصفوف"
+    }
+  }
+        ,
         "TABLE": {
         "GRADE": "الصف",
         "SECTION": "القسم",
         "SUBJECT": "المادة",
+        "CLASS": "الفصول",
         "MEETING": "الاجتماع",
         "START_TIME": "وقت البدء",
         "DURATION": "المدة",

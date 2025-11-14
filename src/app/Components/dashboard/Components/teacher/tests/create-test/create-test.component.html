@@ -5,209 +5,199 @@
     <div class="card p-0 overflow-hidden">
       <form (ngSubmit)="createTest()" #testForm="ngForm" class="test-form">
         <div class="row g-0">
-          <!-- Left: Test Settings -->
+
+          <!-- LEFT SETTINGS -->
           <div class="col-lg-4 p-4 border-end settings-column">
+
             <div class="settings-card mb-4">
               <h4 class="sub-title mb-3">
                 <i class="bi bi-gear me-2"></i>{{ 'TEST.SETTINGS' | translate }}
               </h4>
 
+              <!-- TITLE -->
               <div class="mb-3">
                 <label class="form-label small-label">{{ 'TEST.TITLE' | translate }}</label>
-                <input
-                  type="text"
-                  class="form-control input-lg"
-                  [(ngModel)]="testTitle"
-                  name="testTitle"
-                  required
-                  placeholder="{{ 'TEST.TITLE_PLACEHOLDER' | translate }}"
-                />
+                <input type="text" class="form-control input-lg"
+                  [(ngModel)]="testTitle" name="testTitle" required />
               </div>
 
+              <!-- START DATE -->
               <div class="mb-3">
-                <label class="form-label small-label">{{ 'TEST.CLASS' | translate }}</label>
-                <input
-                  type="text"
-                  class="form-control input-lg"
-                  [(ngModel)]="className"
-                  name="className"
-                  required
-                  placeholder="{{ 'TEST.CLASS_PLACEHOLDER' | translate }}"
-                />
+                <label class="form-label small-label">Start Date</label>
+                <input type="date" class="form-control"
+                  [(ngModel)]="startDate" name="startDate" required />
               </div>
 
+              <!-- START TIME -->
+              <div class="mb-3">
+                <label class="form-label small-label">Start Time</label>
+
+                <div class="d-flex gap-2">
+                  <!-- Time input (12-hour format) -->
+                  <input type="number" class="form-control"
+                        [(ngModel)]="startHour"
+                        name="startHour"
+                        min="1" max="12"
+                        placeholder="HH"
+                        required style="max-width: 80px;" />
+
+                  <input type="number" class="form-control"
+                        [(ngModel)]="startMinute"
+                        name="startMinute"
+                        min="0" max="59"
+                        placeholder="MM"
+                        required style="max-width: 80px;" />
+
+                  <!-- AM/PM -->
+                  <select class="form-select"
+                          [(ngModel)]="startPeriod"
+                          name="startPeriod"
+                          required style="max-width: 90px;">
+                    <option value="AM">AM</option>
+                    <option value="PM">PM</option>
+                  </select>
+                </div>
+              </div>
+
+
+              <!-- CLASS DROPDOWN -->
+              <div class="mb-3">
+                <label class="form-label small-label">Class</label>
+                <select class="form-select" [(ngModel)]="classId" name="classId" required>
+                  <option value="" disabled selected>Select Class</option>
+                  <option *ngFor="let c of classes" [value]="c.id">
+                    {{ c.name }}
+                  </option>
+                </select>
+              </div>
+
+              <!-- SUBJECT DROPDOWN -->
+              <div class="mb-3">
+                <label class="form-label small-label">Subject</label>
+                <select class="form-select" [(ngModel)]="subjectId" name="subjectId" required>
+                  <option value="" disabled selected>Select Subject</option>
+                  <option *ngFor="let s of subjects" [value]="s.id">
+                    {{ s.subjectName }}
+                  </option>
+                </select>
+              </div>
+
+              <!-- NUMBERS -->
               <div class="row g-2 mb-3">
-                <div class="col-4">
-                  <label class="form-label small-label">{{ 'TEST.DURATION' | translate }}</label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    [(ngModel)]="duration"
-                    name="duration"
-                    placeholder="—"
-                    aria-label="duration"
-                  />
+                <div class="col-6">
+                  <label class="form-label small-label">Duration (Hours)</label>
+                  <input type="number" class="form-control" [(ngModel)]="duration" name="duration" min="1" required />
                 </div>
-                <div class="col-4">
-                  <label class="form-label small-label">{{ 'TEST.MAX' | translate }}</label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    [(ngModel)]="maxDegree"
-                    name="maxDegree"
-                    placeholder="—"
-                    aria-label="maxDegree"
-                  />
+                <div class="col-3">
+                  <label class="form-label small-label">Max</label>
+                  <input type="number" class="form-control" [(ngModel)]="maxDegree" name="maxDegree" />
                 </div>
-                <div class="col-4">
-                  <label class="form-label small-label">{{ 'TEST.MIN' | translate }}</label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    [(ngModel)]="minDegree"
-                    name="minDegree"
-                    placeholder="—"
-                    aria-label="minDegree"
-                  />
+                <div class="col-3">
+                  <label class="form-label small-label">Min</label>
+                  <input type="number" class="form-control" [(ngModel)]="minDegree" name="minDegree" />
                 </div>
               </div>
 
-              <p class="text-muted small mb-0">
-                <i class="bi bi-info-circle me-1"></i>
-                {{ 'TEST.SETTINGS_DESC' | translate }}
-              </p>
-            </div>
+              <div class="mt-4 d-grid">
+                <button type="submit" class="primary-btn">
+                  <i class="bi bi-save me-2"></i> Create Test
+                </button>
+              </div>
 
-            <!-- Quick actions / Tips -->
-            <div class="hint-card p-3">
-              <h6 class="sub-title mb-2">{{ 'TEST.TIPS_TITLE' | translate }}</h6>
-              <ul class="small text-muted mb-0">
-                <li>{{ 'TEST.TIP_ONE' | translate }}</li>
-                <li>{{ 'TEST.TIP_TWO' | translate }}</li>
-              </ul>
-            </div>
-
-            <!-- Submit -->
-            <div class="mt-4 d-grid">
-              <button type="submit" class="primary-btn">
-                <i class="bi bi-save me-2"></i>{{ 'TEST.CREATE_BTN' | translate }}
-              </button>
             </div>
           </div>
 
-          <!-- Right: Question Groups -->
+          <!-- RIGHT SIDE = QUESTIONS -->
           <div class="col-lg-8 p-4 questions-column">
-            <ng-container *ngIf="(questions$ | async) as grouped; else loading">
+
+            <ng-container *ngIf="(questions$ | async) as grouped">
+
               <!-- MCQ -->
               <div class="question-group mb-4">
-                <div class="group-header d-flex align-items-center justify-content-between">
-                  <h5 class="mb-0">
-                    <i class="bi bi-ui-radios-grid me-2"></i>
-                    {{ 'TEST.MCQ_QUESTIONS' | translate }}
-                  </h5>
+                <div class="group-header d-flex justify-content-between">
+                  <h5 class="mb-0"><i class="bi bi-ui-radios-grid me-2"></i>MCQ</h5>
                   <span class="badge">{{ grouped.mcq.length }}</span>
                 </div>
 
                 <div class="list-grid mt-3">
-                  <div *ngIf="grouped.mcq.length > 0; else noMcq">
-                    <div *ngFor="let q of grouped.mcq" class="form-check q-item mb-2">
-                      <input
-                        class="form-check-input visually-hidden"
-                        type="checkbox"
-                        [checked]="isSelected(q.id)"
-                        (change)="toggleQuestion(q.id, $event)"
-                        id="mcq-{{ q.id }}"
-                      />
-                      <label class="form-check-label q-label" for="mcq-{{ q.id }}">
-                        <div class="q-left">
-                          <i class="bi bi-question-circle q-icon"></i>
-                          <div class="q-text">{{ q.text }}</div>
-                        </div>
-                        <div class="q-right">
-                          <span class="chip">{{ q.difficulty }}</span>
-                        </div>
-                      </label>
-                    </div>
+                  <div *ngFor="let q of grouped.mcq" class="form-check q-item mb-2">
+                    <input type="checkbox"
+                      class="form-check-input visually-hidden"
+                      [checked]="isSelected(q.id)"
+                      (change)="toggleQuestion(q.id, $event)"
+                      id="mcq-{{ q.id }}" />
+
+                    <label class="form-check-label q-label" for="mcq-{{ q.id }}">
+                      <div class="q-left">
+                        <i class="bi bi-question-circle q-icon"></i>
+                        <div class="q-text">{{ q.text }}</div>
+                      </div>
+                      <div class="q-right">
+                        <span class="chip">{{ q.choices?.length }} choices</span>
+                      </div>
+                    </label>
                   </div>
                 </div>
               </div>
 
-              <!-- True/False -->
+              <!-- TRUE/FALSE -->
               <div class="question-group mb-4">
-                <div class="group-header d-flex align-items-center justify-content-between">
-                  <h5 class="mb-0">
-                    <i class="bi bi-toggle2-on me-2"></i>
-                    {{ 'TEST.TRUE_FALSE_QUESTIONS' | translate }}
-                  </h5>
+                <div class="group-header d-flex justify-content-between">
+                  <h5 class="mb-0"><i class="bi bi-toggle2-on me-2"></i>True / False</h5>
                   <span class="badge">{{ grouped.truefalse.length }}</span>
                 </div>
 
                 <div class="list-grid mt-3">
-                  <div *ngIf="grouped.truefalse.length > 0; else noTf">
-                    <div *ngFor="let q of grouped.truefalse" class="form-check q-item mb-2">
-                      <input
-                        class="form-check-input visually-hidden"
-                        type="checkbox"
-                        [checked]="isSelected(q.id)"
-                        (change)="toggleQuestion(q.id, $event)"
-                        id="tf-{{ q.id }}"
-                      />
-                      <label class="form-check-label q-label" for="tf-{{ q.id }}">
-                        <div class="q-left">
-                          <i class="bi bi-check2-circle q-icon"></i>
-                          <div class="q-text">{{ q.text }}</div>
-                        </div>
-                        <div class="q-right">
-                          <span class="chip">{{ q.correctOptionId === 'true' ? ('QUESTIONS.TRUE' | translate) : ('QUESTIONS.FALSE' | translate) }}</span>
-                        </div>
-                      </label>
-                    </div>
+                  <div *ngFor="let q of grouped.truefalse" class="form-check q-item mb-2">
+                    <input type="checkbox"
+                      class="form-check-input visually-hidden"
+                      [checked]="isSelected(q.id)"
+                      (change)="toggleQuestion(q.id, $event)"
+                      id="tf-{{ q.id }}" />
+
+                    <label class="form-check-label q-label" for="tf-{{ q.id }}">
+                      <div class="q-left">
+                        <i class="bi bi-check2-circle q-icon"></i>
+                        <div class="q-text">{{ q.text }}</div>
+                      </div>
+                      <div class="q-right">
+                        <span class="chip">{{ q.trueAndFalses }}</span>
+                      </div>
+                    </label>
                   </div>
                 </div>
               </div>
 
-              <!-- Text -->
+              <!-- TEXT -->
               <div class="question-group">
-                <div class="group-header d-flex align-items-center justify-content-between">
-                  <h5 class="mb-0">
-                    <i class="bi bi-chat-text-fill me-2"></i>
-                    {{ 'TEST.TEXT_QUESTIONS' | translate }}
-                  </h5>
+                <div class="group-header d-flex justify-content-between">
+                  <h5 class="mb-0"><i class="bi bi-chat-text-fill me-2"></i>Text Questions</h5>
                   <span class="badge">{{ grouped.text.length }}</span>
                 </div>
 
                 <div class="list-grid mt-3">
-                  <div *ngIf="grouped.text.length > 0; else noText">
-                    <div *ngFor="let q of grouped.text" class="form-check q-item mb-2">
-                      <input
-                        class="form-check-input visually-hidden"
-                        type="checkbox"
-                        [checked]="isSelected(q.id)"
-                        (change)="toggleQuestion(q.id, $event)"
-                        id="text-{{ q.id }}"
-                      />
-                      <label class="form-check-label q-label" for="text-{{ q.id }}">
-                        <div class="q-left">
-                          <i class="bi bi-file-text q-icon"></i>
-                          <div class="q-text">{{ q.text }}</div>
-                        </div>
-                        <div class="q-right">
-                          <span class="chip">{{ q.tags?.length ? q.tags?.join(', ') : '-' }}</span>
-                        </div>
-                      </label>
-                    </div>
+                  <div *ngFor="let q of grouped.text" class="form-check q-item mb-2">
+                    <input type="checkbox"
+                      class="form-check-input visually-hidden"
+                      [checked]="isSelected(q.id)"
+                      (change)="toggleQuestion(q.id, $event)"
+                      id="text-{{ q.id }}" />
+
+                    <label class="form-check-label q-label" for="text-{{ q.id }}">
+                      <div class="q-left">
+                        <i class="bi bi-file-text q-icon"></i>
+                        <div class="q-text">{{ q.text }}</div>
+                      </div>
+                      <div class="q-right">
+                        <span class="chip">{{ q.degree }} marks</span>
+                      </div>
+                    </label>
                   </div>
                 </div>
               </div>
+
             </ng-container>
 
-            <ng-template #loading>
-              <p class="text-muted small">{{ 'COMMON.LOADING' | translate }}</p>
-            </ng-template>
-
-            <ng-template #noMcq><p class="text-muted">{{ 'TEST.NO_MCQ' | translate }}</p></ng-template>
-            <ng-template #noTf><p class="text-muted">{{ 'TEST.NO_TRUEFALSE' | translate }}</p></ng-template>
-            <ng-template #noText><p class="text-muted">{{ 'TEST.NO_TEXT' | translate }}</p></ng-template>
           </div>
         </div>
       </form>

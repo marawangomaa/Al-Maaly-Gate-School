@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { ApiResponse, ClassDto, ClassViewDto } from '../Interfaces/iclass';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../Environment/Environment';
 
 export interface ClassModel {
   id: string;
@@ -16,39 +19,27 @@ export interface ClassModel {
   providedIn: 'root'
 })
 export class ClassService {
-  private storageKey = 'app_classes';
-  private subject = new BehaviorSubject<ClassModel[]>(this.loadFromStorage());
+  private readonly apiUrl = `${environment.apiBaseUrl}/class`;
 
-  classes$ = this.subject.asObservable();
+  constructor(private http: HttpClient) {}
 
-  private loadFromStorage(): ClassModel[] {
-    try {
-      const raw = localStorage.getItem(this.storageKey);
-      return raw ? (JSON.parse(raw) as ClassModel[]) : [];
-    } catch {
-      return [];
-    }
+  getAll(): Observable<ApiResponse<ClassViewDto[]>> {
+    return this.http.get<ApiResponse<ClassViewDto[]>>(this.apiUrl);
   }
 
-  private save(list: ClassModel[]) {
-    localStorage.setItem(this.storageKey, JSON.stringify(list));
-    this.subject.next(list);
+  getById(id: string): Observable<ApiResponse<ClassViewDto>> {
+    return this.http.get<ApiResponse<ClassViewDto>>(`${this.apiUrl}/class/${id}`);
   }
 
-  addClass(cls: Omit<ClassModel, 'id' | 'ended'>) {
-    const newClass: ClassModel = {
-      ...cls,
-      id: 'c_' + Date.now().toString(36),
-      ended: false
-    };
-    const next = [newClass, ...this.subject.getValue()];
-    this.save(next);
+  create(dto: ClassDto): Observable<ApiResponse<ClassDto>> {
+    return this.http.post<ApiResponse<ClassDto>>(this.apiUrl, dto);
   }
 
-  endClass(id: string) {
-    const next = this.subject.getValue().map(c =>
-      c.id === id ? { ...c, ended: true } : c
-    );
-    this.save(next);
+  update(id: string, dto: ClassDto): Observable<ApiResponse<ClassDto>> {
+    return this.http.put<ApiResponse<ClassDto>>(`${this.apiUrl}/${id}`, dto);
+  }
+
+  delete(id: string): Observable<ApiResponse<string>> {
+    return this.http.delete<ApiResponse<string>>(`${this.apiUrl}/${id}`);
   }
 }

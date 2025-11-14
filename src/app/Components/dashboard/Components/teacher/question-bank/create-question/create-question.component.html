@@ -4,13 +4,14 @@
 
     <div class="card p-3">
       <form [formGroup]="form" (ngSubmit)="save()">
+
         <!-- Type -->
         <div class="mb-3">
           <label class="sub-title">{{ 'QUESTIONS.TYPE' | translate }}</label>
           <select formControlName="type" class="form-select" (change)="onTypeChange()">
-            <option value="mcq">{{ 'QUESTIONS.TYPE_MCQ' | translate }}</option>
-            <option value="truefalse">{{ 'QUESTIONS.TYPE_TRUEFALSE' | translate }}</option>
-            <option value="text">{{ 'QUESTIONS.TYPE_TEXT' | translate }}</option>
+            <option value="Choices">{{ 'QUESTIONS.TYPE_MCQ' | translate }}</option>
+            <option value="TrueOrFalse">{{ 'QUESTIONS.TYPE_TRUEFALSE' | translate }}</option>
+            <option value="Text">{{ 'QUESTIONS.TYPE_TEXT' | translate }}</option>
           </select>
         </div>
 
@@ -22,7 +23,7 @@
         </div>
 
         <!-- MCQ -->
-        <div *ngIf="form.value.type === 'mcq'" class="mb-3">
+        <div *ngIf="form.value.type === 'Choices'" class="mb-3">
           <label class="sub-title">{{ 'QUESTIONS.OPTIONS' | translate }}</label>
           <div class="list-group">
             <div class="list-group-item d-flex gap-2 align-items-center"
@@ -48,7 +49,7 @@
         </div>
 
         <!-- True/False -->
-        <div *ngIf="form.value.type === 'truefalse'" class="mb-3">
+        <div *ngIf="form.value.type === 'TrueOrFalse'" class="mb-3">
           <label class="sub-title">{{ 'QUESTIONS.TRUEFALSE' | translate }}</label>
           <select formControlName="trueFalseAnswer" class="form-select">
             <option value="true">{{ 'QUESTIONS.TRUE' | translate }}</option>
@@ -57,7 +58,7 @@
         </div>
 
         <!-- Text Answer -->
-        <div *ngIf="form.value.type === 'text'" class="mb-3">
+        <div *ngIf="form.value.type === 'Text'" class="mb-3">
           <label class="sub-title">{{ 'QUESTIONS.ANSWER_PLACEHOLDER' | translate }}</label>
           <p class="text-muted small">{{ 'QUESTIONS.TEXT_INFO' | translate }}</p>
         </div>
@@ -80,8 +81,7 @@
 
         <div class="d-flex gap-2">
           <button type="submit" class="primary-btn">{{ 'QUESTIONS.SAVE' | translate }}</button>
-          <button type="button" class="outline-btn"
-            (click)="form.reset({ type: 'mcq', difficulty: 'medium', tags: '', trueFalseAnswer: 'true' }); setupDefaultOptions();">
+          <button type="button" class="outline-btn" (click)="resetForm()">
             {{ 'QUESTIONS.CANCEL' | translate }}
           </button>
         </div>

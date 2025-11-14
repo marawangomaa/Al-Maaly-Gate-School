@@ -3,7 +3,14 @@
     <div class="footer-content">
       <!-- Brand / About -->
       <div class="footer-section">
-        <h5 class="footer-title">{{ 'FOOTER.LOGO' | translate }}</h5>
+        <a class="navbar-brand d-flex align-items-center" routerLink="/">
+      <img
+        src="assets/images/logo.png"
+        alt="Logo"
+        class="navbar-logo me-2"
+      />
+    </a>
+        <!-- <h5 class="footer-title">{{ 'FOOTER.LOGO' | translate }}</h5> -->
         <p class="footer-text">
           {{ 'FOOTER.DISC' | translate:{ year: currentYear } }}
         </p>
