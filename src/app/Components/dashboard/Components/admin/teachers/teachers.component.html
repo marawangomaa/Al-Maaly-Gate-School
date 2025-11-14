@@ -2,37 +2,87 @@
   <h3>Teacher Management</h3>
   <p>Total Teachers: <strong>{{ teacherCount }}</strong></p>
 
-  <!-- Search Form -->
-  <form (ngSubmit)="LoadTeachersBySubjectName()" #searchForm="ngForm" class="mb-3">
-    <div class="input-group">
-      <input
-        type="text"
-        name="subjectName"
-        [(ngModel)]="subjectName"
-        placeholder="Enter subject name"
-        required
-        class="form-control"
-      />
-      <button type="submit" class="btn btn-primary" [disabled]="!searchForm.valid">
-        Search
-      </button>
-    </div>
-  </form>
+  <div class="container mt-4">
+    <h4>Teacher Search</h4>
 
-  <!-- Results -->
-  <div *ngIf="teachersBySubject.length > 0; else noResults">
-    <h5>Teachers for "{{ subjectName }}":</h5>
-    <ul class="list-group">
-      <li *ngFor="let teacher of teachersBySubject" class="list-group-item">
-        <strong>{{ teacher.fullName }}</strong>
-        <div>Email: {{ teacher.email }}</div>
-        <div *ngIf="teacher.contactInfo">Contact: {{ teacher.contactInfo }}</div>
-        <div>Status: {{ teacher.profileStatus }}</div>
-      </li>
-    </ul>
+    <!-- Search Form -->
+    <form (ngSubmit)="LoadTeachersBySubjectName()" #searchForm="ngForm" class="mb-3">
+      <div class="input-group">
+        <input type="text" name="subjectName" [(ngModel)]="subjectName" placeholder="Enter subject name"
+          class="form-control" />
+        <button type="submit" class="btn btn-primary">Search</button>
+      </div>
+    </form>
+
+    <!-- Feedback Messages -->
+    <div *ngIf="!subjectName && !hasSearched" class="alert alert-secondary">
+      Please enter a subject name to search for teachers.
+    </div>
+
+    <div *ngIf="subjectName && !hasSearched" class="alert alert-info">
+      Press <strong>Submit</strong> to find teachers for "{{ subjectName }}".
+    </div>
+
+    <div *ngIf="hasSearched">
+      <ng-container *ngIf="teachersBySubject.length > 0; else noResults">
+        <h5>Results for subject: "{{ subjectName }}"</h5>
+        <ul class="list-group mt-3">
+          <li *ngFor="let teacher of teachersBySubject" class="list-group-item">
+            <strong>{{ teacher.fullName }}</strong>
+            <div>Email: {{ teacher.email }}</div>
+            <div *ngIf="teacher.contactInfo">Contact: {{ teacher.contactInfo }}</div>
+            <div>Status: {{ teacher.profileStatus }}</div>
+          </li>
+        </ul>
+      </ng-container>
+
+      <ng-template #noResults>
+        <p class="text-danger mt-2">No teachers found for "{{ subjectName }}".</p>
+      </ng-template>
+    </div>
   </div>
 
-  <ng-template #noResults>
-    <p *ngIf="subjectName">No teachers found for "{{ subjectName }}".</p>
-  </ng-template>
+  <!-- Display all teachers -->
+  <div class="container mt-4">
+    <h4>All Teachers</h4>
+
+    <table class="table table-bordered table-striped mt-3" *ngIf="allTeachers.length > 0; else noData">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Full Name</th>
+          <th>Email</th>
+          <th>Contact Info</th>
+          <th>Profile Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let teacher of allTeachers; index as i">
+          <td>{{ i + 1 }}</td>
+          <td>{{ teacher.fullName }}</td>
+          <td>{{ teacher.email }}</td>
+          <td>{{ teacher.contactInfo }}</td>
+          <td>{{ teacher.profileStatus }}</td>
+          <td>
+            <button *ngIf="teacher.profileStatus === 'Pending'||teacher.profileStatus === 'Rejected'"
+              class="btn btn-success btn-sm" (click)="ApproveTeacherAction(teacher.id)">
+              Approve
+            </button>
+            <span *ngIf="teacher.profileStatus === 'Approved'" class="badge bg-success">
+              Approved
+            </span>
+            <button *ngIf="teacher.profileStatus !== 'Rejected'" class="btn btn-danger btn-sm"
+              (click)="RejectTeacherAction(teacher.id)">
+              Reject
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ng-template #noData>
+      <p class="text-muted">No teachers found.</p>
+    </ng-template>
+  </div>
 </div>
