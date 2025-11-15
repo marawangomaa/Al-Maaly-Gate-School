@@ -1,8 +1,8 @@
 <div class="exam-page container py-5">
   <!-- Exam Header -->
   <div class="text-center mb-5">
-    <h1 class="hero-title mb-2">{{ exam?.subjectName }}</h1>
-    <p class="text-muted">
+    <h1 class="hero-title mb-2 fs-2 fw-bold">{{ exam?.subjectName }}</h1>
+    <p class="text-muted fs-5">
       <i class="bi bi-clock"></i>
       {{ exam?.start | date : "short" }} → {{ exam?.end | date : "short" }}
     </p>
@@ -15,64 +15,110 @@
       *ngFor="let question of exam?.questions; let i = index"
     >
       <div class="card shadow-sm p-4">
-        <h5 class="main-title mb-3">{{ i + 1 }}. {{ question.content }}</h5>
+        <h5 class="main-title mb-4 fs-5 fw-bold">
+          {{ i + 1 }}. {{ question.content }}
+        </h5>
 
         <!-- Multiple Choice -->
         <div *ngIf="question.type === 'Choices'" class="choices-list">
-          <div *ngFor="let choice of question.choices" class="form-check mb-2">
+          <div *ngFor="let choice of question.choices" class="form-check mb-3">
             <input
-              class="form-check-input"
+              class="form-check-input fs-4"
               type="radio"
-              name="{{ question.id }}"
+              [name]="question.id"
               [value]="choice.id"
               (change)="onSelectChoice(question.id, choice.id)"
               [id]="choice.id"
             />
-            <label class="form-check-label" [for]="choice.id">
+            <label class="form-check-label fs-5" [for]="choice.id">
               {{ choice.text }}
             </label>
           </div>
         </div>
 
+        <!-- Connection -->
+        <div *ngIf="question.type === 'Connection'" class="row">
+          <!-- LEFT Column -->
+          <div class="col-6">
+            <h6 class="fw-bold mb-3 fs-6">Column A</h6>
+            <div
+              *ngFor="let left of question.leftColumn || []"
+              class="form-check mb-3"
+            >
+              <input
+                type="radio"
+                class="form-check-input fs-4"
+                [name]="'left-' + question.id"
+                [id]="left.id"
+                (change)="onSelectConnectionLeft(question.id, left.id)"
+              />
+              <label [for]="left.id" class="form-check-label fs-5">{{
+                left.text
+              }}</label>
+            </div>
+          </div>
+
+          <!-- RIGHT Column -->
+          <div class="col-6">
+            <h6 class="fw-bold mb-3 fs-6">Column B</h6>
+            <div
+              *ngFor="let right of question.rightColumn || []"
+              class="form-check mb-3"
+            >
+              <input
+                type="radio"
+                class="form-check-input fs-4"
+                [name]="'right-' + question.id"
+                [id]="right.id"
+                (change)="onSelectConnectionRight(question.id, right.id)"
+              />
+              <label [for]="right.id" class="form-check-label fs-5">{{
+                right.text
+              }}</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Complete -->
+        <div *ngIf="question.type === 'Complete'" class="mb-3">
+          <input
+            class="form-control form-control-lg"
+            type="text"
+            [id]="question.id"
+            placeholder="Type your answer here..."
+            (input)="onTextChange($event, question.id)"
+          />
+        </div>
+
         <!-- True / False -->
-        <div *ngIf="question.type === 'TrueOrFalse'">
+        <div *ngIf="question.type === 'TrueOrFalse'" class="mb-3">
           <div class="form-check form-check-inline">
             <input
-              class="form-check-input"
+              class="form-check-input fs-4"
               type="radio"
-              name="{{ question.id }}"
+              [name]="question.id"
               [value]="true"
               (change)="onTrueFalseChange(question.id, true)"
               [id]="question.id + '_true'"
             />
-            <label class="form-check-label" [for]="question.id + '_true'">
-              True
-            </label>
+            <label class="form-check-label fs-5" [for]="question.id + '_true'"
+              >True</label
+            >
           </div>
 
           <div class="form-check form-check-inline">
             <input
-              class="form-check-input"
+              class="form-check-input fs-4"
               type="radio"
-              name="{{ question.id }}"
+              [name]="question.id"
               [value]="false"
               (change)="onTrueFalseChange(question.id, false)"
               [id]="question.id + '_false'"
             />
-            <label class="form-check-label" [for]="question.id + '_false'">
-              False
-            </label>
+            <label class="form-check-label fs-5" [for]="question.id + '_false'"
+              >False</label
+            >
           </div>
-        </div>
-
-        <!-- Text Answer -->
-        <div *ngIf="question.type === 'Text'" class="mt-3">
-          <textarea
-            class="form-control"
-            rows="3"
-            placeholder="Write your answer here..."
-            (input)="onTextChange(question.id, $any($event.target).value)"
-          ></textarea>
         </div>
       </div>
     </div>
@@ -81,8 +127,8 @@
   <!-- Submit -->
   <div class="text-center mt-5">
     <button
-      class="primary-btn px-5 py-2"
-      [disabled]="isSubmitting || !answers"
+      class="primary-btn px-5 py-3 fs-5"
+      [disabled]="!allQuestionsAnswered() || isSubmitting"
       (click)="submitExam()"
     >
       <i
@@ -98,6 +144,6 @@
       }}
     </button>
 
-    <p class="text-success mt-3" *ngIf="message">{{ message }}</p>
+    <p class="text-success mt-3 fs-5" *ngIf="message">{{ message }}</p>
   </div>
 </div>
