@@ -49,3 +49,34 @@
         }
     }
 }
+
+/* Make radio buttons bigger */
+.form-check-input {
+    width: 1.6rem;
+    height: 1.6rem;
+}
+
+/* Make all labels slightly bigger */
+.form-check-label {
+    font-size: 1.15rem;
+}
+
+/* Card padding & spacing */
+.card {
+    border-radius: 0.8rem;
+    padding: 1.5rem;
+}
+
+/* Column headers */
+h6 {
+    font-weight: 600;
+}
+
+/* Submit button hover effect */
+.primary-btn {
+    transition: all 0.2s ease-in-out;
+}
+
+.primary-btn:hover {
+    transform: scale(1.05);
+}

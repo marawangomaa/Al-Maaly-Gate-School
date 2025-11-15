@@ -16,11 +16,13 @@ import { istudentExamSubmission } from '../../Interfaces/istudentExamSubmission'
 })
 export class ExamComponent implements OnInit {
   studentId!: string;
+  teacherId!: string;
   examId!: string;
   isSubmitting = false;
   exam?: iexamWithQuestions;
   studentAnswers: Record<string, any> = {};
-  answers: istudentExamAnswer[] = [];
+  answers: Record<string, any> = {};
+  questions: any[] = [];
   message = '';
 
   _StudentExamAnswer = inject(StudentExamAnswerService);
@@ -35,20 +37,19 @@ export class ExamComponent implements OnInit {
 
     this.route.paramMap.subscribe(params => {
       this.examId = params.get('id')!;
-      // console.log("Exam id out condition",this.examId);
     });
 
     if (this.examId) {
-      // console.log("Exam id in condition",this.examId);
       this.loadExam(this.examId);
     }
-
   }
 
   loadExam(examId: string) {
     this._ClassExams.GetExamById(examId).subscribe({
       next: res => {
         this.exam = res.data;
+        this.teacherId = res.data.teacherId;
+        this.questions = res.data.questions ?? [];
 
         // Initialize answers with all fields
         this.studentAnswers = {};
@@ -59,6 +60,18 @@ export class ExamComponent implements OnInit {
             trueAndFalseAnswer: null
           };
         });
+
+        this.questions.forEach((q: any) => {
+          if (q.type === "Connection") {
+            const { left, right } = this.prepareConnectionColumns(q);
+            q.leftColumn = left;
+            q.rightColumn = right;
+          }
+        });
+
+      },
+      error: err => {
+        console.error('Failed to load exam:', err);
       }
     });
   }
@@ -70,6 +83,50 @@ export class ExamComponent implements OnInit {
     };
   }
 
+  prepareConnectionColumns(question: any) {
+    const correct = question.choices.filter((c: any) => c.isCorrect);
+    const incorrect = question.choices.filter((c: any) => !c.isCorrect);
+
+    // Must have 2 correct
+    if (correct.length < 2) {
+      console.error("Connection question requires at least 2 correct items.");
+    }
+
+    // Initialize
+    const left = [correct[0]];
+    const right = [correct[1]];
+
+    // Shuffle helper
+    const shuffle = (arr: any[]) => arr.sort(() => Math.random() - 0.5);
+
+    // Add incorrect items
+    const rest = shuffle([...incorrect]);
+
+    rest.forEach((item: any, index: number) => {
+      index % 2 === 0 ? left.push(item) : right.push(item);
+    });
+
+    // Shuffle each column
+    shuffle(left);
+    shuffle(right);
+
+    return { left, right };
+  }
+
+  onSelectConnectionLeft(questionId: string, leftId: string) {
+    if (!this.studentAnswers[questionId]) {
+      this.studentAnswers[questionId] = {};
+    }
+    this.studentAnswers[questionId].left = leftId;
+  }
+
+  onSelectConnectionRight(questionId: string, rightId: string) {
+    if (!this.studentAnswers[questionId]) {
+      this.studentAnswers[questionId] = {};
+    }
+    this.studentAnswers[questionId].right = rightId;
+  }
+
   onTrueFalseChange(questionId: string, value: boolean) {
     this.studentAnswers[questionId] = {
       ...this.studentAnswers[questionId],
@@ -77,25 +134,59 @@ export class ExamComponent implements OnInit {
     };
   }
 
-  onTextChange(questionId: string, text: string) {
-    this.studentAnswers[questionId] = {
-      ...this.studentAnswers[questionId],
-      textAnswer: text.trim()
-    };
+  onTextChange(event: Event, questionId: string) {
+    const input = event.target as HTMLInputElement;
+    const value = input.value;
+
+    if (!this.studentAnswers[questionId]) {
+      this.studentAnswers[questionId] = {};
+    }
+
+    this.studentAnswers[questionId].CorrectTextAnswer = value;
   }
 
+  allQuestionsAnswered(): boolean {
+    if (!this.exam?.questions) return false;
+
+    return this.exam.questions.every(q => {
+      const ans = this.studentAnswers[q.id];
+
+      if (!ans) return false;
+      //Complete,Connection,TrueOrFalse,Choices
+      switch (q.type) {
+        case "Choices":
+          return !!ans.choiceId;
+
+        case "TrueOrFalse":
+          return ans.trueAndFalseAnswer !== null;
+
+        case "Complete":
+          return ans.CorrectTextAnswer?.trim().length > 0;
+
+        case "Connection":
+          return ans.left && ans.right;
+
+        default:
+          return false;
+      }
+    });
+  }
+
+
   submitExam() {
-    if (!this.answers) {
-      this.message = 'Please answer all questions before submitting.';
+    if (!this.allQuestionsAnswered()) {
+      this.message = "should answer all questions before submitting.";
       return;
     }
 
-    // Map answers ensuring nulls for empty fields
     const answers: istudentExamAnswer[] = Object.entries(this.studentAnswers).map(
       ([questionId, answer]: [string, any]) => ({
         questionId,
         choiceId: answer.choiceId || null,
-        textAnswer: answer.textAnswer?.trim() || null,
+        CorrectTextAnswer: answer.CorrectTextAnswer?.trim() || null,
+        ConnectionId: answer.left && answer.right
+          ? { leftId: answer.left, rightId: answer.right }
+          : null,
         trueAndFalseAnswer: answer.trueAndFalseAnswer ?? null
       })
     );
@@ -103,7 +194,7 @@ export class ExamComponent implements OnInit {
     const submission: istudentExamSubmission = {
       studentId: this.studentId,
       examId: this.examId,
-      TeacherId: this.exam?.teacherId || '',
+      teacherId: this.teacherId,
       answers
     };
 
