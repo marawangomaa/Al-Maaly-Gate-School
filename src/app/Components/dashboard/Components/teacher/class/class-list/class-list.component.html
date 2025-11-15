@@ -23,6 +23,7 @@
               <td>{{ cls.grade }}</td>
               <td>{{ cls.section }}</td>
               <td>{{ cls.subject }}</td>
+
               <td>
                 <a
                   [href]="cls.meetingLink"
@@ -32,17 +33,24 @@
                   {{ 'CLASSES.TABLE.JOIN' | translate }}
                 </a>
               </td>
+
               <td>{{ cls.startTime | date: 'short' }}</td>
               <td>{{ cls.duration }} min</td>
+
               <td>
                 <span
                   class="status-badge"
                   [class.active]="!cls.ended"
                   [class.inactive]="cls.ended"
                 >
-                  {{ cls.ended ? ('CLASSES.TABLE.ENDED' | translate) : ('CLASSES.TABLE.ONGOING' | translate) }}
+                  {{
+                    cls.ended
+                      ? ('CLASSES.TABLE.ENDED' | translate)
+                      : ('CLASSES.TABLE.ONGOING' | translate)
+                  }}
                 </span>
               </td>
+
               <td>
                 <button
                   *ngIf="!cls.ended"

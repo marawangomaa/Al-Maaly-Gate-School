@@ -20,8 +20,9 @@ export interface AuthResponse {
   email: string;
   fullName: string;
   userName: string;
-  roleEntityIds: { studentId: string };
   roles: string[];
+  profileImageUrl: string;
+  roleEntityIds: any;
 }
 
 export interface ApiResponse<T> {

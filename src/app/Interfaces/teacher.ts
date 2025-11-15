@@ -5,3 +5,4 @@ export interface Teacher {
     contactInfo : string;
     profileStatus : string;
 }
+    

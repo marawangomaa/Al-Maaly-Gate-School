@@ -1,58 +1,69 @@
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { QuestionService, QuestionType } from '../../../../../../Services/question.service';
-import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { QuestionService } from '../../../../../../Services/question.service';
+import { QuestionTypes } from '../../../../../../Interfaces/iquestoin';
 
 @Component({
   selector: 'app-create-question',
   imports: [CommonModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './create-question.component.html',
-  styleUrl: './create-question.component.css'
+  styleUrls: ['./create-question.component.css']
 })
 export class CreateQuestionComponent {
-  form!: FormGroup;
 
-  get options() {
-    return this.form.get('options') as FormArray;
-  }
+  form!: FormGroup;
 
   constructor(private fb: FormBuilder, private qs: QuestionService) {
     this.form = this.fb.group({
-      type: ['mcq', Validators.required], // new type
+      type: ['Choices', Validators.required], // default backend type
       text: ['', [Validators.required, Validators.minLength(3)]],
-      options: this.fb.array([] as any),
+      options: this.fb.array([]),
       correctOptionId: [''],
       difficulty: ['medium', Validators.required],
       tags: [''],
-      trueFalseAnswer: ['true'] // only used if type = truefalse
+      trueFalseAnswer: ['true']
     });
 
     this.setupDefaultOptions();
   }
 
+  get options(): FormArray {
+    return this.form.get('options') as FormArray;
+  }
+
+  getOptionControl(index: number): FormControl {
+    return this.options.at(index).get('text') as FormControl;
+  }
+
   setupDefaultOptions() {
     this.options.clear();
-    if (this.form.value.type === 'mcq') {
+    if (this.form.value.type === 'Choices') {
       this.addOption();
       this.addOption();
     }
   }
 
   onTypeChange() {
+    this.form.patchValue({
+      correctOptionId: '',
+      trueFalseAnswer: 'true'
+    });
     this.setupDefaultOptions();
-    this.form.patchValue({ correctOptionId: '', trueFalseAnswer: 'true' });
   }
 
   addOption() {
     const id = 'opt_' + Date.now().toString(36) + Math.floor(Math.random() * 1000);
-    this.options.push(this.fb.group({ id: [id], text: ['', Validators.required] }));
+    this.options.push(this.fb.group({
+      id: [id],
+      text: ['', Validators.required]
+    }));
   }
 
   removeOption(index: number) {
     this.options.removeAt(index);
-    const selected = this.form.value.correctOptionId;
-    if (selected && !this.options.value.find((o: any) => o.id === selected)) {
+    if (!this.options.value.find((o: any) => o.id === this.form.value.correctOptionId)) {
       this.form.patchValue({ correctOptionId: '' });
     }
   }
@@ -61,30 +72,82 @@ export class CreateQuestionComponent {
     this.form.patchValue({ correctOptionId: id });
   }
 
-  save() {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
-
-    const value = this.form.value;
-    const question = {
-      type: value.type as QuestionType,
-      text: value.text,
-      options: value.type === 'mcq' ? value.options.map((o: any) => ({ id: o.id, text: o.text })) : undefined,
-      correctOptionId: value.type === 'mcq' ? value.correctOptionId : value.type === 'truefalse' ? value.trueFalseAnswer : undefined,
-      difficulty: value.difficulty,
-      tags: (value.tags || '').split(',').map((t: string) => t.trim()).filter(Boolean),
-    };
-
-    this.qs.add(question);
-
-    // reset
-    this.form.reset({ type: 'mcq', difficulty: 'medium', tags: '', trueFalseAnswer: 'true' });
+  resetForm() {
+    this.form.reset({
+      type: 'Choices',
+      difficulty: 'medium',
+      tags: '',
+      trueFalseAnswer: 'true'
+    });
     this.setupDefaultOptions();
   }
 
-  getOptionControl(index: number): FormControl {
-    return this.options.at(index).get('text') as FormControl;
+  private difficultyToDegree(d: string): number {
+    switch (d) {
+      case 'easy': return 1;
+      case 'hard': return 5;
+      default: return 3; // medium
+    }
   }
+
+  save() {
+  if (this.form.invalid) {
+    this.form.markAllAsTouched();
+    return;
+  }
+
+  const value = this.form.value;
+  const teacherId = localStorage.getItem('teacherId') || '';
+
+  // ✅ Convert string → enum number
+  let typeNum: QuestionTypes;
+  switch (value.type) {
+    case 'Choices':
+      typeNum = QuestionTypes.Choices;
+      break;
+    case 'TrueOrFalse':
+      typeNum = QuestionTypes.TrueOrFalse;
+      break;
+    default:
+      typeNum = QuestionTypes.Text;
+      break;
+  }
+
+  const base: any = {
+    content: value.text,
+    degree: this.difficultyToDegree(value.difficulty),
+    teacherId: teacherId,
+    type: typeNum   // ✅ SEND NUMBER NOT STRING
+  };
+
+  let payload: any;
+
+  if (value.type === 'Choices') {
+    const correctId = value.correctOptionId;
+
+    const choices = value.options.map((o: any) => ({
+      text: o.text,
+      isCorrect: o.id === correctId
+    }));
+
+    payload = { ...base, choices };
+
+  } else if (value.type === 'TrueOrFalse') {
+    payload = { ...base, trueAndFalses: value.trueFalseAnswer === 'true' };
+
+  } else {
+    payload = { ...base };
+  }
+
+  console.log("✅ Final Payload Sent:", payload);
+
+  this.qs.create(payload).subscribe({
+    next: res => {
+      console.log('✅ Created Successfully:', res);
+      this.resetForm();
+    },
+    error: err => console.error('❌ Create Error:', err)
+  });
+}
+
 }
