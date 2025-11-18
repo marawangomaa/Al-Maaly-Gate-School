@@ -1,7 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
+import { ClassService } from '../../../../../Services/class.service';
+import { ClassDto, ClassViewDto } from '../../../../../Interfaces/iclass';
+import { ApiResponseHandler } from '../../../../../utils/api-response-handler';
+import { Subscription } from 'rxjs';
+import { AdminManagementService } from '../../../../../Services/admin-management.service';
+import { TeacherService } from '../../../../../Services/teacher.service';
+import { Teacher } from '../../../../../Interfaces/teacher';
+declare var bootstrap: any;
 @Component({
   selector: 'app-admin-all-classes',
   standalone: true,
@@ -10,70 +17,110 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './admin-all-classes.component.css'
 })
 export class AdminAllClassesComponent {
-  classes: any = {
-    "pageTitle": "إدارة المحاضرات",
-    "filters": {
-      "statusOptions": ["الكل", "متاحة للحضور", "انتهت", "لم تبدأ بعد"],
-      "selectedStatus": "الكل"
-    },
-    "lectures": [
-      {
-        "lectureId": 1,
-        "subject": "الرياضيات",
-        "teacher": "أ. أحمد علي",
-        "date": "2025-10-06",
-        "startTime": "09:00",
-        "endTime": "10:30",
-        "status": "متاحة للحضور",
-        "studentsPresent": 22,
-        "maxStudents": 30,
-        "attendanceAvailable": true
+  private subscription = new Subscription();
+  allClasses: ClassViewDto[] = [];
+  allTeachers: Teacher[] = [];
+  selectedClassId: string | null = null;
+  successMessage: string | null = null;
+
+  newClass: ClassDto =
+    {
+      classYear: '',
+      className: ''
+    };
+
+
+  constructor(private classService: ClassService,
+    private adminManagementService: AdminManagementService,
+    private teacherService: TeacherService) { }
+  ngOnInit(): void {
+    this.LoadAllClasses();
+  }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+  private LoadAllClasses(): void {
+    ApiResponseHandler.handleApiResponse<ClassViewDto[]>(this.classService.getAll()).subscribe({
+      next: (Classes) => {
+        this.allClasses = Classes;
       },
-      {
-        "lectureId": 2,
-        "subject": "اللغة الإنجليزية",
-        "teacher": "أ. منى عبد الله",
-        "date": "2025-10-06",
-        "startTime": "11:00",
-        "endTime": "12:30",
-        "status": "انتهت",
-        "studentsPresent": 28,
-        "maxStudents": 30,
-        "attendanceAvailable": false
-      },
-      {
-        "lectureId": 3,
-        "subject": "العلوم",
-        "teacher": "أ. محمد إبراهيم",
-        "date": "2025-10-07",
-        "startTime": "08:30",
-        "endTime": "10:00",
-        "status": "لم تبدأ بعد",
-        "studentsPresent": 0,
-        "maxStudents": 25,
-        "attendanceAvailable": false
+      error: (error) => {
+        console.error('Error loading classes:', error);
       }
-    ],
-    "actions": {
-      "markAttendance": "تسجيل حضور",
-      "viewDetails": "عرض التفاصيل"
+    });
+  }
+
+  createClass(): void {
+    ApiResponseHandler.handleApiResponse<ClassDto>(
+      this.classService.create(this.newClass)
+    ).subscribe({
+      next: (created) => {
+        console.log('Class created:', created);
+
+        // Close modal
+        const modalEl = document.getElementById('createClassModal');
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        modal?.hide();
+
+        // Reset form
+        this.newClass = { classYear: '', className: '' };
+
+        // Refresh list
+        this.LoadAllClasses();
+      },
+      error: (error) => console.error('Error creating class:', error)
+    });
+  }
+
+  LoadAllTeachers(): void {
+    this.subscription.add(
+      this.teacherService.GetAllTeachers().subscribe({
+        next: teachers => {
+          this.allTeachers = teachers.filter(t =>
+            !t.classNames.includes(this.selectedClassId!)  // match class NAME
+          );
+        },
+        error: err => alert(`Error loading teachers: ${err.message}`)
+      })
+    );
+  }
+
+
+  openAssignTeacherModal(className: string) {
+    this.selectedClassId = className;
+    this.LoadAllTeachers();
+  }
+
+  assignTeacherToClass(teacherId: string, classId: string): void {
+    this.adminManagementService.AssignTeacherToClass(teacherId, classId).subscribe({
+      next: (result) => {
+        console.log('Teacher assigned to class:', result);
+        this.showSuccess("Teacher assigned successfully!");
+        this.LoadAllClasses();  // Refresh table
+      },
+      error: (error) => console.error('Error assigning teacher to class:', error)
+    });
+  }
+
+  selectTeacher(teacherId: string) {
+    if (!this.selectedClassId) return;
+
+    this.assignTeacherToClass(teacherId, this.selectedClassId);
+    const modal = document.getElementById('assignTeacherModal');
+    if (modal) {
+      const myModal = bootstrap.Modal.getInstance(modal);
+      myModal?.hide();
     }
-  };
 
-  lectures = this.classes.lectures;
-  filters = this.classes.filters;
-  selectedStatus = this.filters.selectedStatus;
-
-  filteredLectures() {
-    if (this.selectedStatus === 'الكل') return this.lectures;
-    return this.lectures.filter((l: { status: any; }) => l.status === this.selectedStatus);
   }
 
-  markAttendance(lecture: any) {
-    alert(`✅ تم تسجيل حضور المحاضرة: ${lecture.subject}`);
+  showSuccess(msg: string) {
+    this.successMessage = msg;
+
+    setTimeout(() => {
+      this.successMessage = null;
+    }, 3000);
   }
 
-  viewDetails(lecture: any) {
-    alert(`📘 عرض تفاصيل المحاضرة: ${lecture.subject} مع ${lecture.teacher}`);
-  }
+
 }
