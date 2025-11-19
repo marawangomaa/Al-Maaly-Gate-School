@@ -1,79 +1,94 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-
-interface Student {
-  id: string;
-  name: string;
-}
-
-interface ClassModel {
-  id: string;
-  grade: string;
-  section: string;
-  subject: string;
-  students: Student[];
-}
+import { ClassService } from '../../../../../Services/class.service';
+import { DegreeService } from '../../../../../Services/degree.service';
+import { StudentProfileService } from '../../../../../Services/student-profile.service';
+import { SubjectService } from '../../../../../Services/subject.service';
 
 @Component({
   selector: 'app-class-grades',
+  standalone: true,
   imports: [CommonModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './class-grades.component.html',
-  styleUrl: './class-grades.component.css'
+  styleUrls: ['./class-grades.component.css']
 })
-export class ClassGradesComponent {
-  classes: ClassModel[] = [];
+export class ClassGradesComponent implements OnInit {
+
+  classes: any[] = [];
   gradeForms: { [classId: string]: FormGroup } = {};
   expandedClassId: string | null = null;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private classService: ClassService,
+    private degreeService: DegreeService,
+    private studentService: StudentProfileService,
+    private subjectService: SubjectService
+  ) {}
 
   ngOnInit(): void {
-    // Simulated data (later you can fetch from service)
-    this.classes = [
-      {
-        id: '1',
-        grade: 'Grade 2',
-        section: 'A',
-        subject: 'Math',
-        students: [
-          { id: 's1', name: 'Ahmed Hassan' },
-          { id: 's2', name: 'Mona Khaled' },
-        ],
-      },
-      {
-        id: '2',
-        grade: 'Grade 3',
-        section: 'B',
-        subject: 'Science',
-        students: [
-          { id: 's3', name: 'Ali Ibrahim' },
-          { id: 's4', name: 'Sara Mostafa' },
-        ],
-      },
-    ];
+    this.loadClasses();
+  }
 
-    // Create form for each class
-    this.classes.forEach((cls) => {
-      this.gradeForms[cls.id] = this.fb.group({
-        students: this.fb.array(
-          cls.students.map((s) =>
-            this.fb.group({
-              studentId: [s.id],
-              name: [s.name],
-              testGrade: [null],
-              midtermGrade: [null],
-              attendance: [null],
-            })
+  loadClasses() {
+    this.classService.getAll().subscribe(res => {
+      this.classes = res.data;
+      this.classes.forEach(cls => this.initializeClassForm(cls.id));
+    });
+  }
+
+  initializeClassForm(classId: string) {
+    this.classService.getStudents(classId).subscribe(studentRes => {
+      const students = studentRes.data;
+
+      this.classService.getSubjects(classId).subscribe(subRes => {
+        const subjects = subRes.data;
+
+        this.gradeForms[classId] = this.fb.group({
+          students: this.fb.array(
+            students.map( (st : any) => this.createStudentForm(st, subjects))
           )
-        ),
+        });
       });
     });
   }
 
+  createStudentForm(student: any, subjects: any[]): FormGroup {
+    return this.fb.group({
+      studentId: student.id,
+      studentName: student.fullName,
+
+      exams: this.fb.group({
+        midterm1: this.createExamSubjects(subjects, 20),
+        final1: this.createExamSubjects(subjects, 80),
+        midterm2: this.createExamSubjects(subjects, 20),
+        final2: this.createExamSubjects(subjects, 80)
+      })
+    });
+  }
+
+  createExamSubjects(subjects: any[], max: number): FormArray {
+    return this.fb.array(
+      subjects.map(sub =>
+        this.fb.group({
+          subjectId: sub.id,
+          subjectName: sub.subjectName,
+          score: [0],
+          maxScore: [max]
+        })
+      )
+    );
+  }
+
   getStudentArray(classId: string): FormArray {
     return this.gradeForms[classId].get('students') as FormArray;
+  }
+
+  // ⭐ FIX: Safe getter for exam arrays
+  getExamArray(studentForm: any, examName: string): FormArray {
+    return studentForm.get('exams').get(examName) as FormArray;
   }
 
   toggleExpand(classId: string): void {
@@ -81,8 +96,35 @@ export class ClassGradesComponent {
   }
 
   saveGrades(classId: string): void {
-    const formValue = this.gradeForms[classId].getRawValue();
-    console.log('Saved grades for class:', classId, formValue);
-    alert('Grades saved successfully!');
+    const form = this.gradeForms[classId].getRawValue();
+
+    const dtoList: any[] = [];
+
+    form.students.forEach((st: any) => {
+      const exams = st.exams;
+
+      const addExam = (type: string, arr: any[]) => {
+        dtoList.push({
+          studentId: st.studentId,
+          degrees: arr.map(s => ({
+            subjectId: s.subjectId,
+            score: s.score,
+            maxScore: s.maxScore,
+            degreeType: type
+          }))
+        });
+      };
+
+      addExam("Midterm1", exams.midterm1);
+      addExam("Final1", exams.final1);
+      addExam("Midterm2", exams.midterm2);
+      addExam("Final2", exams.final2);
+    });
+
+    dtoList.forEach(dto =>
+      this.degreeService.addDegrees(dto).subscribe()
+    );
+
+    alert("Grades saved successfully!");
   }
 }

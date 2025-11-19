@@ -2,6 +2,7 @@ export interface SubjectCreateDto {
   subjectName: string;
   classYear: string;
   classId: string;
+  creditHours: number;
 }
 
 export interface SubjectUpdateDto {
