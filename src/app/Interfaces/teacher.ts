@@ -4,5 +4,7 @@ export interface Teacher {
     email : string;
     contactInfo : string;
     profileStatus : string;
+    subjects: string[];
+    classNames: string[];
 }
     

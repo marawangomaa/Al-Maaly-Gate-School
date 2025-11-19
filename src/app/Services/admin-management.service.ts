@@ -54,6 +54,22 @@ export class AdminManagementService {
       this.http.put<ApiResponse<boolean>>(url, {}, { headers: this.headers })
     );
   }
+  //Assign Teacher To Class
+  AssignTeacherToClass(teacherId : string, classId:string): Observable<boolean> 
+  {
+      const url = `${this.apiUrl}/teachers/assign-class?teacherId=${encodeURIComponent(teacherId)}&classId=${encodeURIComponent(classId)}`;
+      return ApiResponseHandler.handleApiResponse<boolean>(
+        this.http.post<ApiResponse<boolean>>(url, {}, { headers: this.headers })
+      );
+  }
+  //Assign Teacher To Subject
+  AssignTeacherToSubject(teacherId : string, subjectId:string): Observable<boolean> 
+  {
+      const url = `${this.apiUrl}/teachers/assign-subject?teacherId=${encodeURIComponent(teacherId)}&subjectId=${encodeURIComponent(subjectId)}`;
+      return ApiResponseHandler.handleApiResponse<boolean>(
+        this.http.post<ApiResponse<boolean>>(url, {}, { headers: this.headers })
+      );
+  }
 }
 
 
