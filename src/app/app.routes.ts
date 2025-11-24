@@ -85,6 +85,12 @@ export const routes: Routes = [
               import('./Components/dashboard/Components/admin/admin-student-accounts/admin-student-accounts.component').then(m => m.AdminStudentAccountsComponent)
           },
           {
+            path: 'admin-subject-management',
+            canActivate: [AdminGuard],
+            loadComponent: () =>
+              import('./Components/dashboard/Components/admin/admin-subject-management/admin-subject-management.component').then(m => m.AdminSubjectManagementComponent)
+          },
+          {
             path: 'admin-analytics',
             canActivate: [AdminGuard],
             loadComponent: () =>

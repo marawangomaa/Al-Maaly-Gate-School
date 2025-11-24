@@ -1,3 +1,7 @@
+import { iclassAppointments } from "./iclassAppointments";
+import { istudent } from "./istudent";
+import { Teacher } from "./teacher";
+
 export interface ClassDto {
   classYear: string;
   className: string;
@@ -9,11 +13,12 @@ export interface ClassViewDto {
   classYear: string;
   className: string;
   teacherId: string;
-  teacher: any;
-  students: any[];
+  teachers: Teacher[];
+  students: istudent[];
   classAssets: any[];
-  classAppointments: any[];
+  classAppointments: iclassAppointments[];
 }
+
 
 export interface ApiResponse<T> {
   data: T;

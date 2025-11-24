@@ -75,6 +75,7 @@
         "LOADING": "Registering..."
     },
     "DASH": {
+        "ALL_CLASSES": "All Classes",
         "TITLE": "MyDashboard",
         "OVERVIEW": "Overview",
         "ANALYTICS": "Analytics",
@@ -102,7 +103,9 @@
         "GRADES": "Grades",
         "SUBTITLE": "Admin",
         "PROFILE": "Profile",
-        "LOGOUT": "Logout"
+        "LOGOUT": "Logout",
+
+        "CREATE_EMPTY_CLASS": "Create New Class"
     },
     "TEACHER_OVERVIEW": {
         "TITLE": "Teacher Overview",
