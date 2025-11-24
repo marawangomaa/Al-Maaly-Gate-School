@@ -77,6 +77,7 @@
     "DASH": {
         "ADMIN_CERTFICATION_CREATE": "انشاء شهادة",
         "STUDENT_CERTFICATION": "الشهادات",
+        "ALL_CLASSES": "جميع الفصول",
         "TITLE": "لوحة تحكمى",
         "OVERVIEW": "نظرة عامة",
         "ANALYTICS": "احصائيات",
@@ -103,7 +104,9 @@
         "ONLINE_CLASSES": "حصص أونلاين",
         "TESTS": "الاختبارات",
         "GRADES": "الدرجات",
-        "PROFILE": "الملف الشخصي"
+        "PROFILE": "الملف الشخصي",
+
+        "CREATE_EMPTY_CLASS": "إنشاء فصل جديدة"
     },
     "TEACHER_OVERVIEW": {
         "TITLE": "نظرة عامة على المعلم",

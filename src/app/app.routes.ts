@@ -96,6 +96,55 @@
               loadComponent: () =>
                 import('./Components/dashboard/Components/admin/admin-certificate-generation/admin-certificate-generation.component').then(m => m.AdminCertificateGenerationComponent)
             },
+          // Admin
+          {
+            path: 'admin-overview',
+            canActivate: [AdminGuard],
+            loadComponent: () =>
+              import('./Components/dashboard/Components/admin/overview/overview.component').then(m => m.OverviewComponent)
+          },
+          {
+            path: 'admin-teachers',
+            canActivate: [AdminGuard],
+            loadComponent: () =>
+              import('./Components/dashboard/Components/admin/teachers/teachers.component').then(m => m.TeachersComponent)
+          },
+          {
+            path: 'admin-all-classes',
+            canActivate: [AdminGuard],
+            loadComponent: () =>
+              import('./Components/dashboard/Components/admin/admin-all-classes/admin-all-classes.component').then(m => m.AdminAllClassesComponent)
+          },
+          {
+            path: 'admin-all-student-tests-result',
+            canActivate: [AdminGuard],
+            loadComponent: () =>
+              import('./Components/dashboard/Components/admin/admin-all-student-tests-result/admin-all-student-tests-result.component').then(m => m.AdminAllStudentTestsResultComponent)
+          },
+          {
+            path: 'admin-teachers-accounts',
+            canActivate: [AdminGuard],
+            loadComponent: () =>
+              import('./Components/dashboard/Components/admin/admin-teacher-accounts/admin-teacher-accounts.component').then(m => m.AdminTeacherAccountsComponent)
+          },
+          {
+            path: 'admin-students-accounts',
+            canActivate: [AdminGuard],
+            loadComponent: () =>
+              import('./Components/dashboard/Components/admin/admin-student-accounts/admin-student-accounts.component').then(m => m.AdminStudentAccountsComponent)
+          },
+          {
+            path: 'admin-subject-management',
+            canActivate: [AdminGuard],
+            loadComponent: () =>
+              import('./Components/dashboard/Components/admin/admin-subject-management/admin-subject-management.component').then(m => m.AdminSubjectManagementComponent)
+          },
+          {
+            path: 'admin-analytics',
+            canActivate: [AdminGuard],
+            loadComponent: () =>
+              import('./Components/dashboard/Components/admin/analytics/analytics.component').then(m => m.AnalyticsComponent)
+          },
 
             // ✅ Teacher-only
             {

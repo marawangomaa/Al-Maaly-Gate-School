@@ -13,7 +13,10 @@ export class ApiResponseHandler {
         return request$.pipe(
             map(res => {
                 if (!res) throw new Error('No response from server');
+                console.log('API Response:', res.data);
                 if (!res.success) throw new Error(res.message || 'Operation failed');
+                if(res)
+                console.log('API Response Data:', res.data);
                 return res.data;
             }),
             catchError(err => {

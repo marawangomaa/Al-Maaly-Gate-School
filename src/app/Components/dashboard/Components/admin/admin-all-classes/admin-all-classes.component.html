@@ -7,7 +7,7 @@
 
     <!-- Create Class Button -->
     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createClassModal">
-      + Create Class
+      {{"DASH.CREATE_EMPTY_CLASS" | translate}}
     </button>
   </div>
   <hr />
@@ -25,7 +25,7 @@
           <th>#</th>
           <th>Class Year</th>
           <th>Class Name</th>
-          <th>Teacher</th>
+          
           <th>Actions</th>
         </tr>
       </thead>
@@ -36,19 +36,12 @@
           <td>{{ c.classYear }}</td>
           <td>{{ c.className }}</td>
 
+          
           <td>
-            <span *ngIf="c.teacher; else noTeacher">
-              {{ c.teacher.fullName || 'Unnamed Teacher' }}
-            </span>
-            <ng-template #noTeacher>
-              <span class="text-muted">No Teacher</span>
-            </ng-template>
-          </td>
-          <td>
-            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#assignTeacherModal"
-              (click)="openAssignTeacherModal(c.id)">
-              Assign Teacher
-            </button>
+          <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#assignTeacherModal"
+            (click)="openAssignTeacherModal(c.id)">
+            Assign Teacher
+          </button>
           </td>
         </tr>
       </tbody>
@@ -67,7 +60,7 @@
 
       <div class="modal-header">
         <h5 class="modal-title">Create New Class</h5>
-        <button class="btn-close" data-bs-dismiss="modal"></button>
+        <button class="btn-close" data-bs-dismiss="modal">{{"DASH.CREATE_EMPTY_CLASS" | translate}}</button>
       </div>
 
       <div class="modal-body">
@@ -124,7 +117,7 @@
             <tr>
               <th>#</th>
               <th>Name</th>
-              <th>Subject</th>
+              <th>Class Name</th>
               <th>Select</th>
             </tr>
           </thead>
@@ -133,11 +126,10 @@
             <tr *ngFor="let t of allTeachers; let i = index">
               <td>{{ i + 1 }}</td>
               <td>{{ t.fullName }}</td>
-              <td>{{ t.profileStatus }}</td>
+              <td>{{ t.classNames }}</td>
 
               <td>
-                <button class="btn btn-success btn-sm"
-                        (click)="selectTeacher(t.id)">
+                <button class="btn btn-success btn-sm" (click)="selectTeacher(t.id)">
                   Choose
                 </button>
               </td>

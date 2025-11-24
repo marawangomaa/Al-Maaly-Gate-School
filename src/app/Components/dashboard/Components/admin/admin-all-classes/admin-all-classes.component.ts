@@ -8,11 +8,14 @@ import { Subscription } from 'rxjs';
 import { AdminManagementService } from '../../../../../Services/admin-management.service';
 import { TeacherService } from '../../../../../Services/teacher.service';
 import { Teacher } from '../../../../../Interfaces/teacher';
+import { TranslateModule } from '@ngx-translate/core';
+import { log } from 'console';
+import { TeacherViewDto } from '../../../../../Interfaces/iteacher';
 declare var bootstrap: any;
 @Component({
   selector: 'app-admin-all-classes',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,TranslateModule],
   templateUrl: './admin-all-classes.component.html',
   styleUrl: './admin-all-classes.component.css'
 })
@@ -43,7 +46,10 @@ export class AdminAllClassesComponent {
     ApiResponseHandler.handleApiResponse<ClassViewDto[]>(this.classService.getAll()).subscribe({
       next: (Classes) => {
         console.log(Classes);
+<<<<<<< HEAD
         
+=======
+>>>>>>> 98ad59903310647dfd4842dee24c2390d0236329
         this.allClasses = Classes;
       },
       error: (error) => {
@@ -79,7 +85,10 @@ export class AdminAllClassesComponent {
       this.teacherService.GetAllTeachers().subscribe({
         next: teachers => {
           console.log(teachers);
+<<<<<<< HEAD
           
+=======
+>>>>>>> 98ad59903310647dfd4842dee24c2390d0236329
           this.allTeachers = teachers.filter(t =>
             !t.classNames.includes(this.selectedClassId!)  // match class NAME
           );
