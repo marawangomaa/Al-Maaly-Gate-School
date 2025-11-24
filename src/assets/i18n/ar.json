@@ -85,7 +85,6 @@
         "ADMIN": "مسؤول",
         "Admin_Teachers_Accounts": "حسابات المعلمين",
         "FOLLOW_CLASSES": "متابعة الفصول",
-
         "TEACHER_OVERVIEW": "نظرة عامة",
         "CREATE_CLASS": "انشاء حصة اونلاين",
         "CLASS_LIST": "الحصص الاونلاين",
@@ -94,7 +93,6 @@
         "CREATE_TEST": "انشاء اختبار",
         "TEST_LIST": "قائمة الاختبارات",
         "CLASS_GRADES": "درجات الصف",
-
         "Admin_Follow_Tests": "متابعة نتائج الاختبارات",
         "Admin_Students_Accounts": "حسابات الطلاب",
         "MAKE_TESTS": "إنشاء اختبارات",
@@ -130,7 +128,8 @@
         "TYPE": "نوع السؤال",
         "TYPE_MCQ": "اختيار من متعدد",
         "TYPE_TRUEFALSE": "صح أو خطأ",
-        "TYPE_TEXT": "إجابة نصية",
+        "TYPE_Complete": "إكمال الفراغ",
+        "TYPE_Connection": "توصيل",
         "OPTIONS": "الخيارات",
         "OPTION_PLACEHOLDER": "خيار",
         "ADD_OPTION": "إضافة خيار",
@@ -230,39 +229,38 @@
             }
         },
         "CLASSAPPOINTMENT": {
-    "SCHEDULED_TITLE": "المواعيد المجدولة للصفوف",
-    "TABLE": {
-      "GRADE": "الصف",
-      "SECTION": "الشعبة",
-      "SUBJECT": "المادة",
-      "MEETING": "الاجتماع",
-      "START_TIME": "وقت البدء",
-      "DURATION": "المدة",
-      "STATUS": "الحالة",
-      "ACTION": "الإجراء",
-      "JOIN": "انضم",
-      "ENDED": "انتهى",
-      "ONGOING": "جاري",
-      "END": "إنهاء",
-      "NO_CLASSES": "لا توجد مواعيد للصفوف"
-    }
-  }
-        ,
+            "SCHEDULED_TITLE": "المواعيد المجدولة للصفوف",
+            "TABLE": {
+                "GRADE": "الصف",
+                "SECTION": "الشعبة",
+                "SUBJECT": "المادة",
+                "MEETING": "الاجتماع",
+                "START_TIME": "وقت البدء",
+                "DURATION": "المدة",
+                "STATUS": "الحالة",
+                "ACTION": "الإجراء",
+                "JOIN": "انضم",
+                "ENDED": "انتهى",
+                "ONGOING": "جاري",
+                "END": "إنهاء",
+                "NO_CLASSES": "لا توجد مواعيد للصفوف"
+            }
+        },
         "TABLE": {
-        "GRADE": "الصف",
-        "SECTION": "القسم",
-        "SUBJECT": "المادة",
-        "CLASS": "الفصول",
-        "MEETING": "الاجتماع",
-        "START_TIME": "وقت البدء",
-        "DURATION": "المدة",
-        "STATUS": "الحالة",
-        "ACTION": "إجراء",
-        "JOIN": "انضمام",
-        "END": "إنهاء",
-        "ONGOING": "قيد التنفيذ",
-        "ENDED": "انتهت",
-        "NO_CLASSES": "لا توجد حصص مجدولة حالياً."
+            "GRADE": "الصف",
+            "SECTION": "القسم",
+            "SUBJECT": "المادة",
+            "CLASS": "الفصول",
+            "MEETING": "الاجتماع",
+            "START_TIME": "وقت البدء",
+            "DURATION": "المدة",
+            "STATUS": "الحالة",
+            "ACTION": "إجراء",
+            "JOIN": "انضمام",
+            "END": "إنهاء",
+            "ONGOING": "قيد التنفيذ",
+            "ENDED": "انتهت",
+            "NO_CLASSES": "لا توجد حصص مجدولة حالياً."
         }
     },
     "NAV": {

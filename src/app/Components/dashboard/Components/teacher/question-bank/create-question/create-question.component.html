@@ -1,88 +1,162 @@
 <section class="standard-section-layout">
   <div class="container">
-    <h3 class="main-title mb-3">{{ 'QUESTIONS.CREATE_TITLE' | translate }}</h3>
+    <h3 class="main-title mb-3">{{ "QUESTIONS.CREATE_TITLE" | translate }}</h3>
 
     <div class="card p-3">
       <form [formGroup]="form" (ngSubmit)="save()">
-
         <!-- Type -->
         <div class="mb-3">
-          <label class="sub-title">{{ 'QUESTIONS.TYPE' | translate }}</label>
-          <select formControlName="type" class="form-select" (change)="onTypeChange()">
-            <option value="Choices">{{ 'QUESTIONS.TYPE_MCQ' | translate }}</option>
-            <option value="TrueOrFalse">{{ 'QUESTIONS.TYPE_TRUEFALSE' | translate }}</option>
-            <option value="Text">{{ 'QUESTIONS.TYPE_TEXT' | translate }}</option>
+          <label class="sub-title">{{ "QUESTIONS.TYPE" | translate }}</label>
+          <select
+            formControlName="type"
+            class="form-select"
+            (change)="onTypeChange()"
+          >
+            <option value="Choices">
+              {{ "QUESTIONS.TYPE_MCQ" | translate }}
+            </option>
+            <option value="TrueOrFalse">
+              {{ "QUESTIONS.TYPE_TRUEFALSE" | translate }}
+            </option>
+            <option value="Complete">
+              {{ "QUESTIONS.TYPE_Complete" | translate }}
+            </option>
+            <option value="Connection">
+              {{ "QUESTIONS.TYPE_Connection" | translate }}
+            </option>
           </select>
         </div>
 
         <!-- Question Text -->
         <div class="mb-3">
-          <label class="sub-title">{{ 'QUESTIONS.LABEL_QUESTION' | translate }}</label>
-          <textarea formControlName="text" class="form-control div-input" rows="3"
-            placeholder="{{ 'QUESTIONS.PLACEHOLDER_QUESTION' | translate }}"></textarea>
+          <label class="sub-title">{{
+            "QUESTIONS.LABEL_QUESTION" | translate
+          }}</label>
+          <textarea
+            formControlName="content"
+            class="form-control div-input"
+            rows="3"
+            placeholder="{{ 'QUESTIONS.PLACEHOLDER_QUESTION' | translate }}"
+          ></textarea>
+          <div *ngIf="form.get('content')?.invalid && form.get('content')?.touched" class="text-danger small">
+            ❌ هذا الحقل مطلوب ويجب أن يكون على الأقل 3 أحرف
+          </div>
         </div>
 
-        <!-- MCQ -->
+        <!-- Degree -->
+        <div class="mb-3">
+          <label class="sub-title">{{ "QUESTIONS.DEGREE" | translate }}</label>
+          <input
+            type="number"
+            formControlName="degree"
+            class="form-control"
+            min="1"
+          />
+          <div *ngIf="form.get('degree')?.invalid && form.get('degree')?.touched" class="text-danger small">
+            ❌ الدرجة يجب أن تكون على الأقل 1
+          </div>
+        </div>
+
+        <!-- MCQ Options -->
         <div *ngIf="form.value.type === 'Choices'" class="mb-3">
-          <label class="sub-title">{{ 'QUESTIONS.OPTIONS' | translate }}</label>
-          <div class="list-group">
-            <div class="list-group-item d-flex gap-2 align-items-center"
-              *ngFor="let opt of options.controls; let i = index">
+          <label class="sub-title">{{ "QUESTIONS.OPTIONS" | translate }}</label>
+          <div class="list-group" formArrayName="choices">
+            <div
+              class="list-group-item d-flex gap-2 align-items-center"
+              *ngFor="let opt of choices.controls; let i = index"
+              [formGroupName]="i"
+            >
               <div class="form-check">
-                <input class="form-check-input" type="radio"
-                  [checked]="form.value.correctOptionId === opt.value.id"
-                  (change)="markCorrect(opt.value.id)" />
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="correctOption"
+                  [checked]="form.value.correctChoiceId === opt.value.id"
+                  (change)="markCorrect(opt.value.id)"
+                />
               </div>
-              <input [formControl]="getOptionControl(i)" class="form-control ms-2"
-                [placeholder]="'Option ' + (i + 1)" />
-              <button type="button" class="btn btn-link text-danger" (click)="removeOption(i)"
-                [disabled]="options.length <= 2">
+              <input
+                formControlName="text"
+                class="form-control ms-2"
+                [placeholder]="'Option ' + (i + 1)"
+              />
+              <button
+                type="button"
+                class="btn btn-link text-danger"
+                (click)="removeOption(i)"
+                [disabled]="choices.length <= 2"
+              >
                 <i class="bi bi-trash"></i>
               </button>
             </div>
           </div>
           <div class="mt-2">
             <button type="button" class="outline-btn" (click)="addOption()">
-              <i class="bi bi-plus-lg me-1"></i> {{ 'QUESTIONS.ADD_OPTION' | translate }}
+              <i class="bi bi-plus-lg me-1"></i>
+              {{ "QUESTIONS.ADD_OPTION" | translate }}
             </button>
+          </div>
+        </div>
+
+        <!-- Connection Options -->
+        <div *ngIf="form.value.type === 'Connection'" class="mb-3">
+          <label class="sub-title">{{ "QUESTIONS.OPTIONS" | translate }}</label>
+          <div class="list-group" formArrayName="choices">
+            <div
+              class="list-group-item d-flex gap-2 align-items-center"
+              *ngFor="let opt of choices.controls; let i = index"
+              [formGroupName]="i"
+            >
+              <input
+                formControlName="text"
+                class="form-control"
+                [placeholder]="'Option ' + (i + 1)"
+                required
+              />
+              <div class="form-check ms-2">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  formControlName="isCorrect"
+                  (change)="onCorrectCheckboxChange()"
+                />
+                <label class="form-check-label">{{
+                  "QUESTIONS.CORRECT" | translate
+                }}</label>
+              </div>
+            </div>
           </div>
         </div>
 
         <!-- True/False -->
         <div *ngIf="form.value.type === 'TrueOrFalse'" class="mb-3">
-          <label class="sub-title">{{ 'QUESTIONS.TRUEFALSE' | translate }}</label>
-          <select formControlName="trueFalseAnswer" class="form-select">
-            <option value="true">{{ 'QUESTIONS.TRUE' | translate }}</option>
-            <option value="false">{{ 'QUESTIONS.FALSE' | translate }}</option>
+          <label class="sub-title">{{
+            "QUESTIONS.TRUEFALSE" | translate
+          }}</label>
+          <select formControlName="trueAndFalses" class="form-select">
+            <option [ngValue]="true">{{ "QUESTIONS.TRUE" | translate }}</option>
+            <option [ngValue]="false">{{ "QUESTIONS.FALSE" | translate }}</option>
           </select>
         </div>
 
-        <!-- Text Answer -->
-        <div *ngIf="form.value.type === 'Text'" class="mb-3">
-          <label class="sub-title">{{ 'QUESTIONS.ANSWER_PLACEHOLDER' | translate }}</label>
-          <p class="text-muted small">{{ 'QUESTIONS.TEXT_INFO' | translate }}</p>
+        <!-- Complete -->
+        <div *ngIf="form.value.type === 'Complete'" class="mb-3">
+          <label class="sub-title">{{
+            "QUESTIONS.ANSWER_PLACEHOLDER" | translate
+          }}</label>
+          <input formControlName="textAnswer" class="form-control" />
+          <p class="text-muted small">
+            {{ "QUESTIONS.TEXT_INFO" | translate }}
+          </p>
         </div>
 
-        <!-- Difficulty & Tags -->
-        <div class="row g-2 mb-3">
-          <div class="col-md-6">
-            <label class="sub-title">{{ 'QUESTIONS.DIFFICULTY' | translate }}</label>
-            <select formControlName="difficulty" class="form-select">
-              <option value="easy">{{ 'QUESTIONS.EASY' | translate }}</option>
-              <option value="medium">{{ 'QUESTIONS.MEDIUM' | translate }}</option>
-              <option value="hard">{{ 'QUESTIONS.HARD' | translate }}</option>
-            </select>
-          </div>
-          <div class="col-md-6">
-            <label class="sub-title">{{ 'QUESTIONS.TAGS' | translate }}</label>
-            <input formControlName="tags" class="form-control div-input" />
-          </div>
-        </div>
-
+        <!-- Buttons -->
         <div class="d-flex gap-2">
-          <button type="submit" class="primary-btn">{{ 'QUESTIONS.SAVE' | translate }}</button>
+          <button type="submit" class="primary-btn" [disabled]="form.invalid">
+            {{ "QUESTIONS.SAVE" | translate }}
+          </button>
           <button type="button" class="outline-btn" (click)="resetForm()">
-            {{ 'QUESTIONS.CANCEL' | translate }}
+            {{ "QUESTIONS.CANCEL" | translate }}
           </button>
         </div>
       </form>

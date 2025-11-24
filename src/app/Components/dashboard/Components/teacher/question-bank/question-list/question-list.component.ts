@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { QuestionService, QuestionModel } from '../../../../../../Services/question.service';
-import { QuestionTypes } from '../../../../../../Interfaces/iquestoin';
+import { QuestionModel, QuestionTypes } from '../../../../../../Interfaces/iquestoin';
 import { Observable } from 'rxjs';
+import { QuestionService } from '../../../../../../Services/question.service';
 
 @Component({
   selector: 'app-question-list',
@@ -20,41 +20,43 @@ export class QuestionListComponent {
   editingId: string | null = null;
   editContent: string = '';
 
-  constructor(private qs: QuestionService) {}
+  constructor(private qs: QuestionService) { }
 
   ngOnInit() {
-  this.questions$ = this.qs.questions$; // subscribe to BehaviorSubject
-  this.qs.loadAll(); // load data from API
+    this.questions$ = this.qs.questions$; // subscribe to BehaviorSubject
+    this.qs.loadAll(); // load data from API
 
-  // Log whenever the BehaviorSubject emits
-  this.questions$.subscribe(questions => {
-    console.log('✅ Questions from service:', questions);
-    questions.forEach(q => {
-      console.log(`Question ID: ${q.id}, type: ${q.type}, text: ${q.text}`);
+    // Log whenever the BehaviorSubject emits
+    this.questions$.subscribe(questions => {
+      console.log('✅ Questions from service:', questions);
+      questions.forEach(q => {
+        console.log(`Question ID: ${q.id}, type: ${q.type}, text: ${q.content}`);
+      });
     });
-  });
-}
+  }
 
 
   /** Filter questions by type */
   getByType(questions: QuestionModel[], type: QuestionTypes): QuestionModel[] {
-  switch (type) {
-    case QuestionTypes.Choices:
-      return questions.filter(q => q.type === 'Choices');
-    case QuestionTypes.TrueOrFalse:
-      return questions.filter(q => q.type === 'TrueOrFalse');
-    case QuestionTypes.Text:
-      return questions.filter(q => q.type === 'Text');
-    default:
-      return [];
+    switch (type) {
+      case QuestionTypes.Choices:
+        return questions.filter(q => q.type === QuestionTypes.Choices);
+      case QuestionTypes.TrueOrFalse:
+        return questions.filter(q => q.type === QuestionTypes.TrueOrFalse);
+      case QuestionTypes.Complete:
+        return questions.filter(q => q.type === QuestionTypes.Complete);
+      case QuestionTypes.Connection:
+        return questions.filter(q => q.type === QuestionTypes.Connection);
+      default:
+        return [];
+    }
   }
-}
 
 
   /** Start editing a question */
   startEdit(q: QuestionModel) {
     this.editingId = q.id;
-    this.editContent = q.text;
+    this.editContent = q.content;
   }
 
   /** Save edited question */
