@@ -75,6 +75,8 @@
         "LOADING": "جارٍ إنشاء الحساب..."
     },
     "DASH": {
+        "ADMIN_CERTFICATION_CREATE": "انشاء شهادة",
+        "STUDENT_CERTFICATION": "الشهادات",
         "TITLE": "لوحة تحكمى",
         "OVERVIEW": "نظرة عامة",
         "ANALYTICS": "احصائيات",
@@ -265,6 +267,41 @@
         "NO_CLASSES": "لا توجد حصص مجدولة حالياً."
         }
     },
+    "CERTIFICATION_STUDENT": {
+        "MY_CERTIFICATES": "شهاداتي",
+        "LOADING": "جارٍ تحميل الشهادات...",
+        "NO_CERTIFICATES": "لا توجد شهادات",
+        "NO_CERTIFICATES_DESC": "ستظهر الشهادات هنا بمجرد أن يقوم المسؤول بإصدارها.",
+        "GPA": "المعدل",
+        "ISSUED": "تاريخ الإصدار",
+        "TEMPLATE": "القالب",
+        "FILE_SIZE": "حجم الملف",
+        "VIEW": "عرض",
+        "DOWNLOAD": "تحميل"
+        },
+        "certificate": {
+    "title": "إنشاء الشهادات",
+    "subtitle": "قم بإنشاء شهادات الطلاب بسهولة مع إمكانية حفظها في قاعدة البيانات أو تحميلها كملف PDF.",
+
+    "selectClass": "اختيار الفصل",
+    "classPlaceholder": "اختر الفصل",
+
+    "selectStudent": "اختيار الطالب",
+    "studentPlaceholder": "اختر الطالب",
+
+    "certificateType": "نوع الشهادة",
+
+    "generatePdf": "إنشاء PDF",
+    "generateAndSave": "إنشاء وحفظ في قاعدة البيانات",
+    "saveOnly": "حفظ في قاعدة البيانات فقط",
+
+    "generating": "جاري الإنشاء...",
+    "saving": "جاري الحفظ...",
+
+    "studentsInClass": "الطلاب في هذا الفصل",
+    "studentId": "رقم الطالب"
+  }
+        ,
     "NAV": {
         "LOGO": "اللوجو",
         "HOME": "الرئيسية",

@@ -44,6 +44,8 @@ export class ClassGradesComponent implements OnInit {
       const students = studentRes.data;
 
       this.classService.getSubjects(classId).subscribe(subRes => {
+        console.log(subRes);
+        
         const subjects = subRes.data;
 
         this.gradeForms[classId] = this.fb.group({

@@ -1,0 +1,132 @@
+/* Page Header */
+.page-header {
+  margin-bottom: var(--space-xl);
+}
+
+.page-description {
+  font-size: var(--font-base);
+  margin-top: var(--space-sm);
+}
+
+/* Grid Layouts */
+.selection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+.students-section {
+  margin-top: var(--space-xl);
+}
+
+/* Custom Select */
+.custom-select {
+  width: 100%;
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  font-size: var(--font-base);
+  color: var(--color-text-light-bg);
+  transition: border 0.3s ease, background-color 0.3s ease;
+}
+
+.custom-select:hover {
+  border-color: var(--color-primary-300);
+}
+
+.custom-select:focus {
+  outline: none;
+  border-color: var(--color-primary-300);
+  background-color: var(--color-primary-100);
+}
+
+/* Buttons */
+.button-row {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.action-btn {
+  min-width: 180px;
+}
+
+.green-btn {
+  background-color: #16a34a !important;
+}
+
+.green-btn:hover {
+  background-color: #22c55e !important;
+  transform: translateY(-2px);
+}
+
+.purple-btn {
+  background-color: #7e22ce !important;
+}
+
+.purple-btn:hover {
+  background-color: #9333ea !important;
+}
+
+/* Messages */
+.message {
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  font-size: var(--font-base);
+  margin-bottom: var(--space-lg);
+}
+
+.message-success {
+  background-color: var(--color-primary-100);
+  color: var(--color-primary-400);
+}
+
+.message-error {
+  background-color: var(--color-danger-100);
+  color: var(--color-danger-400);
+}
+
+/* Students Grid */
+.students-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-lg);
+}
+
+.student-card {
+  padding: var(--space-lg);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-bg-secondary);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.3s ease;
+}
+
+.student-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-primary-300);
+}
+
+.student-selected {
+  background-color: var(--color-primary-100);
+  border-color: var(--color-primary-400) !important;
+}
+
+/* Fade-in Animation */
+.fade-card {
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .button-row {
+    flex-direction: column;
+  }
+}

@@ -90,6 +90,12 @@
               loadComponent: () =>
                 import('./Components/dashboard/Components/admin/analytics/analytics.component').then(m => m.AnalyticsComponent)
             },
+            {
+              path: 'admin-certfication-create',
+              canActivate: [AdminGuard],
+              loadComponent: () =>
+                import('./Components/dashboard/Components/admin/admin-certificate-generation/admin-certificate-generation.component').then(m => m.AdminCertificateGenerationComponent)
+            },
 
             // ✅ Teacher-only
             {
@@ -195,6 +201,12 @@
               canActivate: [StudentGuard],
               loadComponent: () =>
                 import('./Components/dashboard/Components/student/student-grades/student-grades.component').then(m => m.StudentGradesComponent)
+            },
+            {
+              path: 'student-certfication',
+              canActivate: [StudentGuard],
+              loadComponent: () =>
+                import('./Components/dashboard/Components/student/student-certificates/student-certificates.component').then(m => m.StudentCertificatesComponent)
             },
 
             { path: '', redirectTo: 'overview', pathMatch: 'full' }

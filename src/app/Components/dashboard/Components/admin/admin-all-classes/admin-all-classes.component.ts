@@ -42,6 +42,8 @@ export class AdminAllClassesComponent {
   private LoadAllClasses(): void {
     ApiResponseHandler.handleApiResponse<ClassViewDto[]>(this.classService.getAll()).subscribe({
       next: (Classes) => {
+        console.log(Classes);
+        
         this.allClasses = Classes;
       },
       error: (error) => {
@@ -76,6 +78,8 @@ export class AdminAllClassesComponent {
     this.subscription.add(
       this.teacherService.GetAllTeachers().subscribe({
         next: teachers => {
+          console.log(teachers);
+          
           this.allTeachers = teachers.filter(t =>
             !t.classNames.includes(this.selectedClassId!)  // match class NAME
           );

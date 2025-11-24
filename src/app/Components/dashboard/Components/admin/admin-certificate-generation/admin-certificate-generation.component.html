@@ -1,0 +1,116 @@
+<div class="container">
+
+  <div class="page-header">
+    <h2 class="hero-title">{{ 'certificate.title' | translate }}</h2>
+    <p class="page-description text-muted">
+      {{ 'certificate.subtitle' | translate }}
+    </p>
+  </div>
+
+  <!-- Selection Section -->
+  <div class="selection-grid">
+
+    <!-- CLASS -->
+    <div class="card fade-card">
+      <label class="sub-title">{{ 'certificate.selectClass' | translate }}</label>
+      <select 
+        [(ngModel)]="selectedClassId" 
+        (change)="onClassChange()"
+        class="custom-select"
+      >
+        <option value="">{{ 'certificate.classPlaceholder' | translate }}</option>
+        <option *ngFor="let class of classes" [value]="class.id">
+          {{ class.className }} - {{ class.classYear }}
+        </option>
+      </select>
+    </div>
+
+    <!-- STUDENT -->
+    <div class="card fade-card" *ngIf="students.length > 0">
+      <label class="sub-title">{{ 'certificate.selectStudent' | translate }}</label>
+      <select 
+        [(ngModel)]="selectedStudentId"
+        class="custom-select"
+      >
+        <option value="">{{ 'certificate.studentPlaceholder' | translate }}</option>
+        <option *ngFor="let student of students" [value]="student.id">
+          {{ student.fullName }}
+        </option>
+      </select>
+    </div>
+
+    <!-- CERTIFICATE TYPE -->
+    <div class="card fade-card" *ngIf="selectedStudentId">
+      <label class="sub-title">{{ 'certificate.certificateType' | translate }}</label>
+      <select 
+        [(ngModel)]="selectedDegreeType"
+        class="custom-select"
+      >
+        <option *ngFor="let type of degreeTypes" [value]="type">
+          {{ type }}
+        </option>
+      </select>
+    </div>
+
+  </div>
+
+  <!-- ACTION BUTTONS -->
+  <div 
+    class="button-row fade-card"
+    *ngIf="selectedStudentId && selectedDegreeType">
+
+    <button 
+      (click)="generateCertificate(false)"
+      [disabled]="isGenerating"
+      class="primary-btn action-btn"
+    >
+      {{ isGenerating ? ('certificate.generating' | translate) : ('certificate.generatePdf' | translate) }}
+    </button>
+
+    <button 
+      (click)="generateCertificate(true)"
+      [disabled]="isGenerating"
+      class="primary-btn action-btn green-btn"
+    >
+      {{ isGenerating ? ('certificate.saving' | translate) : ('certificate.generateAndSave' | translate) }}
+    </button>
+
+    <button 
+      (click)="saveToDatabase()"
+      [disabled]="isSaving"
+      class="danger-btn action-btn purple-btn"
+    >
+      {{ isSaving ? ('certificate.saving' | translate) : ('certificate.saveOnly' | translate) }}
+    </button>
+  </div>
+
+  <!-- MESSAGE -->
+  <div 
+    *ngIf="message" 
+    class="message fade-card"
+    [class.message-success]="messageType === 'success'"
+    [class.message-error]="messageType === 'error'"
+  >
+    {{ message }}
+  </div>
+
+  <!-- STUDENTS GRID -->
+  <div *ngIf="students.length > 0" class="students-section fade-card">
+    
+    <h3 class="main-title">{{ 'certificate.studentsInClass' | translate }}</h3>
+
+    <div class="students-grid">
+      <div 
+        *ngFor="let student of students"
+        class="student-card"
+        [class.student-selected]="selectedStudentId === student.id"
+        (click)="selectStudent(student)"
+      >
+        <h4>{{ student.fullName }}</h4>
+        <p class="text-muted">{{ 'certificate.studentId' | translate }}: {{ student.id }}</p>
+      </div>
+    </div>
+
+  </div>
+
+</div>
