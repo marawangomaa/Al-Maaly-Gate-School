@@ -60,7 +60,7 @@ export class AdminCertificateGenerationComponent {
   }
 
   loadStudents(classId: string): void {
-    this.classService.getStudents(classId).subscribe({
+    this.classService.getStudentsByClass(classId).subscribe({
       next: (response) => {
         if (response.success) {
           this.students = response.data;

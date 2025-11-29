@@ -99,7 +99,13 @@
         "CREATE_TEST": "Create Test",
         "TEST_LIST": "Tests List",
         "CLASS_GRADES": "Class Grades",
-
+        "YEAR-GRADE": "Grades",
+        "ACCEPT_TEACHERS": "Accept Teachers",
+        "ALL_STUDENT_TEST_RESULT": "Student Test Restults",
+        "STUDENT_ACCOUNTS": "Students Accounts",
+        "TEACHER_ACCOUNTS": "Teachers Accounts",
+        "ADMIN_SUBJECT_MANAGEMENT": "Subject Management",
+        "ADMIN_ANALYTICS": "Analytics",
 
         "TESTS": "Tests",
         "GRADES": "Grades",

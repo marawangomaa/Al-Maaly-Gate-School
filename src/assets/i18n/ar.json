@@ -97,6 +97,13 @@
         "CREATE_TEST": "انشاء اختبار",
         "TEST_LIST": "قائمة الاختبارات",
         "CLASS_GRADES": "درجات الصف",
+        "YEAR-GRADE": "العام الدراسى",
+        "ACCEPT_TEACHERS": "قبول المعلمين",
+        "ALL_STUDENT_TEST_RESULT": "درجات اختبارات التلاميذ",
+        "STUDENT_ACCOUNTS": "ايميلات الطلاب",
+        "TEACHER_ACCOUNTS": "ايميلات المعلمين",
+        "ADMIN_SUBJECT_MANAGEMENT": "ادارة المواد",
+        "ADMIN_ANALYTICS": "تحليلات",
 
         "Admin_Follow_Tests": "متابعة نتائج الاختبارات",
         "Admin_Students_Accounts": "حسابات الطلاب",

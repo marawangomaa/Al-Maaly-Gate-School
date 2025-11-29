@@ -40,10 +40,10 @@ export class ClassGradesComponent implements OnInit {
   }
 
   initializeClassForm(classId: string) {
-    this.classService.getStudents(classId).subscribe(studentRes => {
+    this.classService.getStudentsByClass(classId).subscribe(studentRes => {
       const students = studentRes.data;
 
-      this.classService.getSubjects(classId).subscribe(subRes => {
+      this.classService.getSubjectsByClass(classId).subscribe(subRes => {
         console.log(subRes);
         
         const subjects = subRes.data;

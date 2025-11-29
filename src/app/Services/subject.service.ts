@@ -10,10 +10,9 @@ import { environment } from '../Environment/Environment';
 export class SubjectService {
 
   private readonly apiUrl = `${environment.apiBaseUrl}/subject`;
-  private baseUrl = 'https://localhost:7073/api/Subject';
+  constructor(private http: HttpClient) { }
 
-  constructor(private http: HttpClient) {}
-
+  // Subject CRUD Operations
   getAll(): Observable<ApiResponse<SubjectViewDto[]>> {
     return this.http.get<ApiResponse<SubjectViewDto[]>>(this.apiUrl);
   }
@@ -22,20 +21,20 @@ export class SubjectService {
     return this.http.get<ApiResponse<SubjectViewDto>>(`${this.apiUrl}/${id}`);
   }
 
-  create(dto: SubjectCreateDto): Observable<ApiResponse<SubjectViewDto>> {
-    return this.http.post<ApiResponse<SubjectViewDto>>(this.apiUrl, dto);
+  create(subject: SubjectCreateDto): Observable<ApiResponse<SubjectViewDto>> {
+    return this.http.post<ApiResponse<SubjectViewDto>>(this.apiUrl, subject);
   }
 
-  update(id: string, dto: SubjectUpdateDto): Observable<ApiResponse<SubjectViewDto>> {
-    return this.http.put<ApiResponse<SubjectViewDto>>(`${this.apiUrl}/${id}`, dto);
+  update(id: string, subject: SubjectUpdateDto): Observable<ApiResponse<SubjectViewDto>> {
+    return this.http.put<ApiResponse<SubjectViewDto>>(`${this.apiUrl}/${id}`, subject);
   }
 
   delete(id: string): Observable<ApiResponse<boolean>> {
     return this.http.delete<ApiResponse<boolean>>(`${this.apiUrl}/${id}`);
   }
-  getByClass(classId: string): Observable<ApiResponse<SubjectCreateDto[]>> {
-    return this.http.get<ApiResponse<SubjectCreateDto[]>>(
-      `${this.baseUrl}/class/${classId}`
-    );
+
+  // Get subjects by grade
+  getSubjectsByGrade(gradeId: string): Observable<ApiResponse<SubjectViewDto[]>> {
+    return this.http.get<ApiResponse<SubjectViewDto[]>>(`${this.apiUrl}/grade/${gradeId}`);
   }
 }

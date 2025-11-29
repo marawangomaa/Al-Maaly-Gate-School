@@ -1,0 +1,651 @@
+/* =========================================================
+   ADMIN ALL CLASSES COMPONENT STYLES
+   ========================================================= */
+
+.dashboard-app {
+  font-family: var(--font-body);
+  background: var(--color-bg);
+  color: var(--color-text-light-bg);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Main container */
+.dashboard-panel {
+  margin-left: 9.2rem;
+  padding: 3rem;
+  padding-bottom: 8rem;
+}
+
+/* Topbar */
+.topbar {
+  padding: var(--space-lg) 0;
+  border-bottom: 1px solid var(--color-gray-200);
+  margin-bottom: var(--space-xl);
+}
+
+.title-wrap {
+  gap: var(--space-lg);
+}
+
+.topbar .logo-glow {
+  width: 5.6rem;
+  height: 5.6rem;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--color-primary-100), var(--color-primary-200));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary-500);
+  font-size: 2.4rem;
+  box-shadow: 0 0.6rem 2rem rgba(78, 90, 255, 0.15);
+}
+
+.topbar h1 {
+  font-size: var(--font-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-light-bg);
+  margin-bottom: var(--space-xs);
+}
+
+.topbar small {
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+}
+
+/* Glass card */
+.glass-card {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  box-shadow: 0 0.6rem 2rem rgba(0, 0, 0, 0.12);
+  border-color: var(--color-primary-200);
+}
+
+/* Filters card */
+.filters-card {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+}
+
+/* Small cards */
+.small-card {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--color-gray-200);
+  background: var(--color-bg-secondary);
+  height: 100%;
+}
+
+.small-card .card-header {
+  background: var(--color-primary-100);
+  border-bottom: 1px solid var(--color-gray-200);
+  padding: var(--space-md) var(--space-lg);
+}
+
+.small-card .card-header h6 {
+  color: var(--color-primary-500);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-base);
+}
+
+/* Alerts */
+.glass-alert {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-gray-200);
+  color: var(--color-text-light-bg);
+  padding: var(--space-lg);
+  border-radius: var(--radius-md);
+  font-size: var(--font-base);
+}
+
+/* Table modern look */
+.table-modern {
+  background: var(--color-bg);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.table-modern thead {
+  background: var(--color-primary-100);
+}
+
+.table-modern thead tr th {
+  color: var(--color-primary-500);
+  font-weight: var(--font-weight-semibold);
+  border-bottom: 2px solid var(--color-primary-200);
+  padding: var(--space-lg) var(--space-md);
+  font-size: var(--font-base);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.table-modern tbody tr {
+  border-bottom: 1px solid var(--color-gray-200);
+  transition: all 0.2s ease;
+}
+
+.table-modern tbody tr:hover {
+  background: var(--color-primary-100);
+  transform: translateY(-1px);
+}
+
+.table-modern td {
+  padding: var(--space-lg) var(--space-md);
+  vertical-align: middle;
+  color: var(--color-text-light-bg);
+  font-size: var(--font-base);
+}
+
+.th-narrow {
+  width: 60px;
+}
+
+.th-actions {
+  width: 200px;
+}
+
+.muted-id {
+  color: var(--color-text-muted);
+  font-size: var(--font-sm);
+  font-family: monospace;
+}
+
+/* Badges */
+.grade-badge {
+  background: linear-gradient(135deg, var(--color-primary-300), var(--color-primary-400));
+  color: white;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-full);
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-semibold);
+  box-shadow: 0 0.2rem 0.8rem rgba(0, 102, 255, 0.3);
+}
+
+.status-badge {
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-sm);
+  display: inline-block;
+}
+
+.status-badge.bg-success {
+  background: var(--color-primary-400) !important;
+  color: white;
+}
+
+.status-badge.bg-warning {
+  background: #f59e0b !important;
+  color: white;
+}
+
+.status-badge.bg-danger {
+  background: var(--color-danger-400) !important;
+  color: white;
+}
+
+.status-badge.bg-secondary {
+  background: var(--color-gray-400) !important;
+  color: white;
+}
+
+.subject-badge {
+  background: var(--color-gray-200);
+  color: var(--color-text-light-bg);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-sm);
+  margin-right: var(--space-xs);
+  margin-bottom: var(--space-xs);
+}
+
+.class-badge {
+  background: var(--color-primary-100);
+  color: var(--color-primary-500);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-sm);
+  margin-right: var(--space-xs);
+  margin-bottom: var(--space-xs);
+  border: 1px solid var(--color-primary-200);
+}
+
+/* Buttons */
+.btn-create {
+  background: linear-gradient(135deg, var(--color-primary-300), var(--color-primary-400));
+  border: none;
+  box-shadow: 0 0.4rem 1.2rem rgba(0, 102, 255, 0.25);
+  padding: var(--space-md) var(--space-xl);
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-semibold);
+  color: white;
+  font-size: var(--font-base);
+  transition: all 0.3s ease;
+}
+
+.btn-create:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.6rem 2rem rgba(0, 102, 255, 0.35);
+  background: linear-gradient(135deg, var(--color-primary-400), var(--color-primary-500));
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--color-gray-300);
+  color: var(--color-text-light-bg);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+}
+
+.btn-ghost:hover {
+  background: var(--color-primary-100);
+  border-color: var(--color-primary-300);
+  color: var(--color-primary-500);
+  transform: translateY(-1px);
+}
+
+/* Button groups */
+.btn-actions {
+  gap: var(--space-xs);
+}
+
+.btn-actions .btn {
+  padding: var(--space-sm);
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+}
+
+.btn-actions .btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Form controls */
+.form-control {
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  font-size: var(--font-base);
+  background: var(--color-bg);
+  color: var(--color-text-light-bg);
+  transition: all 0.2s ease;
+}
+
+.form-control:focus {
+  border-color: var(--color-primary-300);
+  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+  outline: none;
+}
+
+.form-control-sm {
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-sm);
+}
+
+.form-label {
+  color: var(--color-text-light-bg);
+  font-weight: var(--font-weight-medium);
+  margin-bottom: var(--space-xs);
+}
+
+/* =========================================================
+   MODAL POSITIONING FIXES
+   ========================================================= */
+
+/* Modal backdrop and positioning */
+.modal {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.modal-dialog {
+  margin-top: 8rem; /* Push modals down from the top */
+  margin-bottom: 4rem; /* Add space at the bottom */
+  display: flex;
+  align-items: center;
+  min-height: calc(100vh - 12rem); /* Ensure modals are vertically centered with offset */
+}
+
+/* Specific adjustments for different modal sizes */
+.modal-dialog.modal-lg {
+  margin-top: 6rem;
+  margin-bottom: 3rem;
+}
+
+.modal-dialog.modal-xl {
+  margin-top: 4rem;
+  margin-bottom: 2rem;
+}
+
+/* Modal content specific adjustments */
+.glass-modal {
+  background: var(--color-bg);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.25);
+  max-height: 85vh; /* Limit height to prevent touching edges */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Modal header improvements */
+.glass-modal .modal-header {
+  background: var(--color-primary-100);
+  border-bottom: 1px solid var(--color-gray-200);
+  padding: var(--space-lg) var(--space-xl);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.glass-modal .modal-title {
+  color: var(--color-primary-500);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+/* Modal body scrolling */
+.glass-modal .modal-body {
+  padding: var(--space-xl);
+  overflow-y: auto;
+  flex: 1;
+  max-height: calc(85vh - 140px); /* Account for header and footer */
+}
+
+/* Modal footer improvements */
+.glass-modal .modal-footer {
+  border-top: 1px solid var(--color-gray-200);
+  padding: var(--space-lg) var(--space-xl);
+  background: var(--color-bg-secondary);
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+}
+
+/* Specific adjustments for the class details modal */
+#classDetailsModal .modal-body {
+  padding: var(--space-lg);
+}
+
+#classDetailsModal .row {
+  margin: calc(-1 * var(--space-md));
+}
+
+#classDetailsModal .row > [class*="col-"] {
+  padding: var(--space-md);
+}
+
+/* Assign teacher modal specific adjustments */
+#assignTeacherModal .modal-body {
+  padding: var(--space-lg);
+}
+
+#assignTeacherModal .table-responsive {
+  max-height: 400px;
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+}
+
+/* Bulk operations modal adjustments */
+#bulkOperationsModal .modal-body {
+  padding: var(--space-lg);
+}
+
+#bulkOperationsModal .table-responsive {
+  max-height: 300px;
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+}
+
+/* Create class modal adjustments */
+#createClassModal .modal-body {
+  padding: var(--space-xl);
+}
+
+/* Responsive modal positioning */
+@media (max-width: 768px) {
+  .modal-dialog {
+    margin: 2rem;
+    margin-top: 4rem;
+    min-height: auto;
+  }
+  
+  .glass-modal .modal-body {
+    padding: var(--space-lg);
+    max-height: calc(100vh - 200px);
+  }
+  
+  .glass-modal .modal-header,
+  .glass-modal .modal-footer {
+    padding: var(--space-md) var(--space-lg);
+  }
+}
+
+@media (max-width: 576px) {
+  .modal-dialog {
+    margin: 1rem;
+    margin-top: 3rem;
+  }
+  
+  .glass-modal .modal-body {
+    padding: var(--space-md);
+    max-height: calc(100vh - 150px);
+  }
+}
+
+/* Dark theme modal adjustments */
+[data-theme="dark"] .glass-modal {
+  background: var(--color-bg);
+  border-color: var(--color-gray-300);
+  box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .glass-modal .modal-header {
+  background: var(--color-primary-200);
+  border-bottom-color: var(--color-gray-300);
+}
+
+[data-theme="dark"] .glass-modal .modal-footer {
+  background: var(--color-bg-secondary);
+  border-top-color: var(--color-gray-300);
+}
+
+/* Smooth modal animations */
+.modal.fade .modal-dialog {
+  transform: translateY(-50px) scale(0.95);
+  transition: transform 0.3s ease-out;
+}
+
+.modal.show .modal-dialog {
+  transform: translateY(0) scale(1);
+}
+
+/* Ensure modal backdrop is properly styled */
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-backdrop.show {
+  opacity: 1;
+}
+
+/* Fix for modal close button positioning */
+.modal-header .btn-close {
+  padding: var(--space-md);
+  margin: calc(-1 * var(--space-md));
+  margin-left: auto;
+}
+
+/* Ensure modal content doesn't get too wide on large screens */
+@media (min-width: 1400px) {
+  .modal-xl {
+    max-width: 1140px;
+  }
+  
+  .modal-lg {
+    max-width: 900px;
+  }
+}
+
+/* Subject cards */
+.subject-card {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+  height: 100%;
+}
+
+.subject-card:hover {
+  border-color: var(--color-primary-300);
+  transform: translateY(-2px);
+  box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.1);
+}
+
+.subject-card .card-title {
+  color: var(--color-text-light-bg);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-base);
+  margin-bottom: var(--space-sm);
+}
+
+/* Pagination */
+.pagination {
+  gap: var(--space-xs);
+}
+
+.page-link {
+  border: 1px solid var(--color-gray-300);
+  color: var(--color-text-light-bg);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  font-size: var(--font-sm);
+  transition: all 0.2s ease;
+}
+
+.page-link:hover {
+  background: var(--color-primary-100);
+  border-color: var(--color-primary-300);
+  color: var(--color-primary-500);
+}
+
+.page-item.active .page-link {
+  background: var(--color-primary-400);
+  border-color: var(--color-primary-400);
+  color: white;
+}
+
+.page-item.disabled .page-link {
+  background: var(--color-gray-100);
+  color: var(--color-gray-400);
+  border-color: var(--color-gray-300);
+}
+
+/* Divider */
+.divider {
+  border: none;
+  border-top: 1px solid var(--color-gray-200);
+  margin: var(--space-xl) 0;
+}
+
+/* Loading spinner */
+.spinner-border {
+  color: var(--color-primary-400);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .dashboard-panel {
+    margin-left: 0;
+    padding: var(--space-lg);
+    padding-bottom: var(--space-2xl);
+  }
+  
+  .topbar {
+    flex-direction: column;
+    gap: var(--space-lg);
+    text-align: center;
+  }
+  
+  .title-wrap {
+    justify-content: center;
+  }
+  
+  .btn-actions {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .th-actions {
+    width: auto;
+  }
+  
+  .table-modern {
+    font-size: var(--font-sm);
+  }
+  
+  .table-modern td,
+  .table-modern th {
+    padding: var(--space-md) var(--space-sm);
+  }
+}
+
+/* Dark theme adjustments */
+[data-theme="dark"] .glass-card,
+[data-theme="dark"] .filters-card,
+[data-theme="dark"] .small-card,
+[data-theme="dark"] .glass-modal,
+[data-theme="dark"] .subject-card {
+  border-color: var(--color-gray-300);
+  box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .table-modern tbody tr:hover {
+  background: var(--color-primary-200);
+}
+
+[data-theme="dark"] .btn-ghost:hover {
+  background: var(--color-primary-200);
+}
+
+[data-theme="dark"] .form-control {
+  background: var(--color-bg-secondary);
+  border-color: var(--color-gray-300);
+  color: var(--color-text-light-bg);
+}
+
+[data-theme="dark"] .subject-badge {
+  background: var(--color-gray-300);
+  color: var(--color-text-dark-bg);
+}
+
+/* Animation enhancements */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.glass-card,
+.filters-card,
+.small-card {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Focus states for accessibility */
+button:focus-visible,
+a:focus-visible,
+.form-control:focus-visible {
+  outline: 2px solid var(--color-primary-400);
+  outline-offset: 2px;
+}

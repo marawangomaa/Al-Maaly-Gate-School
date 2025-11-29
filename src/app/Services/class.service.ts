@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { ApiResponse, ClassDto, ClassViewDto } from '../Interfaces/iclass';
-import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { ClassDto, ClassViewDto, CreateClassDto, UpdateClassDto } from '../Interfaces/iclass';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../Environment/Environment';
 import { StudentModel } from '../Interfaces/istudent';
-import { SubjectCreateDto } from '../Interfaces/isubject';
+import { SubjectViewDto } from '../Interfaces/isubject';
+import { ApiResponse } from '../Interfaces/auth';
+import { AuthService } from './auth.service';
 
 export interface ClassModel {
   id: string;
@@ -21,37 +23,65 @@ export interface ClassModel {
   providedIn: 'root'
 })
 export class ClassService {
-  private readonly apiUrl = `${environment.apiBaseUrl}/class`;
+  private apiUrl = `${environment.apiBaseUrl}/class`;
+  private token: string | null;
+  private headers: HttpHeaders;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {
+    this.token = this.authService.getToken();
+    this.headers = new HttpHeaders(
+      {
+        'Authorization': `Bearer ${this.token}`
+      })
+   }
 
+  // Class CRUD Operations
   getAll(): Observable<ApiResponse<ClassViewDto[]>> {
     return this.http.get<ApiResponse<ClassViewDto[]>>(this.apiUrl);
   }
 
   getById(id: string): Observable<ApiResponse<ClassViewDto>> {
-    return this.http.get<ApiResponse<ClassViewDto>>(`${this.apiUrl}/class/${id}`);
+    return this.http.get<ApiResponse<ClassViewDto>>(`${this.apiUrl}/${id}`);
   }
 
-  create(dto: ClassDto): Observable<ApiResponse<ClassDto>> {
-    return this.http.post<ApiResponse<ClassDto>>(this.apiUrl, dto);
+  create(classData: CreateClassDto): Observable<ApiResponse<ClassDto>> {
+    return this.http.post<ApiResponse<ClassDto>>(this.apiUrl, classData);
   }
 
-  update(id: string, dto: ClassDto): Observable<ApiResponse<ClassDto>> {
-    return this.http.put<ApiResponse<ClassDto>>(`${this.apiUrl}/${id}`, dto);
+  update(id: string, classData: UpdateClassDto): Observable<ApiResponse<ClassDto>> {
+    return this.http.put<ApiResponse<ClassDto>>(`${this.apiUrl}/${id}`, classData);
   }
 
-  delete(id: string): Observable<ApiResponse<string>> {
-    return this.http.delete<ApiResponse<string>>(`${this.apiUrl}/${id}`);
+  delete(id: string): Observable<ApiResponse<boolean>> {
+    return this.http.delete<ApiResponse<boolean>>(`${this.apiUrl}/${id}`);
   }
-  getStudents(classId: string): Observable<ApiResponse<StudentModel[]>> {
-    return this.http.get<ApiResponse<StudentModel[]>>(
-      `${this.apiUrl}/${classId}/students`
-    );
+
+  // Additional Class Operations
+  getAllWithTeachers(): Observable<ApiResponse<ClassViewDto[]>> {
+    return this.http.get<ApiResponse<ClassViewDto[]>>(`${this.apiUrl}/with-teachers`);
   }
-  getSubjects(classId: string): Observable<ApiResponse<SubjectCreateDto[]>> {
-    return this.http.get<ApiResponse<SubjectCreateDto[]>>(
-      `${this.apiUrl}/${classId}/subjects`
-    );
+
+  getStudentsByClass(classId: string): Observable<ApiResponse<StudentModel[]>> {
+    return this.http.get<ApiResponse<StudentModel[]>>(`${this.apiUrl}/${classId}/students`);
+  }
+
+  getSubjectsByClass(classId: string): Observable<ApiResponse<SubjectViewDto[]>> {
+    return this.http.get<ApiResponse<SubjectViewDto[]>>(`${this.apiUrl}/${classId}/subjects`);
+  }
+
+  getClassStatistics(classId: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${classId}/statistics`, { headers: this.headers });
+}
+
+  exportClassData(classId: string): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/${classId}/export`, {
+      responseType: 'blob'
+    });
+  }
+
+  exportAllClasses(): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/export-all`, {
+      responseType: 'blob'
+    });
   }
 }
