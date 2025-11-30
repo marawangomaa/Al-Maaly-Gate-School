@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { istudentExamSubmission } from '../Interfaces/istudentExamSubmission';
 import { istudentExamAnswer } from '../Interfaces/istudentExamAnswer';
+import { StudentAnswerWithQuestionDto } from '../Interfaces/StudentAnswerWithQuestionDto';
 
 
 @Injectable({
@@ -19,6 +20,10 @@ export class StudentExamAnswerService {
       `${this.apiUrl}/SubmitExam`,
       submission
     );
+  }
+
+  StudentResultWithQuestions(studentId: string, examId: string): Observable<ApiResponse<StudentAnswerWithQuestionDto[]>> {
+    return this.http.get<ApiResponse<StudentAnswerWithQuestionDto[]>>(`${this.apiUrl}/studentAnswerWithCorrection/${studentId}/${examId}`);
   }
 
 }

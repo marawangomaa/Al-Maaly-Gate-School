@@ -3,7 +3,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Va
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { QuestionService } from '../../../../../../Services/question.service';
-import { QuestionTypes } from '../../../../../../Interfaces/iquestoin';
+import { QuestionTypes } from "../../../../../../Interfaces/QuestionTypes";
 
 @Component({
   selector: 'app-create-question',
@@ -17,137 +17,205 @@ export class CreateQuestionComponent {
 
   constructor(private fb: FormBuilder, private qs: QuestionService) {
     this.form = this.fb.group({
-      type: ['Choices', Validators.required], // default backend type
-      text: ['', [Validators.required, Validators.minLength(3)]],
-      options: this.fb.array([]),
-      correctOptionId: [''],
-      difficulty: ['medium', Validators.required],
-      tags: [''],
-      trueFalseAnswer: ['true']
+      content: ['', [Validators.required, Validators.minLength(3)]],
+      degree: [1, [Validators.required, Validators.min(1)]],
+      type: ['Choices', Validators.required],
+      choices: this.fb.array([]),
+      correctChoiceId: [null],
+      trueAndFalses: [null],
+      correctTextAnswer: ['']
     });
 
     this.setupDefaultOptions();
   }
 
-  get options(): FormArray {
-    return this.form.get('options') as FormArray;
+  // دالة واحدة للحصول على الخيارات
+  get choices(): FormArray {
+    return this.form.get('choices') as FormArray;
   }
 
   getOptionControl(index: number): FormControl {
-    return this.options.at(index).get('text') as FormControl;
+    const optionGroup = this.choices.at(index) as FormGroup;
+    return optionGroup.get('text') as FormControl;
   }
 
   setupDefaultOptions() {
-    this.options.clear();
+    this.choices.clear();
     if (this.form.value.type === 'Choices') {
       this.addOption();
       this.addOption();
     }
   }
 
+  setupConnectionOptions() {
+    this.choices.clear();
+    for (let i = 0; i < 6; i++) {
+      this.choices.push(
+        this.fb.group({
+          id: 'opt_' + i,
+          text: ['', Validators.required],
+          isCorrect: [false]
+        })
+      );
+    }
+  }
+
+  onCorrectCheckboxChange() {
+    const selected = this.choices.controls.filter((c) => (c as FormGroup).get('isCorrect')?.value);
+    if (selected.length > 2) {
+      const lastChecked = selected[selected.length - 1] as FormGroup;
+      lastChecked.get('isCorrect')?.setValue(false);
+      alert('✅ يمكنك اختيار إجابتين صحيحتين فقط');
+    }
+  }
+
   onTypeChange() {
+    const type = this.form.get('type')?.value;
+
+    // إعادة تعيين جميع القيم
     this.form.patchValue({
-      correctOptionId: '',
-      trueFalseAnswer: 'true'
+      correctChoiceId: null,
+      trueAndFalses: null,
+      correctTextAnswer: ''
     });
-    this.setupDefaultOptions();
+
+    this.choices.clear();
+
+    if (type === 'Choices') {
+      this.setupDefaultOptions();
+    } else if (type === 'TrueOrFalse') {
+      this.form.patchValue({ trueAndFalses: true });
+    } else if (type === 'Connection') {
+      this.setupConnectionOptions();
+    }
+    // نوع Complete لا يحتاج خيارات
   }
 
   addOption() {
     const id = 'opt_' + Date.now().toString(36) + Math.floor(Math.random() * 1000);
-    this.options.push(this.fb.group({
+    this.choices.push(this.fb.group({
       id: [id],
       text: ['', Validators.required]
     }));
   }
 
   removeOption(index: number) {
-    this.options.removeAt(index);
-    if (!this.options.value.find((o: any) => o.id === this.form.value.correctOptionId)) {
-      this.form.patchValue({ correctOptionId: '' });
+    const removedOption = this.choices.at(index).value;
+    this.choices.removeAt(index);
+
+    // إذا كان الخيار المحذوف هو الصحيح، إعادة تعيين correctChoiceId
+    if (removedOption.id === this.form.value.correctChoiceId) {
+      this.form.patchValue({ correctChoiceId: null });
     }
   }
 
   markCorrect(id: string) {
-    this.form.patchValue({ correctOptionId: id });
+    this.form.patchValue({ correctChoiceId: id });
   }
 
   resetForm() {
     this.form.reset({
       type: 'Choices',
-      difficulty: 'medium',
-      tags: '',
-      trueFalseAnswer: 'true'
+      degree: 1,
+      content: '',
+      correctChoiceId: null,
+      trueAndFalses: null,
+      textAnswer: ''
     });
     this.setupDefaultOptions();
   }
 
-  private difficultyToDegree(d: string): number {
-    switch (d) {
-      case 'easy': return 1;
-      case 'hard': return 5;
-      default: return 3; // medium
-    }
-  }
-
   save() {
-  if (this.form.invalid) {
-    this.form.markAllAsTouched();
-    return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      alert('❌ يرجى ملء جميع الحقول المطلوبة');
+      return;
+    }
+
+    const value = this.form.value;
+    const teacherId = localStorage.getItem('teacherId') || '';
+
+    // التحقق من صحة البيانات حسب النوع
+    if (value.type === 'Choices') {
+      if (!value.correctChoiceId) {
+        alert('❌ يرجى تحديد الإجابة الصحيحة');
+        return;
+      }
+      if (this.choices.length < 2) {
+        alert('❌ يرجى إضافة خيارين على الأقل');
+        return;
+      }
+    } else if (value.type === 'Connection') {
+      const correctCount = this.choices.controls.filter((c) => (c as FormGroup).get('isCorrect')?.value).length;
+      if (correctCount !== 2) {
+        alert('✅ يجب تحديد إجابتين صحيحتين بالضبط');
+        return;
+      }
+    } else if (value.type === 'Complete' && !value.correctTextAnswer) {
+      alert('❌ يرجى إدخال الإجابة');
+      return;
+    } else if (value.type === 'TrueOrFalse' && value.trueAndFalses === null) {
+      alert('❌ يرجى اختيار true أو false');
+      return;
+    }
+
+    // ✅ Convert string → enum number
+    let typeNum: QuestionTypes;
+    switch (value.type) {
+      case 'Choices':
+        typeNum = QuestionTypes.Choices;
+        break;
+      case 'Connection':
+        typeNum = QuestionTypes.Connection;
+        break;
+      case 'Complete':
+        typeNum = QuestionTypes.Complete;
+        break;
+      default:
+        typeNum = QuestionTypes.TrueOrFalse;
+        break;
+    }
+
+    const base: any = {
+      content: value.content,
+      degree: value.degree || 1,
+      teacherId: teacherId,
+      type: typeNum
+    };
+
+    let payload: any;
+
+    if (value.type === 'Choices') {
+      const correctId = value.correctChoiceId;
+      const choices = value.choices.map((o: any) => ({
+        text: o.text,
+        isCorrect: o.id === correctId
+      }));
+      payload = { ...base, choices };
+    } else if (value.type === 'TrueOrFalse') {
+      payload = { ...base, trueAndFalses: value.trueAndFalses };
+    } else if (value.type === 'Connection') {
+      const choices = value.choices.map((o: any) => ({
+        text: o.text,
+        isCorrect: o.isCorrect
+      }));
+      payload = { ...base, choices };
+    } else {
+      payload = { ...base, correctTextAnswer: value.correctTextAnswer };
+    }
+
+    console.log("✅ Final Payload Sent:", payload);
+
+    this.qs.create(payload).subscribe({
+      next: res => {
+        console.log('✅ Created Successfully:', res);
+        alert('✅ تم حفظ السؤال بنجاح');
+        this.resetForm();
+      },
+      error: err => {
+        console.error('❌ Create Error:', err);
+        alert('❌ حدث خطأ أثناء حفظ السؤال');
+      }
+    });
   }
-
-  const value = this.form.value;
-  const teacherId = localStorage.getItem('teacherId') || '';
-
-  // ✅ Convert string → enum number
-  let typeNum: QuestionTypes;
-  switch (value.type) {
-    case 'Choices':
-      typeNum = QuestionTypes.Choices;
-      break;
-    case 'TrueOrFalse':
-      typeNum = QuestionTypes.TrueOrFalse;
-      break;
-    default:
-      typeNum = QuestionTypes.Text;
-      break;
-  }
-
-  const base: any = {
-    content: value.text,
-    degree: this.difficultyToDegree(value.difficulty),
-    teacherId: teacherId,
-    type: typeNum   // ✅ SEND NUMBER NOT STRING
-  };
-
-  let payload: any;
-
-  if (value.type === 'Choices') {
-    const correctId = value.correctOptionId;
-
-    const choices = value.options.map((o: any) => ({
-      text: o.text,
-      isCorrect: o.id === correctId
-    }));
-
-    payload = { ...base, choices };
-
-  } else if (value.type === 'TrueOrFalse') {
-    payload = { ...base, trueAndFalses: value.trueFalseAnswer === 'true' };
-
-  } else {
-    payload = { ...base };
-  }
-
-  console.log("✅ Final Payload Sent:", payload);
-
-  this.qs.create(payload).subscribe({
-    next: res => {
-      console.log('✅ Created Successfully:', res);
-      this.resetForm();
-    },
-    error: err => console.error('❌ Create Error:', err)
-  });
-}
-
 }

@@ -12,4 +12,5 @@ export interface istudentExamResults {
   teacherName: string;
   examName: string;
   date: Date;
+  canShowCorrection?: boolean;
 }

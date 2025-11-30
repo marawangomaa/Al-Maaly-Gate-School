@@ -2,66 +2,72 @@
   <div class="container">
     <h3 class="main-title mb-4 d-flex align-items-center gap-2">
       <i class="bi bi-journal-text text-primary fs-4"></i>
-      {{ 'TEST.LIST_TITLE' | translate }}
+      {{ "TEST.LIST_TITLE" | translate }}
     </h3>
 
-    <div *ngIf="(exams$ | async) as exams">
+    <div *ngIf="exams$ | async as exams">
       <ng-container *ngIf="exams.length > 0; else emptyState">
         <div class="row g-4">
           <div class="col-lg-4 col-md-6" *ngFor="let exam of exams">
             <div class="card test-card h-100 shadow-sm border-0">
               <div class="card-body d-flex flex-column">
-
                 <h5 class="fw-bold mb-2 text-truncate">{{ exam.examName }}</h5>
 
                 <ul class="list-unstyled small text-secondary flex-grow-1">
-
                   <!-- Subject -->
                   <li>
                     <i class="bi bi-book me-1 text-primary"></i>
-                    {{ 'TEST.SUBJECT' | translate }}: {{ exam.subjectName }}
+                    {{ "TEST.SUBJECT" | translate }}: {{ exam.subjectName }}
                   </li>
 
                   <!-- Class -->
                   <li>
                     <i class="bi bi-people me-1 text-primary"></i>
-                    {{ 'TEST.CLASS' | translate }}: {{ exam.className }}
+                    {{ "TEST.CLASS" | translate }}: {{ exam.className }}
                   </li>
 
                   <!-- Start -->
                   <li>
                     <i class="bi bi-clock me-1 text-primary"></i>
-                    {{ 'TEST.START' | translate }}: {{ exam.start | date:'short' }}
+                    {{ "TEST.START" | translate }}:
+                    {{ exam.start | date : "short" }}
                   </li>
 
                   <!-- End -->
                   <li>
                     <i class="bi bi-clock-history me-1 text-primary"></i>
-                    {{ 'TEST.END' | translate }}: {{ exam.end | date:'short' }}
+                    {{ "TEST.END" | translate }}:
+                    {{ exam.end | date : "short" }}
                   </li>
 
                   <!-- Full Mark -->
                   <li>
                     <i class="bi bi-graph-up me-1 text-success"></i>
-                    {{ 'TEST.MAX' | translate }}: {{ exam.fullMark }}
+                    {{ "TEST.MAX" | translate }}: {{ exam.fullMark }}
                   </li>
 
                   <!-- Min Mark -->
                   <li>
                     <i class="bi bi-graph-down me-1 text-danger"></i>
-                    {{ 'TEST.MIN' | translate }}: {{ exam.minMark }}
+                    {{ "TEST.MIN" | translate }}: {{ exam.minMark }}
                   </li>
                 </ul>
 
                 <div class="mt-auto d-flex justify-content-between">
-                  <button class="btn btn-sm btn-outline-primary" (click)="showDetails(exam.id)">
-                    <i class="bi bi-eye me-1"></i> {{ 'TEST.VIEW' | translate }}
+                  <button
+                    class="btn btn-sm btn-outline-primary"
+                    (click)="showDetails(exam.id)"
+                  >
+                    <i class="bi bi-eye me-1"></i> {{ "TEST.VIEW" | translate }}
                   </button>
-                  <button class="btn btn-sm btn-outline-danger" (click)="delete(exam.id)">
-                    <i class="bi bi-trash3 me-1"></i> {{ 'TEST.DELETE' | translate }}
+                  <button
+                    class="btn btn-sm btn-outline-danger"
+                    (click)="delete(exam.id)"
+                  >
+                    <i class="bi bi-trash3 me-1"></i>
+                    {{ "TEST.DELETE" | translate }}
                   </button>
                 </div>
-
               </div>
             </div>
           </div>
@@ -71,7 +77,7 @@
       <ng-template #emptyState>
         <div class="empty-state text-center py-5">
           <i class="bi bi-inbox text-muted fs-1 mb-3 d-block"></i>
-          <p class="text-muted mb-0">{{ 'TEST.NO_TESTS' | translate }}</p>
+          <p class="text-muted mb-0">{{ "TEST.NO_TESTS" | translate }}</p>
         </div>
       </ng-template>
     </div>
@@ -81,50 +87,70 @@
   <div class="custom-modal-backdrop" *ngIf="selectedExamDetails">
     <div class="custom-modal-dialog">
       <div class="modal-content p-4">
-
         <div class="modal-header border-0 pb-3">
-          <h5 class="modal-title">{{ selectedExamDetails.examName || 'Exam Details' }}</h5>
-          <button type="button" class="btn-close" aria-label="Close" (click)="closeDetails()"></button>
+          <h5 class="modal-title">
+            {{ selectedExamDetails.examName || "Exam Details" }}
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            aria-label="Close"
+            (click)="closeDetails()"
+          ></button>
         </div>
 
         <div class="modal-body">
-
           <!-- Exam Info Section -->
           <div class="exam-info mb-4">
             <div class="row g-2">
-
               <div class="col-md-6">
-                <p><strong>Class:</strong> {{ selectedExamDetails.className }}</p>
+                <p>
+                  <strong>Class:</strong> {{ selectedExamDetails.className }}
+                </p>
               </div>
 
               <div class="col-md-6">
-                <p><strong>Subject:</strong> {{ selectedExamDetails.subjectName }}</p>
+                <p>
+                  <strong>Subject:</strong>
+                  {{ selectedExamDetails.subjectName }}
+                </p>
               </div>
 
               <div class="col-md-6">
-                <p><strong>Start:</strong> {{ selectedExamDetails.start | date:'short' }}</p>
+                <p>
+                  <strong>Start:</strong>
+                  {{ selectedExamDetails.start | date : "short" }}
+                </p>
               </div>
 
               <div class="col-md-6">
-                <p><strong>End:</strong> {{ selectedExamDetails.end | date:'short' }}</p>
+                <p>
+                  <strong>End:</strong>
+                  {{ selectedExamDetails.end | date : "short" }}
+                </p>
               </div>
 
               <div class="col-md-6">
-                <p><strong>Full Mark:</strong> {{ selectedExamDetails.fullMark }}</p>
+                <p>
+                  <strong>Full Mark:</strong> {{ selectedExamDetails.fullMark }}
+                </p>
               </div>
 
               <div class="col-md-6">
-                <p><strong>Min Mark:</strong> {{ selectedExamDetails.minMark }}</p>
+                <p>
+                  <strong>Min Mark:</strong> {{ selectedExamDetails.minMark }}
+                </p>
               </div>
-
             </div>
           </div>
 
           <!-- Questions Section -->
           <h6 class="mb-3">Questions</h6>
 
-          <div *ngFor="let q of selectedExamDetails.questions" class="question-card mb-3 p-3 rounded shadow-sm">
-
+          <div
+            *ngFor="let q of selectedExamDetails.questions"
+            class="question-card mb-3 p-3 rounded shadow-sm"
+          >
             <p>
               <strong>Q:</strong> {{ q.content }}
               <span class="badge bg-primary ms-2">{{ q.type }}</span>
@@ -132,34 +158,58 @@
             </p>
 
             <!-- Multiple Choice -->
-            <ul *ngIf="q.type === 'Choices' && q.choices.length" class="list-unstyled ms-3">
+            <ul
+              *ngIf="q.type === QuestionTypes.Choices && q.choices?.length"
+              class="list-unstyled ms-3"
+            >
               <li *ngFor="let c of q.choices" class="py-1">
-                <span [class.text-success]="c.isCorrect" [class.fw-bold]="c.isCorrect">
+                <span
+                  [class.text-success]="c.isCorrect"
+                  [class.fw-bold]="c.isCorrect"
+                >
                   {{ c.text }} <span *ngIf="c.isCorrect">(Correct)</span>
                 </span>
               </li>
             </ul>
 
             <!-- True/False -->
-            <div *ngIf="q.type === 'TrueOrFalse'" class="ms-3">
+            <div *ngIf="q.type === QuestionTypes.TrueOrFalse" class="ms-3">
               <span>Option: True / False</span>
             </div>
-
-            <!-- Text Answer -->
-            <div *ngIf="q.type === 'Text'" class="ms-3">
-              <p><em>Answer:</em> {{ q.textAnswer || 'No answer provided' }}</p>
+            <!-- Complete -->
+            <div *ngIf="q.type === QuestionTypes.Complete" class="ms-3">
+              <p><em>Answer:</em> {{ q.textAnswer || "No answer provided" }}</p>
             </div>
+
+            <!-- Connection -->
+               <ul
+              *ngIf="q.type === QuestionTypes.Connection && q.choices?.length"
+              class="list-unstyled ms-3"
+            >
+              <li *ngFor="let c of q.choices" class="py-1">
+                <span
+                  [class.text-success]="c.isCorrect"
+                  [class.fw-bold]="c.isCorrect"
+                >
+                  {{ c.text }} <span *ngIf="c.isCorrect">(Correct)</span>
+                </span>
+              </li>
+            </ul>
 
           </div>
 
         </div>
 
         <div class="modal-footer border-0 pt-3">
-          <button type="button" class="btn btn-secondary" (click)="closeDetails()">Close</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="closeDetails()"
+          >
+            Close
+          </button>
         </div>
-
       </div>
     </div>
   </div>
-
 </section>

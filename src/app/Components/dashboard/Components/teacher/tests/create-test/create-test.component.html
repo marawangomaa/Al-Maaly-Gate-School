@@ -1,31 +1,41 @@
 <section class="standard-section-layout test-creator">
   <div class="container">
-    <h3 class="main-title mb-3">{{ 'TEST.CREATE_TITLE' | translate }}</h3>
+    <h3 class="main-title mb-3">{{ "TEST.CREATE_TITLE" | translate }}</h3>
 
     <div class="card p-0 overflow-hidden">
       <form (ngSubmit)="createTest()" #testForm="ngForm" class="test-form">
         <div class="row g-0">
-
           <!-- LEFT SETTINGS -->
           <div class="col-lg-4 p-4 border-end settings-column">
-
             <div class="settings-card mb-4">
               <h4 class="sub-title mb-3">
-                <i class="bi bi-gear me-2"></i>{{ 'TEST.SETTINGS' | translate }}
+                <i class="bi bi-gear me-2"></i>{{ "TEST.SETTINGS" | translate }}
               </h4>
 
               <!-- TITLE -->
               <div class="mb-3">
-                <label class="form-label small-label">{{ 'TEST.TITLE' | translate }}</label>
-                <input type="text" class="form-control input-lg"
-                  [(ngModel)]="testTitle" name="testTitle" required />
+                <label class="form-label small-label">{{
+                  "TEST.TITLE" | translate
+                }}</label>
+                <input
+                  type="text"
+                  class="form-control input-lg"
+                  [(ngModel)]="testTitle"
+                  name="testTitle"
+                  required
+                />
               </div>
 
               <!-- START DATE -->
               <div class="mb-3">
                 <label class="form-label small-label">Start Date</label>
-                <input type="date" class="form-control"
-                  [(ngModel)]="startDate" name="startDate" required />
+                <input
+                  type="date"
+                  class="form-control"
+                  [(ngModel)]="startDate"
+                  name="startDate"
+                  required
+                />
               </div>
 
               <!-- START TIME -->
@@ -34,39 +44,56 @@
 
                 <div class="d-flex gap-2">
                   <!-- Time input (12-hour format) -->
-                  <input type="number" class="form-control"
-                        [(ngModel)]="startHour"
-                        name="startHour"
-                        min="1" max="12"
-                        placeholder="HH"
-                        required style="max-width: 80px;" />
+                  <input
+                    type="number"
+                    class="form-control"
+                    [(ngModel)]="startHour"
+                    name="startHour"
+                    min="1"
+                    max="12"
+                    placeholder="HH"
+                    required
+                    style="max-width: 80px"
+                  />
 
-                  <input type="number" class="form-control"
-                        [(ngModel)]="startMinute"
-                        name="startMinute"
-                        min="0" max="59"
-                        placeholder="MM"
-                        required style="max-width: 80px;" />
+                  <input
+                    type="number"
+                    class="form-control"
+                    [(ngModel)]="startMinute"
+                    name="startMinute"
+                    min="0"
+                    max="59"
+                    placeholder="MM"
+                    required
+                    style="max-width: 80px"
+                  />
 
                   <!-- AM/PM -->
-                  <select class="form-select"
-                          [(ngModel)]="startPeriod"
-                          name="startPeriod"
-                          required style="max-width: 90px;">
+                  <select
+                    class="form-select"
+                    [(ngModel)]="startPeriod"
+                    name="startPeriod"
+                    required
+                    style="max-width: 90px"
+                  >
                     <option value="AM">AM</option>
                     <option value="PM">PM</option>
                   </select>
                 </div>
               </div>
 
-
               <!-- CLASS DROPDOWN -->
               <div class="mb-3">
                 <label class="form-label small-label">Class</label>
-                <select class="form-select" [(ngModel)]="classId" name="classId" required>
+                <select
+                  class="form-select"
+                  [(ngModel)]="classId"
+                  name="classId"
+                  required
+                >
                   <option value="" disabled selected>Select Class</option>
                   <option *ngFor="let c of classes" [value]="c.id">
-                    {{ c.name }}
+                    {{ c.class }}
                   </option>
                 </select>
               </div>
@@ -74,7 +101,12 @@
               <!-- SUBJECT DROPDOWN -->
               <div class="mb-3">
                 <label class="form-label small-label">Subject</label>
-                <select class="form-select" [(ngModel)]="subjectId" name="subjectId" required>
+                <select
+                  class="form-select"
+                  [(ngModel)]="subjectId"
+                  name="subjectId"
+                  required
+                >
                   <option value="" disabled selected>Select Subject</option>
                   <option *ngFor="let s of subjects" [value]="s.id">
                     {{ s.subjectName }}
@@ -83,19 +115,121 @@
               </div>
 
               <!-- NUMBERS -->
-              <div class="row g-2 mb-3">
-                <div class="col-6">
+              <div class="col g-2 mb-3">
+                <div class="col">
                   <label class="form-label small-label">Duration (Hours)</label>
-                  <input type="number" class="form-control" [(ngModel)]="duration" name="duration" min="1" required />
+                  <input
+                    type="number"
+                    class="form-control"
+                    [(ngModel)]="duration"
+                    name="duration"
+                    min="1"
+                    required
+                  />
                 </div>
+                <!-- عرض الدرجات المحسوبة تلقائياً -->
+                <div class="col">
+                  <label class="form-label small-label"
+                    >Total Questions Degree</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control bg-light"
+                    [value]="totalQuestionsDegree"
+                    readonly
+                    disabled
+                  />
+                  <small class="text-muted">Auto-calculated</small>
+                </div>
+
+                <div class="col">
+                  <label class="form-label small-label"
+                    >Passing Degree (50%)</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control bg-light"
+                    [value]="calculatedMinDegree"
+                    readonly
+                    disabled
+                  />
+                  <small class="text-muted">Auto-calculated</small>
+                </div>
+              </div>
+
+              <div class="row g-2 mb-3" *ngIf="false">
+                <div class="col-6"></div>
                 <div class="col-3">
                   <label class="form-label small-label">Max</label>
-                  <input type="number" class="form-control" [(ngModel)]="maxDegree" name="maxDegree" />
+                  <input
+                    type="number"
+                    class="form-control"
+                    [(ngModel)]="maxDegree"
+                    name="maxDegree"
+                    [value]="calculatedMaxDegree"
+                    hidden
+                  />
                 </div>
                 <div class="col-3">
                   <label class="form-label small-label">Min</label>
-                  <input type="number" class="form-control" [(ngModel)]="minDegree" name="minDegree" />
+                  <input
+                    type="number"
+                    class="form-control"
+                    [(ngModel)]="minDegree"
+                    name="minDegree"
+                    [value]="calculatedMinDegree"
+                    hidden
+                  />
                 </div>
+              </div>
+
+              <!-- عرض ملخص الدرجات -->
+              <div
+                class="alert alert-info"
+                *ngIf="selectedQuestions.length > 0"
+              >
+                <h6>Degree Summary:</h6>
+                <ul class="mb-0">
+                  <li>
+                    Total Selected Questions:
+                    <strong>{{ selectedQuestions.length }}</strong>
+                  </li>
+                  <li>
+                    Total Questions Degree:
+                    <strong>{{ totalQuestionsDegree }}</strong>
+                  </li>
+                  <li>
+                    Passing Degree (50%):
+                    <strong>{{ calculatedMinDegree }}</strong>
+                  </li>
+                  <li>
+                    Maximum Degree: <strong>{{ calculatedMaxDegree }}</strong>
+                  </li>
+                </ul>
+              </div>
+
+              <div
+                class="alert alert-info"
+                *ngIf="selectedQuestions.length > 0"
+              >
+                <h6>Auto-calculated Degrees:</h6>
+                <p class="mb-1">
+                  Total Questions Degree:
+                  <strong>{{ totalQuestionsDegree }}</strong>
+                </p>
+                <p class="mb-0">Passing Rate: <strong>50%</strong></p>
+              </div>
+
+              <div
+                class="alert alert-info"
+                *ngIf="selectedQuestions.length > 0"
+              >
+                <h6>Auto-calculated Degrees:</h6>
+                <p class="mb-1">
+                  Total Questions Degree:
+                  <strong>{{ totalQuestionsDegree }}</strong>
+                </p>
+                <p class="mb-0">Passing Rate: <strong>50%</strong></p>
               </div>
 
               <div class="mt-4 d-grid">
@@ -103,37 +237,86 @@
                   <i class="bi bi-save me-2"></i> Create Test
                 </button>
               </div>
-
             </div>
           </div>
 
           <!-- RIGHT SIDE = QUESTIONS -->
           <div class="col-lg-8 p-4 questions-column">
-
-            <ng-container *ngIf="(questions$ | async) as grouped">
-
+            <ng-container *ngIf="questions$ | async as grouped">
               <!-- MCQ -->
               <div class="question-group mb-4">
                 <div class="group-header d-flex justify-content-between">
-                  <h5 class="mb-0"><i class="bi bi-ui-radios-grid me-2"></i>MCQ</h5>
+                  <h5 class="mb-0">
+                    <i class="bi bi-ui-radios-grid me-2"></i>MCQ
+                  </h5>
                   <span class="badge">{{ grouped.mcq.length }}</span>
                 </div>
 
                 <div class="list-grid mt-3">
-                  <div *ngFor="let q of grouped.mcq" class="form-check q-item mb-2">
-                    <input type="checkbox"
+                  <div
+                    *ngFor="let q of grouped.mcq"
+                    class="form-check q-item mb-2"
+                  >
+                    <input
+                      type="checkbox"
                       class="form-check-input visually-hidden"
                       [checked]="isSelected(q.id)"
                       (change)="toggleQuestion(q.id, $event)"
-                      id="mcq-{{ q.id }}" />
+                      id="mcq-{{ q.id }}"
+                    />
 
-                    <label class="form-check-label q-label" for="mcq-{{ q.id }}">
+                    <label
+                      class="form-check-label q-label"
+                      for="mcq-{{ q.id }}"
+                    >
                       <div class="q-left">
                         <i class="bi bi-question-circle q-icon"></i>
-                        <div class="q-text">{{ q.text }}</div>
+                        <div class="q-text">{{ q.content }}</div>
                       </div>
                       <div class="q-right">
-                        <span class="chip">{{ q.choices?.length }} choices</span>
+                        <span class="chip"
+                          >{{ q.choices?.length }} choices</span
+                        >
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Connection -->
+              <div class="question-group mb-4">
+                <div class="group-header d-flex justify-content-between">
+                  <h5 class="mb-0">
+                    <i class="bi bi-ui-radios-grid me-2"></i>Connection
+                  </h5>
+                  <span class="badge">{{ grouped.connection.length }}</span>
+                </div>
+
+                <div class="list-grid mt-3">
+                  <div
+                    *ngFor="let q of grouped.connection"
+                    class="form-check q-item mb-2"
+                  >
+                    <input
+                      type="checkbox"
+                      class="form-check-input visually-hidden"
+                      [checked]="isSelected(q.id)"
+                      (change)="toggleQuestion(q.id, $event)"
+                      id="connection-{{ q.id }}"
+                    />
+
+                    <label
+                      class="form-check-label q-label"
+                      for="connection-{{ q.id }}"
+                    >
+                      <div class="q-left">
+                        <i class="bi bi-question-circle q-icon"></i>
+                        <div class="q-text">{{ q.content }}</div>
+                      </div>
+                      <div class="q-right">
+                        <span class="chip"
+                          >{{ q.choices?.length }} choices</span
+                        >
                       </div>
                     </label>
                   </div>
@@ -143,22 +326,29 @@
               <!-- TRUE/FALSE -->
               <div class="question-group mb-4">
                 <div class="group-header d-flex justify-content-between">
-                  <h5 class="mb-0"><i class="bi bi-toggle2-on me-2"></i>True / False</h5>
+                  <h5 class="mb-0">
+                    <i class="bi bi-toggle2-on me-2"></i>True / False
+                  </h5>
                   <span class="badge">{{ grouped.truefalse.length }}</span>
                 </div>
 
                 <div class="list-grid mt-3">
-                  <div *ngFor="let q of grouped.truefalse" class="form-check q-item mb-2">
-                    <input type="checkbox"
+                  <div
+                    *ngFor="let q of grouped.truefalse"
+                    class="form-check q-item mb-2"
+                  >
+                    <input
+                      type="checkbox"
                       class="form-check-input visually-hidden"
                       [checked]="isSelected(q.id)"
                       (change)="toggleQuestion(q.id, $event)"
-                      id="tf-{{ q.id }}" />
+                      id="tf-{{ q.id }}"
+                    />
 
                     <label class="form-check-label q-label" for="tf-{{ q.id }}">
                       <div class="q-left">
                         <i class="bi bi-check2-circle q-icon"></i>
-                        <div class="q-text">{{ q.text }}</div>
+                        <div class="q-text">{{ q.content }}</div>
                       </div>
                       <div class="q-right">
                         <span class="chip">{{ q.trueAndFalses }}</span>
@@ -168,25 +358,35 @@
                 </div>
               </div>
 
-              <!-- TEXT -->
+              <!-- Complete -->
               <div class="question-group">
                 <div class="group-header d-flex justify-content-between">
-                  <h5 class="mb-0"><i class="bi bi-chat-text-fill me-2"></i>Text Questions</h5>
-                  <span class="badge">{{ grouped.text.length }}</span>
+                  <h5 class="mb-0">
+                    <i class="bi bi-chat-text-fill me-2"></i>Text Questions
+                  </h5>
+                  <span class="badge">{{ grouped.complete.length }}</span>
                 </div>
 
                 <div class="list-grid mt-3">
-                  <div *ngFor="let q of grouped.text" class="form-check q-item mb-2">
-                    <input type="checkbox"
+                  <div
+                    *ngFor="let q of grouped.complete"
+                    class="form-check q-item mb-2"
+                  >
+                    <input
+                      type="checkbox"
                       class="form-check-input visually-hidden"
                       [checked]="isSelected(q.id)"
                       (change)="toggleQuestion(q.id, $event)"
-                      id="text-{{ q.id }}" />
+                      id="complete-{{ q.id }}"
+                    />
 
-                    <label class="form-check-label q-label" for="text-{{ q.id }}">
+                    <label
+                      class="form-check-label q-label"
+                      for="complete-{{ q.id }}"
+                    >
                       <div class="q-left">
                         <i class="bi bi-file-text q-icon"></i>
-                        <div class="q-text">{{ q.text }}</div>
+                        <div class="q-text">{{ q.content }}</div>
                       </div>
                       <div class="q-right">
                         <span class="chip">{{ q.degree }} marks</span>
@@ -195,9 +395,7 @@
                   </div>
                 </div>
               </div>
-
             </ng-container>
-
           </div>
         </div>
       </form>

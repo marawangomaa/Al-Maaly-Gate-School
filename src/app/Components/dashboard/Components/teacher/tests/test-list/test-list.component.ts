@@ -5,6 +5,7 @@ import { Observable, of } from 'rxjs';
 import { ExamService } from '../../../../../../Services/exam.service';
 import { ExamViewDto, ExamDetailsViewDto } from '../../../../../../Interfaces/iexam';
 import { PLATFORM_ID } from '@angular/core';
+import { QuestionTypes } from "../../../../../../Interfaces/QuestionTypes";
 
 interface ApiResponse<T> {
   success: boolean;
@@ -20,7 +21,7 @@ interface ApiResponse<T> {
   styleUrl: './test-list.component.css'
 })
 export class TestListComponent {
-
+  QuestionTypes = QuestionTypes;
   exams$!: Observable<ExamViewDto[]>;
   selectedExamDetails: ExamDetailsViewDto | null = null;
   isBrowser = false;

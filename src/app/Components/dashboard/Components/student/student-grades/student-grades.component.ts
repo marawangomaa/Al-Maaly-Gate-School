@@ -4,6 +4,9 @@ import { istudentExamResults } from '../../../../../Interfaces/istudentExamResul
 import { ApiResponse } from '../../../../../Interfaces/auth';
 import { StudentExamsResultsService } from '../../../../../Services/student-exams-results.service';
 import { AuthService } from '../../../../../Services/auth.service';
+import { StudentAnswerWithQuestionDto } from '../../../../../Interfaces/StudentAnswerWithQuestionDto';
+import { StudentExamAnswerService } from '../../../../../Services/student-exam-answer.service';
+import { QuestionTypes } from '../../../../../Interfaces/QuestionTypes';
 
 @Component({
   selector: 'app-student-grades',
@@ -12,15 +15,21 @@ import { AuthService } from '../../../../../Services/auth.service';
   styleUrl: './student-grades.component.css'
 })
 export class StudentGradesComponent implements OnInit {
+  QuestionsTypes = QuestionTypes;
+  showCorrectionModal: boolean = false;
+  selectedCorrectionData: StudentAnswerWithQuestionDto[] = [];
+  loadingCorrection: boolean = false;
+
   studentId!: string;
   ExamsResults?: istudentExamResults[];
 
   _StudentExamsResults = inject(StudentExamsResultsService);
+  _StudentِExamAnswer = inject(StudentExamAnswerService);
   _Auth = inject(AuthService);
 
   ngOnInit() {
     this.studentId = this._Auth.getStudentId()!;
-    this.GetProfileInformation(this.studentId);
+    this.StudentExamsResults(this.studentId);
   }
 
   Stgrades: any[] = [
@@ -110,7 +119,7 @@ export class StudentGradesComponent implements OnInit {
     }
   }
 
-  GetProfileInformation(studentId: string) {
+  StudentExamsResults(studentId: string) {
     this._StudentExamsResults.GetStudentExamsResults(studentId).subscribe({
       next: (response: ApiResponse<istudentExamResults[]>) => {
         this.ExamsResults = response.data;
@@ -121,4 +130,135 @@ export class StudentGradesComponent implements OnInit {
       }
     });
   }
+
+  showCorrection(studentId: string, examId: string) {
+    this.loadingCorrection = true;
+    this.showCorrectionModal = true;
+
+    // تحتاج لاستدعاء service لجلب بيانات التصحيح
+    this._StudentِExamAnswer.StudentResultWithQuestions(studentId, examId).subscribe({
+      next: (response: ApiResponse<StudentAnswerWithQuestionDto[]>) => {
+        if (response.success && response.data) {
+          this.selectedCorrectionData = response.data;
+          console.log(response.data, response.success);
+        }
+        this.loadingCorrection = false;
+      },
+      error: (error) => {
+        console.error('Error loading correction:', error);
+        this.loadingCorrection = false;
+      }
+    });
+  }
+
+  closeCorrectionModal() {
+    this.showCorrectionModal = false;
+    this.selectedCorrectionData = [];
+  }
+
+  // دوال مساعدة للعرض في المودال
+  getStudentAnswerText(answer: StudentAnswerWithQuestionDto): string {
+    switch (answer.questionType) {
+      case 'TrueOrFalse':
+        return answer.studentTrueFalseAnswer !== null && answer.studentTrueFalseAnswer !== undefined
+          ? (answer.studentTrueFalseAnswer ? 'صح' : 'خطأ')
+          : 'No Answer';
+
+      case 'Choices':
+        return answer.studentChoiceText || 'No Answer';
+
+      case 'Complete':
+        return answer.studentTextAnswer || 'No Answer';
+
+      case 'Connection':
+        return answer.studentConnectionTexts || 'No Answer';
+
+      default:
+        return 'No Answer';
+    }
+  }
+
+  getCorrectAnswerText(answer: StudentAnswerWithQuestionDto): string {
+    switch (answer.questionType) {
+      case 'TrueOrFalse':
+        return answer.correctTrueFalseAnswer !== null && answer.correctTrueFalseAnswer !== undefined
+          ? (answer.correctTrueFalseAnswer ? 'صح' : 'خطأ')
+          : 'No Answer';
+
+      case 'Choices':
+        return answer.correctChoiceText || 'No Answer';
+
+      case 'Complete':
+        return answer.correctTextAnswer || 'No Answer';
+
+      case 'Connection':
+        return answer.correctConnectionTexts || 'No Answer';
+
+      default:
+        return '';
+    }
+  }
+
+
+  getAnswerStatusClass(answer: StudentAnswerWithQuestionDto): string {
+    return answer.isCorrect ? 'correct-answer' : 'wrong-answer';
+  }
+
+  getTotalCorrectAnswers(): number {
+    return this.selectedCorrectionData.filter(a => a.isCorrect).length;
+  }
+
+  getTotalQuestions(): number {
+    return this.selectedCorrectionData.length;
+  }
+
+  getTotalStudentMarks(): number {
+    return this.selectedCorrectionData.reduce((total, answer) => total + (answer.studentMark || 0), 0);
+  }
+
+  getTotalPossibleMarks(): number {
+    return this.selectedCorrectionData.reduce((total, answer) => total + answer.questionDegree, 0);
+  }
+
+  getStatusClass(status: string): string {
+    switch (status.toLowerCase()) {
+      case 'مكتمل':
+        return 'status-completed';
+      case 'قيد الانتظار':
+        return 'status-pending';
+      case 'ملغى':
+        return 'status-failed';
+      default:
+        return '';
+    }
+  }
+  // دوال إضافية للـ HTML
+  getExamTypeBadge(examName: string): string {
+    const examTypes: { [key: string]: string } = {
+      'اختبار نهائي': 'bg-danger',
+      'اختبار منتصف الفصل': 'bg-warning',
+      'اختبار أسبوعي': 'bg-info',
+      'عمل السنة': 'bg-success',
+      'اختبار تجريبي': 'bg-secondary'
+    };
+
+    return examTypes[examName] || 'bg-primary';
+  }
+
+  getMarkClass(percentage: number): string {
+    if (percentage >= 90) return 'text-success';
+    if (percentage >= 75) return 'text-primary';
+    if (percentage >= 50) return 'text-warning';
+    return 'text-danger';
+  }
+
+  getPercentage(): number {
+    const totalMarks = this.getTotalStudentMarks();
+    const totalDegree = this.getTotalPossibleMarks();
+
+    if (totalDegree === 0) return 0;
+
+    return Math.round((totalMarks / totalDegree) * 100);
+  }
+
 }

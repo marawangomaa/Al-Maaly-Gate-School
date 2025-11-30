@@ -117,14 +117,14 @@ export class ExamComponent implements OnInit {
     if (!this.studentAnswers[questionId]) {
       this.studentAnswers[questionId] = {};
     }
-    this.studentAnswers[questionId].left = leftId;
+    this.studentAnswers[questionId].ConnectionLeftId = leftId;
   }
 
   onSelectConnectionRight(questionId: string, rightId: string) {
     if (!this.studentAnswers[questionId]) {
       this.studentAnswers[questionId] = {};
     }
-    this.studentAnswers[questionId].right = rightId;
+    this.studentAnswers[questionId].ConnectionRightId = rightId;
   }
 
   onTrueFalseChange(questionId: string, value: boolean) {
@@ -164,7 +164,7 @@ export class ExamComponent implements OnInit {
           return ans.CorrectTextAnswer?.trim().length > 0;
 
         case "Connection":
-          return ans.left && ans.right;
+          return ans.ConnectionLeftId && ans.ConnectionRightId;
 
         default:
           return false;
@@ -180,14 +180,13 @@ export class ExamComponent implements OnInit {
     }
 
     const answers: istudentExamAnswer[] = Object.entries(this.studentAnswers).map(
-      ([questionId, answer]: [string, any]) => ({
+      ([questionId, answer]: [string, istudentExamAnswer]) => ({
         questionId,
-        choiceId: answer.choiceId || null,
-        CorrectTextAnswer: answer.CorrectTextAnswer?.trim() || null,
-        ConnectionId: answer.left && answer.right
-          ? { leftId: answer.left, rightId: answer.right }
-          : null,
-        trueAndFalseAnswer: answer.trueAndFalseAnswer ?? null
+        choiceId: answer.choiceId,
+        CorrectTextAnswer: answer.CorrectTextAnswer?.trim(),
+        ConnectionLeftId: answer.ConnectionLeftId,
+        ConnectionRightId: answer.ConnectionRightId,
+        trueAndFalseAnswer: answer.trueAndFalseAnswer
       })
     );
 

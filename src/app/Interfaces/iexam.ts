@@ -1,3 +1,6 @@
+import { ChoiceViewDto } from "./iquestoin";
+import { QuestionTypes } from "./QuestionTypes";
+
 export interface CreateExamWithQuestionsDto {
   examName: string;
   subjectId: string;
@@ -41,14 +44,15 @@ export interface QuestionChoice {
 
 export interface QuestionViewDto {
   id: string;
-  content: string;          // instead of questionText
-  degree: number;           // instead of mark
-  type: string;             // instead of number
-  choices: QuestionChoice[];
-  trueAndFalses: boolean;
-  textAnswer: string | null;
+  content: string;
+  degree: number;
+  type: QuestionTypes;
+  teacherId: string;
+  choices?: ChoiceViewDto[] | null;
+  correctChoiceId?: string | null;
+  trueAndFalses?: boolean | null;
+  textAnswer?: string | null;
 }
-
 
 export interface ExamDetailsViewDto {
   id: string;

@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable, map } from 'rxjs';
-import { QuestionModel, QuestionService } from '../../../../../../Services/question.service';
+import { QuestionService } from '../../../../../../Services/question.service';
 import { ExamService } from '../../../../../../Services/exam.service';
 import { ClassService } from '../../../../../../Services/class.service';
 import { SubjectService } from '../../../../../../Services/subject.service';
 import { CreateExamWithQuestionsDto } from '../../../../../../Interfaces/iexam';
+import { QuestionModel } from '../../../../../../Interfaces/iquestoin';
+import { QuestionTypes } from "../../../../../../Interfaces/QuestionTypes";
 
 @Component({
   selector: 'app-create-test',
@@ -17,6 +19,7 @@ import { CreateExamWithQuestionsDto } from '../../../../../../Interfaces/iexam';
   styleUrls: ['./create-test.component.css'],
 })
 export class CreateTestComponent implements OnInit {
+  QuestionTypes = QuestionTypes;
 
   testTitle = '';
   classId = '';
@@ -29,6 +32,9 @@ export class CreateTestComponent implements OnInit {
   startMinute: number | null = null;
   startPeriod: "AM" | "PM" = "AM";
 
+  totalQuestionsDegree = 0;
+  calculatedMinDegree = 0;
+  calculatedMaxDegree = 0;
 
   duration = 1; // hours
 
@@ -43,7 +49,8 @@ export class CreateTestComponent implements OnInit {
   questions$!: Observable<{
     mcq: QuestionModel[];
     truefalse: QuestionModel[];
-    text: QuestionModel[];
+    complete: QuestionModel[];
+    connection: QuestionModel[];
   }>;
 
   constructor(
@@ -51,21 +58,50 @@ export class CreateTestComponent implements OnInit {
     private examService: ExamService,
     private classService: ClassService,
     private subjectService: SubjectService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.questionService.loadAll();
 
     this.questions$ = this.questionService.questions$.pipe(
       map((questions: QuestionModel[]) => ({
-        mcq: questions.filter(q => q.type === 'Choices'),
-        truefalse: questions.filter(q => q.type === 'TrueOrFalse'),
-        text: questions.filter(q => q.type === 'Text'),
+        mcq: questions.filter(q => q.type === QuestionTypes.Choices),
+        truefalse: questions.filter(q => q.type === QuestionTypes.TrueOrFalse),
+        connection: questions.filter(q => q.type === QuestionTypes.Connection),
+        complete: questions.filter(q => q.type === QuestionTypes.Complete),
       }))
     );
 
+
+
     this.classService.getAll().subscribe(res => this.classes = res.data);
     this.subjectService.getAll().subscribe(res => this.subjects = res.data);
+  }
+
+  calculateDegrees(): void {
+    // احصل على جميع الأسئلة
+    this.questionService.questions$.subscribe(questions => {
+      // احسب مجموع درجات الأسئلة المختارة
+      this.totalQuestionsDegree = questions
+        .filter(q => this.selectedQuestions.includes(q.id))
+        .reduce((sum, q) => sum + (q.degree || 0), 0);
+
+      // احسب درجة النجاح (50% من المجموع الكلي)
+      this.calculatedMinDegree = Math.round(this.totalQuestionsDegree * 0.5);
+
+      // أقصى درجة تساوي المجموع الكلي
+      this.calculatedMaxDegree = this.totalQuestionsDegree;
+
+      // تحديث القيم في النموذج تلقائياً
+      this.minDegree = this.calculatedMinDegree;
+      this.maxDegree = this.calculatedMaxDegree;
+    });
+  }
+
+  updateDegrees(): void {
+    if (this.selectedQuestions.length > 0) {
+      this.calculateDegrees();
+    }
   }
 
   isSelected(id: string): boolean {
@@ -76,6 +112,8 @@ export class CreateTestComponent implements OnInit {
     const checked = (event.target as HTMLInputElement).checked;
     if (checked) this.selectedQuestions.push(id);
     else this.selectedQuestions = this.selectedQuestions.filter(q => q !== id);
+
+    this.updateDegrees();
   }
 
   createTest() {
