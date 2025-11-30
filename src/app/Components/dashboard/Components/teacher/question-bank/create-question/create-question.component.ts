@@ -3,7 +3,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Va
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { QuestionService } from '../../../../../../Services/question.service';
-import { QuestionTypes } from '../../../../../../Interfaces/iquestoin';
+import { QuestionTypes } from "../../../../../../Interfaces/QuestionTypes";
 
 @Component({
   selector: 'app-create-question',
@@ -23,7 +23,7 @@ export class CreateQuestionComponent {
       choices: this.fb.array([]),
       correctChoiceId: [null],
       trueAndFalses: [null],
-      textAnswer: ['']
+      correctTextAnswer: ['']
     });
 
     this.setupDefaultOptions();
@@ -76,7 +76,7 @@ export class CreateQuestionComponent {
     this.form.patchValue({
       correctChoiceId: null,
       trueAndFalses: null,
-      textAnswer: ''
+      correctTextAnswer: ''
     });
 
     this.choices.clear();
@@ -102,7 +102,7 @@ export class CreateQuestionComponent {
   removeOption(index: number) {
     const removedOption = this.choices.at(index).value;
     this.choices.removeAt(index);
-    
+
     // إذا كان الخيار المحذوف هو الصحيح، إعادة تعيين correctChoiceId
     if (removedOption.id === this.form.value.correctChoiceId) {
       this.form.patchValue({ correctChoiceId: null });
@@ -151,7 +151,7 @@ export class CreateQuestionComponent {
         alert('✅ يجب تحديد إجابتين صحيحتين بالضبط');
         return;
       }
-    } else if (value.type === 'Complete' && !value.textAnswer) {
+    } else if (value.type === 'Complete' && !value.correctTextAnswer) {
       alert('❌ يرجى إدخال الإجابة');
       return;
     } else if (value.type === 'TrueOrFalse' && value.trueAndFalses === null) {
@@ -201,7 +201,7 @@ export class CreateQuestionComponent {
       }));
       payload = { ...base, choices };
     } else {
-      payload = { ...base, textAnswer: value.textAnswer };
+      payload = { ...base, correctTextAnswer: value.correctTextAnswer };
     }
 
     console.log("✅ Final Payload Sent:", payload);

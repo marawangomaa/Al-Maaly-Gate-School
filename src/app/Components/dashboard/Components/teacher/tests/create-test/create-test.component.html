@@ -93,7 +93,7 @@
                 >
                   <option value="" disabled selected>Select Class</option>
                   <option *ngFor="let c of classes" [value]="c.id">
-                    {{ c.name }}
+                    {{ c.class }}
                   </option>
                 </select>
               </div>
@@ -115,8 +115,8 @@
               </div>
 
               <!-- NUMBERS -->
-              <div class="row g-2 mb-3">
-                <div class="col-6">
+              <div class="col g-2 mb-3">
+                <div class="col">
                   <label class="form-label small-label">Duration (Hours)</label>
                   <input
                     type="number"
@@ -127,6 +127,38 @@
                     required
                   />
                 </div>
+                <!-- عرض الدرجات المحسوبة تلقائياً -->
+                <div class="col">
+                  <label class="form-label small-label"
+                    >Total Questions Degree</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control bg-light"
+                    [value]="totalQuestionsDegree"
+                    readonly
+                    disabled
+                  />
+                  <small class="text-muted">Auto-calculated</small>
+                </div>
+
+                <div class="col">
+                  <label class="form-label small-label"
+                    >Passing Degree (50%)</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control bg-light"
+                    [value]="calculatedMinDegree"
+                    readonly
+                    disabled
+                  />
+                  <small class="text-muted">Auto-calculated</small>
+                </div>
+              </div>
+
+              <div class="row g-2 mb-3" *ngIf="false">
+                <div class="col-6"></div>
                 <div class="col-3">
                   <label class="form-label small-label">Max</label>
                   <input
@@ -134,6 +166,8 @@
                     class="form-control"
                     [(ngModel)]="maxDegree"
                     name="maxDegree"
+                    [value]="calculatedMaxDegree"
+                    hidden
                   />
                 </div>
                 <div class="col-3">
@@ -143,8 +177,59 @@
                     class="form-control"
                     [(ngModel)]="minDegree"
                     name="minDegree"
+                    [value]="calculatedMinDegree"
+                    hidden
                   />
                 </div>
+              </div>
+
+              <!-- عرض ملخص الدرجات -->
+              <div
+                class="alert alert-info"
+                *ngIf="selectedQuestions.length > 0"
+              >
+                <h6>Degree Summary:</h6>
+                <ul class="mb-0">
+                  <li>
+                    Total Selected Questions:
+                    <strong>{{ selectedQuestions.length }}</strong>
+                  </li>
+                  <li>
+                    Total Questions Degree:
+                    <strong>{{ totalQuestionsDegree }}</strong>
+                  </li>
+                  <li>
+                    Passing Degree (50%):
+                    <strong>{{ calculatedMinDegree }}</strong>
+                  </li>
+                  <li>
+                    Maximum Degree: <strong>{{ calculatedMaxDegree }}</strong>
+                  </li>
+                </ul>
+              </div>
+
+              <div
+                class="alert alert-info"
+                *ngIf="selectedQuestions.length > 0"
+              >
+                <h6>Auto-calculated Degrees:</h6>
+                <p class="mb-1">
+                  Total Questions Degree:
+                  <strong>{{ totalQuestionsDegree }}</strong>
+                </p>
+                <p class="mb-0">Passing Rate: <strong>50%</strong></p>
+              </div>
+
+              <div
+                class="alert alert-info"
+                *ngIf="selectedQuestions.length > 0"
+              >
+                <h6>Auto-calculated Degrees:</h6>
+                <p class="mb-1">
+                  Total Questions Degree:
+                  <strong>{{ totalQuestionsDegree }}</strong>
+                </p>
+                <p class="mb-0">Passing Rate: <strong>50%</strong></p>
               </div>
 
               <div class="mt-4 d-grid">
@@ -198,6 +283,46 @@
                 </div>
               </div>
 
+              <!-- Connection -->
+              <div class="question-group mb-4">
+                <div class="group-header d-flex justify-content-between">
+                  <h5 class="mb-0">
+                    <i class="bi bi-ui-radios-grid me-2"></i>Connection
+                  </h5>
+                  <span class="badge">{{ grouped.connection.length }}</span>
+                </div>
+
+                <div class="list-grid mt-3">
+                  <div
+                    *ngFor="let q of grouped.connection"
+                    class="form-check q-item mb-2"
+                  >
+                    <input
+                      type="checkbox"
+                      class="form-check-input visually-hidden"
+                      [checked]="isSelected(q.id)"
+                      (change)="toggleQuestion(q.id, $event)"
+                      id="connection-{{ q.id }}"
+                    />
+
+                    <label
+                      class="form-check-label q-label"
+                      for="connection-{{ q.id }}"
+                    >
+                      <div class="q-left">
+                        <i class="bi bi-question-circle q-icon"></i>
+                        <div class="q-text">{{ q.content }}</div>
+                      </div>
+                      <div class="q-right">
+                        <span class="chip"
+                          >{{ q.choices?.length }} choices</span
+                        >
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
               <!-- TRUE/FALSE -->
               <div class="question-group mb-4">
                 <div class="group-header d-flex justify-content-between">
@@ -233,13 +358,13 @@
                 </div>
               </div>
 
-              <!-- TEXT -->
+              <!-- Complete -->
               <div class="question-group">
                 <div class="group-header d-flex justify-content-between">
                   <h5 class="mb-0">
                     <i class="bi bi-chat-text-fill me-2"></i>Text Questions
                   </h5>
-                  <span class="badge">{{ grouped.complete }}</span>
+                  <span class="badge">{{ grouped.complete.length }}</span>
                 </div>
 
                 <div class="list-grid mt-3">
@@ -252,12 +377,12 @@
                       class="form-check-input visually-hidden"
                       [checked]="isSelected(q.id)"
                       (change)="toggleQuestion(q.id, $event)"
-                      id="text-{{ q.id }}"
+                      id="complete-{{ q.id }}"
                     />
 
                     <label
                       class="form-check-label q-label"
-                      for="text-{{ q.id }}"
+                      for="complete-{{ q.id }}"
                     >
                       <div class="q-left">
                         <i class="bi bi-file-text q-icon"></i>

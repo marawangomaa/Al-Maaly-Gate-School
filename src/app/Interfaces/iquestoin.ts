@@ -1,9 +1,4 @@
-export enum QuestionTypes {
-  Complete = 0,
-  Connection = 1,
-  TrueOrFalse = 2,
-  Choices = 3
-}
+import { QuestionTypes } from "./QuestionTypes";
 
 export interface ChoiceDto {
   text: string;
@@ -12,7 +7,7 @@ export interface ChoiceDto {
 
 export interface CreateQuestionDto {
   content: string;
-  correctTextAnswer?: string | null;
+  CorrectTextAnswer?: string | null;
   degree: number;
   type: QuestionTypes;
   teacherId: string;
@@ -41,7 +36,7 @@ export interface QuestionViewDto {
   choices?: ChoiceViewDto[] | null;
   correctChoiceId?: string | null;
   trueAndFalses?: boolean | null;
-  textAnswer?: string | null;
+  CorrectTextAnswer?: string | null;
 }
 
 export interface QuestionModel {
@@ -52,5 +47,5 @@ export interface QuestionModel {
   choices?: ChoiceViewDto[] | null;
   correctChoiceId?: string | null;
   trueAndFalses?: boolean | null;
-  textAnswer?: string | null;
+  CorrectTextAnswer?: string | null;
 }

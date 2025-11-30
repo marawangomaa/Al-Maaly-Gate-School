@@ -1,4 +1,5 @@
-import { ChoiceViewDto, QuestionTypes } from "./iquestoin";
+import { ChoiceViewDto } from "./iquestoin";
+import { QuestionTypes } from "./QuestionTypes";
 
 export interface CreateExamWithQuestionsDto {
   examName: string;

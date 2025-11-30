@@ -6,9 +6,9 @@ import {
   CreateQuestionDto,
   QuestionViewDto,
   UpdateQuestionDto,
-  QuestionTypes,
   QuestionModel
 } from '../Interfaces/iquestoin';
+import { QuestionTypes } from "../Interfaces/QuestionTypes";
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../Environment/Environment';
 
@@ -79,7 +79,7 @@ export class QuestionService {
     return {
       id: q.id,
       content: q.content,
-      textAnswer: q.textAnswer ?? null,
+      CorrectTextAnswer: q.CorrectTextAnswer ?? null,
       type: QuestionTypes[type],
       degree: q.degree,
       choices: q.choices ?? [],

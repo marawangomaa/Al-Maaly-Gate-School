@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { QuestionModel, QuestionTypes } from '../../../../../../Interfaces/iquestoin';
+import { QuestionModel } from '../../../../../../Interfaces/iquestoin';
+import { QuestionTypes } from "../../../../../../Interfaces/QuestionTypes";
 import { Observable } from 'rxjs';
 import { QuestionService } from '../../../../../../Services/question.service';
 
