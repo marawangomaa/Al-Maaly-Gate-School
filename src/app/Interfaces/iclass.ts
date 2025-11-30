@@ -1,22 +1,59 @@
-export interface ClassDto {
-  classYear: string;
-  className: string;
-  id?: string;
-}
+import { ClassAppointmentDto } from "./iclassappointment";
+import { StudentModel } from "./istudent";
+import { TeacherViewDto } from "./iteacher";
 
 export interface ClassViewDto {
   id: string;
-  classYear: string;
   className: string;
-  teacherId: string;
-  teacher: any;
-  students: any[];
-  classAssets: any[];
-  classAppointments: any[];
+  gradeId: string;
+  gradeName: string;
+  studentCount: number;
+  teacherCount: number;
+  createdAt: string;
+  updatedAt?: string;
+  assignedTeachers: TeacherViewDto[];
+  students?: any[];
+  classAssets?: any[];
+  classAppointments?: ClassAppointmentDto[];
 }
 
-export interface ApiResponse<T> {
-  data: T;
-  success: boolean;
-  message: string;
+export interface ClassDto {
+  id: string;
+  className: string;
+  gradeId: string;
+}
+
+export interface CreateClassDto {
+  className: string;
+  gradeId: string;
+}
+
+export interface UpdateClassDto {
+  id: string;
+  className: string;
+  gradeId: string;
+}
+
+export interface ClassResultDto {
+  classId: string;
+  className: string;
+  averageMark: number;
+  studentCount: number;
+  examCount: number;
+}
+
+export interface ClassStatisticsDto {
+  classId: string;
+  className: string;
+  averageGpa: number;
+  attendanceRate: number;
+  completedExams: number;
+  pendingAssignments: number;
+  totalStudents: number;
+  totalTeachers: number;
+}
+
+export interface BulkMoveClassesDto {
+  classIds: string[];
+  newGradeId: string;
 }

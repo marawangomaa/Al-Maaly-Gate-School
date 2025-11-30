@@ -12,15 +12,14 @@ import { CreateTeacherDto, ServiceResult, TeacherViewDto, UpdateTeacherDto } fro
 })
 export class TeacherService {
 
-  private apiUrl: string = `${environment.apiBaseUrl}`;
+  private apiUrl: string = `${environment.apiBaseUrl}/Teacher`;
 
   constructor(private http: HttpClient) {}
   //Get All Teachers
   GetAllTeachers():Observable<Teacher[]>
   {
-    const url = `${this.apiUrl}/Teacher`;
     return ApiResponseHandler.handleApiResponse<Teacher[]>(
-      this.http.get<ApiResponse<Teacher[]>>(url)
+      this.http.get<ApiResponse<Teacher[]>>(this.apiUrl)
     );
   }
 

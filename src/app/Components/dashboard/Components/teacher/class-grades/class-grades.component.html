@@ -1,41 +1,97 @@
 <section class="teacher-classes container py-4">
   <h3 class="main-title mb-3">{{ 'TEACHER_CLASSES.TITLE' | translate }}</h3>
 
-  <div *ngFor="let cls of classes" class="class-card card mb-3 shadow-sm">
-    <div class="card-header d-flex justify-content-between align-items-center" (click)="toggleExpand(cls.id)">
+  <div *ngFor="let cls of classes" class="card class-card mb-3 shadow-sm">
+
+    <div class="card-header d-flex justify-content-between align-items-center"
+         (click)="toggleExpand(cls.id)">
       <div>
-        <strong>{{ cls.grade }} - {{ cls.section }}</strong> | {{ cls.subject }}
+        <strong>{{ cls.classYear }} - {{ cls.className }}</strong>
       </div>
+
       <button class="btn btn-sm btn-outline-primary">
         {{ expandedClassId === cls.id ? ('COMMON.COLLAPSE' | translate) : ('COMMON.EXPAND' | translate) }}
       </button>
     </div>
 
     <div *ngIf="expandedClassId === cls.id" class="card-body">
-      <form [formGroup]="gradeForms[cls.id]" (ngSubmit)="saveGrades(cls.id)">
-        <table class="table table-bordered text-center align-middle">
-          <thead>
-            <tr>
-              <th>{{ 'TEACHER_CLASSES.STUDENT_NAME' | translate }}</th>
-              <th>{{ 'TEACHER_CLASSES.TEST_GRADE' | translate }}</th>
-              <th>{{ 'TEACHER_CLASSES.MIDTERM_GRADE' | translate }}</th>
-              <th>{{ 'TEACHER_CLASSES.ATTENDANCE' | translate }}</th>
-            </tr>
-          </thead>
-          <tbody formArrayName="students">
-            <tr *ngFor="let student of getStudentArray(cls.id).controls; let i = index" [formGroupName]="i">
-              <td>{{ student.value.name }}</td>
-              <td><input type="number" class="form-control" formControlName="testGrade" /></td>
-              <td><input type="number" class="form-control" formControlName="midtermGrade" /></td>
-              <td><input type="number" class="form-control" formControlName="attendance" /></td>
-            </tr>
-          </tbody>
-        </table>
 
-        <button class="btn btn-success mt-2" type="submit">
+      <form [formGroup]="gradeForms[cls.id]" (ngSubmit)="saveGrades(cls.id)">
+
+        <div formArrayName="students">
+
+          <div *ngFor="let st of getStudentArray(cls.id).controls; let i = index"
+               [formGroupName]="i"
+               class="border rounded p-3 mb-3">
+
+            <h5 class="fw-bold">{{ st.get('studentName')?.value }}</h5>
+
+            <div formGroupName="exams">
+
+              <!-- MIDTERM 1 -->
+              <h6 class="mt-2">Midterm 1 (20 Marks Each)</h6>
+              <div formArrayName="midterm1">
+                <div *ngFor="let sub of getExamArray(st, 'midterm1').controls; let x=index"
+                     [formGroupName]="x"
+                     class="d-flex gap-3 align-items-center mb-1">
+                  
+                  <span class="w-25">{{ sub.get('subjectName')?.value }}</span>
+                  <input type="number" class="form-control w-25" formControlName="score">
+                  <span>/ {{ sub.get('maxScore')?.value }}</span>
+                </div>
+              </div>
+
+              <!-- FINAL 1 -->
+              <h6>Final 1 (80 Marks Each)</h6>
+              <div formArrayName="final1">
+                <div *ngFor="let sub of getExamArray(st, 'final1').controls; let x=index"
+                     [formGroupName]="x"
+                     class="d-flex gap-3 align-items-center mb-1">
+                  
+                  <span class="w-25">{{ sub.get('subjectName')?.value }}</span>
+                  <input type="number" class="form-control w-25" formControlName="score">
+                  <span>/ {{ sub.get('maxScore')?.value }}</span>
+                </div>
+              </div>
+
+              <!-- MIDTERM 2 -->
+              <h6>Midterm 2 (20 Marks Each)</h6>
+              <div formArrayName="midterm2">
+                <div *ngFor="let sub of getExamArray(st, 'midterm2').controls; let x=index"
+                     [formGroupName]="x"
+                     class="d-flex gap-3 align-items-center mb-1">
+
+                  <span class="w-25">{{ sub.get('subjectName')?.value }}</span>
+                  <input type="number" class="form-control w-25" formControlName="score">
+                  <span>/ {{ sub.get('maxScore')?.value }}</span>
+                </div>
+              </div>
+
+              <!-- FINAL 2 -->
+              <h6>Final 2 (80 Marks Each)</h6>
+              <div formArrayName="final2">
+                <div *ngFor="let sub of getExamArray(st, 'final2').controls; let x=index"
+                     [formGroupName]="x"
+                     class="d-flex gap-3 align-items-center mb-1">
+
+                  <span class="w-25">{{ sub.get('subjectName')?.value }}</span>
+                  <input type="number" class="form-control w-25" formControlName="score">
+                  <span>/ {{ sub.get('maxScore')?.value }}</span>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <button class="btn btn-success w-100 mt-3" type="submit">
           {{ 'COMMON.SAVE' | translate }}
         </button>
+
       </form>
+
     </div>
   </div>
 </section>

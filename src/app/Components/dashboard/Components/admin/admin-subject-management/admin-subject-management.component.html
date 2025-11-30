@@ -1,0 +1,28 @@
+<div class="container mt-4">
+
+  <h2 class="mb-3">Subjects Management</h2>
+
+  <!-- Loading / Empty state -->
+  <div *ngIf="subjects.length === 0" class="text-muted">
+    No subjects found.
+  </div>
+
+  <!-- Subjects Table -->
+  <table *ngIf="subjects.length > 0" class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Subject Name</th>
+        <th>Class Name</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let s of subjects; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ s.subjectName }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

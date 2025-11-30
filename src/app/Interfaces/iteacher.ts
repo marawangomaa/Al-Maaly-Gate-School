@@ -34,3 +34,17 @@ export interface ServiceResult<T> {
   message: string;
   success: boolean;
 }
+
+export interface BulkAssignTeachersDto {
+  classIds: string[];
+  teacherIds: string[];
+}
+
+export interface TeacherAdminViewDto {
+  id: string;
+  fullName: string;
+  email: string;
+  subjects: string[];
+  classNames: string[];
+  profileStatus: string;
+}
