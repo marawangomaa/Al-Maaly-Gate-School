@@ -1,0 +1,12 @@
+.table-hover tbody tr:hover {
+  background-color: #f3f6ff; /* Slight highlight */
+  transition: 0.2s ease-in-out;
+}
+
+.card {
+  border-radius: 12px;
+}
+
+.badge {
+  font-size: 0.9rem;
+}

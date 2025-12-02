@@ -32,6 +32,7 @@ export class AdminSubjectManagementComponent {
       ApiResponseHandler.handleApiResponse(this._subjectService.getAll()).subscribe({
         next: (subjects) => {
           console.log(subjects);
+          this.subjects = subjects;
         },
         error: (error) => {
           console.error('Error loading subjects:', error.message);
