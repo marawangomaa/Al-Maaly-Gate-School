@@ -135,6 +135,14 @@ export class AdminManagementService {
     );
   }
 
+  //student Count
+  CountStudent(): Observable<number> {
+    const url = `${this.apiUrl}/students/count`;
+    return ApiResponseHandler.handleApiResponse<number>(
+      this.http.get<ApiResponse<number>>(url, { headers: this.headers })
+    );
+  }
+
   // Helper method to build query parameters
   private buildQueryParams(params: any): string {
     return Object.keys(params)

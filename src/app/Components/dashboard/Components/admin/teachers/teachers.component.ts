@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { NgFor, NgIf } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Teacher } from '../../../../../Interfaces/teacher';
 import { TeacherService } from '../../../../../Services/teacher.service';
 import { AdminManagementService } from '../../../../../Services/admin-management.service';
@@ -11,7 +11,7 @@ import { AuthService } from '../../../../../Services/AuthService';
 @Component({
   selector: 'app-teachers',
   standalone: true,
-  imports: [FormsModule, NgFor, NgIf],
+  imports: [FormsModule, NgFor, NgIf,NgClass],
   templateUrl: './teachers.component.html',
   styleUrls: ['./teachers.component.css']
 })
