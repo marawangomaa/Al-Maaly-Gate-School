@@ -1,102 +1,376 @@
 <div class="register-page d-flex min-vh-100">
   <!-- Left: Visual -->
   <div class="register-visual">
-    <img src="assets/images/register.png" alt="Register Visual" class="register-bg" />
+    <img
+      src="assets/images/register.png"
+      alt="Register Visual"
+      class="register-bg"
+    />
   </div>
 
   <!-- Right: Form -->
-  <div class="register-content d-flex align-items-center justify-content-center">
-    <div class="register-form w-100" style="max-width: 450px; position: relative;">
-
+  <div
+    class="register-content d-flex align-items-center justify-content-center"
+  >
+    <div
+      class="register-form w-100"
+      style="max-width: 450px; position: relative"
+    >
       <div class="text-center mb-4">
-        <img src="assets/images/logo.png" alt="Logo" class="register-logo mb-3" />
-        <h2 class="fw-bold main-title">{{ 'REGISTER.TITLE' | translate }}</h2>
+        <img
+          src="assets/images/logo.png"
+          alt="Logo"
+          class="register-logo mb-3"
+        />
+        <h2 class="fw-bold main-title">{{ "REGISTER.TITLE" | translate }}</h2>
       </div>
 
       <!-- Error -->
       @if (errorMessage) {
-        <div class="alert alert-danger text-center py-2 mb-3">{{ errorMessage }}</div>
+      <div class="alert alert-danger text-center py-2 mb-3">
+        <i class="bi bi-exclamation-triangle me-2"></i>
+        {{ errorMessage }}
+      </div>
       }
 
       <!-- Success -->
       @if (successMessage) {
-        <div class="alert alert-success text-center py-2 mb-3">{{ successMessage }}</div>
+      <div class="alert alert-success text-center py-2 mb-3">
+        <i class="bi bi-check-circle me-2"></i>
+        {{ successMessage }}
+      </div>
+      }
+
+      <!-- File Error -->
+      @if (fileError) {
+      <div class="alert alert-warning text-center py-2 mb-3">
+        <i class="bi bi-exclamation-circle me-2"></i>
+        {{ fileError }}
+      </div>
       }
 
       <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
-
         <!-- Full Name -->
         <div class="mb-3">
-          <label class="form-label">{{ 'REGISTER.FULLNAME' | translate }}</label>
-          <input type="text" formControlName="fullName" class="form-control cool-input" />
-          @if (registerForm.get('fullName')?.touched && registerForm.get('fullName')?.invalid) {
-            <div class="text-danger small mt-1">Full name must be at least 3 characters</div>
+          <label class="form-label"
+            >{{ "REGISTER.FULLNAME" | translate }} *</label
+          >
+          <input
+            type="text"
+            formControlName="fullName"
+            class="form-control cool-input"
+            placeholder="Enter full name"
+            [class.is-invalid]="
+              registerForm.get('fullName')?.invalid &&
+              registerForm.get('fullName')?.touched
+            "
+          />
+          @if (registerForm.get('fullName')?.invalid &&
+          registerForm.get('fullName')?.touched) {
+          <div class="text-danger small mt-1">
+            Full name must be at least 3 characters
+          </div>
           }
         </div>
 
         <!-- Username -->
         <div class="mb-3">
-          <label class="form-label">{{ 'REGISTER.USERNAME' | translate }}</label>
-          <input type="text" formControlName="userName" class="form-control cool-input" />
-          @if (registerForm.get('userName')?.touched && registerForm.get('userName')?.invalid) {
-            <div class="text-danger small mt-1">Username is required</div>
+          <label class="form-label"
+            >{{ "REGISTER.USERNAME" | translate }} *</label
+          >
+          <input
+            type="text"
+            formControlName="userName"
+            class="form-control cool-input"
+            placeholder="Choose a username"
+            [class.is-invalid]="
+              registerForm.get('userName')?.invalid &&
+              registerForm.get('userName')?.touched
+            "
+          />
+          @if (registerForm.get('userName')?.invalid &&
+          registerForm.get('userName')?.touched) {
+          <div class="text-danger small mt-1">
+            Username must be at least 3 characters
+          </div>
           }
         </div>
 
         <!-- Email -->
         <div class="mb-3">
-          <label class="form-label">{{ 'REGISTER.EMAIL' | translate }}</label>
-          <input type="email" formControlName="email" class="form-control cool-input" />
-          @if (registerForm.get('email')?.touched && registerForm.get('email')?.invalid) {
-            <div class="text-danger small mt-1">Invalid email</div>
+          <label class="form-label">{{ "REGISTER.EMAIL" | translate }} *</label>
+          <input
+            type="email"
+            formControlName="email"
+            class="form-control cool-input"
+            placeholder="Enter email address"
+            [class.is-invalid]="
+              registerForm.get('email')?.invalid &&
+              registerForm.get('email')?.touched
+            "
+          />
+          @if (registerForm.get('email')?.invalid &&
+          registerForm.get('email')?.touched) {
+          <div class="text-danger small mt-1">
+            Please enter a valid email address
+          </div>
           }
         </div>
 
         <!-- Contact Info -->
         <div class="mb-3">
-          <label class="form-label">{{ 'REGISTER.CONTACT' | translate }}</label>
-          <input type="text" formControlName="contactInfo" class="form-control cool-input" placeholder="Optional" />
-          @if (registerForm.get('contactInfo')?.touched && registerForm.get('contactInfo')?.invalid) {
-            <div class="text-danger small mt-1">Must be at least 10 characters</div>
+          <label class="form-label">{{ "REGISTER.CONTACT" | translate }}</label>
+          <input
+            type="text"
+            formControlName="contactInfo"
+            class="form-control cool-input"
+            placeholder="Phone number (optional)"
+            [class.is-invalid]="
+              registerForm.get('contactInfo')?.invalid &&
+              registerForm.get('contactInfo')?.touched
+            "
+          />
+          @if (registerForm.get('contactInfo')?.invalid &&
+          registerForm.get('contactInfo')?.touched) {
+          <div class="text-danger small mt-1">
+            Must be at least 10 characters if provided
+          </div>
           }
         </div>
 
         <!-- Password -->
         <div class="mb-3">
-          <label class="form-label">{{ 'REGISTER.PASSWORD' | translate }}</label>
-          <input type="password" formControlName="password" class="form-control cool-input" />
-          @if (registerForm.get('password')?.touched && registerForm.get('password')?.invalid) {
-            <div class="text-danger small mt-1">Password must be at least 6 characters</div>
+          <label class="form-label"
+            >{{ "REGISTER.PASSWORD" | translate }} *</label
+          >
+          <input
+            type="password"
+            formControlName="password"
+            class="form-control cool-input"
+            placeholder="Enter password"
+            [class.is-invalid]="
+              registerForm.get('password')?.invalid &&
+              registerForm.get('password')?.touched
+            "
+          />
+          @if (registerForm.get('password')?.invalid &&
+          registerForm.get('password')?.touched) {
+          <div class="text-danger small mt-1">
+            Password must be at least 6 characters
+          </div>
           }
         </div>
 
         <!-- Confirm Password -->
         <div class="mb-3">
-          <label class="form-label">{{ 'REGISTER.CONFIRMPASSWORD' | translate }}</label>
-          <input type="password" formControlName="confirmPassword" class="form-control cool-input" />
+          <label class="form-label"
+            >{{ "REGISTER.CONFIRMPASSWORD" | translate }} *</label
+          >
+          <input
+            type="password"
+            formControlName="confirmPassword"
+            class="form-control cool-input"
+            placeholder="Confirm password"
+            [class.is-invalid]="registerForm.get('confirmPassword')?.errors?.['mismatch']"
+          />
           @if (registerForm.get('confirmPassword')?.errors?.['mismatch']) {
-            <div class="text-danger small mt-1">Passwords do not match</div>
+          <div class="text-danger small mt-1">Passwords do not match</div>
           }
         </div>
 
         <!-- Role -->
         <div class="mb-3">
-          <label class="form-label">{{ 'REGISTER.ROLE' | translate }}</label>
-          <select class="form-select cool-input" formControlName="role">
+          <label class="form-label">{{ "REGISTER.ROLE" | translate }} *</label>
+          <select
+            class="form-select cool-input"
+            formControlName="role"
+            [class.is-invalid]="
+              registerForm.get('role')?.invalid &&
+              registerForm.get('role')?.touched
+            "
+          >
             <option value="">Select role</option>
             <option value="student">Student</option>
             <option value="teacher">Teacher</option>
+            <option value="parent">Parent</option>
           </select>
-          @if (registerForm.get('role')?.touched && registerForm.get('role')?.invalid) {
-            <div class="text-danger small mt-1">Role is required</div>
+          @if (registerForm.get('role')?.invalid &&
+          registerForm.get('role')?.touched) {
+          <div class="text-danger small mt-1">Please select a role</div>
           }
         </div>
 
-        <!-- Submit -->
-        <button class="cool-btn w-100 mt-3" type="submit" [disabled]="isLoading || registerForm.invalid">
-          {{ isLoading ? ('REGISTER.LOADING' | translate) : ('REGISTER.SUBMIT' | translate) }}
-        </button>
+        <!-- Parent-specific fields -->
+        @if (registerForm.get('role')?.value === 'parent') {
+        <div class="parent-section border rounded p-3 mb-3 bg-light">
+          <h6 class="mb-3 text-primary">
+            <i class="bi bi-person-badge me-2"></i>Parent Information
+          </h6>
+          <!-- Relation to Student -->
+          <div class="mb-3">
+            <label class="form-label">Relation to Student *</label>
+            <select
+              class="form-select cool-input"
+              formControlName="relation"
+              [class.is-invalid]="
+                registerForm.get('relation')?.invalid &&
+                registerForm.get('relation')?.touched
+              "
+            >
+              <option value="">Select relation</option>
+              <option value="father">Father</option>
+              <option value="mother">Mother</option>
+              <option value="guardian">Guardian</option>
+              <option value="other">Other</option>
+            </select>
+            @if (registerForm.get('relation')?.invalid &&
+            registerForm.get('relation')?.touched) {
+            <div class="text-danger small mt-1">Please select a relation</div>
+            }
+          </div>
 
+          <!-- Document Upload -->
+          <div class="mb-3">
+            <label class="form-label">
+              <i class="bi bi-file-earmark-arrow-up me-1"></i>
+              Upload Documents (Max 3 files, 5MB each) *
+            </label>
+            <div class="file-upload-container border rounded p-3">
+              <!-- File Input (Hidden) -->
+              <input
+                type="file"
+                #fileInput
+                multiple
+                accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                (change)="onFileSelected($event)"
+                class="form-control cool-input"
+                style="display: none"
+              />
+
+              <!-- Upload Button -->
+              <div class="text-center mb-3">
+                <button
+                  type="button"
+                  class="btn btn-primary btn-sm"
+                  (click)="fileInput.click()"
+                  [disabled]="selectedFiles.length >= 3"
+                >
+                  <i class="bi bi-cloud-upload me-2"></i>
+                  {{
+                    selectedFiles.length === 0
+                      ? "Upload Documents"
+                      : "Add More Documents"
+                  }}
+                </button>
+                <small class="d-block text-muted mt-1">
+                  First file will be treated as Identity Document
+                </small>
+              </div>
+
+              <!-- File Requirements -->
+              <div class="alert alert-info py-2 mb-3">
+                <small>
+                  <i class="bi bi-info-circle me-1"></i>
+                  <strong>Requirements:</strong>
+                  At least 1 document required. Allowed formats: PDF, JPG, PNG,
+                  DOC, DOCX. Max 5MB per file.
+                </small>
+              </div>
+
+              <!-- Selected Files List -->
+              @if (selectedFiles.length > 0) {
+              <div class="selected-files">
+                <h6 class="mb-2">Selected Files:</h6>
+                @for (file of selectedFiles; track $index; let first = $first) {
+                <div
+                  class="file-item d-flex align-items-center justify-content-between mb-2 p-2 border rounded"
+                  [class.bg-light]="first"
+                >
+                  <div class="file-info d-flex align-items-center">
+                    <i
+                      class="bi"
+                      [class]="
+                        first
+                          ? 'bi-file-earmark-text-fill text-primary'
+                          : 'bi-file-earmark-text'
+                      "
+                    ></i>
+                    <div class="ms-2">
+                      <div class="file-name">
+                        {{ file.name }}
+                        @if (first) {
+                        <span class="badge bg-primary ms-2">Identity</span>
+                        }
+                      </div>
+                      <small class="text-muted">{{
+                        formatFileSize(file.size)
+                      }}</small>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-danger"
+                    (click)="removeFile($index)"
+                  >
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+                }
+              </div>
+              } @else {
+              <div class="text-center text-muted py-3">
+                <i class="bi bi-file-earmark-excel display-6"></i>
+                <p class="mt-2">No documents selected</p>
+              </div>
+              }
+
+              <!-- File Count -->
+              @if (selectedFiles.length > 0) {
+              <div class="mt-3 text-center">
+                <span
+                  class="badge"
+                  [class]="
+                    selectedFiles.length === 3 ? 'bg-danger' : 'bg-success'
+                  "
+                >
+                  Files: {{ selectedFiles.length }}/3
+                </span>
+              </div>
+              }
+            </div>
+          </div>
+        </div>
+        }
+
+        <!-- Submit Button -->
+        <div class="d-grid gap-2">
+          <button
+            class="btn btn-primary btn-lg"
+            type="submit"
+            [disabled]="isLoading || registerForm.invalid"
+          >
+            @if (isLoading) {
+            <span
+              class="spinner-border spinner-border-sm me-2"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            Registering... } @else {
+            <i class="bi bi-person-plus me-2"></i>
+            {{ "REGISTER.SUBMIT" | translate }}
+            }
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            (click)="onCancel()"
+            [disabled]="isLoading"
+          >
+            <i class="bi bi-x-circle me-2"></i>
+            Cancel
+          </button>
+        </div>
       </form>
     </div>
   </div>

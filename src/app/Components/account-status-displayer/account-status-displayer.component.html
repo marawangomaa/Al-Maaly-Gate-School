@@ -1,0 +1,28 @@
+<div
+  class="account-status-container min-vh-100 d-flex align-items-center justify-content-center bg-light p-3"
+>
+  <div class="card shadow-lg border-0" style="max-width: 550px; width: 100%">
+    <div class="card-body p-4 p-md-5 text-center">
+      <!-- Status Icon -->
+      <div class="status-icon mb-4" style="font-size: 4rem">
+        <i [class]="statusIcon" [ngClass]="statusColorClass"></i>
+      </div>
+
+      <!-- Status Title -->
+      <h2 class="card-title fw-bold mb-3">{{ statusTitle }}</h2>
+
+      <!-- Status Message -->
+      <p class="text-muted mb-4" style="line-height: 1.8">
+        {{ statusMessage }}
+      </p>
+
+      <!-- Action Buttons -->
+      <div class="d-grid gap-3">
+        <button class="btn btn-primary" (click)="logout()">
+          <i class="bi bi-box-arrow-right me-2"></i>
+          تسجيل الخروج
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

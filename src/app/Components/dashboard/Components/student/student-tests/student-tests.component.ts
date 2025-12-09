@@ -4,8 +4,8 @@ import { ClassExamsService } from '../../../../../Services/class-exams.service';
 import { iclassExams } from '../../../../../Interfaces/iclassExams';
 import { ApiResponse } from '../../../../../Interfaces/auth';
 import { Router } from '@angular/router';
-import { StudentProfileService } from '../../../../../Services/student-profile.service';
 import { AuthService } from '../../../../../Services/auth.service';
+import { StudentService } from '../../../../../Services/student.service';
 
 @Component({
   selector: 'app-student-tests',
@@ -18,12 +18,12 @@ export class StudentTestsComponent implements OnInit {
   ClassId!: string;
   tests?: iclassExams[];
   _ClassExams = inject(ClassExamsService);
-  _StudentProfile = inject(StudentProfileService);
+  _StudentProfile = inject(StudentService);
   _Auth = inject(AuthService);
 
   ngOnInit() {
     this.StudentEntityId = this._Auth.getStudentId()!;
-      this.GetStudentEntity(this.StudentEntityId);
+    this.GetStudentEntity(this.StudentEntityId);
   }
   constructor(private router: Router) { }
 

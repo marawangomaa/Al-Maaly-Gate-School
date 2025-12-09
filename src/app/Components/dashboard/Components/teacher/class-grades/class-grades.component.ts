@@ -4,8 +4,8 @@ import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular
 import { TranslateModule } from '@ngx-translate/core';
 import { ClassService } from '../../../../../Services/class.service';
 import { DegreeService } from '../../../../../Services/degree.service';
-import { StudentProfileService } from '../../../../../Services/student-profile.service';
 import { SubjectService } from '../../../../../Services/subject.service';
+import { StudentService } from '../../../../../Services/student.service';
 
 @Component({
   selector: 'app-class-grades',
@@ -24,9 +24,9 @@ export class ClassGradesComponent implements OnInit {
     private fb: FormBuilder,
     private classService: ClassService,
     private degreeService: DegreeService,
-    private studentService: StudentProfileService,
+    private studentService: StudentService,
     private subjectService: SubjectService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadClasses();
@@ -45,12 +45,12 @@ export class ClassGradesComponent implements OnInit {
 
       this.classService.getSubjectsByClass(classId).subscribe(subRes => {
         console.log(subRes);
-        
+
         const subjects = subRes.data;
 
         this.gradeForms[classId] = this.fb.group({
           students: this.fb.array(
-            students.map( (st : any) => this.createStudentForm(st, subjects))
+            students.map((st: any) => this.createStudentForm(st, subjects))
           )
         });
       });

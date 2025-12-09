@@ -1,5 +1,4 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { StudentExamAnswerService } from '../../Services/student-exam-answer.service';
 import { CommonModule } from '@angular/common';
 import { ClassExamsService } from '../../Services/class-exams.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,6 +6,7 @@ import { AuthService } from '../../Services/auth.service';
 import { iexamWithQuestions } from '../../Interfaces/iexamWithQuestions';
 import { istudentExamAnswer } from '../../Interfaces/istudentExamAnswer';
 import { istudentExamSubmission } from '../../Interfaces/istudentExamSubmission';
+import { StudentService } from '../../Services/student.service';
 
 @Component({
   selector: 'app-exam',
@@ -25,7 +25,7 @@ export class ExamComponent implements OnInit {
   questions: any[] = [];
   message = '';
 
-  _StudentExamAnswer = inject(StudentExamAnswerService);
+  _StudentExamAnswer = inject(StudentService);
   _ClassExams = inject(ClassExamsService);
   _Auth = inject(AuthService);
 

@@ -1,10 +1,11 @@
+import { AccountStatus } from "./AccountStatus";
+
 export interface Teacher {
-    id : string;
-    fullName : string;
-    email : string;
-    contactInfo : string;
-    profileStatus : string;
+    id: string;
+    fullName: string;
+    email: string;
+    contactInfo: string;
+    accountStatus: AccountStatus;
     subjects: string[];
     classNames: string[];
 }
-    

@@ -1,8 +1,8 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { istudentProfile } from '../../../../../Interfaces/istudentProfile';
-import { StudentProfileService } from '../../../../../Services/student-profile.service';
 import { ApiResponse } from '../../../../../Interfaces/auth';
+import { StudentService } from '../../../../../Services/student.service';
 
 
 @Component({
@@ -14,7 +14,7 @@ import { ApiResponse } from '../../../../../Interfaces/auth';
 export class StudenProfileComponent implements OnInit {
 
   studentProfile?: istudentProfile;
-  _StudentProfile = inject(StudentProfileService);
+  _StudentProfile = inject(StudentService);
 
   student: any = {
     "id": "stu-2025-00123",
