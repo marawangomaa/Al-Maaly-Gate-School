@@ -1,15 +1,12 @@
 import { AccountStatus } from "./AccountStatus";
 
-export interface istudentProfile {
+export interface iparentViewDto {
     id: string;
     fullName: string;
-    className: string;
     email: string;
     contactInfo: string;
     appUserId: string;
-    classYear: string;
-    age: number;
-    classId: string;
+    type: string;
+    relation?: string | null;
     accountStatus: AccountStatus;
-    parents: any[];
 }

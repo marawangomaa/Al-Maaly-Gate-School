@@ -15,7 +15,7 @@ export interface TeacherAdminViewDto {
   contactInfo: string;
   subjects: string[];
   classNames: string[];
-  profileStatus: string;
+  AccountStatus: string;
 }
 
 export interface CreateTeacherDto {
@@ -46,5 +46,5 @@ export interface TeacherAdminViewDto {
   email: string;
   subjects: string[];
   classNames: string[];
-  profileStatus: string;
+  AccountStatus: string;
 }

@@ -1,5 +1,5 @@
 <div class="container mt-4">
-  <h3 class="main-title">إدارة الطلاب الجدد</h3>
+  <h3 class="main-title">إدارة حسابات الطلاب</h3>
 
   <!-- أزرار الفلترة -->
   <div class="mb-3 d-flex gap-2 flex-wrap">
@@ -8,96 +8,133 @@
       [class.primary-btn]="selectedStatus === 'all'"
       (click)="selectedStatus = 'all'"
     >
-      الكل
+      جميع الطلاب
     </button>
     <button
       class="outline-btn"
-      [class.primary-btn]="selectedStatus === 'pending'"
-      (click)="selectedStatus = 'pending'"
+      [class.primary-btn]="selectedStatus === accountStatusEnum.Pending"
+      (click)="selectedStatus = accountStatusEnum.Pending"
     >
-      قيد المراجعة
+      قيد الانتظار
     </button>
     <button
       class="outline-btn"
-      [class.primary-btn]="selectedStatus === 'accepted'"
-      (click)="selectedStatus = 'accepted'"
+      [class.primary-btn]="selectedStatus === accountStatusEnum.Active"
+      (click)="selectedStatus = accountStatusEnum.Active"
     >
-      المقبولون
+      نشط
     </button>
     <button
       class="outline-btn"
-      [class.primary-btn]="selectedStatus === 'rejected'"
-      (click)="selectedStatus = 'rejected'"
+      [class.primary-btn]="selectedStatus === accountStatusEnum.Rejected"
+      (click)="selectedStatus = accountStatusEnum.Rejected"
     >
-      المرفوضون
+      مرفوض
     </button>
     <button
       class="outline-btn"
-      [class.primary-btn]="selectedStatus === 'suspended'"
-      (click)="selectedStatus = 'suspended'"
+      [class.primary-btn]="selectedStatus === accountStatusEnum.Blocked"
+      (click)="selectedStatus = accountStatusEnum.Blocked"
     >
-      الموقوفون
+      محظور
     </button>
   </div>
 
-  <!-- عرض الطلاب -->
+  <!-- عرض جميع الطلاب -->
   <div class="row g-3">
     <div *ngFor="let student of filteredStudents()" class="col-md-6 col-lg-4">
       <div class="card p-3 h-100 d-flex flex-column justify-content-between">
         <div>
-          <h5 class="sub-title mb-1">{{ student.name }}</h5>
-          <p class="text-muted mb-1">القسم: {{ student.department }}</p>
-          <p class="text-muted mb-1">البريد الإلكتروني: {{ student.email }}</p>
+          <h5 class="sub-title mb-1">{{ student.fullName }}</h5>
+          <p class="text-muted mb-1">
+            <i class="fas fa-envelope me-1"></i>
+            {{ student.email }}
+          </p>
+          <p class="text-muted mb-1" *ngIf="student.contactInfo">
+            <i class="fas fa-phone me-1"></i>
+            {{ student.contactInfo }}
+          </p>
         </div>
 
         <div class="mt-3 d-flex justify-content-between align-items-center">
           <span
             class="badge"
-            [ngClass]="{
-              'bg-warning': student.status === 'pending',
-              'bg-success': student.status === 'accepted',
-              'bg-danger': student.status === 'rejected',
-              'bg-secondary': student.status === 'suspended'
-            }"
+            [ngClass]="'bg-' + getStatusColor(student.accountStatus)"
           >
-            {{
-              student.status === "pending"
-                ? "قيد المراجعة"
-                : student.status === "accepted"
-                ? "مقبول"
-                : student.status === "rejected"
-                ? "مرفوض"
-                : "موقوف"
-            }}
+            {{ getStatusName(student.accountStatus) }}
           </span>
 
           <div class="d-flex gap-2 flex-wrap">
+            <!-- زر الموافقة -->
             <button
-              class="primary-btn"
-              *ngIf="student.status === 'pending'"
-              (click)="acceptStudent(student)"
+              class="primary-btn btn-sm"
+              *ngIf="isStudentsPending(student) || isStudentsRejected(student)"
+              (click)="ApproveStudentAction(student.id)"
+              title="موافقة"
             >
-               قبول
+              <i class="fas fa-check me-1"></i> قبول
             </button>
 
+            <!-- زر الرفض -->
             <button
-              class="outline-btn"
-              *ngIf="student.status === 'pending'"
-              (click)="rejectStudent(student)"
+              class="outline-btn btn-sm"
+              *ngIf="isStudentsPending(student)"
+              (click)="RejectStudentAction(student.id)"
+              title="رفض"
             >
-               رفض
+              <i class="fas fa-times me-1"></i> رفض
             </button>
 
+            <!-- زر الحظر -->
             <button
-              class="danger-btn"
-              *ngIf="student.status === 'accepted'"
-              (click)="suspendStudent(student)"
+              class="danger-btn btn-sm"
+              *ngIf="isStudentsActive(student)"
+              (click)="BlockStudentAction(student.id)"
+              title="حظر"
             >
-               إيقاف الحساب
+              <i class="fas fa-ban me-1"></i> حظر
+            </button>
+
+            <!-- زر فك الحظر -->
+            <button
+              class="success-btn btn-sm"
+              *ngIf="isStudentsBlocked(student)"
+              (click)="UnblockStudentAction(student.id)"
+              title="فك الحظر"
+            >
+              <i class="fas fa-unlock me-1"></i> فك الحظر
             </button>
           </div>
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- رسالة عدم وجود الطلاب -->
+  <div
+    *ngIf="filteredStudents().length === 0 && allStudents.length > 0"
+    class="alert alert-info mt-4"
+  >
+    لا توجد الطلاب بحالة "{{
+      selectedStatus === "all"
+        ? "جميع"
+        : selectedStatus === accountStatusEnum.Pending
+        ? "قيد الانتظار"
+        : selectedStatus === accountStatusEnum.Active
+        ? "نشط"
+        : selectedStatus === accountStatusEnum.Rejected
+        ? "مرفوض"
+        : selectedStatus === accountStatusEnum.Blocked
+        ? "محظور"
+        : ""
+    }}"
+  </div>
+
+  <!-- رسالة عدم وجود الطلاب مطلقا -->
+  <div
+    *ngIf="allStudents.length === 0 && !isLoading"
+    class="alert alert-warning mt-4"
+  >
+    لا يوجد طلاب مسجلين في النظام
   </div>
 </div>

@@ -1,0 +1,204 @@
+/* account-status-displayer.component.css */
+.account-status-container {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    min-height: 100vh;
+    padding: 2rem 1rem;
+}
+
+.status-card {
+    max-width: 550px;
+    width: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    border: none;
+}
+
+.status-icon {
+    font-size: 5rem;
+    display: inline-block;
+    animation: float 3s ease-in-out infinite;
+}
+
+.status-message {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #495057;
+}
+
+.btn {
+    border-radius: 12px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn-lg {
+    padding: 0.75rem 1.5rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    border: none;
+}
+
+.btn-outline-primary:hover {
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    color: white;
+}
+
+.btn-outline-success:hover {
+    background: linear-gradient(135deg, #198754 0%, #157347 100%);
+    color: white;
+}
+
+.btn-outline-danger:hover {
+    background: linear-gradient(135deg, #dc3545 0%, #bb2d3b 100%);
+    color: white;
+}
+
+.contact-section {
+    background: rgba(13, 110, 253, 0.05);
+    border-radius: 15px;
+    padding: 1.5rem;
+}
+
+.contact-info a {
+    color: #0d6efd;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.contact-info a:hover {
+    color: #0b5ed7;
+    text-decoration: underline;
+}
+
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .status-card {
+        margin: 1rem;
+    }
+
+    .status-icon {
+        font-size: 4rem;
+    }
+
+    .btn-lg {
+        padding: 0.75rem 1rem;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .account-status-container {
+        background: linear-gradient(135deg, #212529 0%, #343a40 100%);
+    }
+
+    .status-card {
+        background: #2d3748;
+        color: #e9ecef;
+    }
+
+    .status-message {
+        color: #adb5bd;
+    }
+
+    .alert-info {
+        background-color: rgba(13, 202, 240, 0.1);
+        border-color: rgba(13, 202, 240, 0.3);
+        color: #e9ecef;
+    }
+}
+
+/* account-status-displayer.component.css */
+.account-status-container {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    min-height: 100vh;
+}
+
+.card {
+    border-radius: 15px;
+    border: none;
+}
+
+.btn {
+    border-radius: 10px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    border: none;
+}
+
+.btn-outline-primary:hover {
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    color: white;
+}
+
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.contact-info a {
+    color: #0d6efd;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.contact-info a:hover {
+    color: #0b5ed7;
+    text-decoration: underline;
+}

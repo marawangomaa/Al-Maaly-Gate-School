@@ -5,6 +5,7 @@ import { ApiResponse, AuthResponse, LoginRequest, RefreshTokenRequest, RegisterR
 import { Observable, tap } from 'rxjs';
 import { StorageUtil } from '../utils/storage.util';
 import { jwtDecode } from 'jwt-decode';
+import { ParentRegistrationResponse } from '../Interfaces/ParentRegistrationResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,14 @@ export class AuthService {
           if (res.success) this.handleAuth(res.data);
         })
       );
+  }
+
+  // In your auth.service.ts
+  registerParentWithFiles(formData: FormData): Observable<ApiResponse<ParentRegistrationResponse>> {
+    return this.http.post<ApiResponse<ParentRegistrationResponse>>(
+      `${this.baseUrl}/register/parentWithFiles`,
+      formData
+    );
   }
 
   register(request: RegisterRequest): Observable<ApiResponse<AuthResponse>> {

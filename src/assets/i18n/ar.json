@@ -76,6 +76,7 @@
     },
     "DASH": {
         "ADMIN_CERTFICATION_CREATE": "انشاء شهادة",
+        "CHILDREN OF PARENT": "أبناء ولي الأمر",
         "STUDENT_CERTFICATION": "الشهادات",
         "ALL_CLASSES": "جميع الفصول",
         "TITLE": "لوحة تحكمى",
@@ -103,15 +104,14 @@
         "TEACHER_ACCOUNTS": "ايميلات المعلمين",
         "ADMIN_SUBJECT_MANAGEMENT": "ادارة المواد",
         "ADMIN_ANALYTICS": "تحليلات",
-
         "Admin_Follow_Tests": "متابعة نتائج الاختبارات",
         "Admin_Students_Accounts": "حسابات الطلاب",
+        "PARENTS_ACCOUNTS": "حسابات أولياء الأمور",
         "MAKE_TESTS": "إنشاء اختبارات",
         "ONLINE_CLASSES": "حصص أونلاين",
         "TESTS": "الاختبارات",
         "GRADES": "الدرجات",
         "PROFILE": "الملف الشخصي",
-
         "CREATE_EMPTY_CLASS": "إنشاء فصل جديدة"
     },
     "TEACHER_OVERVIEW": {
@@ -287,30 +287,23 @@
         "FILE_SIZE": "حجم الملف",
         "VIEW": "عرض",
         "DOWNLOAD": "تحميل"
-        },
-        "certificate": {
-    "title": "إنشاء الشهادات",
-    "subtitle": "قم بإنشاء شهادات الطلاب بسهولة مع إمكانية حفظها في قاعدة البيانات أو تحميلها كملف PDF.",
-
-    "selectClass": "اختيار الفصل",
-    "classPlaceholder": "اختر الفصل",
-
-    "selectStudent": "اختيار الطالب",
-    "studentPlaceholder": "اختر الطالب",
-
-    "certificateType": "نوع الشهادة",
-
-    "generatePdf": "إنشاء PDF",
-    "generateAndSave": "إنشاء وحفظ في قاعدة البيانات",
-    "saveOnly": "حفظ في قاعدة البيانات فقط",
-
-    "generating": "جاري الإنشاء...",
-    "saving": "جاري الحفظ...",
-
-    "studentsInClass": "الطلاب في هذا الفصل",
-    "studentId": "رقم الطالب"
-  }
-        ,
+    },
+    "certificate": {
+        "title": "إنشاء الشهادات",
+        "subtitle": "قم بإنشاء شهادات الطلاب بسهولة مع إمكانية حفظها في قاعدة البيانات أو تحميلها كملف PDF.",
+        "selectClass": "اختيار الفصل",
+        "classPlaceholder": "اختر الفصل",
+        "selectStudent": "اختيار الطالب",
+        "studentPlaceholder": "اختر الطالب",
+        "certificateType": "نوع الشهادة",
+        "generatePdf": "إنشاء PDF",
+        "generateAndSave": "إنشاء وحفظ في قاعدة البيانات",
+        "saveOnly": "حفظ في قاعدة البيانات فقط",
+        "generating": "جاري الإنشاء...",
+        "saving": "جاري الحفظ...",
+        "studentsInClass": "الطلاب في هذا الفصل",
+        "studentId": "رقم الطالب"
+    },
     "NAV": {
         "LOGO": "اللوجو",
         "HOME": "الرئيسية",
