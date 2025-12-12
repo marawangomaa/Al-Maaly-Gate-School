@@ -1,3 +1,5 @@
+import { AccountStatus } from "./AccountStatus";
+
 export interface istudentProfile {
     id: string;
     fullName: string;
@@ -8,6 +10,6 @@ export interface istudentProfile {
     classYear: string;
     age: number;
     classId: string;
-    profileStatus: string;
+    accountStatus: AccountStatus;
     parents: any[];
 }

@@ -6,14 +6,9 @@
   [class.navbar-light]="!isDarkMode"
 >
   <div class="container-fluid">
-
     <!-- Brand -->
     <a class="navbar-brand d-flex align-items-center" routerLink="/">
-      <img
-        src="assets/images/logo.png"
-        alt="Logo"
-        class="navbar-logo me-2"
-      />
+      <img src="assets/images/logo.png" alt="Logo" class="navbar-logo me-2" />
     </a>
 
     <!-- Mobile Toggler -->
@@ -27,23 +22,33 @@
     </button>
 
     <div class="collapse navbar-collapse justify-content-end" id="mainNav">
-
       <ul class="navbar-nav align-items-lg-center gap-3">
-
         <!-- 🚫 Visitor Menu -->
         <ng-container *ngIf="!isLoggedIn">
           <li class="nav-item">
-            <a class="nav-link cool-link" routerLink="/home" routerLinkActive="active">
+            <a
+              class="nav-link cool-link"
+              routerLink="/home"
+              routerLinkActive="active"
+            >
               {{ "NAV.HOME" | translate }}
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link cool-link" routerLink="/login" routerLinkActive="active">
+            <a
+              class="nav-link cool-link"
+              routerLink="/login"
+              routerLinkActive="active"
+            >
               {{ "NAV.LOGIN" | translate }}
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link cool-link" routerLink="/register" routerLinkActive="active">
+            <a
+              class="nav-link cool-link"
+              routerLink="/register"
+              routerLinkActive="active"
+            >
               {{ "NAV.REGISTER" | translate }}
             </a>
           </li>
@@ -51,10 +56,13 @@
 
         <!-- ✅ Logged-In Menu -->
         <ng-container *ngIf="isLoggedIn">
-
           <!-- Shared -->
           <li class="nav-item">
-            <a class="nav-link cool-link" routerLink="/app/home" routerLinkActive="active">
+            <a
+              class="nav-link cool-link"
+              routerLink="/app/home"
+              routerLinkActive="active"
+            >
               {{ "NAV.HOME" | translate }}
             </a>
           </li>
@@ -70,32 +78,58 @@
 
           <!-- ✅ Admin -->
           <li class="nav-item" *ngIf="role === 'admin'">
-            <a class="nav-link cool-link" routerLink="/app/dashboard/overview" routerLinkActive="active">
+            <a
+              class="nav-link cool-link"
+              routerLink="/app/dashboard/overview"
+              routerLinkActive="active"
+            >
               {{ "NAV.DASHBOARD" | translate }} (Admin)
             </a>
           </li>
 
           <!-- ✅ Teacher -->
           <li class="nav-item" *ngIf="role === 'teacher'">
-            <a class="nav-link cool-link" routerLink="/app/dashboard/teacher-overview" routerLinkActive="active">
+            <a
+              class="nav-link cool-link"
+              routerLink="/app/dashboard/teacher-overview"
+              routerLinkActive="active"
+            >
               {{ "NAV.DASHBOARD" | translate }} (Teacher)
             </a>
           </li>
 
           <!-- ✅ Student -->
           <li class="nav-item" *ngIf="role === 'student'">
-            <a class="nav-link cool-link" routerLink="/app/dashboard/grades" routerLinkActive="active">
+            <a
+              class="nav-link cool-link"
+              routerLink="/app/dashboard/grades"
+              routerLinkActive="active"
+            >
               {{ "NAV.DASHBOARD" | translate }} (Student)
+            </a>
+          </li>
+
+          <!-- ✅ Parent -->
+          <li class="nav-item" *ngIf="role === 'Parent'">
+            <a
+              class="nav-link cool-link"
+              routerLink="/app/dashboard/children-of-parent"
+              routerLinkActive="active"
+            >
+              {{ "NAV.DASHBOARD" | translate }} (Parent)
             </a>
           </li>
 
           <!-- Profile -->
           <li class="nav-item">
-            <a class="nav-link cool-link" routerLink="/app/profile" routerLinkActive="active">
+            <a
+              class="nav-link cool-link"
+              routerLink="/app/profile"
+              routerLinkActive="active"
+            >
               {{ "NAV.PROFILE" | translate }}
             </a>
           </li>
-
         </ng-container>
 
         <!-- Theme Toggle -->
@@ -131,9 +165,7 @@
             {{ "NAV.LOGOUT" | translate }}
           </button>
         </li>
-
       </ul>
-
     </div>
   </div>
 </nav>

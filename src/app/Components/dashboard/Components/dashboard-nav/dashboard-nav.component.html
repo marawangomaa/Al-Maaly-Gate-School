@@ -1,12 +1,10 @@
 <nav class="dashboard-nav d-flex flex-column p-3">
-
   <!-- Logo -->
   <a routerLink="/app/dashboard" class="navbar-brand mb-4 hero-title">
     {{ "DASH.TITLE" | translate }}
   </a>
 
   <ul class="nav nav-pills flex-column mb-auto">
-
     <!-- ✅ Admin Nav -->
     @if (currentRole === 'admin') {
       <li>
@@ -64,82 +62,243 @@
           <i class="bi bi-people"></i> {{ "DASH.ADMIN_CERTFICATION_CREATE" | translate }}
         </a>
       </li>
+    <li>
+      <a
+        routerLink="/app/dashboard/admin-overview"
+        routerLinkActive="active"
+        class="nav-link custom-link"
+      >
+        <i class="bi bi-people"></i> {{ "DASH.ALL_CLASSES" | translate }}
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/app/dashboard/admin-all-classes"
+        routerLinkActive="active"
+        class="nav-link custom-link"
+      >
+        <i class="bi bi-people"></i> {{ "DASH.ALL_CLASSES" | translate }}
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/app/dashboard/admin-grade"
+        routerLinkActive="active"
+        class="nav-link custom-link"
+      >
+        <i class="bi bi-people"></i> {{ "DASH.YEAR-GRADE" | translate }}
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/app/dashboard/admin-all-student-tests-result"
+        routerLinkActive="active"
+        class="nav-link custom-link"
+      >
+        <i class="bi bi-people"></i>
+        {{ "DASH.ALL_STUDENT_TEST_RESULT" | translate }}
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/app/dashboard/admin-students-accounts"
+        routerLinkActive="active"
+        class="nav-link custom-link"
+      >
+        <i class="bi bi-people"></i> {{ "DASH.STUDENT_ACCOUNTS" | translate }}
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/app/dashboard/admin-parents-accounts"
+        routerLinkActive="active"
+        class="nav-link custom-link"
+      >
+        <i class="bi bi-people"></i> {{ "DASH.PARENTS_ACCOUNTS" | translate }}
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/app/dashboard/admin-teachers-accounts"
+        routerLinkActive="active"
+        class="nav-link custom-link"
+      >
+        <i class="bi bi-people"></i> {{ "DASH.TEACHER_ACCOUNTS" | translate }}
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/app/dashboard/admin-subject-management"
+        routerLinkActive="active"
+        class="nav-link custom-link"
+      >
+        <i class="bi bi-people"></i>
+        {{ "DASH.ADMIN_SUBJECT_MANAGEMENT" | translate }}
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/app/dashboard/admin-analytics"
+        routerLinkActive="active"
+        class="nav-link custom-link"
+      >
+        <i class="bi bi-people"></i> {{ "DASH.ADMIN_ANALYTICS" | translate }}
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/app/dashboard/admin-certfication-create"
+        routerLinkActive="active"
+        class="nav-link custom-link"
+      >
+        <i class="bi bi-people"></i>
+        {{ "DASH.ADMIN_CERTFICATION_CREATE" | translate }}
+      </a>
+    </li>
     }
 
     <!-- ✅ Teacher Nav -->
     @if (currentRole === 'teacher') {
-      <li class="nav-item">
-        <a routerLink="/app/dashboard/teacher-overview" routerLinkActive="active" class="nav-link custom-link">
-          <i class="bi bi-speedometer"></i> {{ "DASH.TEACHER_OVERVIEW" | translate }}
-        </a>
-      </li>
-      <li>
-        <a routerLink="/app/dashboard/teacher-create-class" routerLinkActive="active" class="nav-link custom-link">
-          <i class="bi bi-cloud-plus"></i> {{ "DASH.CREATE_CLASS" | translate }}
-        </a>
-      </li>
-      <li>
-        <a routerLink="/app/dashboard/teacher-class-list" routerLinkActive="active" class="nav-link custom-link">
-          <i class="bi bi-camera-video"></i> {{ "DASH.CLASS_LIST" | translate }}
-        </a>
-      </li>
-      <li>
-        <a routerLink="/app/dashboard/teacher-create-question" routerLinkActive="active" class="nav-link custom-link">
-          <i class="bi bi-plus-circle"></i> {{ "DASH.CREATE_QUESTION" | translate }}
-        </a>
-      </li>
-      <li>
-        <a routerLink="/app/dashboard/teacher-question-list" routerLinkActive="active" class="nav-link custom-link">
-          <i class="bi bi-list-columns-reverse"></i> {{ "DASH.QUESTION_LIST" | translate }}
-        </a>
-      </li>
-      <li>
-        <a routerLink="/app/dashboard/teacher-create-test" routerLinkActive="active" class="nav-link custom-link">
-          <i class="bi bi-stack"></i> {{ "DASH.CREATE_TEST" | translate }}
-        </a>
-      </li>
-      <li>
-        <a routerLink="/app/dashboard/teacher-test-list" routerLinkActive="active" class="nav-link custom-link">
-          <i class="bi bi-card-list"></i> {{ "DASH.TEST_LIST" | translate }}
-        </a>
-      </li>
-      <li>
-        <a routerLink="/app/dashboard/teacher-class-grades" routerLinkActive="active" class="nav-link custom-link">
-          <i class="bi bi-file-earmark-text"></i> {{ "DASH.CLASS_GRADES" | translate }}
-        </a>
-      </li>
+    <li class="nav-item">
+      <a
+        routerLink="/app/dashboard/teacher-overview"
+        routerLinkActive="active"
+        class="nav-link custom-link"
+      >
+        <i class="bi bi-speedometer"></i>
+        {{ "DASH.TEACHER_OVERVIEW" | translate }}
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/app/dashboard/teacher-create-class"
+        routerLinkActive="active"
+        class="nav-link custom-link"
+      >
+        <i class="bi bi-cloud-plus"></i> {{ "DASH.CREATE_CLASS" | translate }}
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/app/dashboard/teacher-class-list"
+        routerLinkActive="active"
+        class="nav-link custom-link"
+      >
+        <i class="bi bi-camera-video"></i> {{ "DASH.CLASS_LIST" | translate }}
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/app/dashboard/teacher-create-question"
+        routerLinkActive="active"
+        class="nav-link custom-link"
+      >
+        <i class="bi bi-plus-circle"></i>
+        {{ "DASH.CREATE_QUESTION" | translate }}
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/app/dashboard/teacher-question-list"
+        routerLinkActive="active"
+        class="nav-link custom-link"
+      >
+        <i class="bi bi-list-columns-reverse"></i>
+        {{ "DASH.QUESTION_LIST" | translate }}
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/app/dashboard/teacher-create-test"
+        routerLinkActive="active"
+        class="nav-link custom-link"
+      >
+        <i class="bi bi-stack"></i> {{ "DASH.CREATE_TEST" | translate }}
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/app/dashboard/teacher-test-list"
+        routerLinkActive="active"
+        class="nav-link custom-link"
+      >
+        <i class="bi bi-card-list"></i> {{ "DASH.TEST_LIST" | translate }}
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/app/dashboard/teacher-class-grades"
+        routerLinkActive="active"
+        class="nav-link custom-link"
+      >
+        <i class="bi bi-file-earmark-text"></i>
+        {{ "DASH.CLASS_GRADES" | translate }}
+      </a>
+    </li>
     }
 
     <!-- Student Nav -->
     @if (currentRole === 'student') {
-      <li class="nav-item">
-        <a routerLink="/app/dashboard/student-profile" routerLinkActive="active" class="nav-link custom-link">
-          <i class="bi bi-laptop"></i> {{ "DASH.STUDENT_PROFILE" | translate }}
-        </a>
-      </li>
-      <li class="nav-item">
-        <a routerLink="/app/dashboard/student-classes" routerLinkActive="active" class="nav-link custom-link">
-          <i class="bi bi-laptop"></i> {{ "DASH.ONLINE_CLASSES" | translate }}
-        </a>
-      </li>
-      <li>
-        <a routerLink="/app/dashboard/student-grades" routerLinkActive="active" class="nav-link custom-link">
-          <i class="bi bi-file-earmark-text"></i> {{ "DASH.GRADES" | translate }}
-        </a>
-      </li>
-      <li>
-        <a routerLink="/app/dashboard/student-tests" routerLinkActive="active" class="nav-link custom-link">
-          <i class="bi bi-award"></i> {{ "DASH.TESTS" | translate }}
-        </a>
-      </li>
-      <li>
-        <a routerLink="/app/dashboard/student-certfication" routerLinkActive="active" class="nav-link custom-link">
-          <i class="bi bi-award"></i> {{ "DASH.STUDENT_CERTFICATION" | translate }}
-        </a>
-      </li>
+    <li class="nav-item">
+      <a
+        routerLink="/app/dashboard/student-profile"
+        routerLinkActive="active"
+        class="nav-link custom-link"
+      >
+        <i class="bi bi-laptop"></i> {{ "DASH.STUDENT_PROFILE" | translate }}
+      </a>
+    </li>
+    <li class="nav-item">
+      <a
+        routerLink="/app/dashboard/student-classes"
+        routerLinkActive="active"
+        class="nav-link custom-link"
+      >
+        <i class="bi bi-laptop"></i> {{ "DASH.ONLINE_CLASSES" | translate }}
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/app/dashboard/student-grades"
+        routerLinkActive="active"
+        class="nav-link custom-link"
+      >
+        <i class="bi bi-file-earmark-text"></i> {{ "DASH.GRADES" | translate }}
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/app/dashboard/student-tests"
+        routerLinkActive="active"
+        class="nav-link custom-link"
+      >
+        <i class="bi bi-award"></i> {{ "DASH.TESTS" | translate }}
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/app/dashboard/student-certfication"
+        routerLinkActive="active"
+        class="nav-link custom-link"
+      >
+        <i class="bi bi-award"></i>
+        {{ "DASH.STUDENT_CERTFICATION" | translate }}
+      </a>
+    </li>
+    }
+    <!-- Parent Nav -->
+    @if (currentRole === 'parent') {
+    <li class="nav-item">
+      <a
+        routerLink="/app/dashboard/children-of-parent"
+        routerLinkActive="active"
+        class="nav-link custom-link"
+      >
+        <i class="bi bi-laptop"></i> {{ "DASH.CHILDREN OF PARENT" | translate }}
+      </a>
+    </li>
     }
   </ul>
- 
 
   <!-- Bottom (Logout) -->
   <div class="mt-auto">

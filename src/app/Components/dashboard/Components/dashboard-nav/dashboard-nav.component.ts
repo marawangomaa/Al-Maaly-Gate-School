@@ -15,11 +15,11 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class DashboardNavComponent {
 
-  currentRole: 'admin' | 'teacher' | 'student' | null = null;
+  currentRole: 'admin' | 'teacher' | 'student' | 'parent' | null = null;
 
   private platformId = inject(PLATFORM_ID);
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private auth: AuthService, private router: Router) { }
 
   ngOnInit() {
     // ✅ Only run on the browser
@@ -30,7 +30,7 @@ export class DashboardNavComponent {
     // ✅ Only read role in browser
     const role = this.auth.role?.toLowerCase() || null;
 
-    if (role === 'admin' || role === 'teacher' || role === 'student') {
+    if (role === 'admin' || role === 'teacher' || role === 'student'|| role === 'parent') {
       this.currentRole = role;
     }
 

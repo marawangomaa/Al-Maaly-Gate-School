@@ -36,7 +36,7 @@ export interface TeacherAdminViewDto {
   contactInfo: string;
   subjects: string[];
   classNames: string[];
-  profileStatus: string;
+  AccountStatus: string;
 }
 
 export interface CreateTeacherDto {
@@ -66,4 +66,12 @@ export interface BulkAssignTeachersDto {
 export interface AddTeacherToCurriculumDto {
   teacherId: string;
   curriculumId: string;
+}
+export interface TeacherAdminViewDto {
+  id: string;
+  fullName: string;
+  email: string;
+  subjects: string[];
+  classNames: string[];
+  AccountStatus: string;
 }

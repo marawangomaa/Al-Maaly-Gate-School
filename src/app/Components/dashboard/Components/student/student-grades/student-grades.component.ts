@@ -2,11 +2,10 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { istudentExamResults } from '../../../../../Interfaces/istudentExamResults';
 import { ApiResponse } from '../../../../../Interfaces/auth';
-import { StudentExamsResultsService } from '../../../../../Services/student-exams-results.service';
 import { AuthService } from '../../../../../Services/auth.service';
 import { StudentAnswerWithQuestionDto } from '../../../../../Interfaces/StudentAnswerWithQuestionDto';
-import { StudentExamAnswerService } from '../../../../../Services/student-exam-answer.service';
 import { QuestionTypes } from '../../../../../Interfaces/QuestionTypes';
+import { StudentService } from '../../../../../Services/student.service';
 
 @Component({
   selector: 'app-student-grades',
@@ -23,8 +22,7 @@ export class StudentGradesComponent implements OnInit {
   studentId!: string;
   ExamsResults?: istudentExamResults[];
 
-  _StudentExamsResults = inject(StudentExamsResultsService);
-  _StudentِExamAnswer = inject(StudentExamAnswerService);
+  _StudentService = inject(StudentService);
   _Auth = inject(AuthService);
 
   ngOnInit() {
@@ -120,7 +118,7 @@ export class StudentGradesComponent implements OnInit {
   }
 
   StudentExamsResults(studentId: string) {
-    this._StudentExamsResults.GetStudentExamsResults(studentId).subscribe({
+    this._StudentService.GetStudentExamsResults(studentId).subscribe({
       next: (response: ApiResponse<istudentExamResults[]>) => {
         this.ExamsResults = response.data;
         console.log(response.data, response.success);
@@ -136,7 +134,7 @@ export class StudentGradesComponent implements OnInit {
     this.showCorrectionModal = true;
 
     // تحتاج لاستدعاء service لجلب بيانات التصحيح
-    this._StudentِExamAnswer.StudentResultWithQuestions(studentId, examId).subscribe({
+    this._StudentService.StudentResultWithQuestions(studentId, examId).subscribe({
       next: (response: ApiResponse<StudentAnswerWithQuestionDto[]>) => {
         if (response.success && response.data) {
           this.selectedCorrectionData = response.data;

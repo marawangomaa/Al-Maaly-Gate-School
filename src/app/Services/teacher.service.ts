@@ -14,8 +14,8 @@ export class TeacherService {
 
   private apiUrl: string = `${environment.apiBaseUrl}/Teacher`;
 
-  constructor(private http: HttpClient) {}
-  // Legacy method - keep for compatibility
+  constructor(private http: HttpClient) { }
+  //Get All Teachers
   GetAllTeachers(): Observable<Teacher[]> {
     return ApiResponseHandler.handleApiResponse<Teacher[]>(
       this.http.get<ApiResponse<Teacher[]>>(this.apiUrl)

@@ -24,7 +24,7 @@ export class NavBarComponent implements OnInit {
     private translate: TranslateService,
     private auth: AuthService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.isLoggedIn = this.auth.isLoggedIn();

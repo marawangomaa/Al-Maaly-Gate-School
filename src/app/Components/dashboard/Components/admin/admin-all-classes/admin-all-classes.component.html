@@ -577,7 +577,7 @@
                   <span *ngIf="!teacher.subjects || teacher.subjects.length === 0" class="text-muted">No subjects</span>
                 </td>
                 <td>
-                  <span [class]="getTeacherStatusClass(teacher) + ' status-badge'">{{ teacher.profileStatus }}</span>
+                  <span [class]="getTeacherStatusClass(teacher) + ' status-badge'">{{ teacher.accountStatus }}</span>
                 </td>
                 <td>
                   <button class="btn btn-success btn-sm" (click)="selectTeacher(teacher.id)" title="Assign to Class" [disabled]="isTeacherAssigned(teacher)">

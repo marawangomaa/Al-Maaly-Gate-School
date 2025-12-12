@@ -75,6 +75,7 @@
         "LOADING": "Registering..."
     },
     "DASH": {
+        "CHILDREN OF PARENT": "Children of Parent",
         "ADMIN_CERTFICATION_CREATE": "Create Certfications",
         "STUDENT_CERTFICATION": "Certfications",
         "ALL_CLASSES": "All Classes",
@@ -103,6 +104,7 @@
         "ACCEPT_TEACHERS": "Accept Teachers",
         "ALL_STUDENT_TEST_RESULT": "Student Test Restults",
         "STUDENT_ACCOUNTS": "Students Accounts",
+        "PARENTS_ACCOUNTS": "Parents Accounts",
         "TEACHER_ACCOUNTS": "Teachers Accounts",
         "ADMIN_SUBJECT_MANAGEMENT": "Subject Management",
         "ADMIN_ANALYTICS": "Analytics",
@@ -113,7 +115,6 @@
         "SUBTITLE": "Admin",
         "PROFILE": "Profile",
         "LOGOUT": "Logout",
-
         "CREATE_EMPTY_CLASS": "Create New Class"
     },
     "GRADE": {
@@ -398,28 +399,21 @@
     "DOWNLOAD": "Download"
     },
     "certificate": {
-    "title": "Certificate Generation",
-    "subtitle": "Generate student certificates easily with PDF output and database saving options.",
-    
-    "selectClass": "Select Class",
-    "classPlaceholder": "Choose a class",
-
-    "selectStudent": "Select Student",
-    "studentPlaceholder": "Choose a student",
-
-    "certificateType": "Certificate Type",
-
-    "generatePdf": "Generate PDF",
-    "generateAndSave": "Generate & Save to DB",
-    "saveOnly": "Save to DB Only",
-
-    "generating": "Generating...",
-    "saving": "Saving...",
-
-    "studentsInClass": "Students in Class",
-    "studentId": "Student ID"
-  }
-    ,
+        "title": "Certificate Generation",
+        "subtitle": "Generate student certificates easily with PDF output and database saving options.",
+        "selectClass": "Select Class",
+        "classPlaceholder": "Choose a class",
+        "selectStudent": "Select Student",
+        "studentPlaceholder": "Choose a student",
+        "certificateType": "Certificate Type",
+        "generatePdf": "Generate PDF",
+        "generateAndSave": "Generate & Save to DB",
+        "saveOnly": "Save to DB Only",
+        "generating": "Generating...",
+        "saving": "Saving...",
+        "studentsInClass": "Students in Class",
+        "studentId": "Student ID"
+    },
     "NAV": {
         "LOGO": "LOGO",
         "HOME": "Home",
