@@ -1,0 +1,607 @@
+<div class="container-fluid py-4">
+  <!-- Toast Container -->
+  <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+    <div *ngFor="let toast of toastMessages" 
+         class="alert alert-dismissible fade show mb-2"
+         [class]="getToastClass(toast.type)"
+         role="alert">
+      <div class="d-flex align-items-center">
+        <i [class]="toast.type === 'success' ? 'bi bi-check-circle-fill me-2' : 
+                   toast.type === 'error' ? 'bi bi-exclamation-circle-fill me-2' : 
+                   'bi bi-info-circle-fill me-2'"></i>
+        <span>{{toast.message}}</span>
+      </div>
+      <button type="button" class="btn-close" (click)="removeToast(toast.id)"></button>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="row mb-4">
+    <div class="col">
+      <h1 class="h3 text-dark">
+        <i class="bi bi-journal-bookmark me-2"></i>Curriculum Management
+      </h1>
+      <p class="text-muted">Manage and organize your school curricula efficiently</p>
+    </div>
+    <div class="col-auto d-flex align-items-center">
+      <button class="btn btn-primary" (click)="openCreateModal()">
+        <i class="bi bi-plus-circle me-2"></i>Add New Curriculum
+      </button>
+    </div>
+  </div>
+
+  <!-- Search and Stats -->
+  <div class="card border-0 shadow-sm mb-4">
+    <div class="card-body">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <div class="input-group">
+            <span class="input-group-text bg-light border-end-0">
+              <i class="bi bi-search text-muted"></i>
+            </span>
+            <input 
+            type="text" 
+                class="form-control border-start-0" 
+                placeholder="Search curricula by name, code, or description..."
+                [formControl]="searchTermControl"
+            >
+            <button class="btn btn-outline-secondary" type="button" (click)="searchForm.reset()">
+              Clear
+            </button>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="d-flex justify-content-end">
+            <div class="me-4 text-center">
+              <div class="text-muted small">Total Curricula</div>
+              <div class="h4 mb-0">{{curricula.length}}</div>
+            </div>
+            <div class="me-4 text-center">
+              <div class="text-muted small">Showing</div>
+              <div class="h4 mb-0">{{filteredCurricula.length}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading && curricula.length === 0" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-3 text-muted">Loading curricula...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!loading && curricula.length === 0" class="card border-0 shadow-sm">
+    <div class="card-body text-center py-5">
+      <i class="bi bi-journal-x display-4 text-muted"></i>
+      <h5 class="mt-3">No Curricula Found</h5>
+      <p class="text-muted">Get started by creating your first curriculum.</p>
+      <button class="btn btn-primary" (click)="openCreateModal()">
+        <i class="bi bi-plus-circle me-2"></i>Create Curriculum
+      </button>
+    </div>
+  </div>
+
+  <!-- Curriculum Table -->
+  <div *ngIf="!loading && curricula.length > 0" class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead class="table-light">
+            <tr>
+              <th (click)="sort('code')" class="cursor-pointer">
+                Code <i [class]="'bi ' + getSortIcon('code')"></i>
+              </th>
+              <th (click)="sort('name')" class="cursor-pointer">
+                Name <i [class]="'bi ' + getSortIcon('name')"></i>
+              </th>
+              <th>Description</th>
+              <th (click)="sort('gradeCount')" class="cursor-pointer text-center">
+                Grades <i [class]="'bi ' + getSortIcon('gradeCount')"></i>
+              </th>
+              <th (click)="sort('studentCount')" class="cursor-pointer text-center">
+                Students <i [class]="'bi ' + getSortIcon('studentCount')"></i>
+              </th>
+              <th (click)="sort('teacherCount')" class="cursor-pointer text-center">
+                Teachers <i [class]="'bi ' + getSortIcon('teacherCount')"></i>
+              </th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let curriculum of filteredCurricula" class="align-middle">
+              <td>
+                <span class="badge bg-primary bg-opacity-10 text-primary fw-medium">
+                  {{curriculum.code}}
+                </span>
+              </td>
+              <td>
+                <div class="fw-medium">{{curriculum.name}}</div>
+                <small class="text-muted">
+                  Created {{curriculum.createdAt | date:'mediumDate'}}
+                </small>
+              </td>
+              <td>
+                <p class="mb-0 text-truncate" style="max-width: 250px;">
+                  {{curriculum.description || 'No description'}}
+                </p>
+              </td>
+              <td class="text-center">
+                <span class="badge bg-info bg-opacity-10 text-info">
+                  {{curriculum.gradeCount}}
+                </span>
+              </td>
+              <td class="text-center">
+                <span class="badge bg-success bg-opacity-10 text-success">
+                  {{curriculum.studentCount}}
+                </span>
+              </td>
+              <td class="text-center">
+                <span class="badge bg-warning bg-opacity-10 text-warning">
+                  {{curriculum.teacherCount}}
+                </span>
+              </td>
+              <td class="text-end">
+                <div class="btn-group" role="group">
+                  <button 
+                    class="btn btn-sm btn-outline-info" 
+                    (click)="openDetailsModal(curriculum)"
+                    title="View Details"
+                  >
+                    <i class="bi bi-eye"></i>
+                  </button>
+                  <button 
+                    class="btn btn-sm btn-outline-warning" 
+                    (click)="openEditModal(curriculum)"
+                    title="Edit"
+                  >
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <div class="btn-group" role="group">
+                    <button 
+                      type="button" 
+                      class="btn btn-sm btn-outline-secondary dropdown-toggle" 
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <i class="bi bi-gear"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li>
+                        <a class="dropdown-item" href="#" (click)="$event.preventDefault(); openCheckModal(curriculum, 'checkStudents')">
+                          <i class="bi bi-people me-2"></i>Check Students
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="#" (click)="$event.preventDefault(); openCheckModal(curriculum, 'checkTeachers')">
+                          <i class="bi bi-person-badge me-2"></i>Check Teachers
+                        </a>
+                      </li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li>
+                        <a class="dropdown-item text-danger" href="#" (click)="$event.preventDefault(); openDeleteModal(curriculum)">
+                          <i class="bi bi-trash me-2"></i>Delete
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Empty Search Results -->
+      <div *ngIf="filteredCurricula.length === 0 && searchTerm" class="text-center py-5">
+        <i class="bi bi-search display-4 text-muted"></i>
+        <h5 class="mt-3">No matching curricula found</h5>
+        <p class="text-muted">Try a different search term</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Create Curriculum Modal -->
+<div #createModal class="modal fade" tabindex="-1" aria-hidden="true" *ngIf="showCreateModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">
+          <i class="bi bi-plus-circle me-2"></i>Create New Curriculum
+        </h5>
+        <button type="button" class="btn-close btn-close-white" (click)="closeCreateModal()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="createForm" (ngSubmit)="createCurriculum()">
+          <div class="mb-3">
+            <label for="createName" class="form-label">Curriculum Name *</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="createName" 
+              formControlName="name"
+              [class]="getFormControlClass(createForm, 'name')"
+              placeholder="Enter curriculum name"
+            >
+            <div *ngIf="createForm.get('name')?.touched && createForm.get('name')?.errors" class="invalid-feedback">
+              <div *ngIf="createForm.get('name')?.errors?.['required']">Name is required</div>
+              <div *ngIf="createForm.get('name')?.errors?.['maxlength']">Maximum length is 100 characters</div>
+            </div>
+            <small class="text-muted">A descriptive name for the curriculum</small>
+          </div>
+          
+          <div class="mb-3">
+            <label for="createCode" class="form-label">Curriculum Code *</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="createCode" 
+              formControlName="code"
+              [class]="getFormControlClass(createForm, 'code')"
+              placeholder="e.g., MATH-101"
+            >
+            <div *ngIf="createForm.get('code')?.touched && createForm.get('code')?.errors" class="invalid-feedback">
+              <div *ngIf="createForm.get('code')?.errors?.['required']">Code is required</div>
+              <div *ngIf="createForm.get('code')?.errors?.['maxlength']">Maximum length is 20 characters</div>
+            </div>
+            <small class="text-muted">Unique code for identification</small>
+          </div>
+          
+          <div class="mb-3">
+            <label for="createDescription" class="form-label">Description</label>
+            <textarea 
+              class="form-control" 
+              id="createDescription" 
+              formControlName="description"
+              rows="3"
+              [class]="getFormControlClass(createForm, 'description')"
+              placeholder="Enter curriculum description (optional)"
+            ></textarea>
+            <small class="text-muted">
+              {{createForm.get('description')?.value?.length || 0}}/500 characters
+            </small>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="closeCreateModal()">Cancel</button>
+        <button 
+          type="button" 
+          class="btn btn-primary" 
+          (click)="createCurriculum()"
+          [disabled]="createForm.invalid || loading"
+        >
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+          Create Curriculum
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Curriculum Modal -->
+<div #editModal class="modal fade" tabindex="-1" aria-hidden="true" *ngIf="showEditModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-warning text-dark">
+        <h5 class="modal-title">
+          <i class="bi bi-pencil-square me-2"></i>Edit Curriculum
+        </h5>
+        <button type="button" class="btn-close" (click)="closeEditModal()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="editForm" (ngSubmit)="updateCurriculum()">
+          <div class="alert alert-info" *ngIf="selectedCurriculum">
+            <small>
+              <i class="bi bi-info-circle me-2"></i>
+              Last updated: {{selectedCurriculum.updatedAt || 'Never' | date:'medium'}}
+            </small>
+          </div>
+          
+          <div class="mb-3">
+            <label for="editName" class="form-label">Curriculum Name *</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="editName" 
+              formControlName="name"
+              [class]="getFormControlClass(editForm, 'name')"
+            >
+            <div *ngIf="editForm.get('name')?.touched && editForm.get('name')?.errors" class="invalid-feedback">
+              <div *ngIf="editForm.get('name')?.errors?.['required']">Name is required</div>
+              <div *ngIf="editForm.get('name')?.errors?.['maxlength']">Maximum length is 100 characters</div>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="editCode" class="form-label">Curriculum Code *</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="editCode" 
+              formControlName="code"
+              [class]="getFormControlClass(editForm, 'code')"
+            >
+            <div *ngIf="editForm.get('code')?.touched && editForm.get('code')?.errors" class="invalid-feedback">
+              <div *ngIf="editForm.get('code')?.errors?.['required']">Code is required</div>
+              <div *ngIf="editForm.get('code')?.errors?.['maxlength']">Maximum length is 20 characters</div>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="editDescription" class="form-label">Description</label>
+            <textarea 
+              class="form-control" 
+              id="editDescription" 
+              formControlName="description"
+              rows="3"
+              [class]="getFormControlClass(editForm, 'description')"
+            ></textarea>
+            <small class="text-muted">
+              {{editForm.get('description')?.value?.length || 0}}/500 characters
+            </small>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="closeEditModal()">Cancel</button>
+        <button 
+          type="button" 
+          class="btn btn-warning" 
+          (click)="updateCurriculum()"
+          [disabled]="editForm.invalid || loading"
+        >
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+          Update Curriculum
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Details Modal -->
+<div #detailsModal class="modal fade" tabindex="-1" aria-hidden="true" *ngIf="showDetailsModal">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header bg-info text-white">
+        <h5 class="modal-title">
+          <i class="bi bi-journal-text me-2"></i>Curriculum Details
+        </h5>
+        <button type="button" class="btn-close btn-close-white" (click)="closeDetailsModal()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="detailsLoading" class="text-center py-4">
+          <div class="spinner-border text-info" role="status"></div>
+          <p class="mt-2">Loading details...</p>
+        </div>
+        
+        <div *ngIf="!detailsLoading && curriculumDetails">
+          <!-- Header Info -->
+          <div class="row mb-4">
+            <div class="col">
+              <h4 class="text-dark">{{curriculumDetails.name}}</h4>
+              <span class="badge bg-primary">{{curriculumDetails.code}}</span>
+              <p class="mt-2">{{curriculumDetails.description || 'No description provided'}}</p>
+            </div>
+            <div class="col-auto">
+              <div class="d-flex flex-column align-items-end">
+                <div class="text-muted small">Created</div>
+                <div class="fw-medium">{{curriculumDetails.createdAt | date:'mediumDate'}}</div>
+                <div class="text-muted small mt-2">Last Updated</div>
+                <div class="fw-medium">{{curriculumDetails.updatedAt ? (curriculumDetails.updatedAt | date:'mediumDate') : 'Never'}}</div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Stats Cards -->
+          <div class="row g-3 mb-4">
+            <div class="col-md-4">
+              <div class="card border-0 bg-light">
+                <div class="card-body text-center">
+                  <div class="h2 text-info mb-1">{{curriculumDetails.gradeCount}}</div>
+                  <div class="text-muted">Grades</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-0 bg-light">
+                <div class="card-body text-center">
+                  <div class="h2 text-success mb-1">{{curriculumDetails.studentCount}}</div>
+                  <div class="text-muted">Students</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-0 bg-light">
+                <div class="card-body text-center">
+                  <div class="h2 text-warning mb-1">{{curriculumDetails.teacherCount}}</div>
+                  <div class="text-muted">Teachers</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Tabs -->
+          <ul class="nav nav-tabs" id="detailsTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="grades-tab" data-bs-toggle="tab" data-bs-target="#grades" type="button">
+                Grades ({{curriculumDetails.grades.length}})
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="students-tab" data-bs-toggle="tab" data-bs-target="#students" type="button">
+                Students ({{curriculumDetails.students.length}})
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="teachers-tab" data-bs-toggle="tab" data-bs-target="#teachers" type="button">
+                Teachers ({{curriculumDetails.teachers.length}})
+              </button>
+            </li>
+          </ul>
+          
+          <div class="tab-content p-3 border border-top-0 rounded-bottom" style="min-height: 300px;">
+            <!-- Grades Tab -->
+            <div class="tab-pane fade show active" id="grades" role="tabpanel">
+              <div *ngIf="curriculumDetails.grades.length === 0" class="text-center py-5">
+                <i class="bi bi-journal-x display-4 text-muted"></i>
+                <p class="mt-3 text-muted">No grades assigned to this curriculum</p>
+              </div>
+              <div *ngIf="curriculumDetails.grades.length > 0" class="row g-3">
+                <div *ngFor="let grade of curriculumDetails.grades" class="col-md-6">
+                  <div class="card border">
+                    <div class="card-body">
+                      <h6 class="card-title">{{grade.gradeName}}</h6>
+                      <div class="d-flex justify-content-between">
+                        <small class="text-muted">
+                          <i class="bi bi-door-closed me-1"></i> {{grade.classCount}} classes
+                        </small>
+                        <small class="text-muted">
+                          <i class="bi bi-book me-1"></i> {{grade.subjectCount}} subjects
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Students Tab -->
+            <div class="tab-pane fade" id="students" role="tabpanel">
+              <div *ngIf="curriculumDetails.students.length === 0" class="text-center py-5">
+                <i class="bi bi-person-x display-4 text-muted"></i>
+                <p class="mt-3 text-muted">No students enrolled in this curriculum</p>
+              </div>
+              <div *ngIf="curriculumDetails.students.length > 0" class="table-responsive">
+                <table class="table table-sm">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Class</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let student of curriculumDetails.students">
+                      <td>{{student.fullName}}</td>
+                      <td>{{student.email}}</td>
+                      <td>{{student.className}}</td>
+                      <td>
+                        <span [class]="'badge ' + (student.profileStatus === 'Active' ? 'bg-success' : 'bg-secondary')">
+                          {{student.profileStatus}}
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            
+            <!-- Teachers Tab -->
+            <div class="tab-pane fade" id="teachers" role="tabpanel">
+              <div *ngIf="curriculumDetails.teachers.length === 0" class="text-center py-5">
+                <i class="bi bi-person-badge-x display-4 text-muted"></i>
+                <p class="mt-3 text-muted">No teachers specialized in this curriculum</p>
+              </div>
+              <div *ngIf="curriculumDetails.teachers.length > 0" class="row g-3">
+                <div *ngFor="let teacher of curriculumDetails.teachers" class="col-md-6">
+                  <div class="card border">
+                    <div class="card-body">
+                      <h6 class="card-title">{{teacher.fullName}}</h6>
+                      <p class="card-text mb-1">
+                        <i class="bi bi-envelope me-2 text-muted"></i>{{teacher.email}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="closeDetailsModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div #deleteModal class="modal fade" tabindex="-1" aria-hidden="true" *ngIf="showDeleteModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title">
+          <i class="bi bi-exclamation-triangle me-2"></i>Confirm Deletion
+        </h5>
+        <button type="button" class="btn-close btn-close-white" (click)="closeDeleteModal()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-danger" *ngIf="selectedCurriculum">
+          <i class="bi bi-exclamation-octagon-fill me-2"></i>
+          <strong>Warning!</strong> This action cannot be undone.
+        </div>
+        
+        <p *ngIf="selectedCurriculum">
+          Are you sure you want to delete the curriculum 
+          <strong>"{{selectedCurriculum.name}}"</strong> ({{selectedCurriculum.code}})?
+        </p>
+        
+        <div *ngIf="selectedCurriculum" class="alert alert-warning">
+          <small>
+            <i class="bi bi-info-circle me-2"></i>
+            This curriculum has:
+            <ul class="mb-0 mt-2">
+              <li>{{selectedCurriculum.gradeCount}} grade(s)</li>
+              <li>{{selectedCurriculum.studentCount}} student(s)</li>
+              <li>{{selectedCurriculum.teacherCount}} teacher(s)</li>
+            </ul>
+          </small>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="closeDeleteModal()">Cancel</button>
+        <button 
+          type="button" 
+          class="btn btn-danger" 
+          (click)="deleteCurriculum()"
+          [disabled]="loading"
+        >
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+          Delete Permanently
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Check Results Modal -->
+<div #checkModal class="modal fade" tabindex="-1" aria-hidden="true" *ngIf="showCheckModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" 
+           [ngClass]="{'bg-success text-white': checkResult, 'bg-info text-white': !checkResult}">
+        <h5 class="modal-title">
+          <i [class]="checkResult ? 'bi bi-check-circle me-2' : 'bi bi-info-circle me-2'"></i>
+          {{getCheckModalTitle()}}
+        </h5>
+        <button type="button" class="btn-close btn-close-white" (click)="closeCheckModal()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center py-4">
+        <div [ngClass]="{'text-success': checkResult, 'text-info': !checkResult}">
+          <i [class]="checkResult ? 'bi bi-check-circle display-1' : 'bi bi-info-circle display-1'"></i>
+        </div>
+        <h5 class="mt-3">{{getCheckModalMessage()}}</h5>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="closeCheckModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

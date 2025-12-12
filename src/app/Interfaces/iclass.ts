@@ -15,6 +15,8 @@ export interface ClassViewDto {
   students?: any[];
   classAssets?: any[];
   classAppointments?: ClassAppointmentDto[];
+  curriculumId?: string;      // Optional: from grade's curriculum
+  curriculumName?: string;    // Optional: curriculum name for display
 }
 
 export interface ClassDto {

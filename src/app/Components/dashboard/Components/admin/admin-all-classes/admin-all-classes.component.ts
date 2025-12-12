@@ -3,8 +3,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClassService } from '../../../../../Services/class.service';
 import { GradeService } from '../../../../../Services/grade.service';
+import { CurriculumService } from '../../../../../Services/curriculum.service'; // Added
 import { BulkMoveClassesDto, ClassDto, ClassViewDto, CreateClassDto } from '../../../../../Interfaces/iclass';
 import { GradeViewDto } from '../../../../../Interfaces/igrade';
+import { Curriculum } from '../../../../../Interfaces/icurriculum'; // Added
 import { ApiResponseHandler } from '../../../../../utils/api-response-handler';
 import { Subscription } from 'rxjs';
 import { AdminManagementService } from '../../../../../Services/admin-management.service';
@@ -32,6 +34,7 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
   allTeachers: Teacher[] = [];
   filteredTeachers: Teacher[] = [];
   allGrades: GradeViewDto[] = [];
+  allCurricula: Curriculum[] = []; // Added
   
   // Selection and state management
   selectedClassId: string | null = null;
@@ -51,6 +54,7 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
   
   // Filtering and search
   selectedGradeFilter: string = '';
+  selectedCurriculumFilter: string = ''; // Added
   searchTerm: string = '';
   sortBy: string = 'className';
   teacherSearchTerm: string = '';
@@ -80,6 +84,7 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
   constructor(
     private classService: ClassService,
     private gradeService: GradeService,
+    private curriculumService: CurriculumService, // Added
     private adminManagementService: AdminManagementService,
     private teacherService: TeacherService,
     private SubjectService: SubjectService
@@ -88,6 +93,7 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadAllClasses();
     this.loadAllGrades();
+    this.loadAllCurricula(); // Added
     this.loadAvailableSubjects();
   }
 
@@ -102,7 +108,9 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
     ApiResponseHandler.handleApiResponse<ClassViewDto[]>(this.classService.getAll()).subscribe({
       next: (classes) => {
         this.allClasses = classes;
-        this.filteredClasses = [...this.allClasses];
+        // Enhance classes with curriculum information
+        this.enhanceClassesWithCurriculumInfo();
+        this.filterClasses();
         this.updatePagination();
         this.loading = false;
       },
@@ -124,23 +132,45 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
     });
   }
 
+  private loadAllCurricula(): void {
+    this.curriculumService.getAll().subscribe({
+      next: (curricula) => {
+        this.allCurricula = curricula;
+      },
+      error: (error) => {
+        console.error('Error loading curricula:', error);
+      }
+    });
+  }
+
   private loadAvailableSubjects(): void {
-  this.SubjectService.getAll().subscribe({
-    next: (response: any) => {
-      if (response.success && response.data) {
-        // Extract just the subject names from the response
-        this.availableSubjects = response.data.map((subject: any) => subject.subjectName);
-      } else {
-        console.warn('No subjects found or API returned error');
+    this.SubjectService.getAll().subscribe({
+      next: (response: any) => {
+        if (response.success && response.data) {
+          this.availableSubjects = response.data.map((subject: any) => subject.subjectName);
+        } else {
+          console.warn('No subjects found or API returned error');
+          this.availableSubjects = [];
+        }
+      },
+      error: (error: any) => {
+        console.error('Error loading subjects:', error);
         this.availableSubjects = [];
       }
-    },
-    error: (error: any) => {
-      console.error('Error loading subjects:', error);
-      this.availableSubjects = [];
-    }
-  });
-}
+    });
+  }
+
+  private enhanceClassesWithCurriculumInfo(): void {
+    this.allClasses.forEach(cls => {
+      const grade = this.allGrades.find(g => g.id === cls.gradeId);
+      if (grade) {
+        // Add curriculumId to class for filtering
+        (cls as any).curriculumId = grade.curriculumId;
+        // Add curriculumName to class for display
+        (cls as any).curriculumName = grade.curriculumName || this.getCurriculumName(grade.curriculumId);
+      }
+    });
+  }
 
   // ========== FILTERING AND SEARCH METHODS ==========
 
@@ -152,12 +182,21 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
       filtered = filtered.filter(c => c.gradeId === this.selectedGradeFilter);
     }
 
+    // Filter by curriculum (NEW)
+    if (this.selectedCurriculumFilter) {
+      // Get grades that belong to the selected curriculum
+      const curriculumGrades = this.allGrades.filter(g => g.curriculumId === this.selectedCurriculumFilter);
+      const curriculumGradeIds = curriculumGrades.map(g => g.id);
+      filtered = filtered.filter(c => curriculumGradeIds.includes(c.gradeId));
+    }
+
     // Filter by search term
     if (this.searchTerm) {
       const term = this.searchTerm.toLowerCase();
       filtered = filtered.filter(c => 
         c.className.toLowerCase().includes(term) ||
-        (c.gradeName && c.gradeName.toLowerCase().includes(term))
+        (c.gradeName && c.gradeName.toLowerCase().includes(term)) ||
+        ((c as any).curriculumName && (c as any).curriculumName.toLowerCase().includes(term))
       );
     }
 
@@ -178,6 +217,8 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
           return (b.teacherCount || 0) - (a.teacherCount || 0);
         case 'gradeName':
           return (a.gradeName || '').localeCompare(b.gradeName || '');
+        case 'curriculumName': // NEW
+          return ((a as any).curriculumName || '').localeCompare((b as any).curriculumName || '');
         case 'className':
         default:
           return a.className.localeCompare(b.className);
@@ -213,85 +254,88 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
     this.filteredTeachers = filtered;
   }
 
+  onCurriculumFilterChange(): void {
+    // When curriculum filter changes, update grade filter options
+    if (this.selectedCurriculumFilter) {
+      const curriculumGrades = this.allGrades.filter(g => g.curriculumId === this.selectedCurriculumFilter);
+      // If selected grade doesn't belong to selected curriculum, clear it
+      if (this.selectedGradeFilter) {
+        const selectedGrade = this.allGrades.find(g => g.id === this.selectedGradeFilter);
+        if (selectedGrade && selectedGrade.curriculumId !== this.selectedCurriculumFilter) {
+          this.selectedGradeFilter = '';
+        }
+      }
+    }
+    this.filterClasses();
+  }
+
+  onGradeFilterChange(): void {
+    this.filterClasses();
+  }
+
   // ========== CLASS DETAILS METHODS ==========
 
   viewClassDetails(classId: string): void {
-  this.selectedClass = this.allClasses.find(c => c.id === classId) || null;
-  
-  if (this.selectedClass) {
-    this.isLoadingDetails = true;
+    this.selectedClass = this.allClasses.find(c => c.id === classId) || null;
     
-    // ADD THIS LINE - This will load the teachers
-    this.onClassSelected(classId);
-    
-    this.loadClassSubjects(classId);
-    this.loadClassStatistics(classId);
-    this.loadClassStudents(classId);
-    
-    const modal = new bootstrap.Modal(document.getElementById('classDetailsModal'));
-    modal.show();
-    
-    this.isLoadingDetails = false;
+    if (this.selectedClass) {
+      this.isLoadingDetails = true;
+      
+      // Load related data
+      this.onClassSelected(classId);
+      this.loadClassSubjects(classId);
+      this.loadClassStatistics(classId);
+      this.loadClassStudents(classId);
+      
+      const modal = new bootstrap.Modal(document.getElementById('classDetailsModal'));
+      modal.show();
+      
+      this.isLoadingDetails = false;
+    }
   }
-}
 
   onClassSelected(classId: string): void {
-  console.log('Class selected:', classId);
-  this.selectedClassId = classId;
-  this.loadClassTeachers(classId);
-}
+    this.selectedClassId = classId;
+    this.loadClassTeachers(classId);
+  }
 
   private loadClassTeachers(classId: string): void {
-  console.log('Loading teachers for class:', classId);
-  
-  this.adminManagementService.getTeachersByClass(classId).subscribe({
-    next: (response: any) => {
-      console.log('API Response:', response);
-      
-      // Handle both response formats:
-      // Format 1: {success: true, data: [...]} (with ApiResponse wrapper)
-      // Format 2: [...] (direct array from ApiResponseHandler)
-      
-      if (response && typeof response === 'object') {
-        if (response.success !== undefined && response.data !== undefined) {
-          // Format 1: Has success and data properties
-          this.classTeachers = response.data || [];
-        } else if (Array.isArray(response)) {
-          // Format 2: Direct array (what ApiResponseHandler returns)
-          this.classTeachers = response;
+    this.adminManagementService.getTeachersByClass(classId).subscribe({
+      next: (response: any) => {
+        if (response && typeof response === 'object') {
+          if (response.success !== undefined && response.data !== undefined) {
+            this.classTeachers = response.data || [];
+          } else if (Array.isArray(response)) {
+            this.classTeachers = response;
+          } else {
+            this.classTeachers = [];
+          }
         } else {
-          // Format 3: Some other object structure
           this.classTeachers = [];
         }
-      } else {
+      },
+      error: (error: any) => {
+        console.error('Error loading class teachers:', error);
         this.classTeachers = [];
       }
-      
-      console.log('Final teachers:', this.classTeachers);
-    },
-    error: (error: any) => {
-      console.error('Error loading class teachers:', error);
-      this.classTeachers = [];
-    }
-  });
-}
+    });
+  }
 
-private loadClassStudents(classId: string): void {
-  this.classService.getById(classId).subscribe({
-    next: (response: any) => {
-      if (response.success && response.data && response.data.students) {
-        this.classStudents = response.data.students;
-        console.log('Loaded students:', this.classStudents);
-      } else {
+  private loadClassStudents(classId: string): void {
+    this.classService.getById(classId).subscribe({
+      next: (response: any) => {
+        if (response.success && response.data && response.data.students) {
+          this.classStudents = response.data.students;
+        } else {
+          this.classStudents = [];
+        }
+      },
+      error: (error: any) => {
+        console.error('Error loading class students:', error);
         this.classStudents = [];
       }
-    },
-    error: (error: any) => {
-      console.error('Error loading class students:', error);
-      this.classStudents = [];
-    }
-  });
-}
+    });
+  }
 
   private loadClassSubjects(classId: string): void {
     const classObj = this.allClasses.find(c => c.id === classId);
@@ -311,18 +355,18 @@ private loadClassStudents(classId: string): void {
   }
 
   private loadClassStatistics(classId: string): void {
-  this.classService.getClassStatistics(classId).subscribe({
-    next: (response: any) => {
-      if (response.success && response.data) {
-        this.classStats = response.data;
+    this.classService.getClassStatistics(classId).subscribe({
+      next: (response: any) => {
+        if (response.success && response.data) {
+          this.classStats = response.data;
+        }
+      },
+      error: (error: any) => {
+        console.error('Error loading class statistics:', error);
+        this.classStats = null;
       }
-    },
-    error: (error: any) => {
-      console.error('Error loading class statistics:', error);
-      this.classStats = null;
-    }
-  });
-}
+    });
+  }
 
   // ========== TEACHER MANAGEMENT METHODS ==========
 
@@ -374,20 +418,20 @@ private loadClassStudents(classId: string): void {
   }
 
   unassignTeacher(teacherId: string, classId: string): void {
-  if (confirm('Are you sure you want to unassign this teacher?')) {
-    this.adminManagementService.unassignTeacherFromClass(teacherId, classId).subscribe({
-      next: (result: any) => {
-        this.showSuccess("Teacher unassigned successfully!");
-        this.loadClassTeachers(classId);
-        this.loadAllClasses();
-      },
-      error: (error: any) => {
-        console.error('Error unassigning teacher:', error);
-        alert(error.message || 'Failed to unassign teacher');
-      }
-    });
+    if (confirm('Are you sure you want to unassign this teacher?')) {
+      this.adminManagementService.unassignTeacherFromClass(teacherId, classId).subscribe({
+        next: (result: any) => {
+          this.showSuccess("Teacher unassigned successfully!");
+          this.loadClassTeachers(classId);
+          this.loadAllClasses();
+        },
+        error: (error: any) => {
+          console.error('Error unassigning teacher:', error);
+          alert(error.message || 'Failed to unassign teacher');
+        }
+      });
+    }
   }
-}
 
   isTeacherAssigned(teacher: Teacher): boolean {
     return teacher.classNames?.some(className => 
@@ -398,61 +442,59 @@ private loadClassStudents(classId: string): void {
   // ========== BULK OPERATIONS METHODS ==========
 
   openBulkAssignModal(): void {
-  this.currentBulkOperation = 'assignTeachers';
-  this.bulkOperationTitle = 'Bulk Assign Teachers';
-  this.selectedClasses = [];
-  this.selectedTeacherIds = [];
-  
-  // Load all teachers for selection
-  this.loadAllTeachersForBulk();
-  
-  const modal = new bootstrap.Modal(document.getElementById('bulkOperationsModal'));
-  modal.show();
-}
+    this.currentBulkOperation = 'assignTeachers';
+    this.bulkOperationTitle = 'Bulk Assign Teachers';
+    this.selectedClasses = [];
+    this.selectedTeacherIds = [];
+    
+    this.loadAllTeachersForBulk();
+    
+    const modal = new bootstrap.Modal(document.getElementById('bulkOperationsModal'));
+    modal.show();
+  }
 
   openBulkMoveModal(): void {
-  this.currentBulkOperation = 'moveClasses';
-  this.bulkOperationTitle = 'Bulk Move Classes';
-  this.selectedClasses = [];
-  this.bulkMoveGradeId = '';
-  const modal = new bootstrap.Modal(document.getElementById('bulkOperationsModal'));
-  modal.show();
-}
+    this.currentBulkOperation = 'moveClasses';
+    this.bulkOperationTitle = 'Bulk Move Classes';
+    this.selectedClasses = [];
+    this.bulkMoveGradeId = '';
+    const modal = new bootstrap.Modal(document.getElementById('bulkOperationsModal'));
+    modal.show();
+  }
 
-private loadAllTeachersForBulk(): void {
-  this.teacherService.GetAllTeachers().subscribe({
-    next: (teachers: Teacher[]) => {
-      console.log('Teachers loaded for bulk:', teachers); // Debug log
-      this.bulkTeachers = teachers;
-    },
-    error: (err: any) => {
-      console.error('Error loading teachers for bulk assignment:', err);
-      this.bulkTeachers = [];
+  private loadAllTeachersForBulk(): void {
+    this.teacherService.GetAllTeachers().subscribe({
+      next: (teachers: Teacher[]) => {
+        this.bulkTeachers = teachers;
+      },
+      error: (err: any) => {
+        console.error('Error loading teachers for bulk assignment:', err);
+        this.bulkTeachers = [];
+      }
+    });
+  }
+
+  toggleTeacherSelection(teacherId: string): void {
+    const index = this.selectedTeacherIds.indexOf(teacherId);
+    if (index > -1) {
+      this.selectedTeacherIds.splice(index, 1);
+    } else {
+      this.selectedTeacherIds.push(teacherId);
     }
-  });
-}
-
-toggleTeacherSelection(teacherId: string): void {
-  const index = this.selectedTeacherIds.indexOf(teacherId);
-  if (index > -1) {
-    this.selectedTeacherIds.splice(index, 1);
-  } else {
-    this.selectedTeacherIds.push(teacherId);
   }
-}
 
-isTeacherSelected(teacherId: string): boolean {
-  return this.selectedTeacherIds.includes(teacherId);
-}
-
-selectAllTeachers(event: any): void {
-  const isChecked = event.target.checked;
-  if (isChecked && this.bulkTeachers.length > 0) { // Changed from allTeachers to bulkTeachers
-    this.selectedTeacherIds = this.bulkTeachers.map(teacher => teacher.id); // Changed from allTeachers to bulkTeachers
-  } else {
-    this.selectedTeacherIds = [];
+  isTeacherSelected(teacherId: string): boolean {
+    return this.selectedTeacherIds.includes(teacherId);
   }
-}
+
+  selectAllTeachers(event: any): void {
+    const isChecked = event.target.checked;
+    if (isChecked && this.bulkTeachers.length > 0) {
+      this.selectedTeacherIds = this.bulkTeachers.map(teacher => teacher.id);
+    } else {
+      this.selectedTeacherIds = [];
+    }
+  }
 
   selectAllClasses(event: any): void {
     const isChecked = event.target.checked;
@@ -477,93 +519,91 @@ selectAllTeachers(event: any): void {
   }
 
   executeBulkOperation(): void {
-  if (this.selectedClasses.length === 0) {
-    alert('Please select at least one class');
-    return;
-  }
+    if (this.selectedClasses.length === 0) {
+      alert('Please select at least one class');
+      return;
+    }
 
-  switch (this.currentBulkOperation) {
-    case 'moveClasses':
-      this.executeBulkMove();
-      break;
-    case 'assignTeachers':
-      this.executeBulkAssign();
-      break;
+    switch (this.currentBulkOperation) {
+      case 'moveClasses':
+        this.executeBulkMove();
+        break;
+      case 'assignTeachers':
+        this.executeBulkAssign();
+        break;
+    }
   }
-}
 
   private executeBulkMove(): void {
-  if (!this.bulkMoveGradeId) {
-    alert('Please select a target grade');
-    return;
-  }
-
-  const dto: BulkMoveClassesDto = {
-    classIds: this.selectedClasses,
-    newGradeId: this.bulkMoveGradeId
-  };
-
-  this.gradeService.bulkMoveClasses(dto).subscribe({
-    next: (response: any) => {
-      if (response.success) {
-        this.showSuccess(`Successfully moved ${this.selectedClasses.length} classes to new grade!`);
-        this.loadAllClasses();
-        this.closeModal('bulkOperationsModal');
-        // Reset selections
-        this.selectedClasses = [];
-        this.bulkMoveGradeId = '';
-      }
-    },
-    error: (error: any) => {
-      alert('Error moving classes: ' + error.message);
+    if (!this.bulkMoveGradeId) {
+      alert('Please select a target grade');
+      return;
     }
-  });
-}
+
+    const dto: BulkMoveClassesDto = {
+      classIds: this.selectedClasses,
+      newGradeId: this.bulkMoveGradeId
+    };
+
+    this.gradeService.bulkMoveClasses(dto).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.showSuccess(`Successfully moved ${this.selectedClasses.length} classes to new grade!`);
+          this.loadAllClasses();
+          this.closeModal('bulkOperationsModal');
+          this.selectedClasses = [];
+          this.bulkMoveGradeId = '';
+        }
+      },
+      error: (error: any) => {
+        alert('Error moving classes: ' + error.message);
+      }
+    });
+  }
 
   private executeBulkAssign(): void {
-  if (this.selectedTeacherIds.length === 0) {
-    alert('Please select at least one teacher');
-    return;
+    if (this.selectedTeacherIds.length === 0) {
+      alert('Please select at least one teacher');
+      return;
+    }
+
+    const dto: BulkAssignTeachersDto = {
+      classIds: this.selectedClasses,
+      teacherIds: this.selectedTeacherIds
+    };
+
+    this.adminManagementService.bulkAssignTeachers(dto).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.showSuccess(`Successfully assigned ${this.selectedTeacherIds.length} teachers to ${this.selectedClasses.length} classes!`);
+          this.loadAllClasses();
+          this.closeModal('bulkOperationsModal');
+          this.selectedClasses = [];
+          this.selectedTeacherIds = [];
+        }
+      },
+      error: (error: any) => {
+        alert('Error assigning teachers: ' + error.message);
+      }
+    });
   }
 
-  const dto: BulkAssignTeachersDto = {
-    classIds: this.selectedClasses,
-    teacherIds: this.selectedTeacherIds
-  };
-
-  this.adminManagementService.bulkAssignTeachers(dto).subscribe({
-    next: (response: any) => {
-      if (response.success) {
-        this.showSuccess(`Successfully assigned ${this.selectedTeacherIds.length} teachers to ${this.selectedClasses.length} classes!`);
-        this.loadAllClasses();
-        this.closeModal('bulkOperationsModal');
-        // Reset selections
-        this.selectedClasses = [];
-        this.selectedTeacherIds = [];
-      }
-    },
-    error: (error: any) => {
-      alert('Error assigning teachers: ' + error.message);
-    }
-  });
-}
-
   exportAllClasses(): void {
-  this.classService.exportAllClasses().subscribe({
-    next: (blob: Blob) => {
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `all_classes_data_${new Date().toISOString().split('T')[0]}.xlsx`;
-      a.click();
-      window.URL.revokeObjectURL(url);
-      this.showSuccess('All classes data exported successfully!');
-    },
-    error: (error: any) => {
-      alert('Error exporting all classes data: ' + error.message);
-    }
-  });
-}
+    this.classService.exportAllClasses().subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `all_classes_data_${new Date().toISOString().split('T')[0]}.xlsx`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+        this.showSuccess('All classes data exported successfully!');
+      },
+      error: (error: any) => {
+        alert('Error exporting all classes data: ' + error.message);
+      }
+    });
+  }
 
   // ========== UTILITY METHODS ==========
 
@@ -575,6 +615,11 @@ selectAllTeachers(event: any): void {
   getGradeName(gradeId: string): string {
     const grade = this.allGrades.find(g => g.id === gradeId);
     return grade ? grade.gradeName : 'N/A';
+  }
+
+  getCurriculumName(curriculumId: string): string {
+    const curriculum = this.allCurricula.find(c => c.id === curriculumId);
+    return curriculum ? curriculum.name : 'N/A';
   }
 
   getStatusBadgeClass(cls: ClassViewDto): string {
@@ -590,13 +635,13 @@ selectAllTeachers(event: any): void {
   }
 
   getTeacherStatusClass(teacher: any): string {
-  switch (teacher.profileStatus?.toLowerCase()) {
-    case 'approved': return 'bg-success text-white';
-    case 'pending': return 'bg-warning text-dark';
-    case 'rejected': return 'bg-danger text-white';
-    default: return 'bg-secondary text-white';
+    switch (teacher.profileStatus?.toLowerCase()) {
+      case 'approved': return 'bg-success text-white';
+      case 'pending': return 'bg-warning text-dark';
+      case 'rejected': return 'bg-danger text-white';
+      default: return 'bg-secondary text-white';
+    }
   }
-}
 
   closeModal(modalId: string): void {
     const modal = document.getElementById(modalId);
@@ -691,21 +736,21 @@ selectAllTeachers(event: any): void {
   }
 
   exportClassData(classId: string, className: string): void {
-  this.classService.exportClassData(classId).subscribe({
-    next: (blob: Blob) => {
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `class_${className}_data_${new Date().toISOString().split('T')[0]}.xlsx`;
-      a.click();
-      window.URL.revokeObjectURL(url);
-      this.showSuccess('Class data exported successfully!');
-    },
-    error: (error: any) => {
-      alert('Error exporting class data: ' + error.message);
-    }
-  });
-}
+    this.classService.exportClassData(classId).subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `class_${className}_data_${new Date().toISOString().split('T')[0]}.xlsx`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+        this.showSuccess('Class data exported successfully!');
+      },
+      error: (error: any) => {
+        alert('Error exporting class data: ' + error.message);
+      }
+    });
+  }
 
   deleteClass(classId: string, className: string): void {
     if (confirm(`Are you sure you want to delete class "${className}"?`)) {
@@ -723,82 +768,94 @@ selectAllTeachers(event: any): void {
       });
     }
   }
-  // Add this method to your component
+
   getDisplayRange(): string {
     const start = (this.currentPage - 1) * this.pageSize + 1;
     const end = Math.min(this.currentPage * this.pageSize, this.filteredClasses.length);
     return `${start}-${end}`;
   }
 
-
-
-  testLoadTeachers(): void {
-  console.log('=== MANUAL TEST ===');
-  const testClassId = '55ff504e-b5c6-4cbe-a435-6117255b27cb';
-  this.loadClassTeachers(testClassId);
-}
-
-getStudentStatusClass(student: any): string {
-  switch (student.profileStatus?.toLowerCase()) {
-    case 'approved': return 'bg-success text-white';
-    case 'pending': return 'bg-warning text-dark';
-    case 'rejected': return 'bg-danger text-white';
-    default: return 'bg-secondary text-white';
+  getStudentStatusClass(student: any): string {
+    switch (student.profileStatus?.toLowerCase()) {
+      case 'approved': return 'bg-success text-white';
+      case 'pending': return 'bg-warning text-dark';
+      case 'rejected': return 'bg-danger text-white';
+      default: return 'bg-secondary text-white';
+    }
   }
-}
 
-moveStudentToAnotherClass(studentId: string, currentClassId: string): void {
-  const newClassId = prompt('Enter the new class ID for this student (leave empty to unassign):');
-  
-  // Convert empty string to null for unassigning
-  const classIdToSend = newClassId === '' ? null : newClassId;
-  
-  // You'll need to get the actual admin user ID - replace 'adminUserId' with the real value
-  const adminUserId = this.getCurrentAdminUserId(); // You need to implement this
-  
-  if (classIdToSend !== undefined) { // Allow null (unassign) but not undefined (cancelled)
-    this.adminManagementService.moveStudentToAnotherClass(studentId, classIdToSend, adminUserId).subscribe({
-      next: (result: any) => {
-        if (classIdToSend === null) {
-          this.showSuccess("Student removed from class successfully!");
-        } else {
-          this.showSuccess("Student moved to new class successfully!");
-        }
-        this.loadClassStudents(currentClassId);
-        this.loadAllClasses();
-      },
-      error: (error: any) => {
-        console.error('Error moving student:', error);
-        alert(error.message || 'Failed to move student');
-      }
-    });
-  }
-}
-
-removeStudentFromClass(studentId: string, classId: string): void {
-  if (confirm('Are you sure you want to remove this student from the class?')) {
-    // You'll need to get the actual admin user ID - replace 'adminUserId' with the real value
-    const adminUserId = this.getCurrentAdminUserId(); // You need to implement this
+  moveStudentToAnotherClass(studentId: string, currentClassId: string): void {
+    const newClassId = prompt('Enter the new class ID for this student (leave empty to unassign):');
     
-    this.adminManagementService.moveStudentToAnotherClass(studentId, null, adminUserId).subscribe({
-      next: (result: any) => {
-        this.showSuccess("Student removed from class successfully!");
-        this.loadClassStudents(classId);
-        this.loadAllClasses();
-      },
-      error: (error: any) => {
-        console.error('Error removing student:', error);
-        alert(error.message || 'Failed to remove student');
-      }
-    });
+    const classIdToSend = newClassId === '' ? null : newClassId;
+    const adminUserId = this.getCurrentAdminUserId();
+    
+    if (classIdToSend !== undefined) {
+      this.adminManagementService.moveStudentToAnotherClass(studentId, classIdToSend, adminUserId).subscribe({
+        next: (result: any) => {
+          if (classIdToSend === null) {
+            this.showSuccess("Student removed from class successfully!");
+          } else {
+            this.showSuccess("Student moved to new class successfully!");
+          }
+          this.loadClassStudents(currentClassId);
+          this.loadAllClasses();
+        },
+        error: (error: any) => {
+          console.error('Error moving student:', error);
+          alert(error.message || 'Failed to move student');
+        }
+      });
+    }
   }
+
+  removeStudentFromClass(studentId: string, classId: string): void {
+    if (confirm('Are you sure you want to remove this student from the class?')) {
+      const adminUserId = this.getCurrentAdminUserId();
+      
+      this.adminManagementService.moveStudentToAnotherClass(studentId, null, adminUserId).subscribe({
+        next: (result: any) => {
+          this.showSuccess("Student removed from class successfully!");
+          this.loadClassStudents(classId);
+          this.loadAllClasses();
+        },
+        error: (error: any) => {
+          console.error('Error removing student:', error);
+          alert(error.message || 'Failed to remove student');
+        }
+      });
+    }
+  }
+
+  private getCurrentAdminUserId(): string {
+    // Implement based on your auth system
+    return 'admin-user-id-placeholder';
+  }
+
+  getGradeCurriculumName(gradeId: string): string {
+  const grade = this.allGrades.find(g => g.id === gradeId);
+  if (grade) {
+    return grade.curriculumName || this.getCurriculumName(grade.curriculumId);
+  }
+  return 'Unknown Curriculum';
 }
 
-// Helper method to get the current admin user ID
-private getCurrentAdminUserId(): string {
-  // You need to implement this based on how you store admin user info
-  // This could be from your auth service, localStorage, etc.
-  // For now, return a placeholder - you'll need to replace this
-  return 'admin-user-id-placeholder';
+
+// Add these methods to your AdminAllClassesComponent class
+getClassCurriculumName(cls: ClassViewDto): string {
+  if (!cls) return '';
+  // Find the grade for this class
+  const grade = this.allGrades.find(g => g.id === cls.gradeId);
+  if (grade) {
+    // Return curriculum name or look it up
+    return grade.curriculumName || this.getCurriculumName(grade.curriculumId);
+  }
+  return '';
 }
+
+hasClassCurriculum(cls: ClassViewDto): boolean {
+  if (!cls) return false;
+  return !!this.getClassCurriculumName(cls);
+}
+
 }

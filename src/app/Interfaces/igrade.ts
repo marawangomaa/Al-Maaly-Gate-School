@@ -5,6 +5,8 @@ export interface GradeViewDto {
   id: string;
   gradeName: string;
   description: string;
+  curriculumId: string;
+  curriculumName: string;
   classCount: number;
   subjectCount: number;
   createdAt: string;
@@ -14,17 +16,32 @@ export interface GradeViewDto {
 export interface CreateGradeDto {
   gradeName: string;
   description: string;
+  curriculumId: string;
 }
 
 export interface UpdateGradeDto {
   gradeName: string;
   description: string;
+  curriculumId: string;
 }
+
 
 export interface GradeWithDetailsDto {
   id: string;
   gradeName: string;
   description: string;
+  curriculumId: string;
+  curriculum: {
+    id: string;
+    name: string;
+    code: string;
+    description: string;
+    gradeCount: number;
+    studentCount: number;
+    teacherCount: number;
+    createdAt: string;
+    updatedAt?: string;
+  };
   classes: ClassViewDto[];
   subjects: SubjectViewDto[];
   createdAt: string;

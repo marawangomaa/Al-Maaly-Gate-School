@@ -1,0 +1,165 @@
+/* admin-all-student-tests-result.component.css */
+.student-card {
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  transition: all 0.3s ease;
+}
+
+.student-card:hover {
+  border-color: var(--color-primary-300);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.student-card .card-body {
+  padding: var(--space-md);
+}
+
+.student-card .card-title {
+  font-size: var(--font-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-light-bg);
+  margin: 0;
+}
+
+.table-responsive .table-sm td {
+  padding: var(--space-sm);
+  font-size: var(--font-sm);
+}
+
+.text-success {
+  color: #48bb78 !important;
+}
+
+.text-danger {
+  color: var(--color-danger-400) !important;
+}
+
+.text-primary {
+  color: var(--color-primary-400) !important;
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1050;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding-top: var(--space-2xl);
+  overflow-y: auto;
+}
+
+.modal-dialog {
+  max-width: 900px;
+  width: 95%;
+  margin: 50px auto;
+}
+
+.modal-content {
+  background-color: var(--color-bg);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-gray-300);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  padding: var(--space-lg);
+  border-bottom: 1px solid var(--color-gray-200);
+  background-color: var(--color-bg-secondary);
+}
+
+.modal-header .modal-title {
+  font-size: var(--font-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-light-bg);
+  margin: 0;
+}
+
+.modal-header .btn-close {
+  background: none;
+  border: none;
+  font-size: var(--font-lg);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: var(--space-xs);
+  line-height: 1;
+}
+
+.modal-header .btn-close:hover {
+  color: var(--color-danger-400);
+}
+
+.modal-body {
+  padding: var(--space-lg);
+}
+
+.modal-footer {
+  padding: var(--space-lg);
+  border-top: 1px solid var(--color-gray-200);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-md);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .modal {
+    padding-top: var(--space-md);
+    align-items: flex-start;
+  }
+  
+  .modal-dialog {
+    width: 98%;
+    margin: var(--space-md) auto;
+  }
+  
+  .modal-content {
+    max-height: calc(100vh - 2 * var(--space-md));
+  }
+  
+  .table-responsive .table-sm td {
+    padding: var(--space-xs);
+    font-size: var(--font-xs);
+  }
+}
+
+/* RTL Support */
+html[dir="rtl"] .modal-header .btn-close {
+  order: -1;
+}
+
+html[dir="rtl"] .modal-footer {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .ms-2 {
+  margin-left: 0 !important;
+  margin-right: var(--space-md) !important;
+}
+
+/* admin-all-student-tests-result.component.css */
+.btn-group .btn {
+  position: relative;
+  z-index: 1;
+}
+
+.btn-outline-primary {
+  background-color: transparent !important;
+}
+
+/* Make sure buttons are clickable */
+.list-group-item {
+  position: relative;
+}
+
+.btn-group {
+  z-index: 2;
+}

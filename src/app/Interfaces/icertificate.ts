@@ -3,15 +3,23 @@ export interface Certificate {
   id: string;
   studentId: string;
   studentName?: string;
-  gpa: number;
-  issuedDate: string;
-  templateName: string;
   degreeType: DegreeType;
+  certificateNumber: string;
+  issuedDate: Date;
+  verified: boolean;
+  verifiedBy?: string;
+  verifiedDate?: Date;
+  archived: boolean;
+  archivedDate?: Date;
+  academicYear?: string;
+  curriculumId?: string;
+  gradeId?: string;
+  classId?: string;
+  pdfData?: Uint8Array;
   fileName: string;
-  contentType: string;
-  fileSize: number;
+  createdAt: Date;
+  updatedAt?: Date;
 }
-
 export enum DegreeType {
   MidTerm1 = 'MidTerm1',
   Final1 = 'Final1',
@@ -39,4 +47,38 @@ export interface ApiResponse<T> {
   data: T;
   success: boolean;
   message: string;
+}
+
+export interface VerifyCertificateRequest {
+  verifiedBy: string;
+}
+
+// For bulk operations
+export interface BulkCertificateRequest {
+  classId: string;
+  degreeType: DegreeType;
+  academicYear?: string;
+}
+
+// For search filters
+export interface CertificateSearchFilters {
+  studentName?: string;
+  certificateNumber?: string;
+  curriculumId?: string;
+  gradeId?: string;
+  classId?: string;
+  degreeType?: DegreeType;
+  academicYear?: string;
+  fromDate?: Date;
+  toDate?: Date;
+}
+
+// For certificate statistics
+export interface CertificateStats {
+  total: number;
+  verified: number;
+  pendingVerification: number;
+  archived: number;
+  byDegreeType: Record<DegreeType, number>;
+  byAcademicYear: Record<string, number>;
 }

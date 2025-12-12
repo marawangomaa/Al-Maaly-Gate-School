@@ -108,6 +108,12 @@
             loadComponent: () =>
               import('./Components/dashboard/Components/admin/admin-grades/admin-grades.component').then(m => m.AdminGradesComponent)
            },
+          {
+            path: 'admin-curriculum',
+            canActivate: [AdminGuard],
+            loadComponent: () =>
+              import('./Components/dashboard/Components/admin/curriculum/curriculum.component').then(m => m.CurriculumComponent)
+           },
           // Admin
           // {
           //   path: 'admin-overview',

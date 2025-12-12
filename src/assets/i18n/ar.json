@@ -103,6 +103,7 @@
         "TEACHER_ACCOUNTS": "ايميلات المعلمين",
         "ADMIN_SUBJECT_MANAGEMENT": "ادارة المواد",
         "ADMIN_ANALYTICS": "تحليلات",
+        "CURRICULUM": "المقرر",
 
         "Admin_Follow_Tests": "متابعة نتائج الاختبارات",
         "Admin_Students_Accounts": "حسابات الطلاب",
@@ -114,6 +115,98 @@
 
         "CREATE_EMPTY_CLASS": "إنشاء فصل جديدة"
     },
+    "GRADE": {
+    "MANAGEMENT": "إدارة الصفوف",
+    "ADD_GRADE": "إضافة صف جديد",
+    "SEARCH_PLACEHOLDER": "البحث عن الصفوف بالاسم أو الوصف...",
+    "REFRESH": "تحديث",
+    "LOADING": "جاري تحميل الصفوف...",
+    "NO_GRADES": "لا توجد صفوف",
+    "CREATE_FIRST": "ابدأ بإضافة أول صف لك.",
+    "CREATE_FIRST_BTN": "إنشاء أول صف",
+    
+    "GRADE_NAME": "الصف: {{gradeName}}",
+    "SHOW_DETAILS": "عرض التفاصيل",
+    "HIDE_DETAILS": "إخفاء التفاصيل",
+    "EDIT": "تعديل",
+    "DELETE": "حذف",
+    "NO_DESCRIPTION": "لا يوجد وصف",
+    "CLASSES": "{{count}} فصل",
+    "SUBJECTS": "{{count}} مادة",
+    "CREATED": "تم الإنشاء: {{date}}",
+    
+    "CLASSES_SECTION": {
+      "TITLE": "الفصول ({{count}})",
+      "ADD_CLASS": "إضافة فصل",
+      "MOVE_SELECTED": "نقل المحدد",
+      "NO_CLASSES": "لا توجد فصول مخصصة لهذا الصف.",
+      "SELECT_ALL": "تحديد الكل",
+      "CLASS_NAME": "اسم الفصل",
+      "STUDENTS": "الطلاب",
+      "TEACHERS": "المعلمين",
+      "ACTIONS": "الإجراءات"
+    },
+    
+    "SUBJECTS_SECTION": {
+      "TITLE": "المواد ({{count}})",
+      "ADD_SUBJECT": "إضافة مادة",
+      "NO_SUBJECTS": "لا توجد مواد مخصصة لهذا الصف.",
+      "CREDIT_HOURS": "الساعات المعتمدة: {{hours}}",
+      "TEACHER_COUNT": "المعلمين: {{count}}",
+      "EXAM_COUNT": "الامتحانات: {{count}}"
+    },
+    
+    "MODALS": {
+      "ADD_GRADE": "إنشاء صف جديد",
+      "EDIT_GRADE": "تعديل الصف",
+      "GRADE_NAME_LABEL": "اسم الصف *",
+      "GRADE_NAME_REQUIRED": "اسم الصف مطلوب",
+      "GRADE_NAME_MIN_LENGTH": "يجب أن يكون اسم الصف على الأقل حرفين",
+      "DESCRIPTION_LABEL": "الوصف",
+      "DESCRIPTION_HINT": "اختياري. الحد الأقصى 500 حرف.",
+      "CANCEL": "إلغاء",
+      "CREATE": "إنشاء",
+      "UPDATE": "تحديث",
+      
+      "ADD_CLASS": "إضافة فصل جديد",
+      "EDIT_CLASS": "تعديل الفصل",
+      "CLASS_NAME_LABEL": "اسم الفصل *",
+      "CLASS_NAME_REQUIRED": "اسم الفصل مطلوب",
+      "CLASS_NAME_MIN_LENGTH": "يجب أن يكون اسم الفصل على الأقل حرفين",
+      "GRADE_SELECT_LABEL": "الصف *",
+      "GRADE_SELECT_REQUIRED": "الرجاء اختيار صف",
+      
+      "ADD_SUBJECT": "إضافة مادة جديدة",
+      "EDIT_SUBJECT": "تعديل المادة",
+      "SUBJECT_NAME_LABEL": "اسم المادة *",
+      "SUBJECT_NAME_REQUIRED": "اسم المادة مطلوب",
+      "SUBJECT_NAME_MIN_LENGTH": "يجب أن يكون اسم المادة على الأقل حرفين",
+      "CREDIT_HOURS_LABEL": "الساعات المعتمدة *",
+      "CREDIT_HOURS_RANGE": "يجب أن تكون الساعات المعتمدة بين 1 و 10",
+      "ADD": "إضافة",
+      
+      "BULK_MOVE": "نقل الفصول المحددة",
+      "MOVING_COUNT": "جاري نقل {{count}} فصل(فصول) إلى صف مختلف.",
+      "TARGET_GRADE": "الصف الهدف *",
+      "TARGET_GRADE_REQUIRED": "الرجاء اختيار صف هدف",
+      "MOVE_CLASSES": "نقل الفصول",
+      
+      "DELETE_CONFIRM": "تأكيد الحذف",
+      "DELETE_WARNING": "تحذير! لا يمكن التراجع عن هذا الإجراء.",
+      "DELETE_CONFIRM_MESSAGE": "هل أنت متأكد أنك تريد حذف الصف \"{{gradeName}}\"؟",
+      "DELETE_BTN": "حذف الصف"
+    },
+    
+    "PAGINATION": {
+      "PREVIOUS": "السابق",
+      "NEXT": "التالي"
+    },
+    
+    "ALERTS": {
+      "DELETE_WARNING": "تحذير! لا يمكن التراجع عن هذا الإجراء."
+    }
+  }
+    ,
     "TEACHER_OVERVIEW": {
         "TITLE": "نظرة عامة على المعلم",
         "LAST_UPDATED": "آخر تحديث",

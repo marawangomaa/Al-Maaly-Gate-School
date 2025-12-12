@@ -33,6 +33,11 @@ export class GradeService {
     return this.http.get<ApiResponse<GradeWithDetailsDto>>(`${this.apiUrl}/${id}/with-details`);
   }
 
+  // NEW: Get grades by curriculum
+  getByCurriculum(curriculumId: string): Observable<ApiResponse<GradeViewDto[]>> {
+    return this.http.get<ApiResponse<GradeViewDto[]>>(`${this.apiUrl}/curriculum/${curriculumId}`);
+  }
+
   create(grade: CreateGradeDto): Observable<ApiResponse<GradeViewDto>> {
     return this.http.post<ApiResponse<GradeViewDto>>(this.apiUrl, grade);
   }
@@ -43,6 +48,11 @@ export class GradeService {
 
   delete(id: string): Observable<ApiResponse<boolean>> {
     return this.http.delete<ApiResponse<boolean>>(`${this.apiUrl}/${id}`);
+  }
+
+  // NEW: Check if grade exists
+  exists(id: string): Observable<ApiResponse<boolean>> {
+    return this.http.get<ApiResponse<boolean>>(`${this.apiUrl}/exists/${id}`);
   }
 
   // Class Management
@@ -85,7 +95,18 @@ export class GradeService {
     return this.http.delete<ApiResponse<boolean>>(`${this.apiUrl}/subjects/${subjectId}`);
   }
 
-  bulkMoveClasses(dto: BulkMoveClassesDto): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/bulk-move-classes`, dto);
+  // Bulk Operations
+  bulkMoveClasses(dto: BulkMoveClassesDto): Observable<ApiResponse<boolean>> {
+    return this.http.post<ApiResponse<boolean>>(`${this.apiUrl}/bulk-move-classes`, dto);
+  }
+
+  // NEW: Check if grade has classes
+  hasClasses(gradeId: string): Observable<ApiResponse<boolean>> {
+    return this.http.get<ApiResponse<boolean>>(`${this.apiUrl}/${gradeId}/has-classes`);
+  }
+
+  // NEW: Check if grade has subjects
+  hasSubjects(gradeId: string): Observable<ApiResponse<boolean>> {
+    return this.http.get<ApiResponse<boolean>>(`${this.apiUrl}/${gradeId}/has-subjects`);
   }
 }

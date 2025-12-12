@@ -40,7 +40,7 @@ export class StudentCertificatesComponent {
   }
 
   viewCertificate(certificate: Certificate): void {
-    this.certificateService.getCertificateFromDb(certificate.studentId, certificate.degreeType).subscribe({
+    this.certificateService.getMyCertificateFromDb(certificate.degreeType).subscribe({
       next: (blob) => {
         this.certificateService.openPdfInNewTab(blob);
       },
@@ -51,7 +51,7 @@ export class StudentCertificatesComponent {
   }
 
   downloadCertificate(certificate: Certificate): void {
-    this.certificateService.getCertificateFromDb(certificate.studentId, certificate.degreeType).subscribe({
+    this.certificateService.getMyCertificateFromDb(certificate.degreeType).subscribe({
       next: (blob) => {
         this.certificateService.downloadPdf(blob, certificate.fileName);
         this.showMessage('Certificate downloaded successfully', 'success');
@@ -62,17 +62,12 @@ export class StudentCertificatesComponent {
     });
   }
 
-  formatDate(dateString: string): string {
-    return new Date(dateString).toLocaleDateString();
+  formatDate(dateString: string | Date): string {
+    const date = typeof dateString === 'string' ? new Date(dateString) : dateString;
+    return date.toLocaleDateString();
   }
 
-  formatFileSize(bytes: number): string {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-  }
+  // Removed formatFileSize method as fileSize is no longer in Certificate interface
 
   private showMessage(message: string, type: 'success' | 'error'): void {
     this.message = message;
@@ -80,5 +75,19 @@ export class StudentCertificatesComponent {
     setTimeout(() => {
       this.message = '';
     }, 5000);
+  }
+
+  // Helper method to get certificate status badge class
+  getStatusBadgeClass(certificate: Certificate): string {
+    if (certificate.archived) return 'bg-secondary';
+    if (certificate.verified) return 'bg-success';
+    return 'bg-warning';
+  }
+
+  // Helper method to get certificate status text
+  getStatusText(certificate: Certificate): string {
+    if (certificate.archived) return 'Archived';
+    if (certificate.verified) return 'Verified';
+    return 'Pending';
   }
 }
