@@ -82,6 +82,15 @@ export const routes: Routes = [
               import('./Components/dashboard/Components/admin/admin-student-accounts/admin-student-accounts.component').then(m => m.AdminStudentAccountsComponent)
           },
           {
+            path: 'parent-management',
+            canActivate: [AdminGuard],
+            data: { role: 'parent' },
+            loadComponent: () =>
+              import('./Components/dashboard/Components/admin/parent-management/parent-management.component')
+                .then(m => m.ParentManagementComponent),
+            title: 'Parent Management'
+          },
+          {
             path: 'admin-parents-accounts',
             canActivate: [AdminGuard],
             loadComponent: () =>
@@ -191,8 +200,9 @@ export const routes: Routes = [
             loadComponent: () =>
               import('./Components/dashboard/Components/parent/children-of-parent/children-of-parent.component')
                 .then(m => m.ChildrenOfParentComponent),
-            title: 'Parent Overview'
+            title: 'children of parent'
           },
+
           // Student
           {
             path: 'grades',
@@ -229,7 +239,8 @@ export const routes: Routes = [
             canActivate: [StudentGuard],
             loadComponent: () =>
               import('./Components/dashboard/Components/student/student-certificates/student-certificates.component').then(m => m.StudentCertificatesComponent)
-          },
+          }
+
         ]
       },
 

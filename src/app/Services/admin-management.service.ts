@@ -21,11 +21,12 @@ export class AdminManagementService {
     this.token = this.authService.getToken();
     this.headers = new HttpHeaders(
       {
-        'Authorization': `Bearer ${this.token}`
+        'Authorization': `Bearer ${this.token}`,
+        'Content-Type': 'application/json'
       })
   }
   // /approve-parent-with-student
-  assignStudentToParent(parentId: string, studentId: string, relation: string): Observable<ApiResponse<boolean>> {
+  ApproveParentWithStudent(parentId: string, studentId: string, relation: string): Observable<ApiResponse<boolean>> {
 
     const body = {
       parentId: parentId,
@@ -39,6 +40,39 @@ export class AdminManagementService {
       { headers: this.headers }
     );
   }
+
+  // add-student-toExisting-parent
+
+  AddStudentToExistingParent(parentId: string, studentId: string, relation: string): Observable<ApiResponse<boolean>> {
+
+    const body = {
+      parentId: parentId,
+      studentId: studentId,
+      relation: relation
+    };
+
+    return this.http.post<ApiResponse<boolean>>(
+      `${this.apiUrl}/add-student-toExisting-parent`,
+      body,
+      { headers: this.headers }
+    );
+  }
+
+  // /remove-student-from-parent
+  removeStudentToParent(parentId: string, studentId: string): Observable<ApiResponse<boolean>> {
+
+    const body = {
+      parentId: parentId,
+      studentId: studentId
+    };
+
+    return this.http.post<ApiResponse<boolean>>(
+      `${this.apiUrl}/remove-student-from-parent`,
+      body,
+      { headers: this.headers }
+    );
+  }
+
 
   //Teacher
   //Count

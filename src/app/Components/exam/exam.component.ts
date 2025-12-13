@@ -7,10 +7,11 @@ import { iexamWithQuestions } from '../../Interfaces/iexamWithQuestions';
 import { istudentExamAnswer } from '../../Interfaces/istudentExamAnswer';
 import { istudentExamSubmission } from '../../Interfaces/istudentExamSubmission';
 import { StudentService } from '../../Services/student.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-exam',
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './exam.component.html',
   styleUrl: './exam.component.css'
 })
@@ -28,13 +29,12 @@ export class ExamComponent implements OnInit {
   _StudentExamAnswer = inject(StudentService);
   _ClassExams = inject(ClassExamsService);
   _Auth = inject(AuthService);
+  translate = inject(TranslateService);
 
   constructor(private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
-
     this.studentId = this._Auth.getStudentId()!;
-
     this.route.paramMap.subscribe(params => {
       this.examId = params.get('id')!;
     });
@@ -51,7 +51,7 @@ export class ExamComponent implements OnInit {
         this.teacherId = res.data.teacherId;
         this.questions = res.data.questions ?? [];
 
-        // Initialize answers with all fields
+        // Initialize answers
         this.studentAnswers = {};
         this.exam.questions.forEach(q => {
           this.studentAnswers[q.id] = {
@@ -87,26 +87,20 @@ export class ExamComponent implements OnInit {
     const correct = question.choices.filter((c: any) => c.isCorrect);
     const incorrect = question.choices.filter((c: any) => !c.isCorrect);
 
-    // Must have 2 correct
     if (correct.length < 2) {
       console.error("Connection question requires at least 2 correct items.");
     }
 
-    // Initialize
     const left = [correct[0]];
     const right = [correct[1]];
 
-    // Shuffle helper
     const shuffle = (arr: any[]) => arr.sort(() => Math.random() - 0.5);
-
-    // Add incorrect items
     const rest = shuffle([...incorrect]);
 
     rest.forEach((item: any, index: number) => {
       index % 2 === 0 ? left.push(item) : right.push(item);
     });
 
-    // Shuffle each column
     shuffle(left);
     shuffle(right);
 
@@ -150,9 +144,8 @@ export class ExamComponent implements OnInit {
 
     return this.exam.questions.every(q => {
       const ans = this.studentAnswers[q.id];
-
       if (!ans) return false;
-      //Complete,Connection,TrueOrFalse,Choices
+
       switch (q.type) {
         case "Choices":
           return !!ans.choiceId;
@@ -172,10 +165,9 @@ export class ExamComponent implements OnInit {
     });
   }
 
-
   submitExam() {
     if (!this.allQuestionsAnswered()) {
-      this.message = "should answer all questions before submitting.";
+      this.message = this.translate.instant('EXAM.MESSAGES.SHOULD_ANSWER_ALL');
       return;
     }
 
@@ -197,21 +189,18 @@ export class ExamComponent implements OnInit {
       answers
     };
 
-    console.log('Submitting exam with data:', submission);
-
     this.isSubmitting = true;
     this.message = '';
 
     this._StudentExamAnswer.submitExam(submission).subscribe({
       next: (response) => {
         this.isSubmitting = false;
-        this.message = response.message || 'Exam submitted successfully!';
+        this.message = this.translate.instant('EXAM.MESSAGES.SUCCESS');
         setTimeout(() => this.router.navigate(['/app/dashboard/student-classes']), 2000);
       },
       error: (error) => {
         this.isSubmitting = false;
-        console.error('Submission error:', error);
-        this.message = error.error?.message || 'Failed to submit exam.';
+        this.message = this.translate.instant('EXAM.MESSAGES.ERROR');
       }
     });
   }

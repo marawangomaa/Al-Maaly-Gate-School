@@ -1,0 +1,514 @@
+<!-- Main Container -->
+<div class="standard-section-layout">
+  <!-- Header -->
+  <div class="mb-10">
+    <div
+      class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-8"
+    >
+      <div class="flex-1">
+        <div class="flex items-center gap-3 mb-3">
+          <div
+            class="w-10 h-10 rounded-xl bg-primary-100 text-primary-500 flex items-center justify-center"
+          >
+            <i class="fas fa-users text-lg"></i>
+          </div>
+          <div>
+            <h1 class="hero-title mb-1">
+              {{ "parentManagement.header.title" | translate }}
+            </h1>
+            <p class="paragraph text-muted">
+              {{ "parentManagement.header.description" | translate }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="enhanced-badge">
+          <i class="fas fa-users mr-2"></i>
+          {{ parents.length }}
+          {{
+            parents.length === 1
+              ? ("parentManagement.header.parentsCount" | translate)
+              : ("parentManagement.header.parentsCount_plural" | translate)
+          }}
+        </div>
+        <button
+          class="enhanced-outline-btn enhanced-btn flex items-center gap-2"
+          (click)="loadAllParentsWithChildren()"
+        >
+          <i class="fas fa-sync-alt"></i>
+          <span>{{ "parentManagement.header.refresh" | translate }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading) {
+  <div class="flex flex-col items-center justify-center py-20">
+    <div class="loading-spinner mb-4"></div>
+    <h3 class="main-title text-lg mb-2">
+      {{ "parentManagement.loading.title" | translate }}
+    </h3>
+    <p class="paragraph text-muted">
+      {{ "parentManagement.loading.message" | translate }}
+    </p>
+  </div>
+  }
+
+  <!-- Parents Grid -->
+  @if (!isLoading && parents.length > 0) {
+  <div class="responsive-grid animate-fadeIn">
+    @for (parent of parents; track parent.id) {
+    <div
+      class="enhanced-card animate-slideUp"
+      [style.animation-delay]="$index * 0.1 + 's'"
+    >
+      <!-- Parent Header -->
+      <div class="flex items-start justify-between mb-6">
+        <div class="flex items-start gap-4">
+          <div
+            class="w-14 h-14 bg-gradient-to-br from-primary-200 to-primary-400 text-white rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm"
+          >
+            <i class="fas fa-user text-xl"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="main-title text-lg font-bold mb-2 truncate">
+              {{ parent.fullName }}
+            </h3>
+            <div class="space-y-1">
+              <div class="flex items-center gap-2 text-sm">
+                <i class="fas fa-envelope text-primary-400 text-xs"></i>
+                <span class="text-muted truncate">{{ parent.email }}</span>
+              </div>
+              <div class="flex items-center gap-2 text-sm">
+                <i class="fas fa-phone text-primary-400 text-xs"></i>
+                <span class="text-muted">{{
+                  parent.contactInfo ||
+                    ("parentManagement.parentCard.noPhone" | translate)
+                }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Students Section -->
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <h4 class="sub-title flex items-center gap-2">
+            <div
+              class="w-6 h-6 rounded-lg bg-primary-100 text-primary-600 flex items-center justify-center"
+            >
+              <i class="fas fa-graduation-cap text-xs"></i>
+            </div>
+            {{ "parentManagement.parentCard.associatedStudents" | translate }}
+          </h4>
+          <span class="enhanced-badge">
+            {{ parent.students.length }}
+          </span>
+        </div>
+
+        @if (parent.students.length === 0) {
+        <div
+          class="empty-state text-center cursor-pointer"
+          (click)="openAddStudentModal(parent)"
+        >
+          <div
+            class="w-16 h-16 mx-auto mb-4 bg-gray-100 text-gray-400 rounded-full flex items-center justify-center"
+          >
+            <i class="fas fa-user-plus text-xl"></i>
+          </div>
+          <p class="paragraph text-muted mb-4">
+            {{ "parentManagement.parentCard.noStudents.title" | translate }}
+          </p>
+          <button class="enhanced-outline-btn enhanced-btn text-sm">
+            <i class="fas fa-plus mr-2"></i>
+            {{ "parentManagement.parentCard.noStudents.button" | translate }}
+          </button>
+        </div>
+        } @else {
+        <div class="space-y-2 max-h-64 overflow-y-auto pr-1">
+          @for (student of parent.students; track student.id) {
+          <div class="student-card group">
+            <div class="flex items-center gap-3 flex-1">
+              <div
+                class="w-10 h-10 bg-gradient-to-br from-blue-100 to-blue-200 text-blue-600 rounded-lg flex items-center justify-center flex-shrink-0"
+              >
+                <i class="fas fa-user-graduate text-sm"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="font-medium text-sm truncate">
+                  {{ student.fullName }}
+                </p>
+                <div class="flex items-center gap-2 mt-1">
+                  <span
+                    class="relation-badge"
+                    [class.relation-father]="student.relation === 'father'"
+                    [class.relation-mother]="student.relation === 'mother'"
+                    [class.relation-guardian]="student.relation === 'guardian'"
+                    [class.relation-other]="
+                      !student.relation || student.relation === 'other'
+                    "
+                  >
+                    {{
+                      student.relation === "father"
+                        ? ("parentManagement.parentCard.relations.father"
+                          | translate)
+                        : student.relation === "mother"
+                        ? ("parentManagement.parentCard.relations.mother"
+                          | translate)
+                        : student.relation === "guardian"
+                        ? ("parentManagement.parentCard.relations.guardian"
+                          | translate)
+                        : ("parentManagement.parentCard.relations.other"
+                          | translate)
+                    }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <button
+              class="primary-btn"
+              (click)="
+                removeStudent(parent.id, student.id); $event.stopPropagation()
+              "
+              [disabled]="isRemovingStudent"
+              [attr.title]="
+                'parentManagement.parentCard.removeTooltip' | translate
+              "
+            >
+              <i class="fas fa-trash-alt mr-1"></i>
+              {{ "parentManagement.parentCard.removeStudent" | translate }}
+            </button>
+          </div>
+          }
+        </div>
+
+        <div class="pt-4 border-t border-gray-200">
+          <button
+            class="primary-btn w-full flex items-center justify-center gap-2 text-sm"
+            (click)="openAddStudentModal(parent)"
+            [disabled]="isAddingStudent"
+          >
+            <i class="fas fa-plus"></i>
+            {{ "parentManagement.parentCard.addStudent" | translate }}
+          </button>
+        </div>
+        }
+      </div>
+    </div>
+    }
+  </div>
+  }
+
+  <!-- Empty State -->
+  @if (!isLoading && parents.length === 0) {
+  <div class="empty-state text-center animate-fadeIn">
+    <div
+      class="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-primary-100 to-primary-200 text-primary-500 rounded-full flex items-center justify-center"
+    >
+      <i class="fas fa-users text-3xl"></i>
+    </div>
+    <h3 class="main-title text-2xl mb-3">
+      {{ "parentManagement.emptyState.title" | translate }}
+    </h3>
+    <p class="paragraph text-muted mb-8 max-w-md mx-auto">
+      {{ "parentManagement.emptyState.description" | translate }}
+    </p>
+    <button class="enhanced-primary-btn enhanced-btn px-6">
+      <i class="fas fa-user-plus mr-2"></i>
+      {{ "parentManagement.emptyState.button" | translate }}
+    </button>
+  </div>
+  }
+</div>
+
+<!-- Enhanced Modal -->
+<div
+  *ngIf="showAddStudentModal"
+  class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fadeIn"
+  (click)="closeAddStudentModal()"
+>
+  <div
+    class="enhanced-modal w-full max-w-md animate-slideUp"
+    (click)="$event.stopPropagation()"
+  >
+    <!-- Modal Header -->
+    <div class="enhanced-modal-header">
+      <div class="flex items-start justify-between">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-200 to-primary-400 text-white flex items-center justify-center"
+          >
+            <i class="fas fa-user-plus"></i>
+          </div>
+          <div>
+            <h3 class="main-title text-lg font-bold mb-1">
+              {{ "parentManagement.addStudentModal.header.title" | translate }}
+            </h3>
+            <p class="paragraph text-muted text-sm">
+              {{
+                "parentManagement.addStudentModal.header.description"
+                  | translate
+              }}
+              <span class="font-semibold text-primary-500">{{
+                selectedParent?.fullName
+              }}</span>
+            </p>
+          </div>
+        </div>
+        <button
+          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-danger-400 rounded-full hover:bg-gray-100 transition-colors"
+          (click)="closeAddStudentModal()"
+          [disabled]="isAddingStudent"
+          [attr.aria-label]="
+            'parentManagement.addStudentModal.buttons.close' | translate
+          "
+        >
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal Body -->
+    <form
+      [formGroup]="addStudentForm"
+      (ngSubmit)="addStudent()"
+      class="p-6 space-y-6"
+    >
+      <!-- Student Selection -->
+      <div class="space-y-3">
+        <label class="block text-sm font-medium">
+          <div class="flex items-center gap-2 mb-2">
+            <div
+              class="w-6 h-6 rounded-md bg-primary-100 text-primary-600 flex items-center justify-center"
+            >
+              <i class="fas fa-user-graduate text-xs"></i>
+            </div>
+            <span>{{
+              "parentManagement.addStudentModal.form.studentSelection.label"
+                | translate
+            }}</span>
+            <span class="text-danger-500">*</span>
+          </div>
+        </label>
+        <div class="relative">
+          <select
+            id="studentId"
+            formControlName="studentId"
+            class="w-full p-3 bg-bg border-2 border-gray-300 rounded-xl appearance-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all"
+            [class.border-danger-400]="
+              addStudentForm.get('studentId')?.invalid &&
+              addStudentForm.get('studentId')?.touched
+            "
+          >
+            <option value="" class="text-muted">
+              {{
+                "parentManagement.addStudentModal.form.studentSelection.placeholder"
+                  | translate
+              }}
+            </option>
+            @for (student of availableStudents; track student.id) {
+            <option
+              [value]="student.id"
+              [disabled]="getStudentAlreadyLinked(student.id)"
+              [class.text-muted]="getStudentAlreadyLinked(student.id)"
+              class="py-2"
+            >
+              {{ student.fullName }}
+              {{
+                getStudentAlreadyLinked(student.id)
+                  ? ("parentManagement.addStudentModal.form.studentSelection.alreadyLinked"
+                    | translate)
+                  : ""
+              }}
+            </option>
+            }
+          </select>
+          <div
+            class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3"
+          >
+            <i class="fas fa-chevron-down text-gray-400"></i>
+          </div>
+        </div>
+        @if (addStudentForm.get('studentId')?.invalid &&
+        addStudentForm.get('studentId')?.touched) {
+        <p class="text-danger-500 text-sm flex items-center gap-2 mt-1">
+          <i class="fas fa-exclamation-circle"></i>
+          {{
+            "parentManagement.addStudentModal.form.studentSelection.validationError"
+              | translate
+          }}
+        </p>
+        }
+      </div>
+
+      <!-- Relation -->
+      <div class="space-y-3">
+        <label class="block text-sm font-medium">
+          <div class="flex items-center gap-2 mb-2">
+            <div
+              class="w-6 h-6 rounded-md bg-primary-100 text-primary-600 flex items-center justify-center"
+            >
+              <i class="fas fa-handshake text-xs"></i>
+            </div>
+            <span>{{
+              "parentManagement.addStudentModal.form.relation.label" | translate
+            }}</span>
+            <span class="text-danger-500">*</span>
+          </div>
+        </label>
+        <div class="grid grid-cols-2 gap-2">
+          <label class="relative">
+            <input
+              type="radio"
+              formControlName="relation"
+              value="father"
+              class="sr-only peer"
+            />
+            <div
+              class="w-full p-4 text-center border-2 border-gray-300 rounded-xl cursor-pointer transition-all peer-checked:border-primary-500 peer-checked:bg-gradient-to-br peer-checked:from-primary-50 peer-checked:to-primary-100 peer-checked:text-primary-600 hover:border-primary-400 group"
+            >
+              <div class="flex flex-col items-center gap-2">
+                <div
+                  class="w-10 h-10 rounded-lg bg-gray-100 group-hover:bg-primary-100 group-peer-checked:bg-white flex items-center justify-center transition-colors"
+                >
+                  <i class="fas fa-male text-primary-600"></i>
+                </div>
+                <div class="text-sm font-medium">
+                  {{
+                    "parentManagement.addStudentModal.form.relation.options.father"
+                      | translate
+                  }}
+                </div>
+              </div>
+            </div>
+          </label>
+          <label class="relative">
+            <input
+              type="radio"
+              formControlName="relation"
+              value="mother"
+              class="sr-only peer"
+            />
+            <div
+              class="w-full p-4 text-center border-2 border-gray-300 rounded-xl cursor-pointer transition-all peer-checked:border-primary-500 peer-checked:bg-gradient-to-br peer-checked:from-primary-50 peer-checked:to-primary-100 peer-checked:text-pink-600 hover:border-primary-400 group"
+            >
+              <div class="flex flex-col items-center gap-2">
+                <div
+                  class="w-10 h-10 rounded-lg bg-gray-100 group-hover:bg-pink-100 group-peer-checked:bg-white flex items-center justify-center transition-colors"
+                >
+                  <i class="fas fa-female text-pink-600"></i>
+                </div>
+                <div class="text-sm font-medium">
+                  {{
+                    "parentManagement.addStudentModal.form.relation.options.mother"
+                      | translate
+                  }}
+                </div>
+              </div>
+            </div>
+          </label>
+          <label class="relative">
+            <input
+              type="radio"
+              formControlName="relation"
+              value="guardian"
+              class="sr-only peer"
+            />
+            <div
+              class="w-full p-4 text-center border-2 border-gray-300 rounded-xl cursor-pointer transition-all peer-checked:border-primary-500 peer-checked:bg-gradient-to-br peer-checked:from-primary-50 peer-checked:to-primary-100 peer-checked:text-blue-600 hover:border-primary-400 group"
+            >
+              <div class="flex flex-col items-center gap-2">
+                <div
+                  class="w-10 h-10 rounded-lg bg-gray-100 group-hover:bg-blue-100 group-peer-checked:bg-white flex items-center justify-center transition-colors"
+                >
+                  <i class="fas fa-user-shield text-blue-600"></i>
+                </div>
+                <div class="text-sm font-medium">
+                  {{
+                    "parentManagement.addStudentModal.form.relation.options.guardian"
+                      | translate
+                  }}
+                </div>
+              </div>
+            </div>
+          </label>
+          <label class="relative">
+            <input
+              type="radio"
+              formControlName="relation"
+              value="other"
+              class="sr-only peer"
+            />
+            <div
+              class="w-full p-4 text-center border-2 border-gray-300 rounded-xl cursor-pointer transition-all peer-checked:border-primary-500 peer-checked:bg-gradient-to-br peer-checked:from-primary-50 peer-checked:to-primary-100 peer-checked:text-gray-600 hover:border-primary-400 group"
+            >
+              <div class="flex flex-col items-center gap-2">
+                <div
+                  class="w-10 h-10 rounded-lg bg-gray-100 group-hover:bg-gray-200 group-peer-checked:bg-white flex items-center justify-center transition-colors"
+                >
+                  <i class="fas fa-user text-gray-600"></i>
+                </div>
+                <div class="text-sm font-medium">
+                  {{
+                    "parentManagement.addStudentModal.form.relation.options.other"
+                      | translate
+                  }}
+                </div>
+              </div>
+            </div>
+          </label>
+        </div>
+        @if (addStudentForm.get('relation')?.invalid &&
+        addStudentForm.get('relation')?.touched) {
+        <p class="text-danger-500 text-sm flex items-center gap-2 mt-1">
+          <i class="fas fa-exclamation-circle"></i>
+          {{
+            "parentManagement.addStudentModal.form.relation.validationError"
+              | translate
+          }}
+        </p>
+        }
+      </div>
+
+      <!-- Modal Footer -->
+      <div
+        class="flex flex-col sm:flex-row justify-end gap-3 pt-6 border-t border-gray-200"
+      >
+        <button
+          type="button"
+          class="primary-btn flex-1 sm:flex-none"
+          (click)="closeAddStudentModal()"
+          [disabled]="isAddingStudent"
+        >
+          {{ "parentManagement.addStudentModal.buttons.cancel" | translate }}
+        </button>
+        <button
+          type="submit"
+          class="primary-btn flex-1 sm:flex-none"
+          [disabled]="addStudentForm.invalid || isAddingStudent"
+        >
+          @if (isAddingStudent) {
+          <span class="flex items-center justify-center gap-2">
+            <i class="fas fa-spinner fa-spin"></i>
+            {{
+              "parentManagement.addStudentModal.buttons.submit.adding"
+                | translate
+            }}
+          </span>
+          } @else {
+          <span class="flex items-center justify-center gap-2">
+            <i class="fas fa-link"></i>
+            {{
+              "parentManagement.addStudentModal.buttons.submit.default"
+                | translate
+            }}
+          </span>
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
