@@ -10,10 +10,11 @@ import { iparentViewDto } from '../../../../../Interfaces/iparentViewDto';
 import { FormsModule } from '@angular/forms';
 import { StudentService } from '../../../../../Services/student.service';
 import { istudentSearchResult } from '../../../../../Interfaces/istudentSearchResult';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin-parent-accounts',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   templateUrl: './admin-parents-accounts.component.html',
   styleUrl: './admin-parents-accounts.component.css'
 })
@@ -39,7 +40,8 @@ export class AdminParentsAccountsComponent {
     private _parentService: ParentService,
     private _StudentService: StudentService,
     private adminService: AdminManagementService,
-    private authService: AuthService
+    private authService: AuthService,
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -175,7 +177,7 @@ export class AdminParentsAccountsComponent {
     );
   }
 
-  searchStudentsInPopup(): void {
+  searchStudentsInPopup(parentId: string): void {
     if (this.searchQuery.length < 2) {
       alert('يرجى كتابة حرفين على الأقل للبحث');
       return;
@@ -186,7 +188,7 @@ export class AdminParentsAccountsComponent {
     this.searchResults = [];
 
     this.subscription.add(
-      this._StudentService.searchStudents(this.searchQuery).subscribe({
+      this._StudentService.searchStudents(this.searchQuery, parentId).subscribe({
         next: (results: ApiResponse<istudentSearchResult[]>) => {
           console.log('نتائج البحث عن الطلاب:', results);
           this.searchResults = results.data || [];
@@ -214,7 +216,7 @@ export class AdminParentsAccountsComponent {
     this.isAssigning = true;
 
     this.subscription.add(
-      this.adminService.assignStudentToParent(this.selectedParentIdForModal, this.selectedStudent.id, this.relation).subscribe({
+      this.adminService.ApproveParentWithStudent(this.selectedParentIdForModal, this.selectedStudent.id, this.relation).subscribe({
         next: result => {
           this.isAssigning = false;
 

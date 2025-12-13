@@ -168,3 +168,80 @@
 .modal-action-btn {
     min-width: 100px;
 }
+
+.student-item {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.student-item:hover {
+    background-color: #f8f9fa;
+    border-color: #0d6efd;
+}
+
+.student-item.selected {
+    background-color: #e7f1ff;
+    border-color: #0d6efd;
+}
+
+.student-item.has-relation {
+    background-color: #fff3cd;
+    border-color: #ffc107;
+}
+
+.student-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.student-main-info {
+    flex: 1;
+}
+
+.student-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.student-details {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.student-details div {
+    margin-bottom: 3px;
+}
+
+.student-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    min-width: 180px;
+}
+
+.relation-actions {
+    text-align: right;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 5px;
+    margin-top: 8px;
+}
+
+.action-buttons button {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+}
+
+.student-selected-icon {
+    color: #198754;
+    font-weight: bold;
+}

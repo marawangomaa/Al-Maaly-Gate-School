@@ -59,7 +59,7 @@
             type="text"
             formControlName="fullName"
             class="form-control cool-input"
-            placeholder="Enter full name"
+            [placeholder]="'REGISTER.FULLNAME_PLACEHOLDER' | translate"
             [class.is-invalid]="
               registerForm.get('fullName')?.invalid &&
               registerForm.get('fullName')?.touched
@@ -68,7 +68,7 @@
           @if (registerForm.get('fullName')?.invalid &&
           registerForm.get('fullName')?.touched) {
           <div class="text-danger small mt-1">
-            Full name must be at least 3 characters
+            {{ "REGISTER.FULLNAME_MIN_ERROR" | translate }}
           </div>
           }
         </div>
@@ -82,7 +82,7 @@
             type="text"
             formControlName="userName"
             class="form-control cool-input"
-            placeholder="Choose a username"
+            [placeholder]="'REGISTER.USERNAME_PLACEHOLDER' | translate"
             [class.is-invalid]="
               registerForm.get('userName')?.invalid &&
               registerForm.get('userName')?.touched
@@ -91,7 +91,7 @@
           @if (registerForm.get('userName')?.invalid &&
           registerForm.get('userName')?.touched) {
           <div class="text-danger small mt-1">
-            Username must be at least 3 characters
+            {{ "REGISTER.USERNAME_MIN_ERROR" | translate }}
           </div>
           }
         </div>
@@ -103,7 +103,7 @@
             type="email"
             formControlName="email"
             class="form-control cool-input"
-            placeholder="Enter email address"
+            [placeholder]="'REGISTER.EMAIL_PLACEHOLDER' | translate"
             [class.is-invalid]="
               registerForm.get('email')?.invalid &&
               registerForm.get('email')?.touched
@@ -112,19 +112,21 @@
           @if (registerForm.get('email')?.invalid &&
           registerForm.get('email')?.touched) {
           <div class="text-danger small mt-1">
-            Please enter a valid email address
+            {{ "REGISTER.EMAIL_INVALID" | translate }}
           </div>
           }
         </div>
 
         <!-- Contact Info -->
         <div class="mb-3">
-          <label class="form-label">{{ "REGISTER.CONTACT" | translate }}</label>
+          <label class="form-label">{{
+            "REGISTER.CONTACT_INFO" | translate
+          }}</label>
           <input
             type="text"
             formControlName="contactInfo"
             class="form-control cool-input"
-            placeholder="Phone number (optional)"
+            [placeholder]="'REGISTER.CONTACT_PLACEHOLDER' | translate"
             [class.is-invalid]="
               registerForm.get('contactInfo')?.invalid &&
               registerForm.get('contactInfo')?.touched
@@ -133,7 +135,7 @@
           @if (registerForm.get('contactInfo')?.invalid &&
           registerForm.get('contactInfo')?.touched) {
           <div class="text-danger small mt-1">
-            Must be at least 10 characters if provided
+            {{ "REGISTER.CONTACT_MIN_ERROR" | translate }}
           </div>
           }
         </div>
@@ -147,7 +149,7 @@
             type="password"
             formControlName="password"
             class="form-control cool-input"
-            placeholder="Enter password"
+            [placeholder]="'REGISTER.PASSWORD_PLACEHOLDER' | translate"
             [class.is-invalid]="
               registerForm.get('password')?.invalid &&
               registerForm.get('password')?.touched
@@ -156,7 +158,7 @@
           @if (registerForm.get('password')?.invalid &&
           registerForm.get('password')?.touched) {
           <div class="text-danger small mt-1">
-            Password must be at least 6 characters
+            {{ "REGISTER.PASSWORD_MIN_ERROR" | translate }}
           </div>
           }
         </div>
@@ -164,17 +166,19 @@
         <!-- Confirm Password -->
         <div class="mb-3">
           <label class="form-label"
-            >{{ "REGISTER.CONFIRMPASSWORD" | translate }} *</label
+            >{{ "REGISTER.CONFIRM_PASSWORD" | translate }} *</label
           >
           <input
             type="password"
             formControlName="confirmPassword"
             class="form-control cool-input"
-            placeholder="Confirm password"
+            [placeholder]="'REGISTER.CONFIRM_PASSWORD_PLACEHOLDER' | translate"
             [class.is-invalid]="registerForm.get('confirmPassword')?.errors?.['mismatch']"
           />
           @if (registerForm.get('confirmPassword')?.errors?.['mismatch']) {
-          <div class="text-danger small mt-1">Passwords do not match</div>
+          <div class="text-danger small mt-1">
+            {{ "REGISTER.PASSWORD_MISMATCH" | translate }}
+          </div>
           }
         </div>
 
@@ -189,14 +193,22 @@
               registerForm.get('role')?.touched
             "
           >
-            <option value="">Select role</option>
-            <option value="student">Student</option>
-            <option value="teacher">Teacher</option>
-            <option value="parent">Parent</option>
+            <option value="">{{ "REGISTER.ROLE_SELECT" | translate }}</option>
+            <option value="student">
+              {{ "REGISTER.ROLE_STUDENT" | translate }}
+            </option>
+            <option value="teacher">
+              {{ "REGISTER.ROLE_TEACHER" | translate }}
+            </option>
+            <option value="parent">
+              {{ "REGISTER.ROLE_PARENT" | translate }}
+            </option>
           </select>
           @if (registerForm.get('role')?.invalid &&
           registerForm.get('role')?.touched) {
-          <div class="text-danger small mt-1">Please select a role</div>
+          <div class="text-danger small mt-1">
+            {{ "REGISTER.ROLE_REQUIRED" | translate }}
+          </div>
           }
         </div>
 
@@ -204,11 +216,14 @@
         @if (registerForm.get('role')?.value === 'parent') {
         <div class="parent-section border rounded p-3 mb-3 bg-light">
           <h6 class="mb-3 text-primary">
-            <i class="bi bi-person-badge me-2"></i>Parent Information
+            <i class="bi bi-person-badge me-2"></i>
+            {{ "REGISTER.PARENT_INFO" | translate }}
           </h6>
           <!-- Relation to Student -->
           <div class="mb-3">
-            <label class="form-label">Relation to Student *</label>
+            <label class="form-label"
+              >{{ "REGISTER.RELATION" | translate }} *</label
+            >
             <select
               class="form-select cool-input"
               formControlName="relation"
@@ -217,15 +232,27 @@
                 registerForm.get('relation')?.touched
               "
             >
-              <option value="">Select relation</option>
-              <option value="father">Father</option>
-              <option value="mother">Mother</option>
-              <option value="guardian">Guardian</option>
-              <option value="other">Other</option>
+              <option value="">
+                {{ "REGISTER.RELATION_SELECT" | translate }}
+              </option>
+              <option value="father">
+                {{ "REGISTER.RELATION_FATHER" | translate }}
+              </option>
+              <option value="mother">
+                {{ "REGISTER.RELATION_MOTHER" | translate }}
+              </option>
+              <option value="guardian">
+                {{ "REGISTER.RELATION_GUARDIAN" | translate }}
+              </option>
+              <option value="other">
+                {{ "REGISTER.RELATION_OTHER" | translate }}
+              </option>
             </select>
             @if (registerForm.get('relation')?.invalid &&
             registerForm.get('relation')?.touched) {
-            <div class="text-danger small mt-1">Please select a relation</div>
+            <div class="text-danger small mt-1">
+              {{ "REGISTER.RELATION_REQUIRED" | translate }}
+            </div>
             }
           </div>
 
@@ -233,7 +260,7 @@
           <div class="mb-3">
             <label class="form-label">
               <i class="bi bi-file-earmark-arrow-up me-1"></i>
-              Upload Documents (Max 3 files, 5MB each) *
+              {{ "REGISTER.DOCUMENTS_TITLE" | translate }}
             </label>
             <div class="file-upload-container border rounded p-3">
               <!-- File Input (Hidden) -->
@@ -258,12 +285,12 @@
                   <i class="bi bi-cloud-upload me-2"></i>
                   {{
                     selectedFiles.length === 0
-                      ? "Upload Documents"
-                      : "Add More Documents"
+                      ? ("REGISTER.SELECT_DOCUMENTS" | translate)
+                      : ("REGISTER.ADD_MORE_DOCUMENTS" | translate)
                   }}
                 </button>
                 <small class="d-block text-muted mt-1">
-                  First file will be treated as Identity Document
+                  {{ "REGISTER.FIRST_FILE_IDENTITY" | translate }}
                 </small>
               </div>
 
@@ -271,16 +298,17 @@
               <div class="alert alert-info py-2 mb-3">
                 <small>
                   <i class="bi bi-info-circle me-1"></i>
-                  <strong>Requirements:</strong>
-                  At least 1 document required. Allowed formats: PDF, JPG, PNG,
-                  DOC, DOCX. Max 5MB per file.
+                  <strong>{{ "REGISTER.REQUIREMENTS" | translate }}:</strong>
+                  {{ "REGISTER.FILE_REQUIREMENTS_DETAIL" | translate }}
                 </small>
               </div>
 
               <!-- Selected Files List -->
               @if (selectedFiles.length > 0) {
               <div class="selected-files">
-                <h6 class="mb-2">Selected Files:</h6>
+                <h6 class="mb-2">
+                  {{ "REGISTER.SELECTED_FILES" | translate }}:
+                </h6>
                 @for (file of selectedFiles; track $index; let first = $first) {
                 <div
                   class="file-item d-flex align-items-center justify-content-between mb-2 p-2 border rounded"
@@ -299,7 +327,9 @@
                       <div class="file-name">
                         {{ file.name }}
                         @if (first) {
-                        <span class="badge bg-primary ms-2">Identity</span>
+                        <span class="badge bg-primary ms-2">
+                          {{ "REGISTER.IDENTITY_BADGE" | translate }}
+                        </span>
                         }
                       </div>
                       <small class="text-muted">{{
@@ -320,7 +350,7 @@
               } @else {
               <div class="text-center text-muted py-3">
                 <i class="bi bi-file-earmark-excel display-6"></i>
-                <p class="mt-2">No documents selected</p>
+                <p class="mt-2">{{ "REGISTER.NO_DOCUMENTS" | translate }}</p>
               </div>
               }
 
@@ -333,7 +363,10 @@
                     selectedFiles.length === 3 ? 'bg-danger' : 'bg-success'
                   "
                 >
-                  Files: {{ selectedFiles.length }}/3
+                  {{
+                    "REGISTER.FILES_COUNT"
+                      | translate : { current: selectedFiles.length, max: 3 }
+                  }}
                 </span>
               </div>
               }
@@ -355,7 +388,8 @@
               role="status"
               aria-hidden="true"
             ></span>
-            Registering... } @else {
+            {{ "REGISTER.LOADING" | translate }}
+            } @else {
             <i class="bi bi-person-plus me-2"></i>
             {{ "REGISTER.SUBMIT" | translate }}
             }
@@ -368,7 +402,7 @@
             [disabled]="isLoading"
           >
             <i class="bi bi-x-circle me-2"></i>
-            Cancel
+            {{ "REGISTER.CANCEL" | translate }}
           </button>
         </div>
       </form>
