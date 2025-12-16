@@ -1,23 +1,43 @@
-<div class="container mt-4">
+<!-- Top Action Bar -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2 class="fw-bold mb-0">Subjects Management</h2>
 
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2 class="fw-bold">Subjects Management</h2>
-    <span class="badge bg-primary fs-6 px-3 py-2">
-      Total: {{ subjects.length }}
-    </span>
-  </div>
+  <button class="btn btn-primary d-flex align-items-center gap-2"
+          (click)="openModalCreateSubject()">
+    <i class="bi bi-plus-circle"></i>
+    Create Subject
+  </button>
+</div>
+
+<!-- Main Content -->
+<div class="container-fluid">
 
   <!-- Empty State -->
-  <div *ngIf="subjects.length === 0" class="alert alert-info shadow-sm">
+  <div *ngIf="subjects.length === 0"
+       class="alert alert-info shadow-sm text-center">
     No subjects found.
   </div>
 
   <!-- Subjects Table -->
-  <div *ngIf="subjects.length > 0" class="card shadow-sm">
-    <div class="card-body p-0">
+  <div *ngIf="subjects.length > 0"
+       class="card shadow-sm border-0">
 
-      <table class="table table-hover table-striped align-middle mb-0">
-        <thead class="table-dark">
+    <div class="card-header bg-white border-0
+                d-flex justify-content-between align-items-center">
+      <span class="fw-semibold text-muted">
+        Showing {{ filteredSubjects.length }} of {{ subjects.length }} subjects
+      </span>
+
+      <!-- Search placeholder -->
+      <input class="form-control w-25"
+       placeholder="Search subject or grade..."
+       [(ngModel)]="searchTerm"
+       (input)="onSearchChange()" />
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
           <tr>
             <th style="width: 60px;">#</th>
             <th>Subject Name</th>
@@ -26,23 +46,108 @@
         </thead>
 
         <tbody>
-          <tr *ngFor="let s of subjects; let i = index">
-            <td class="fw-semibold">{{ i + 1 }}</td>
+          <tr *ngFor="let s of filteredSubjects; let i = index">
+            <td class="text-muted">{{ i + 1 }}</td>
 
-            <td>
-              <span class="fw-semibold">{{ s.subjectName }}</span>
+            <td class="fw-semibold">
+              {{ s.subjectName }}
             </td>
 
             <td>
-              <span class="badge bg-secondary px-3 py-2">{{ s.gradeName }}</span>
+              <span class="badge bg-secondary-subtle
+                           text-dark px-3 py-2">
+                {{ s.gradeName }}
+              </span>
             </td>
-
           </tr>
         </tbody>
 
       </table>
+    </div>
+  </div>
+</div>
+
+<!-- Create Subject Modal -->
+<div *ngIf="isCreateSubjectModalOpen"
+     class="modal show"
+     tabindex="-1"
+     style="
+       display: block;
+       background: rgba(0,0,0,.5);
+       z-index: 1055;
+     ">
+
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">
+          Create Subject
+        </h5>
+        <button type="button"
+                class="btn-close"
+                (click)="closeModalCreateSubject()">
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body px-4 py-3">
+
+        <!-- Subject Name -->
+        <div class="form-floating mb-3">
+          <input type="text"
+                 class="form-control"
+                 id="subjectName"
+                 placeholder="Subject Name"
+                 [(ngModel)]="subjectName" />
+          <label for="subjectName">Subject Name</label>
+        </div>
+
+        <!-- Grade Dropdown -->
+        <div class="form-floating mb-3">
+          <select class="form-select"
+                  id="gradeSelect"
+                  [(ngModel)]="gradeId">
+            <option value="" disabled>
+              -- Select Grade --
+            </option>
+            <option *ngFor="let g of grades"
+                    [value]="g.id">
+              {{ g.gradeName }}
+            </option>
+          </select>
+          <label for="gradeSelect">Grade</label>
+        </div>
+
+        <!-- Credit Hours -->
+        <div class="form-floating mb-3">
+          <input type="number"
+                 class="form-control"
+                 id="creditHours"
+                 placeholder="Credit Hours"
+                 [(ngModel)]="creditHours" />
+          <label for="creditHours">
+            Credit Hours
+          </label>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer px-4">
+        <button class="btn btn-light"
+                (click)="closeModalCreateSubject()">
+          Cancel
+        </button>
+
+        <button class="btn btn-primary"
+                [disabled]="!subjectName || !gradeId || creditHours <= 0"
+                (click)="onCreateSubjectClick()">
+          Create Subject
+        </button>
+      </div>
 
     </div>
   </div>
-
 </div>
