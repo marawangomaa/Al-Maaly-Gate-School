@@ -175,7 +175,7 @@
               type="text"
               class="form-control search-input"
               [(ngModel)]="searchQuery"
-              (keyup.enter)="searchStudentsInPopup()"
+              (keyup.enter)="searchStudentsInPopup(selectedParentIdForModal)"
               placeholder="اكتب اسم الطالب، البريد الإلكتروني، رقم الإقامة أو رقم الهوية..."
             />
             <div class="search-icon">
@@ -185,7 +185,7 @@
           <button
             type="button"
             class="btn btn-primary search-btn"
-            (click)="searchStudentsInPopup()"
+            (click)="searchStudentsInPopup(selectedParentIdForModal)"
             [disabled]="searchQuery.length < 2"
           >
             <i class="fas fa-search me-1"></i> بحث
@@ -226,13 +226,16 @@
                   <div>
                     <i class="fas fa-envelope me-1"></i> {{ student.email }}
                   </div>
-                  <div *ngIf="student.IqamaNumber">
+                  <div *ngIf="student.iqamaNumber">
                     <i class="fas fa-id-card me-1"></i>
-                    {{ student.IqamaNumber }}
+                    {{ student.iqamaNumber }}
                   </div>
-                  <div *ngIf="student.PassportNumber">
+                  <div *ngIf="student.passportNumber">
                     <i class="fas fa-passport me-1"></i>
-                    {{ student.PassportNumber }}
+                    {{ student.passportNumber }}
+                  </div>
+                  <div class="badge bg-success" *ngIf="student.isInRelation">
+                    مضاف بالفعل الي هذا القريب
                   </div>
                 </div>
               </div>

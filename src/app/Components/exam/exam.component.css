@@ -1,82 +1,123 @@
+/* GENERAL PAGE STYLE */
 .exam-page {
-    min-height: 100vh;
-    background-color: var(--color-bg);
-    color: var(--color-text-light-bg);
-
-    .card {
-        background-color: var(--color-bg-secondary);
-        border: 1px solid var(--color-gray-200);
-        border-radius: var(--radius-md);
-        transition: all 0.3s ease;
-
-        &:hover {
-            border-color: var(--color-primary-300);
-            transform: translateY(-2px);
-        }
-    }
-
-    .form-check-input:checked {
-        background-color: var(--color-primary-400);
-        border-color: var(--color-primary-400);
-    }
-
-    textarea {
-        border: 1px solid var(--color-gray-300);
-        border-radius: var(--radius-sm);
-        resize: vertical;
-
-        &:focus {
-            border-color: var(--color-primary-400);
-            box-shadow: 0 0 0 0.25rem rgba(0, 102, 255, 0.2);
-        }
-    }
-
-    .primary-btn i {
-        margin-right: 0.5rem;
-    }
-
-    .spin {
-        animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-        from {
-            transform: rotate(0deg);
-        }
-
-        to {
-            transform: rotate(360deg);
-        }
-    }
+    background: #f8f9fc;
 }
 
-/* Make radio buttons bigger */
-.form-check-input {
-    width: 1.6rem;
-    height: 1.6rem;
+.hero-title {
+    color: #2a2f4f;
+    letter-spacing: 0.5px;
 }
 
-/* Make all labels slightly bigger */
-.form-check-label {
-    font-size: 1.15rem;
-}
-
-/* Card padding & spacing */
+/* CARD STYLE */
 .card {
-    border-radius: 0.8rem;
-    padding: 1.5rem;
+    border-radius: 20px;
+    border: none;
+    transition: 0.2s ease-in-out;
 }
 
-/* Column headers */
-h6 {
-    font-weight: 600;
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
 }
 
-/* Submit button hover effect */
-.primary-btn {
+.main-title {
+    color: #1d1e2c;
+}
+
+/* RADIO INPUTS GENERAL */
+.form-check-input {
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    border: 2px solid #777;
     transition: all 0.2s ease-in-out;
 }
 
-.primary-btn:hover {
-    transform: scale(1.05);
+.form-check-input:checked {
+    background-color: #4e73df !important;
+    border-color: #4e73df !important;
+    box-shadow: 0 0 0 4px rgba(78, 115, 223, 0.25);
+}
+
+.form-check-label {
+    margin-left: 8px;
+    cursor: pointer;
+}
+
+/* HIGHLIGHT SELECTED ITEM (WHOLE ROW) */
+.choices-list .form-check,
+.row .form-check {
+    padding: 12px 15px;
+    border-radius: 12px;
+    transition: background 0.2s;
+}
+
+.choices-list .form-check:hover,
+.row .form-check:hover {
+    background: #eef2ff;
+}
+
+.form-check-input:checked+.form-check-label {
+    font-weight: 600;
+    color: #1c3faa;
+}
+
+/* CONNECTION QUESTION COLUMNS */
+.col-6 h6 {
+    color: #374151;
+    font-weight: 700;
+}
+
+.col-6 .form-check {
+    border: 1px solid #e4e7ec;
+    margin-bottom: 12px;
+    background: white;
+}
+
+/* TEXT INPUT (Complete type) */
+input.form-control-lg {
+    border-radius: 12px;
+    border: 2px solid #b0b7c3;
+    padding: 14px 16px;
+    font-size: 1.1rem;
+    transition: 0.25s;
+}
+
+input.form-control-lg:focus {
+    border-color: #4e73df;
+    box-shadow: 0 0 0 4px rgba(78, 115, 223, 0.25);
+}
+
+/* SUBMIT BUTTON */
+.primary-btn {
+    border-radius: 14px;
+    background: #4e73df;
+    color: #fff;
+    border: none;
+    transition: 0.2s;
+}
+
+.primary-btn:hover:not(:disabled) {
+    background: #3555c0;
+    transform: translateY(-2px);
+}
+
+.primary-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* SUBMIT SPINNER */
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }

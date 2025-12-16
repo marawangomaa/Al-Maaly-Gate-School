@@ -71,14 +71,14 @@ export class StudentService {
     return this.http.get<ApiResponse<istudentProfile[]>>(`${this.apiUrl}/Student`, { headers });
   }
 
-  searchStudents(term: string): Observable<ApiResponse<istudentSearchResult[]>> {
+  searchStudents(term: string, parentId: string): Observable<ApiResponse<istudentSearchResult[]>> {
     const token = this._Auth?.getToken();
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
 
     return this.http.get<ApiResponse<istudentSearchResult[]>>(
-      `${this.apiUrl}/Student/searchTerm?searchTerm=${encodeURIComponent(term)}`,
+      `${this.apiUrl}/Student/searchTerm?searchTerm=${encodeURIComponent(term)}&parentId=${encodeURIComponent(parentId)}`,
       { headers }
     );
   }

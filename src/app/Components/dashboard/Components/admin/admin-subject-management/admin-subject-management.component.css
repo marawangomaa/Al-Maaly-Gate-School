@@ -10,3 +10,183 @@
 .badge {
   font-size: 0.9rem;
 }
+
+/* ===============================
+   GENERAL LAYOUT
+================================ */
+:host {
+  display: block;
+  padding: 1rem;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #f8fafc;
+}
+
+/* ===============================
+   HEADER & ACTION BUTTON
+================================ */
+h2 {
+  letter-spacing: 0.2px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  border: none;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.25);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.35);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  box-shadow: none;
+}
+
+/* ===============================
+   CARD & TABLE
+================================ */
+.card {
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 1rem 1.25rem;
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+.table thead th {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.table tbody tr {
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.table tbody tr:hover {
+  background-color: #f1f5f9;
+}
+
+.table tbody td {
+  padding: 0.85rem 1rem;
+  vertical-align: middle;
+}
+
+/* ===============================
+   BADGES
+================================ */
+.badge {
+  font-weight: 500;
+  border-radius: 999px;
+  font-size: 0.75rem;
+}
+
+.bg-secondary-subtle {
+  background-color: #e2e8f0 !important;
+}
+
+/* ===============================
+   EMPTY STATE
+================================ */
+.alert-info {
+  background: linear-gradient(135deg, #e0f2fe, #f0f9ff);
+  border: none;
+  color: #0369a1;
+}
+
+/* ===============================
+   MODAL BACKDROP
+================================ */
+.modal {
+  backdrop-filter: blur(4px);
+}
+
+/* ===============================
+   MODAL CONTENT
+================================ */
+.modal-content {
+  border-radius: 16px;
+  animation: scaleIn 0.25s ease;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modal-header {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-title {
+  font-size: 1.1rem;
+}
+
+/* ===============================
+   FORM CONTROLS
+================================ */
+.form-control,
+.form-select {
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  padding-left: 0.75rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+}
+
+.form-floating > label {
+  color: #64748b;
+}
+
+/* ===============================
+   MODAL FOOTER
+================================ */
+.modal-footer {
+  border-top: 1px solid #e5e7eb;
+}
+
+/* ===============================
+   BUTTONS
+================================ */
+.btn-light {
+  background-color: #f1f5f9;
+  border: none;
+}
+
+.btn-light:hover {
+  background-color: #e2e8f0;
+}
+
+/* ===============================
+   RESPONSIVE
+================================ */
+@media (max-width: 768px) {
+  .card-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .card-header input {
+    width: 100% !important;
+  }
+}

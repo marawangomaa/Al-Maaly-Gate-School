@@ -62,19 +62,68 @@
         "TITLE": "إنشاء حساب جديد",
         "FULLNAME": "الاسم الكامل",
         "FULLNAME_REQUIRED": "الاسم الكامل مطلوب",
+        "USERNAME": "اسم المستخدم",
+        "USERNAME_REQUIRED": "اسم المستخدم مطلوب",
         "EMAIL": "البريد الإلكتروني",
         "EMAIL_INVALID": "يرجى إدخال بريد إلكتروني صحيح",
+        "CONTACT_INFO": "معلومات الاتصال",
         "PASSWORD": "كلمة المرور",
         "PASSWORD_REQUIRED": "كلمة المرور مطلوبة (على الأقل 6 أحرف)",
+        "CONFIRM_PASSWORD": "تأكيد كلمة المرور",
+        "PASSWORD_MISMATCH": "كلمات المرور غير متطابقة",
         "ROLE": "الدور",
         "ROLE_SELECT": "اختر الدور",
         "ROLE_STUDENT": "طالب",
         "ROLE_TEACHER": "معلم",
+        "ROLE_PARENT": "ولي أمر",
         "ROLE_REQUIRED": "يجب اختيار الدور",
+        "RELATION": "صلة القرابة",
+        "RELATION_REQUIRED": "صلة القرابة مطلوبة",
+        "DOCUMENTS": "المستندات",
+        "SELECT_DOCUMENTS": "اختر المستندات",
+        "FILE_MAX_LIMIT": "الحد الأقصى 3 ملفات مسموح بها",
+        "FILE_INVALID_TYPE": "نوع ملف غير صالح: {{fileName}}. الأنواع المسموحة: PDF, JPG, PNG, DOC, DOCX",
+        "FILE_TOO_LARGE": "الملف {{fileName}} كبير جداً. الحد الأقصى: 5 ميجابايت",
+        "FILE_REQUIRED": "مطلوب ملف واحد على الأقل لتسجيل ولي الأمر",
+        "REMOVE_FILE": "إزالة الملف",
         "SUBMIT": "تسجيل",
-        "LOADING": "جارٍ إنشاء الحساب..."
+        "CANCEL": "إلغاء",
+        "LOADING": "جارٍ إنشاء الحساب...",
+        "PARENT_SUCCESS": "تم تسجيل ولي الأمر بنجاح! يتم التوجيه...",
+        "PARENT_FAILED": "فشل تسجيل ولي الأمر",
+        "SUCCESS": "تم التسجيل بنجاح! يتم التوجيه...",
+        "FAILED": "فشل التسجيل",
+        "FORM_ERRORS": "يرجى تصحيح الأخطاء في النموذج",
+        "SOMETHING_WRONG": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+        "FULLNAME_PLACEHOLDER": "أدخل الاسم الكامل",
+        "FULLNAME_MIN_ERROR": "الاسم يجب أن يكون على الأقل 3 أحرف",
+        "USERNAME_PLACEHOLDER": "اختر اسم مستخدم",
+        "USERNAME_MIN_ERROR": "اسم المستخدم يجب أن يكون على الأقل 3 أحرف",
+        "EMAIL_PLACEHOLDER": "أدخل عنوان البريد الإلكتروني",
+        "CONTACT_PLACEHOLDER": "رقم الهاتف (اختياري)",
+        "CONTACT_MIN_ERROR": "يجب أن يكون على الأقل 10 أحرف إذا تم توفيره",
+        "PASSWORD_PLACEHOLDER": "أدخل كلمة المرور",
+        "PASSWORD_MIN_ERROR": "كلمة المرور يجب أن تكون على الأقل 6 أحرف",
+        "CONFIRM_PASSWORD_PLACEHOLDER": "تأكيد كلمة المرور",
+        "RELATION_SELECT": "اختر صلة القرابة",
+        "RELATION_FATHER": "أب",
+        "RELATION_MOTHER": "أم",
+        "RELATION_GUARDIAN": "وصي",
+        "RELATION_OTHER": "آخر",
+        "PARENT_INFO": "معلومات ولي الأمر",
+        "DOCUMENTS_TITLE": "رفع المستندات (الحد الأقصى 3 ملفات، 5 ميجابايت لكل ملف) *",
+        "ADD_MORE_DOCUMENTS": "إضافة المزيد من المستندات",
+        "FIRST_FILE_IDENTITY": "سيتم التعامل مع الملف الأول كمستند هوية",
+        "REQUIREMENTS": "المتطلبات",
+        "FILE_REQUIREMENTS_DETAIL": "مطلوب مستند واحد على الأقل. الصيغ المسموحة: PDF, JPG, PNG, DOC, DOCX. الحد الأقصى 5 ميجابايت لكل ملف.",
+        "SELECTED_FILES": "الملفات المحددة",
+        "IDENTITY_BADGE": "هوية",
+        "NO_DOCUMENTS": "لا توجد مستندات محددة",
+        "FILES_COUNT": "الملفات: {{current}}/{{max}}"
     },
     "DASH": {
+        "PARENT_MANAGEMENT": "إدارة أولياء الأمور",
+        "STUDENT_PROFILE": "الملف الشخصي",
         "ADMIN_CERTFICATION_CREATE": "انشاء شهادة",
         "CHILDREN OF PARENT": "أبناء ولي الأمر",
         "STUDENT_CERTFICATION": "الشهادات",
@@ -100,8 +149,8 @@
         "YEAR-GRADE": "العام الدراسى",
         "ACCEPT_TEACHERS": "قبول المعلمين",
         "ALL_STUDENT_TEST_RESULT": "درجات اختبارات التلاميذ",
-        "STUDENT_ACCOUNTS": "ايميلات الطلاب",
-        "TEACHER_ACCOUNTS": "ايميلات المعلمين",
+        "STUDENT_ACCOUNTS": "حسابات الطلاب",
+        "TEACHER_ACCOUNTS": "حسابات المعلمين",
         "ADMIN_SUBJECT_MANAGEMENT": "ادارة المواد",
         "ADMIN_ANALYTICS": "تحليلات",
         "CURRICULUM": "المقرر",
@@ -655,5 +704,119 @@
         "ABOUT": "عن المدرسة",
         "CONTACT": "تواصل",
         "FOLLOW": "تابعنا"
+    },
+    "EXAM": {
+        "HEADER": {
+            "TITLE": "اسم المادة",
+            "TIME": "الوقت",
+            "FROM": "من",
+            "TO": "إلى"
+        },
+        "QUESTION_TYPES": {
+            "CHOICES": "اختيارات",
+            "CONNECTION": "توصيل",
+            "COMPLETE": "إكمال الجملة",
+            "TRUE_FALSE": "صح أو خطأ",
+            "COLUMN_A": "العمود أ",
+            "COLUMN_B": "العمود ب",
+            "WRITE_ANSWER": "اكتب إجابتك هنا..."
+        },
+        "BUTTONS": {
+            "SUBMIT": "إرسال الامتحان",
+            "SUBMITTING": "جارٍ الإرسال...",
+            "ANSWER_ALL": "أجب على كل الأسئلة"
+        },
+        "MESSAGES": {
+            "SHOULD_ANSWER_ALL": "يجب الإجابة على جميع الأسئلة قبل الإرسال.",
+            "SUCCESS": "تم إرسال الامتحان بنجاح!",
+            "ERROR": "فشل في إرسال الامتحان"
+        },
+        "GENERAL": {
+            "TRUE": "صح",
+            "FALSE": "خطأ"
+        }
+    },
+    "parentManagement": {
+        "header": {
+            "title": "إدارة أولياء الأمور",
+            "description": "إدارة حسابات أولياء الأمور والطلاب المرتبطين بهم في النظام",
+            "parentsCount": "ولي أمر",
+            "parentsCount_plural": "أولياء أمور",
+            "refresh": "تحديث"
+        },
+        "loading": {
+            "title": "جاري تحميل بيانات أولياء الأمور",
+            "message": "يرجى الانتظار أثناء جلب أحدث المعلومات"
+        },
+        "parentCard": {
+            "noPhone": "لا يوجد هاتف",
+            "associatedStudents": "الطلاب المرتبطين",
+            "noStudents": {
+                "title": "لا يوجد طلاب مرتبطين بعد",
+                "button": "إضافة أول طالب"
+            },
+            "addStudent": "إضافة طالب آخر",
+            "removeStudent": "إزالة",
+            "removeTooltip": "إزالة الطالب",
+            "relations": {
+                "father": "أب",
+                "mother": "أم",
+                "guardian": "وصي",
+                "other": "آخر"
+            }
+        },
+        "emptyState": {
+            "title": "لا توجد حسابات أولياء أمور",
+            "description": "لا توجد حسابات أولياء أمور في النظام حتى الآن.",
+            "button": "دعوة أولياء الأمور"
+        },
+        "addStudentModal": {
+            "header": {
+                "title": "إضافة طالب",
+                "description": "ربط طالب بـ"
+            },
+            "form": {
+                "studentSelection": {
+                    "label": "اختر الطالب",
+                    "placeholder": "اختر طالبًا...",
+                    "alreadyLinked": "✓ مرتبط بالفعل",
+                    "validationError": "يرجى اختيار طالب"
+                },
+                "relation": {
+                    "label": "نوع العلاقة",
+                    "options": {
+                        "father": "أب",
+                        "mother": "أم",
+                        "guardian": "وصي",
+                        "other": "آخر"
+                    },
+                    "validationError": "يرجى اختيار العلاقة"
+                }
+            },
+            "buttons": {
+                "cancel": "إلغاء",
+                "submit": {
+                    "adding": "جاري الإضافة...",
+                    "default": "ربط الطالب"
+                },
+                "close": "إغلاق"
+            }
+        },
+        "messages": {
+            "loadingFailed": "فشل تحميل البيانات",
+            "errorLoadingParents": "خطأ في تحميل أولياء الأمور:",
+            "errorLoadingParentDetails": "خطأ في تحميل تفاصيل الوالد:",
+            "errorLoadingChildren": "خطأ في تحميل الطلاب للوالد",
+            "errorLoadingAvailableStudents": "خطأ في تحميل الطلاب المتاحين:",
+            "errorAddingStudent": "خطأ في إضافة الطالب:",
+            "errorRemovingStudent": "خطأ في إزالة الطالب:",
+            "addStudentSuccess": "تمت إضافة الطالب بنجاح!",
+            "addStudentFailed": "فشل إضافة الطالب",
+            "removeStudentSuccess": "تمت إزالة الطالب بنجاح!",
+            "removeStudentFailed": "فشل إزالة الطالب",
+            "errorOccurred": "حدث خطأ",
+            "confirmRemove": "هل أنت متأكد أنك تريد إزالة هذا الطالب من الوالد؟",
+            "fillAllFields": "يرجى ملء جميع الحقول المطلوبة"
+        }
     }
 }

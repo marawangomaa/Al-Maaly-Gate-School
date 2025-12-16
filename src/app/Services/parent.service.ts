@@ -5,6 +5,7 @@ import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../Interfaces/auth';
 import { iparentViewDto } from '../Interfaces/iparentViewDto';
+import { iparentViewWithChildrenDto } from '../Interfaces/iparentViewWithChildrenDto';
 
 @Injectable({
   providedIn: 'root'
@@ -22,5 +23,14 @@ export class ParentService {
     return this.http.get<ApiResponse<iparentViewDto[]>>(`${this.apiUrl}/all`, { headers });
   }
 
+  getParentWithChildren(parentId: string): Observable<ApiResponse<iparentViewWithChildrenDto>> {
+    const token = this._Auth?.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get<ApiResponse<iparentViewWithChildrenDto>>(`
+      ${this.apiUrl}/view/${encodeURIComponent(parentId)}`,
+      { headers });
+  }
 
 }

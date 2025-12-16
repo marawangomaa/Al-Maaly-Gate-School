@@ -8,7 +8,7 @@ import {
   ReactiveFormsModule,
   FormsModule
 } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ApiResponse, AuthResponse, RegisterRequest } from '../../Interfaces/auth';
 import { AuthService } from '../../Services/auth.service';
 import { Router } from '@angular/router';
@@ -36,7 +36,8 @@ export class RegisterComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -45,12 +46,9 @@ export class RegisterComponent {
         fullName: ['', [Validators.required, Validators.minLength(3)]],
         userName: ['', [Validators.required, Validators.minLength(3)]],
         email: ['', [Validators.required, Validators.email]],
-
         contactInfo: ['', [Validators.minLength(10)]],
-
         password: ['', [Validators.required, Validators.minLength(6)]],
         confirmPassword: ['', Validators.required],
-
         role: ['', Validators.required],
         relation: [''],
       },
@@ -92,7 +90,7 @@ export class RegisterComponent {
 
     // Check total files won't exceed 3
     if (this.selectedFiles.length + newFiles.length > 3) {
-      this.fileError = 'Maximum 3 files allowed';
+      this.fileError = this.translate.instant('REGISTER.FILE_MAX_LIMIT');
       input.value = ''; // Clear file input
       return;
     }
@@ -101,14 +99,14 @@ export class RegisterComponent {
     for (const file of newFiles) {
       // Check file type
       if (!this.allowedFileTypes.includes(file.type)) {
-        this.fileError = `Invalid file type: ${file.name}. Allowed types: PDF, JPG, PNG, DOC, DOCX`;
+        this.fileError = this.translate.instant('REGISTER.FILE_INVALID_TYPE', { fileName: file.name });
         input.value = ''; // Clear file input
         return;
       }
 
       // Check file size
       if (file.size > this.maxFileSize) {
-        this.fileError = `File ${file.name} is too large. Max size: 5MB`;
+        this.fileError = this.translate.instant('REGISTER.FILE_TOO_LARGE', { fileName: file.name });
         input.value = ''; // Clear file input
         return;
       }
@@ -127,14 +125,13 @@ export class RegisterComponent {
     formData.append('Email', formValues.email);
     formData.append('UserName', formValues.userName);
     formData.append('FullName', formValues.fullName);
-    formData.append('ContactInfo', formValues.contactInfo || ''); // Use ContactInfo, not PhoneNumber
+    formData.append('ContactInfo', formValues.contactInfo || '');
     formData.append('Password', formValues.password);
     formData.append('ConfirmPassword', formValues.confirmPassword);
     formData.append('Role', formValues.role);
 
     // Add ParentRegisterRequest specific fields
     if (formValues.relation) {
-      // NOTE: Backend expects 'RelationshipToStudent' not 'relation'
       formData.append('Relation', formValues.relation);
     }
 
@@ -144,7 +141,6 @@ export class RegisterComponent {
       formData.append('IdentityDocument', this.selectedFiles[0], this.selectedFiles[0].name);
 
       // Additional documents as array/list
-      // IMPORTANT: For lists in FormData, use the same key name
       for (let i = 1; i < this.selectedFiles.length; i++) {
         formData.append('AdditionalDocuments', this.selectedFiles[i], this.selectedFiles[i].name);
       }
@@ -165,17 +161,17 @@ export class RegisterComponent {
       next: (response: ApiResponse<ParentRegistrationResponse>) => {
         this.isLoading = false;
         if (response.success) {
-          this.successMessage = 'Parent registration successful! Redirecting...';
+          this.successMessage = this.translate.instant('REGISTER.PARENT_SUCCESS');
           setTimeout(() => this.router.navigate(['/login']), 1500);
           this.registerForm.reset();
           this.selectedFiles = [];
         } else {
-          this.errorMessage = response.message || 'Parent registration failed';
+          this.errorMessage = response.message || this.translate.instant('REGISTER.PARENT_FAILED');
         }
       },
       error: (err) => {
         this.isLoading = false;
-        this.errorMessage = err.error?.message || 'Something went wrong. Please try again.';
+        this.errorMessage = err.error?.message || this.translate.instant('REGISTER.SOMETHING_WRONG');
         console.error('❌ Full error:', err);
         console.error('❌ Error details:', err.error);
       }
@@ -200,7 +196,7 @@ export class RegisterComponent {
   // ✅ Main submit function
   onRegister() {
     if (this.registerForm.invalid) {
-      this.errorMessage = 'Please correct the errors in the form';
+      this.errorMessage = this.translate.instant('REGISTER.FORM_ERRORS');
       return;
     }
 
@@ -210,12 +206,12 @@ export class RegisterComponent {
     // Additional validation for parent role
     if (role === 'parent') {
       if (this.selectedFiles.length === 0) {
-        this.fileError = 'At least one document is required for parent registration';
+        this.fileError = this.translate.instant('REGISTER.FILE_REQUIRED');
         return;
       }
 
       if (this.selectedFiles.length > 3) {
-        this.fileError = 'Maximum 3 files allowed';
+        this.fileError = this.translate.instant('REGISTER.FILE_MAX_LIMIT');
         return;
       }
     }
@@ -250,17 +246,17 @@ export class RegisterComponent {
         this.isLoading = false;
 
         if (response.success) {
-          this.successMessage = 'Registration successful! Redirecting...';
+          this.successMessage = this.translate.instant('REGISTER.SUCCESS');
           setTimeout(() => this.router.navigate(['/login']), 1500);
           this.registerForm.reset();
           this.selectedFiles = [];
         } else {
-          this.errorMessage = response.message || 'Registration failed';
+          this.errorMessage = response.message || this.translate.instant('REGISTER.FAILED');
         }
       },
       error: (err) => {
         this.isLoading = false;
-        this.errorMessage = err.error?.message || 'Something went wrong. Please try again.';
+        this.errorMessage = err.error?.message || this.translate.instant('REGISTER.SOMETHING_WRONG');
         console.error('❌ Error:', err);
       }
     });

@@ -2,6 +2,7 @@ export interface istudentSearchResult {
     id: string;
     fullName: string;
     email: string;
-    IqamaNumber: string;
-    PassportNumber: string;
+    iqamaNumber: string;
+    passportNumber: string;
+    isInRelation: boolean;
 }

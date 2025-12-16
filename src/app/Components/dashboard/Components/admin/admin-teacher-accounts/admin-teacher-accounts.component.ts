@@ -17,14 +17,12 @@ import { AccountStatus } from '../../../../../Interfaces/AccountStatus';
 })
 export class AdminTeacherAccountsComponent {
 
-  teacherCount = 0;
   subjectName = '';
   teachersBySubject: Teacher[] = [];
   allTeachers: Teacher[] = [];
   hasSearched = false;
   isLoading = false;
 
-  // استخدام enum بشكل صحيح
   accountStatusEnum = AccountStatus;
   selectedStatus: AccountStatus | 'all' = 'all';
 
@@ -37,7 +35,6 @@ export class AdminTeacherAccountsComponent {
   ) { }
 
   ngOnInit(): void {
-    this.LoadTeacherCount();
     this.LoadAllTeachers();
   }
 
@@ -258,16 +255,6 @@ export class AdminTeacherAccountsComponent {
           }
         },
         error: err => alert(`خطأ في فك حظر المعلم: ${err.message}`)
-      })
-    );
-  }
-
-  //Load total teacher count
-  private LoadTeacherCount(): void {
-    this.subscription.add(
-      this.adminService.CountTeachers().subscribe({
-        next: count => (this.teacherCount = count),
-        error: err => alert(`خطأ في تحميل عدد المعلمين: ${err.message}`)
       })
     );
   }

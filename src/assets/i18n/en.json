@@ -62,19 +62,68 @@
         "TITLE": "Create a new account",
         "FULLNAME": "Full Name",
         "FULLNAME_REQUIRED": "Full name is required",
+        "USERNAME": "Username",
+        "USERNAME_REQUIRED": "Username is required",
         "EMAIL": "Email",
         "EMAIL_INVALID": "Enter a valid email",
+        "CONTACT_INFO": "Contact Information",
         "PASSWORD": "Password",
         "PASSWORD_REQUIRED": "Password is required (min 6 chars)",
+        "CONFIRM_PASSWORD": "Confirm Password",
+        "PASSWORD_MISMATCH": "Passwords do not match",
         "ROLE": "Role",
         "ROLE_SELECT": "Select role",
         "ROLE_STUDENT": "Student",
         "ROLE_TEACHER": "Teacher",
+        "ROLE_PARENT": "Parent",
         "ROLE_REQUIRED": "Role is required",
+        "RELATION": "Relation",
+        "RELATION_REQUIRED": "Relation is required",
+        "DOCUMENTS": "Documents",
+        "SELECT_DOCUMENTS": "Select Documents",
+        "FILE_MAX_LIMIT": "Maximum 3 files allowed",
+        "FILE_INVALID_TYPE": "Invalid file type: {{fileName}}. Allowed types: PDF, JPG, PNG, DOC, DOCX",
+        "FILE_TOO_LARGE": "File {{fileName}} is too large. Max size: 5MB",
+        "FILE_REQUIRED": "At least one document is required for parent registration",
+        "REMOVE_FILE": "Remove File",
         "SUBMIT": "Register",
-        "LOADING": "Registering..."
+        "CANCEL": "Cancel",
+        "LOADING": "Registering...",
+        "PARENT_SUCCESS": "Parent registration successful! Redirecting...",
+        "PARENT_FAILED": "Parent registration failed",
+        "SUCCESS": "Registration successful! Redirecting...",
+        "FAILED": "Registration failed",
+        "FORM_ERRORS": "Please correct the errors in the form",
+        "SOMETHING_WRONG": "Something went wrong. Please try again.",
+        "FULLNAME_PLACEHOLDER": "Enter full name",
+        "FULLNAME_MIN_ERROR": "Full name must be at least 3 characters",
+        "USERNAME_PLACEHOLDER": "Choose a username",
+        "USERNAME_MIN_ERROR": "Username must be at least 3 characters",
+        "EMAIL_PLACEHOLDER": "Enter email address",
+        "CONTACT_PLACEHOLDER": "Phone number (optional)",
+        "CONTACT_MIN_ERROR": "Must be at least 10 characters if provided",
+        "PASSWORD_PLACEHOLDER": "Enter password",
+        "PASSWORD_MIN_ERROR": "Password must be at least 6 characters",
+        "CONFIRM_PASSWORD_PLACEHOLDER": "Confirm password",
+        "RELATION_SELECT": "Select relation",
+        "RELATION_FATHER": "Father",
+        "RELATION_MOTHER": "Mother",
+        "RELATION_GUARDIAN": "Guardian",
+        "RELATION_OTHER": "Other",
+        "PARENT_INFO": "Parent Information",
+        "DOCUMENTS_TITLE": "Upload Documents (Max 3 files, 5MB each) *",
+        "ADD_MORE_DOCUMENTS": "Add More Documents",
+        "FIRST_FILE_IDENTITY": "First file will be treated as Identity Document",
+        "REQUIREMENTS": "Requirements",
+        "FILE_REQUIREMENTS_DETAIL": "At least 1 document required. Allowed formats: PDF, JPG, PNG, DOC, DOCX. Max 5MB per file.",
+        "SELECTED_FILES": "Selected Files",
+        "IDENTITY_BADGE": "Identity",
+        "NO_DOCUMENTS": "No documents selected",
+        "FILES_COUNT": "Files: {{current}}/{{max}}"
     },
     "DASH": {
+        "PARENT_MANAGEMENT": " Parent Management ",
+        "STUDENT_PROFILE": "Student Profile",
         "CHILDREN OF PARENT": "Children of Parent",
         "ADMIN_CERTFICATION_CREATE": "Create Certfications",
         "STUDENT_CERTFICATION": "Certfications",
@@ -656,5 +705,119 @@
         "ABOUT": "About",
         "CONTACT": "Contact",
         "FOLLOW": "Follow Us"
+    },
+    "EXAM": {
+        "HEADER": {
+            "TITLE": "Subject Name",
+            "TIME": "Time",
+            "FROM": "From",
+            "TO": "To"
+        },
+        "QUESTION_TYPES": {
+            "CHOICES": "Choices",
+            "CONNECTION": "Matching",
+            "COMPLETE": "Complete the sentence",
+            "TRUE_FALSE": "True or False",
+            "COLUMN_A": "Column A",
+            "COLUMN_B": "Column B",
+            "WRITE_ANSWER": "Type your answer here..."
+        },
+        "BUTTONS": {
+            "SUBMIT": "Submit Exam",
+            "SUBMITTING": "Submitting...",
+            "ANSWER_ALL": "Answer all questions"
+        },
+        "MESSAGES": {
+            "SHOULD_ANSWER_ALL": "You must answer all questions before submitting.",
+            "SUCCESS": "Exam submitted successfully!",
+            "ERROR": "Failed to submit exam."
+        },
+        "GENERAL": {
+            "TRUE": "True",
+            "FALSE": "False"
+        }
+    },
+    "parentManagement": {
+        "header": {
+            "title": "Parent Management",
+            "description": "Manage parent accounts and their associated students in the system",
+            "parentsCount": "parent",
+            "parentsCount_plural": "parents",
+            "refresh": "Refresh"
+        },
+        "loading": {
+            "title": "Loading Parent Data",
+            "message": "Please wait while we fetch the latest information"
+        },
+        "parentCard": {
+            "noPhone": "No phone",
+            "associatedStudents": "Associated Students",
+            "noStudents": {
+                "title": "No students associated yet",
+                "button": "Add First Student"
+            },
+            "addStudent": "Add Another Student",
+            "removeStudent": "Remove",
+            "removeTooltip": "Remove student",
+            "relations": {
+                "father": "Father",
+                "mother": "Mother",
+                "guardian": "Guardian",
+                "other": "Other"
+            }
+        },
+        "emptyState": {
+            "title": "No Parent Accounts",
+            "description": "There are no parent accounts in the system yet.",
+            "button": "Invite Parents"
+        },
+        "addStudentModal": {
+            "header": {
+                "title": "Add Student",
+                "description": "Link a student to"
+            },
+            "form": {
+                "studentSelection": {
+                    "label": "Select Student",
+                    "placeholder": "Choose a student...",
+                    "alreadyLinked": "✓ Already linked",
+                    "validationError": "Please select a student"
+                },
+                "relation": {
+                    "label": "Relationship Type",
+                    "options": {
+                        "father": "Father",
+                        "mother": "Mother",
+                        "guardian": "Guardian",
+                        "other": "Other"
+                    },
+                    "validationError": "Please select a relationship"
+                }
+            },
+            "buttons": {
+                "cancel": "Cancel",
+                "submit": {
+                    "adding": "Adding...",
+                    "default": "Link Student"
+                },
+                "close": "Close"
+            }
+        },
+        "messages": {
+            "loadingFailed": "Failed to load data",
+            "errorLoadingParents": "Error loading parents:",
+            "errorLoadingParentDetails": "Error loading parent details:",
+            "errorLoadingChildren": "Error loading children for parent",
+            "errorLoadingAvailableStudents": "Error loading available students:",
+            "errorAddingStudent": "Error adding student:",
+            "errorRemovingStudent": "Error removing student:",
+            "addStudentSuccess": "Student added successfully!",
+            "addStudentFailed": "Failed to add student",
+            "removeStudentSuccess": "Student removed successfully!",
+            "removeStudentFailed": "Failed to remove student",
+            "errorOccurred": "An error occurred",
+            "confirmRemove": "Are you sure you want to remove this student from the parent?",
+            "fillAllFields": "Please fill all required fields"
+        }
     }
 }
