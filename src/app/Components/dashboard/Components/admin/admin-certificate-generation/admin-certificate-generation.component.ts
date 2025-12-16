@@ -583,4 +583,13 @@ export class AdminCertificateGenerationComponent implements OnInit {
   getStudentCount(): number {
     return this.students.length;
   }
+
+  getTabIndicatorPosition(): string {
+  const positions = {
+    'generate': 'translateX(0%)',
+    'bulk': 'translateX(100%)',
+    'search': 'translateX(200%)'
+  };
+  return positions[this.activeTab] || 'translateX(0%)';
+}
 }

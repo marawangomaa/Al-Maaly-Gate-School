@@ -372,18 +372,110 @@
     }
   },
   "certificate2": {
-    "classWideCertificateType": "Class-wide Certificate Type",
-    "classWideAcademicYear": "Class-wide Academic Year",
-    "classWideOperations": "Class-wide Certificate Operations",
-    "classWideDescription": "Generate certificates for ALL students in this class",
-    "generateClassWide": "Generate for Whole Class",
-    "generatingClassWide": "Generating for Class...",
-    "downloadClassWide": "Download Class Certificates",
-    "downloadingClassWide": "Downloading Class Certificates...",
-    "singleStudentOperations": "Single Student Operations",
-    "students": "students",
+    "title": "Certificate Management",
+    "subtitle": "Generate, manage, and verify academic certificates with ease",
+    
+    "tabs": {
+      "generate": "Generate Certificate",
+      "bulk": "Bulk Operations",
+      "search": "Search & Verify"
+    },
+    
+    "filterOptions": "Filter Options",
+    "filterDescription": "Filter students by curriculum, grade, and class to generate certificates",
+    "filterByCurriculum": "Filter by Curriculum",
+    "filterByGrade": "Filter by Grade",
+    "selectClass": "Select Class",
+    "allCurricula": "All Curricula",
+    "allGrades": "All Grades",
+    "classPlaceholder": "Select a class...",
+    "studentPlaceholder": "Select a student...",
     "noClassesAvailable": "No classes available",
-    "noClassesForFilters": "No classes found for the selected filters"
+    "noClassesForFilters": "No classes match your filters. Please adjust your selection.",
+    
+    "classWideOperations": "Class-wide Operations",
+    "classWideDescription": "Apply certificate settings to all students in the selected class",
+    "classWideCertificateType": "Certificate Type (All Students)",
+    "classWideAcademicYear": "Academic Year (All Students)",
+    "students": "students",
+    "student": "student",
+    
+    "classWideActions": {
+      "generate": "Generate All Certificates",
+      "download": "Download All as ZIP",
+      "generating": "Generating certificates...",
+      "downloading": "Downloading ZIP..."
+    },
+    
+    "singleStudentOperations": "Single Student Operations",
+    "searchStudent": "Search Student",
+    "searchStudentPlaceholder": "Type student name...",
+    
+    "generatePdf": "Generate PDF",
+    "generateAndSave": "Generate & Save",
+    "saveOnly": "Save to Database Only",
+    "generating": "Generating...",
+    "saving": "Saving...",
+    
+    "studentsInClass": "Students in Class",
+    "studentId": "Student ID",
+    
+    "bulkGeneration": "Bulk Certificate Generation",
+    "bulkDescription": "Generate certificates for an entire class at once",
+    "bulkGenerate": "Generate Bulk Certificates",
+    "bulkGenerating": "Generating bulk certificates...",
+    "downloadBulk": "Download as ZIP",
+    "downloading": "Preparing download...",
+    
+    "searchCertificates": "Search Certificates",
+    "studentName": "Student Name",
+    "studentNamePlaceholder": "Enter student name...",
+    "certificateNumber": "Certificate Number",
+    "certificateNumberPlaceholder": "Enter certificate number...",
+    "certificateType": "Certificate Type",
+    "allTypes": "All Types",
+    "academicYear": "Academic Year",
+    "allYears": "All Years",
+    "fromDate": "From Date",
+    "toDate": "To Date",
+    "search": "Search",
+    "searching": "Searching...",
+    "clear": "Clear Filters",
+    
+    "searchResults": "Search Results",
+    "type": "Type",
+    "issuedDate": "Issued Date",
+    "status": "Status",
+    "actions": "Actions",
+    "view": "View",
+    "download": "Download",
+    "archive": "Archive",
+    
+    "verifyCertificate": "Verify Certificate",
+    "certificateId": "Certificate ID",
+    "certificateIdPlaceholder": "Enter certificate ID to verify...",
+    "verifiedBy": "Verified By",
+    "verifierName": "Enter verifier name...",
+    "verify": "Verify Certificate",
+    
+    "statuses": {
+      "verified": "Verified",
+      "pending": "Pending",
+      "expired": "Expired"
+    },
+    
+    "messages": {
+      "generatingClassWide": "Generating certificates for all students...",
+      "downloadingClassWide": "Preparing ZIP download...",
+      "certificateGenerated": "Certificate generated successfully",
+      "certificateSaved": "Certificate saved to database",
+      "bulkSuccess": "Bulk certificates generated successfully",
+      "searchComplete": "Search completed successfully",
+      "verificationSuccess": "Certificate verified successfully",
+      "verificationFailed": "Certificate verification failed",
+      "archiveSuccess": "Certificate archived successfully",
+      "error": "An error occurred. Please try again."
+    }
   }
   ,
   "CERTIFICATION_STUDENT": {
@@ -414,6 +506,135 @@
         "studentsInClass": "Students in Class",
         "studentId": "Student ID"
     },
+    "curriculum": {
+    "title": "Curriculum Management",
+    "subtitle": "Manage and organize your school curricula efficiently",
+    
+    "stats": {
+      "total": "Total Curricula",
+      "showing": "Showing",
+      "students": "Students",
+      "teachers": "Teachers",
+      "grades": "Grades"
+    },
+    
+    "search": {
+      "placeholder": "Search curricula by name, code, or description...",
+      "clear": "Clear",
+      "noResults": "No matching curricula found",
+      "tryDifferent": "Try a different search term"
+    },
+    
+    "sort": {
+      "name": "Sort by Name",
+      "code": "Sort by Code"
+    },
+    
+    "actions": {
+      "addNew": "Add New Curriculum",
+      "refresh": "Refresh",
+      "createFirst": "Create Curriculum",
+      "viewDetails": "View Details",
+      "edit": "Edit",
+      "checkStudents": "Check Students",
+      "checkTeachers": "Check Teachers",
+      "delete": "Delete"
+    },
+    
+    "loading": "Loading curricula...",
+    
+    "empty": {
+      "title": "No Curricula Found",
+      "subtitle": "Get started by creating your first curriculum."
+    },
+    
+    "noDescription": "No description",
+    "created": "Created",
+    
+    "tabs": {
+      "code": "Code",
+      "name": "Name",
+      "description": "Description",
+      "actions": "Actions",
+      "grades": "Grades",
+      "students": "Students",
+      "teachers": "Teachers",
+      "studentName": "Name",
+      "email": "Email",
+      "class": "Class",
+      "status": "Status",
+      "classes": "classes",
+      "subjects": "subjects",
+      "empty": {
+        "grades": "No grades assigned to this curriculum",
+        "students": "No students enrolled in this curriculum",
+        "teachers": "No teachers specialized in this curriculum"
+      }
+    },
+    
+    "form": {
+      "name": {
+        "label": "Curriculum Name",
+        "placeholder": "Enter curriculum name",
+        "hint": "A descriptive name for the curriculum"
+      },
+      "code": {
+        "label": "Curriculum Code",
+        "placeholder": "e.g., MATH-101",
+        "hint": "Unique code for identification"
+      },
+      "description": {
+        "label": "Description",
+        "placeholder": "Enter curriculum description (optional)"
+      },
+      "errors": {
+        "required": "This field is required",
+        "maxLength": "Maximum length is {{max}} characters",
+        "characters": "characters"
+      }
+    },
+    
+    "modal": {
+      "create": {
+        "title": "Create New Curriculum",
+        "action": "Create Curriculum",
+        "creating": "Creating..."
+      },
+      "edit": {
+        "title": "Edit Curriculum",
+        "action": "Update Curriculum",
+        "updating": "Updating...",
+        "lastUpdated": "Last updated:",
+        "never": "Never"
+      },
+      "details": {
+        "title": "Curriculum Details",
+        "loading": "Loading details...",
+        "created": "Created",
+        "updated": "Last Updated"
+      },
+      "delete": {
+        "title": "Confirm Deletion",
+        "warning": "Warning! This action cannot be undone.",
+        "message": "Are you sure you want to delete the curriculum \"{{name}}\" ({{code}})?",
+        "has": "This curriculum has",
+        "action": "Delete Permanently",
+        "deleting": "Deleting..."
+      },
+      "cancel": "Cancel",
+      "close": "Close"
+    },
+    
+    "check": {
+      "studentsTitle": "Check Students",
+      "teachersTitle": "Check Teachers",
+      "hasStudents": "This curriculum has {{count}} student(s)",
+      "hasNoStudents": "No students enrolled in this curriculum",
+      "hasTeachers": "This curriculum has {{count}} teacher(s)",
+      "hasNoTeachers": "No teachers specialized in this curriculum"
+    }
+  }
+    ,
     "NAV": {
         "LOGO": "LOGO",
         "HOME": "Home",

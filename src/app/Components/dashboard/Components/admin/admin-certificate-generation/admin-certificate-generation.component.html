@@ -1,331 +1,444 @@
-<div class="container">
-  <div class="page-header">
-    <h2 class="hero-title">{{ 'certificate2.title' | translate }}</h2>
-    <p class="page-description text-muted">
-      {{ 'certificate2.subtitle' | translate }}
-    </p>
+<div class="certificate-container">
+  <!-- Header -->
+  <div class="certificate-header">
+    <div class="header-content">
+      <h1 class="hero-title">
+        <i class="fas fa-certificate me-3"></i>
+        {{ 'certificate2.title' | translate }}
+      </h1>
+      <p class="hero-subtitle">
+        {{ 'certificate2.subtitle' | translate }}
+      </p>
+      <div class="header-decoration">
+        <div class="decoration-line"></div>
+        <div class="decoration-dot"></div>
+        <div class="decoration-line"></div>
+      </div>
+    </div>
   </div>
 
   <!-- Tab Navigation -->
-  <div class="tab-navigation mb-4">
-    <button 
-      class="tab-btn" 
-      [class.active]="activeTab === 'generate'"
-      (click)="switchTab('generate')"
-    >
-      {{ 'certificate2.tabs.generate' | translate }}
-    </button>
-    <button 
-      class="tab-btn" 
-      [class.active]="activeTab === 'bulk'"
-      (click)="switchTab('bulk')"
-    >
-      {{ 'certificate2.tabs.bulk' | translate }}
-    </button>
-    <button 
-      class="tab-btn" 
-      [class.active]="activeTab === 'search'"
-      (click)="switchTab('search')"
-    >
-      {{ 'certificate2.tabs.search' | translate }}
-    </button>
+  <div class="tab-container">
+    <div class="tab-nav">
+      <button 
+        class="tab-button" 
+        [class.tab-active]="activeTab === 'generate'"
+        (click)="switchTab('generate')"
+      >
+        <i class="fas fa-magic me-2"></i>
+        {{ 'certificate2.tabs.generate' | translate }}
+      </button>
+      <button 
+        class="tab-button" 
+        [class.tab-active]="activeTab === 'bulk'"
+        (click)="switchTab('bulk')"
+      >
+        <i class="fas fa-layer-group me-2"></i>
+        {{ 'certificate2.tabs.bulk' | translate }}
+      </button>
+      <button 
+        class="tab-button" 
+        [class.tab-active]="activeTab === 'search'"
+        (click)="switchTab('search')"
+      >
+        <i class="fas fa-search me-2"></i>
+        {{ 'certificate2.tabs.search' | translate }}
+      </button>
+    </div>
+    <div class="tab-indicator" [style.transform]="getTabIndicatorPosition()"></div>
   </div>
 
-  <!-- MESSAGE -->
+  <!-- Message Alert -->
   <div 
     *ngIf="message" 
-    class="message fade-card"
-    [class.message-success]="messageType === 'success'"
-    [class.message-error]="messageType === 'error'"
+    class="alert-message"
+    [class.alert-success]="messageType === 'success'"
+    [class.alert-error]="messageType === 'error'"
   >
-    {{ message }}
+    <div class="alert-content">
+      <i class="fas" [class.fa-check-circle]="messageType === 'success'" [class.fa-exclamation-circle]="messageType === 'error'"></i>
+      <span>{{ message }}</span>
+    </div>
+    <button class="alert-close" (click)="message = ''">
+      <i class="fas fa-times"></i>
+    </button>
   </div>
 
   <!-- GENERATE TAB -->
-  <div *ngIf="activeTab === 'generate'" class="fade-in">
-    <!-- Selection Section -->
-    <div class="selection-grid">
-
-      <!-- FILTER BY CURRICULUM -->
-      <div class="card fade-card">
-        <label class="sub-title">{{ 'certificate2.filterByCurriculum' | translate }}</label>
-        <select 
-          [(ngModel)]="selectedCurriculumId"
-          (change)="onCurriculumChange()"
-          class="custom-select"
-        >
-          <option value="">{{ 'certificate2.allCurricula' | translate }}</option>
-          <option *ngFor="let curriculum of curricula" [value]="curriculum.id">
-            {{ curriculum.name }} ({{ curriculum.code }})
-          </option>
-        </select>
+  <div *ngIf="activeTab === 'generate'" class="tab-content fade-in">
+    <!-- Filter Section -->
+    <div class="filter-section glass-card">
+      <div class="section-header">
+        <h3 class="section-title">
+          <i class="fas fa-filter me-2"></i>
+          {{ 'certificate2.filterOptions' | translate }}
+        </h3>
+        <p class="section-subtitle">
+          {{ 'certificate2.filterDescription' | translate }}
+        </p>
       </div>
+      
+      <div class="filter-grid">
+        <!-- Curriculum Filter -->
+        <div class="filter-card">
+          <label class="filter-label">
+            <i class="fas fa-book me-2"></i>
+            {{ 'certificate2.filterByCurriculum' | translate }}
+          </label>
+          <div class="select-wrapper">
+            <select 
+              [(ngModel)]="selectedCurriculumId"
+              (change)="onCurriculumChange()"
+              class="modern-select"
+            >
+              <option value="">{{ 'certificate2.allCurricula' | translate }}</option>
+              <option *ngFor="let curriculum of curricula" [value]="curriculum.id">
+                {{ curriculum.name }} ({{ curriculum.code }})
+              </option>
+            </select>
+            <i class="fas fa-chevron-down select-icon"></i>
+          </div>
+        </div>
 
-      <!-- FILTER BY GRADE -->
-      <div class="card fade-card">
-        <label class="sub-title">{{ 'certificate2.filterByGrade' | translate }}</label>
-        <select 
-          [(ngModel)]="selectedGradeId"
-          (change)="onGradeChange()"
-          class="custom-select"
-        >
-          <option value="">{{ 'certificate2.allGrades' | translate }}</option>
-          <option *ngFor="let grade of grades" [value]="grade.id">
-            {{ grade.gradeName }} 
-            <span *ngIf="grade.curriculumName">({{ grade.curriculumName }})</span>
-          </option>
-        </select>
+        <!-- Grade Filter -->
+        <div class="filter-card">
+          <label class="filter-label">
+            <i class="fas fa-graduation-cap me-2"></i>
+            {{ 'certificate2.filterByGrade' | translate }}
+          </label>
+          <div class="select-wrapper">
+            <select 
+              [(ngModel)]="selectedGradeId"
+              (change)="onGradeChange()"
+              class="modern-select"
+            >
+              <option value="">{{ 'certificate2.allGrades' | translate }}</option>
+              <option *ngFor="let grade of grades" [value]="grade.id">
+                {{ grade.gradeName }} 
+                <span *ngIf="grade.curriculumName">({{ grade.curriculumName }})</span>
+              </option>
+            </select>
+            <i class="fas fa-chevron-down select-icon"></i>
+          </div>
+        </div>
+
+        <!-- Class Selection -->
+        <div class="filter-card">
+          <label class="filter-label">
+            <i class="fas fa-users me-2"></i>
+            {{ 'certificate2.selectClass' | translate }}
+          </label>
+          <div class="select-wrapper">
+            <select 
+              [(ngModel)]="selectedClassId" 
+              (change)="onClassChange()"
+              class="modern-select"
+              [disabled]="filteredClasses.length === 0"
+            >
+              <option value="">{{ filteredClasses.length === 0 ? ('certificate2.noClassesAvailable' | translate) : ('certificate2.classPlaceholder' | translate) }}</option>
+              <option *ngFor="let class of filteredClasses" [value]="class.id">
+                {{ class.className }} - {{ class.gradeName }}
+              </option>
+            </select>
+            <i class="fas fa-chevron-down select-icon"></i>
+          </div>
+          <div *ngIf="filteredClasses.length === 0" class="filter-hint">
+            <i class="fas fa-info-circle me-2"></i>
+            {{ 'certificate2.noClassesForFilters' | translate }}
+          </div>
+        </div>
       </div>
-
-      <!-- CLASS -->
-      <div class="card fade-card">
-        <label class="sub-title">{{ 'certificate2.selectClass' | translate }}</label>
-        <select 
-          [(ngModel)]="selectedClassId" 
-          (change)="onClassChange()"
-          class="custom-select"
-          [disabled]="filteredClasses.length === 0"
-        >
-          <option value="">{{ filteredClasses.length === 0 ? ('certificate2.noClassesAvailable' | translate) : ('certificate2.classPlaceholder' | translate) }}</option>
-          <option *ngFor="let class of filteredClasses" [value]="class.id">
-            {{ class.className }} - {{ class.gradeName }}
-          </option>
-        </select>
-        <small *ngIf="filteredClasses.length === 0" class="text-muted">
-          {{ 'certificate2.noClassesForFilters' | translate }}
-        </small>
-      </div>
-
-      <!-- CLASS-WIDE CERTIFICATE SETTINGS -->
-      <div class="card fade-card" *ngIf="selectedClassId">
-        <label class="sub-title">{{ 'certificate2.classWideCertificateType' | translate }}</label>
-        <select 
-          [(ngModel)]="classWideDegreeType"
-          class="custom-select"
-        >
-          <option *ngFor="let type of degreeTypes" [value]="type">
-            {{ type }}
-          </option>
-        </select>
-      </div>
-
-      <!-- CLASS-WIDE ACADEMIC YEAR -->
-      <div class="card fade-card" *ngIf="selectedClassId">
-        <label class="sub-title">{{ 'certificate2.classWideAcademicYear' | translate }}</label>
-        <select 
-          [(ngModel)]="classWideAcademicYear"
-          class="custom-select"
-        >
-          <option *ngFor="let year of academicYears" [value]="year">
-            {{ year }}
-          </option>
-        </select>
-      </div>
-
     </div>
 
-    <!-- CLASS-WIDE ACTION BUTTONS -->
-    <div class="button-row fade-card" *ngIf="selectedClassId">
-      <div class="class-wide-header mb-3">
-        <h4 class="main-title">
+    <!-- Class-wide Operations -->
+    <div *ngIf="selectedClassId" class="operations-section glass-card">
+      <div class="section-header">
+        <h3 class="section-title">
+          <i class="fas fa-users-cog me-2"></i>
           {{ 'certificate2.classWideOperations' | translate }}
-          <span class="badge bg-info ms-2">
+          <span class="badge pulse-badge">
             {{ getStudentCount() }} {{ 'certificate2.students' | translate }}
           </span>
-        </h4>
-        <p class="text-muted">
+        </h3>
+        <p class="section-subtitle">
           {{ 'certificate2.classWideDescription' | translate }}
         </p>
       </div>
 
-      <div class="button-group">
+      <div class="settings-grid">
+        <div class="setting-card">
+          <label class="setting-label">
+            <i class="fas fa-certificate me-2"></i>
+            {{ 'certificate2.classWideCertificateType' | translate }}
+          </label>
+          <div class="select-wrapper">
+            <select [(ngModel)]="classWideDegreeType" class="modern-select">
+              <option *ngFor="let type of degreeTypes" [value]="type">
+                {{ type }}
+              </option>
+            </select>
+            <i class="fas fa-chevron-down select-icon"></i>
+          </div>
+        </div>
+
+        <div class="setting-card">
+          <label class="setting-label">
+            <i class="fas fa-calendar-alt me-2"></i>
+            {{ 'certificate2.classWideAcademicYear' | translate }}
+          </label>
+          <div class="select-wrapper">
+            <select [(ngModel)]="classWideAcademicYear" class="modern-select">
+              <option *ngFor="let year of academicYears" [value]="year">
+                {{ year }}
+              </option>
+            </select>
+            <i class="fas fa-chevron-down select-icon"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-buttons">
         <button 
           (click)="generateClassWideCertificates()"
-          [disabled]="isGeneratingClassWide || !selectedClassId"
-          class="primary-btn action-btn"
+          [disabled]="isGeneratingClassWide"
+          class="btn-primary btn-icon"
         >
+          <i class="fas" [class.fa-spinner]="isGeneratingClassWide" [class.fa-file-pdf]="!isGeneratingClassWide"></i>
           {{ isGeneratingClassWide ? ('certificate2.generatingClassWide' | translate) : ('certificate2.generateClassWide' | translate) }}
         </button>
 
         <button 
           (click)="downloadClassWideCertificates()"
-          [disabled]="isDownloadingClassWide || !selectedClassId"
-          class="primary-btn action-btn blue-btn"
+          [disabled]="isDownloadingClassWide"
+          class="btn-secondary btn-icon"
         >
+          <i class="fas" [class.fa-spinner]="isDownloadingClassWide" [class.fa-download]="!isDownloadingClassWide"></i>
           {{ isDownloadingClassWide ? ('certificate2.downloadingClassWide' | translate) : ('certificate2.downloadClassWide' | translate) }}
         </button>
       </div>
     </div>
 
-    <!-- SINGLE STUDENT SECTION -->
-    <div *ngIf="selectedClassId" class="single-student-section fade-card mt-4">
-      <h4 class="main-title">{{ 'certificate2.singleStudentOperations' | translate }}</h4>
-      
-      <div class="selection-grid">
-        <!-- STUDENT SEARCH -->
-        <div class="card fade-card" *ngIf="students.length > 0">
-          <label class="sub-title">{{ 'certificate2.searchStudent' | translate }}</label>
+    <!-- Individual Student Section -->
+    <div *ngIf="selectedClassId" class="student-section glass-card">
+      <div class="section-header">
+        <h3 class="section-title">
+          <i class="fas fa-user-graduate me-2"></i>
+          {{ 'certificate2.singleStudentOperations' | translate }}
+        </h3>
+      </div>
+
+      <!-- Student Search and Selection -->
+      <div class="student-search" *ngIf="students.length > 0">
+        <div class="search-container">
+          <i class="fas fa-search search-icon"></i>
           <input 
             type="text"
             [(ngModel)]="searchFilters.studentName"
             (input)="searchStudents()"
-            class="custom-select"
+            class="search-input"
             placeholder="{{ 'certificate2.searchStudentPlaceholder' | translate }}"
           >
         </div>
 
-        <!-- STUDENT SELECTION -->
-        <div class="card fade-card" *ngIf="filteredStudents.length > 0">
-          <label class="sub-title">{{ 'certificate2.selectStudent' | translate }}</label>
-          <select 
-            [(ngModel)]="selectedStudentId"
-            class="custom-select"
-          >
-            <option value="">{{ 'certificate2.studentPlaceholder' | translate }}</option>
-            <option *ngFor="let student of filteredStudents" [value]="student.id">
-              {{ student.fullName }}
-            </option>
-          </select>
-        </div>
-
-        <!-- SINGLE CERTIFICATE TYPE -->
-        <div class="card fade-card" *ngIf="selectedStudentId">
-          <label class="sub-title">{{ 'certificate2.certificateType' | translate }}</label>
-          <select 
-            [(ngModel)]="selectedDegreeType"
-            class="custom-select"
-          >
-            <option *ngFor="let type of degreeTypes" [value]="type">
-              {{ type }}
-            </option>
-          </select>
-        </div>
-
-        <!-- SINGLE ACADEMIC YEAR -->
-        <div class="card fade-card" *ngIf="selectedStudentId">
-          <label class="sub-title">{{ 'certificate2.academicYear' | translate }}</label>
-          <select 
-            [(ngModel)]="selectedAcademicYear"
-            class="custom-select"
-          >
-            <option *ngFor="let year of academicYears" [value]="year">
-              {{ year }}
-            </option>
-          </select>
+        <div *ngIf="filteredStudents.length > 0" class="student-select">
+          <label class="select-label">
+            <i class="fas fa-user me-2"></i>
+            {{ 'certificate2.selectStudent' | translate }}
+          </label>
+          <div class="select-wrapper">
+            <select [(ngModel)]="selectedStudentId" class="modern-select">
+              <option value="">{{ 'certificate2.studentPlaceholder' | translate }}</option>
+              <option *ngFor="let student of filteredStudents" [value]="student.id">
+                {{ student.fullName }}
+              </option>
+            </select>
+            <i class="fas fa-chevron-down select-icon"></i>
+          </div>
         </div>
       </div>
 
-      <!-- SINGLE STUDENT ACTION BUTTONS -->
-      <div class="button-row mt-4" *ngIf="selectedStudentId && selectedDegreeType">
-        <button 
-          (click)="generateCertificate(false)"
-          [disabled]="isGenerating"
-          class="primary-btn action-btn"
-        >
-          {{ isGenerating ? ('certificate2.generating' | translate) : ('certificate2.generatePdf' | translate) }}
-        </button>
+      <!-- Student Settings -->
+      <div *ngIf="selectedStudentId" class="student-settings">
+        <div class="settings-grid">
+          <div class="setting-card">
+            <label class="setting-label">
+              <i class="fas fa-certificate me-2"></i>
+              {{ 'certificate2.certificateType' | translate }}
+            </label>
+            <div class="select-wrapper">
+              <select [(ngModel)]="selectedDegreeType" class="modern-select">
+                <option *ngFor="let type of degreeTypes" [value]="type">
+                  {{ type }}
+                </option>
+              </select>
+              <i class="fas fa-chevron-down select-icon"></i>
+            </div>
+          </div>
 
-        <button 
-          (click)="generateCertificate(true)"
-          [disabled]="isGenerating"
-          class="primary-btn action-btn green-btn"
-        >
-          {{ isGenerating ? ('certificate2.saving' | translate) : ('certificate2.generateAndSave' | translate) }}
-        </button>
+          <div class="setting-card">
+            <label class="setting-label">
+              <i class="fas fa-calendar-alt me-2"></i>
+              {{ 'certificate2.academicYear' | translate }}
+            </label>
+            <div class="select-wrapper">
+              <select [(ngModel)]="selectedAcademicYear" class="modern-select">
+                <option *ngFor="let year of academicYears" [value]="year">
+                  {{ year }}
+                </option>
+              </select>
+              <i class="fas fa-chevron-down select-icon"></i>
+            </div>
+          </div>
+        </div>
 
-        <button 
-          (click)="saveToDatabase()"
-          [disabled]="isSaving"
-          class="danger-btn action-btn purple-btn"
-        >
-          {{ isSaving ? ('certificate2.saving' | translate) : ('certificate2.saveOnly' | translate) }}
-        </button>
+        <!-- Student Actions -->
+        <div class="action-buttons">
+          <button 
+            (click)="generateCertificate(false)"
+            [disabled]="isGenerating"
+            class="btn-primary btn-icon"
+          >
+            <i class="fas" [class.fa-spinner]="isGenerating" [class.fa-eye]="!isGenerating"></i>
+            {{ isGenerating ? ('certificate2.generating' | translate) : ('certificate2.generatePdf' | translate) }}
+          </button>
+
+          <button 
+            (click)="generateCertificate(true)"
+            [disabled]="isGenerating"
+            class="btn-success btn-icon"
+          >
+            <i class="fas" [class.fa-spinner]="isGenerating" [class.fa-save]="!isGenerating"></i>
+            {{ isGenerating ? ('certificate2.saving' | translate) : ('certificate2.generateAndSave' | translate) }}
+          </button>
+
+          <button 
+            (click)="saveToDatabase()"
+            [disabled]="isSaving"
+            class="btn-accent btn-icon"
+          >
+            <i class="fas" [class.fa-spinner]="isSaving" [class.fa-database]="!isSaving"></i>
+            {{ isSaving ? ('certificate2.saving' | translate) : ('certificate2.saveOnly' | translate) }}
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- STUDENTS GRID -->
-    <div *ngIf="students.length > 0" class="students-section fade-card mt-4">
-      
-      <h3 class="main-title">{{ 'certificate2.studentsInClass' | translate }} ({{ students.length }})</h3>
+    <!-- Student Grid -->
+    <div *ngIf="students.length > 0" class="student-grid-section glass-card">
+      <div class="section-header">
+        <h3 class="section-title">
+          <i class="fas fa-user-friends me-2"></i>
+          {{ 'certificate2.studentsInClass' | translate }}
+          <span class="badge">{{ students.length }}</span>
+        </h3>
+      </div>
 
-      <div class="students-grid">
+      <div class="student-grid">
         <div 
           *ngFor="let student of filteredStudents"
           class="student-card"
-          [class.student-selected]="selectedStudentId === student.id"
+          [class.student-card-active]="selectedStudentId === student.id"
           (click)="selectStudent(student)"
         >
-          <h4>{{ student.fullName }}</h4>
-          <p class="text-muted">{{ 'certificate2.studentId' | translate }}: {{ student.id }}</p>
-          <small class="text-muted">{{ student.email }}</small>
+          <div class="student-avatar">
+            {{ student.fullName.charAt(0) }}
+          </div>
+          <div class="student-info">
+            <h4 class="student-name">{{ student.fullName }}</h4>
+            <p class="student-id">
+              <i class="fas fa-id-card me-1"></i>
+              {{ student.id }}
+            </p>
+            <p class="student-email">
+              <i class="fas fa-envelope me-1"></i>
+              {{ student.email }}
+            </p>
+          </div>
+          <div class="student-status" *ngIf="selectedStudentId === student.id">
+            <i class="fas fa-check-circle"></i>
+          </div>
         </div>
       </div>
-
     </div>
   </div>
 
   <!-- BULK TAB -->
-  <div *ngIf="activeTab === 'bulk'" class="fade-in">
-    <div class="bulk-section fade-card">
-      <h3 class="main-title">{{ 'certificate2.bulkGeneration' | translate }}</h3>
-      
-      <div class="selection-grid">
-        <!-- BULK CLASS -->
-        <div class="card fade-card">
-          <label class="sub-title">{{ 'certificate2.selectClass' | translate }}</label>
-          <select 
-            [(ngModel)]="bulkClassId"
-            class="custom-select"
-          >
-            <option value="">{{ 'certificate2.classPlaceholder' | translate }}</option>
-            <option *ngFor="let class of getBulkFilteredClasses()" [value]="class.id">
-              {{ class.className }} - {{ class.gradeName }}
-            </option>
-          </select>
+  <div *ngIf="activeTab === 'bulk'" class="tab-content fade-in">
+    <div class="bulk-section glass-card">
+      <div class="section-header">
+        <h3 class="section-title">
+          <i class="fas fa-layer-group me-2"></i>
+          {{ 'certificate2.bulkGeneration' | translate }}
+        </h3>
+        <p class="section-subtitle">
+          {{ 'certificate2.bulkDescription' | translate }}
+        </p>
+      </div>
+
+      <div class="settings-grid">
+        <div class="setting-card">
+          <label class="setting-label">
+            <i class="fas fa-users me-2"></i>
+            {{ 'certificate2.selectClass' | translate }}
+          </label>
+          <div class="select-wrapper">
+            <select [(ngModel)]="bulkClassId" class="modern-select">
+              <option value="">{{ 'certificate2.classPlaceholder' | translate }}</option>
+              <option *ngFor="let class of getBulkFilteredClasses()" [value]="class.id">
+                {{ class.className }} - {{ class.gradeName }}
+              </option>
+            </select>
+            <i class="fas fa-chevron-down select-icon"></i>
+          </div>
         </div>
 
-        <!-- BULK CERTIFICATE TYPE -->
-        <div class="card fade-card">
-          <label class="sub-title">{{ 'certificate2.certificateType' | translate }}</label>
-          <select 
-            [(ngModel)]="bulkDegreeType"
-            class="custom-select"
-          >
-            <option *ngFor="let type of degreeTypes" [value]="type">
-              {{ type }}
-            </option>
-          </select>
+        <div class="setting-card">
+          <label class="setting-label">
+            <i class="fas fa-certificate me-2"></i>
+            {{ 'certificate2.certificateType' | translate }}
+          </label>
+          <div class="select-wrapper">
+            <select [(ngModel)]="bulkDegreeType" class="modern-select">
+              <option *ngFor="let type of degreeTypes" [value]="type">
+                {{ type }}
+              </option>
+            </select>
+            <i class="fas fa-chevron-down select-icon"></i>
+          </div>
         </div>
 
-        <!-- BULK ACADEMIC YEAR -->
-        <div class="card fade-card">
-          <label class="sub-title">{{ 'certificate2.academicYear' | translate }}</label>
-          <select 
-            [(ngModel)]="bulkAcademicYear"
-            class="custom-select"
-          >
-            <option *ngFor="let year of academicYears" [value]="year">
-              {{ year }}
-            </option>
-          </select>
+        <div class="setting-card">
+          <label class="setting-label">
+            <i class="fas fa-calendar-alt me-2"></i>
+            {{ 'certificate2.academicYear' | translate }}
+          </label>
+          <div class="select-wrapper">
+            <select [(ngModel)]="bulkAcademicYear" class="modern-select">
+              <option *ngFor="let year of academicYears" [value]="year">
+                {{ year }}
+              </option>
+            </select>
+            <i class="fas fa-chevron-down select-icon"></i>
+          </div>
         </div>
       </div>
 
-      <!-- BULK ACTION BUTTONS -->
-      <div class="button-row mt-4">
+      <div class="action-buttons">
         <button 
           (click)="bulkGenerateCertificates()"
           [disabled]="isBulkGenerating || !bulkClassId"
-          class="primary-btn action-btn"
+          class="btn-primary btn-icon"
         >
+          <i class="fas" [class.fa-spinner]="isBulkGenerating" [class.fa-bolt]="!isBulkGenerating"></i>
           {{ isBulkGenerating ? ('certificate2.bulkGenerating' | translate) : ('certificate2.bulkGenerate' | translate) }}
         </button>
 
         <button 
           (click)="downloadBulkCertificates()"
           [disabled]="isDownloadingBulk || !bulkClassId"
-          class="primary-btn action-btn blue-btn"
+          class="btn-secondary btn-icon"
         >
+          <i class="fas" [class.fa-spinner]="isDownloadingBulk" [class.fa-file-archive]="!isDownloadingBulk"></i>
           {{ isDownloadingBulk ? ('certificate2.downloading' | translate) : ('certificate2.downloadBulk' | translate) }}
         </button>
       </div>
@@ -333,130 +446,171 @@
   </div>
 
   <!-- SEARCH TAB -->
-  <div *ngIf="activeTab === 'search'" class="fade-in">
-    <div class="search-section fade-card">
-      <h3 class="main-title">{{ 'certificate2.searchCertificates' | translate }}</h3>
-      
-      <!-- SEARCH FILTERS -->
-      <div class="selection-grid">
-        <div class="card fade-card">
-          <label class="sub-title">{{ 'certificate2.studentName' | translate }}</label>
-          <input 
-            type="text"
-            [(ngModel)]="searchFilters.studentName"
-            class="custom-select"
-            placeholder="{{ 'certificate2.studentNamePlaceholder' | translate }}"
-          >
+  <div *ngIf="activeTab === 'search'" class="tab-content fade-in">
+    <div class="search-section glass-card">
+      <div class="section-header">
+        <h3 class="section-title">
+          <i class="fas fa-search me-2"></i>
+          {{ 'certificate2.searchCertificates' | translate }}
+        </h3>
+      </div>
+
+      <!-- Search Filters -->
+      <div class="search-filters">
+        <div class="filter-grid">
+          <div class="filter-card">
+            <label class="filter-label">
+              <i class="fas fa-user me-2"></i>
+              {{ 'certificate2.studentName' | translate }}
+            </label>
+            <input 
+              type="text"
+              [(ngModel)]="searchFilters.studentName"
+              class="modern-input"
+              placeholder="{{ 'certificate2.studentNamePlaceholder' | translate }}"
+            >
+          </div>
+
+          <div class="filter-card">
+            <label class="filter-label">
+              <i class="fas fa-hashtag me-2"></i>
+              {{ 'certificate2.certificateNumber' | translate }}
+            </label>
+            <input 
+              type="text"
+              [(ngModel)]="searchFilters.certificateNumber"
+              class="modern-input"
+              placeholder="{{ 'certificate2.certificateNumberPlaceholder' | translate }}"
+            >
+          </div>
+
+          <div class="filter-card">
+            <label class="filter-label">
+              <i class="fas fa-certificate me-2"></i>
+              {{ 'certificate2.certificateType' | translate }}
+            </label>
+            <div class="select-wrapper">
+              <select [(ngModel)]="searchFilters.degreeType" class="modern-select">
+                <option value="">{{ 'certificate2.allTypes' | translate }}</option>
+                <option *ngFor="let type of degreeTypes" [value]="type">
+                  {{ type }}
+                </option>
+              </select>
+              <i class="fas fa-chevron-down select-icon"></i>
+            </div>
+          </div>
+
+          <div class="filter-card">
+            <label class="filter-label">
+              <i class="fas fa-calendar-alt me-2"></i>
+              {{ 'certificate2.academicYear' | translate }}
+            </label>
+            <div class="select-wrapper">
+              <select [(ngModel)]="searchFilters.academicYear" class="modern-select">
+                <option value="">{{ 'certificate2.allYears' | translate }}</option>
+                <option *ngFor="let year of academicYears" [value]="year">
+                  {{ year }}
+                </option>
+              </select>
+              <i class="fas fa-chevron-down select-icon"></i>
+            </div>
+          </div>
+
+          <div class="filter-card">
+            <label class="filter-label">
+              <i class="fas fa-calendar-day me-2"></i>
+              {{ 'certificate2.fromDate' | translate }}
+            </label>
+            <input 
+              type="date"
+              [(ngModel)]="searchFilters.fromDate"
+              class="modern-input"
+            >
+          </div>
+
+          <div class="filter-card">
+            <label class="filter-label">
+              <i class="fas fa-calendar-day me-2"></i>
+              {{ 'certificate2.toDate' | translate }}
+            </label>
+            <input 
+              type="date"
+              [(ngModel)]="searchFilters.toDate"
+              class="modern-input"
+            >
+          </div>
         </div>
 
-        <div class="card fade-card">
-          <label class="sub-title">{{ 'certificate2.certificateNumber' | translate }}</label>
-          <input 
-            type="text"
-            [(ngModel)]="searchFilters.certificateNumber"
-            class="custom-select"
-            placeholder="{{ 'certificate2.certificateNumberPlaceholder' | translate }}"
+        <!-- Search Actions -->
+        <div class="action-buttons">
+          <button 
+            (click)="searchCertificates()"
+            [disabled]="isSearching"
+            class="btn-primary btn-icon"
           >
-        </div>
-
-        <div class="card fade-card">
-          <label class="sub-title">{{ 'certificate2.certificateType' | translate }}</label>
-          <select 
-            [(ngModel)]="searchFilters.degreeType"
-            class="custom-select"
+            <i class="fas" [class.fa-spinner]="isSearching" [class.fa-search]="!isSearching"></i>
+            {{ isSearching ? ('certificate2.searching' | translate) : ('certificate2.search' | translate) }}
+          </button>
+          <button 
+            (click)="clearSearch()"
+            class="btn-outline btn-icon"
           >
-            <option value="">{{ 'certificate2.allTypes' | translate }}</option>
-            <option *ngFor="let type of degreeTypes" [value]="type">
-              {{ type }}
-            </option>
-          </select>
-        </div>
-
-        <div class="card fade-card">
-          <label class="sub-title">{{ 'certificate2.academicYear' | translate }}</label>
-          <select 
-            [(ngModel)]="searchFilters.academicYear"
-            class="custom-select"
-          >
-            <option value="">{{ 'certificate2.allYears' | translate }}</option>
-            <option *ngFor="let year of academicYears" [value]="year">
-              {{ year }}
-            </option>
-          </select>
-        </div>
-
-        <div class="card fade-card">
-          <label class="sub-title">{{ 'certificate2.fromDate' | translate }}</label>
-          <input 
-            type="date"
-            [(ngModel)]="searchFilters.fromDate"
-            class="custom-select"
-          >
-        </div>
-
-        <div class="card fade-card">
-          <label class="sub-title">{{ 'certificate2.toDate' | translate }}</label>
-          <input 
-            type="date"
-            [(ngModel)]="searchFilters.toDate"
-            class="custom-select"
-          >
+            <i class="fas fa-eraser me-2"></i>
+            {{ 'certificate2.clear' | translate }}
+          </button>
         </div>
       </div>
 
-      <!-- SEARCH ACTIONS -->
-      <div class="button-row mt-4">
-        <button 
-          (click)="searchCertificates()"
-          [disabled]="isSearching"
-          class="primary-btn action-btn"
-        >
-          {{ isSearching ? ('certificate2.searching' | translate) : ('certificate2.search' | translate) }}
-        </button>
-        <button 
-          (click)="clearSearch()"
-          class="secondary-btn action-btn"
-        >
-          {{ 'certificate2.clear' | translate }}
-        </button>
-      </div>
+      <!-- Search Results -->
+      <div *ngIf="certificates.length > 0" class="results-section">
+        <div class="results-header">
+          <h4 class="results-title">
+            <i class="fas fa-list me-2"></i>
+            {{ 'certificate2.searchResults' | translate }}
+            <span class="results-count">{{ certificates.length }}</span>
+          </h4>
+        </div>
 
-      <!-- SEARCH RESULTS -->
-      <div *ngIf="certificates.length > 0" class="mt-4">
-        <h4>{{ 'certificate2.searchResults' | translate }} ({{ certificates.length }})</h4>
-        <div class="table-responsive">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>{{ 'certificate2.certificateNumber' | translate }}</th>
-                <th>{{ 'certificate2.studentName' | translate }}</th>
-                <th>{{ 'certificate2.type' | translate }}</th>
-                <th>{{ 'certificate2.issuedDate' | translate }}</th>
-                <th>{{ 'certificate2.status' | translate }}</th>
-                <th>{{ 'certificate2.actions' | translate }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let cert of certificates">
-                <td>{{ cert.certificateNumber }}</td>
-                <td>{{ cert.studentName || 'N/A' }}</td>
-                <td>{{ cert.degreeType }}</td>
-                <td>{{ cert.issuedDate | date:'mediumDate' }}</td>
-                <td>
-                  <span [class]="'badge ' + getVerificationClass(cert)">
-                    {{ getVerificationStatus(cert) }}
-                  </span>
-                </td>
-                <td>
+        <div class="certificates-table">
+          <div class="table-header">
+            <div class="table-cell">{{ 'certificate2.certificateNumber' | translate }}</div>
+            <div class="table-cell">{{ 'certificate2.studentName' | translate }}</div>
+            <div class="table-cell">{{ 'certificate2.type' | translate }}</div>
+            <div class="table-cell">{{ 'certificate2.issuedDate' | translate }}</div>
+            <div class="table-cell">{{ 'certificate2.status' | translate }}</div>
+            <div class="table-cell">{{ 'certificate2.actions' | translate }}</div>
+          </div>
+
+          <div class="table-body">
+            <div *ngFor="let cert of certificates" class="table-row">
+              <div class="table-cell">
+                <span class="cert-number">{{ cert.certificateNumber }}</span>
+              </div>
+              <div class="table-cell">
+                <span class="student-name">{{ cert.studentName || 'N/A' }}</span>
+              </div>
+              <div class="table-cell">
+                <span class="cert-type">{{ cert.degreeType }}</span>
+              </div>
+              <div class="table-cell">
+                <span class="issue-date">{{ cert.issuedDate | date:'mediumDate' }}</span>
+              </div>
+              <div class="table-cell">
+                <span [class]="'status-badge ' + getVerificationClass(cert)">
+                  {{ getVerificationStatus(cert) }}
+                </span>
+              </div>
+              <div class="table-cell">
+                <div class="action-buttons">
                   <button 
-                    class="btn btn-sm btn-info me-1"
+                    class="btn-icon-small btn-info"
                     (click)="viewCertificate(cert)"
                     title="{{ 'certificate2.view' | translate }}"
                   >
                     <i class="fas fa-eye"></i>
                   </button>
                   <button 
-                    class="btn btn-sm btn-success me-1"
+                    class="btn-icon-small btn-success"
                     (click)="downloadCertificate(cert)"
                     title="{{ 'certificate2.download' | translate }}"
                   >
@@ -464,53 +618,69 @@
                   </button>
                   <button 
                     *ngIf="!cert.archived"
-                    class="btn btn-sm btn-warning"
+                    class="btn-icon-small btn-warning"
                     (click)="archiveCertificate(cert.id)"
                     title="{{ 'certificate2.archive' | translate }}"
                   >
                     <i class="fas fa-archive"></i>
                   </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- VERIFICATION SECTION -->
-    <div class="verification-section fade-card mt-4">
-      <h4 class="main-title">{{ 'certificate2.verifyCertificate' | translate }}</h4>
-      <div class="selection-grid">
-        <div class="card fade-card">
-          <label class="sub-title">{{ 'certificate2.certificateId' | translate }}</label>
-          <input 
-            type="text"
-            [(ngModel)]="verifyCertificateId"
-            class="custom-select"
-            placeholder="{{ 'certificate2.certificateIdPlaceholder' | translate }}"
-          >
-        </div>
-        <div class="card fade-card">
-          <label class="sub-title">{{ 'certificate2.verifiedBy' | translate }}</label>
-          <input 
-            type="text"
-            [(ngModel)]="verifyBy"
-            class="custom-select"
-            placeholder="{{ 'certificate2.verifierName' | translate }}"
-          >
-        </div>
-        <div class="card fade-card">
-          <button 
-            (click)="verifyCertificate()"
-            [disabled]="!verifyCertificateId || !verifyBy"
-            class="primary-btn mt-3"
-          >
-            {{ 'certificate2.verify' | translate }}
-          </button>
+    <!-- Verification Section -->
+    <div class="verification-section glass-card">
+      <div class="section-header">
+        <h4 class="section-title">
+          <i class="fas fa-shield-alt me-2"></i>
+          {{ 'certificate2.verifyCertificate' | translate }}
+        </h4>
+      </div>
+
+      <div class="verification-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-fingerprint me-2"></i>
+              {{ 'certificate2.certificateId' | translate }}
+            </label>
+            <input 
+              type="text"
+              [(ngModel)]="verifyCertificateId"
+              class="modern-input"
+              placeholder="{{ 'certificate2.certificateIdPlaceholder' | translate }}"
+            >
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-user-check me-2"></i>
+              {{ 'certificate2.verifiedBy' | translate }}
+            </label>
+            <input 
+              type="text"
+              [(ngModel)]="verifyBy"
+              class="modern-input"
+              placeholder="{{ 'certificate2.verifierName' | translate }}"
+            >
+          </div>
+
+          <div class="form-group">
+            <button 
+              (click)="verifyCertificate()"
+              [disabled]="!verifyCertificateId || !verifyBy"
+              class="btn-accent btn-icon"
+            >
+              <i class="fas fa-shield-check me-2"></i>
+              {{ 'certificate2.verify' | translate }}
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
 </div>

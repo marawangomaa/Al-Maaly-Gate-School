@@ -370,6 +370,113 @@
             "NO_CLASSES": "لا توجد حصص مجدولة حالياً."
         }
     },
+    "certificate2": {
+    "title": "إدارة الشهادات",
+    "subtitle": "قم بإنشاء وإدارة والتحقق من الشهادات الأكاديمية بسهولة",
+    
+    "tabs": {
+      "generate": "إنشاء شهادة",
+      "bulk": "عمليات جماعية",
+      "search": "بحث وتحقق"
+    },
+    
+    "filterOptions": "خيارات التصفية",
+    "filterDescription": "قم بتصفية الطلاب حسب المنهج والصف والفصل لإنشاء الشهادات",
+    "filterByCurriculum": "تصفية حسب المنهج",
+    "filterByGrade": "تصفية حسب الصف",
+    "selectClass": "اختر الفصل",
+    "allCurricula": "جميع المناهج",
+    "allGrades": "جميع الصفوف",
+    "classPlaceholder": "اختر فصلاً...",
+    "studentPlaceholder": "اختر طالباً...",
+    "noClassesAvailable": "لا توجد فصول متاحة",
+    "noClassesForFilters": "لا توجد فصول تطابق عوامل التصفية. يرجى تعديل اختيارك.",
+    
+    "classWideOperations": "عمليات على مستوى الفصل",
+    "classWideDescription": "تطبيق إعدادات الشهادات على جميع الطلاب في الفصل المحدد",
+    "classWideCertificateType": "نوع الشهادة (جميع الطلاب)",
+    "classWideAcademicYear": "السنة الأكاديمية (جميع الطلاب)",
+    "students": "طالب",
+    "student": "طالب",
+    
+    "classWideActions": {
+      "generate": "إنشاء جميع الشهادات",
+      "download": "تحميل الكل كمضغوط",
+      "generating": "جاري إنشاء الشهادات...",
+      "downloading": "جاري تحضير الملف المضغوط..."
+    },
+    
+    "singleStudentOperations": "عمليات طالب واحد",
+    "searchStudent": "بحث عن طالب",
+    "searchStudentPlaceholder": "اكتب اسم الطالب...",
+    
+    "generatePdf": "إنشاء PDF",
+    "generateAndSave": "إنشاء وحفظ",
+    "saveOnly": "حفظ في قاعدة البيانات فقط",
+    "generating": "جاري الإنشاء...",
+    "saving": "جاري الحفظ...",
+    
+    "studentsInClass": "الطلاب في الفصل",
+    "studentId": "رقم الطالب",
+    
+    "bulkGeneration": "إنشاء شهادات جماعي",
+    "bulkDescription": "إنشاء شهادات لفصل كامل في وقت واحد",
+    "bulkGenerate": "إنشاء شهادات جماعية",
+    "bulkGenerating": "جاري إنشاء الشهادات الجماعية...",
+    "downloadBulk": "تحميل كمضغوط",
+    "downloading": "جاري تحضير التحميل...",
+    
+    "searchCertificates": "بحث في الشهادات",
+    "studentName": "اسم الطالب",
+    "studentNamePlaceholder": "أدخل اسم الطالب...",
+    "certificateNumber": "رقم الشهادة",
+    "certificateNumberPlaceholder": "أدخل رقم الشهادة...",
+    "certificateType": "نوع الشهادة",
+    "allTypes": "جميع الأنواع",
+    "academicYear": "السنة الأكاديمية",
+    "allYears": "جميع السنوات",
+    "fromDate": "من تاريخ",
+    "toDate": "إلى تاريخ",
+    "search": "بحث",
+    "searching": "جاري البحث...",
+    "clear": "مسح الفلاتر",
+    
+    "searchResults": "نتائج البحث",
+    "type": "النوع",
+    "issuedDate": "تاريخ الإصدار",
+    "status": "الحالة",
+    "actions": "الإجراءات",
+    "view": "عرض",
+    "download": "تحميل",
+    "archive": "أرشفة",
+    
+    "verifyCertificate": "التحقق من الشهادة",
+    "certificateId": "معرف الشهادة",
+    "certificateIdPlaceholder": "أدخل معرف الشهادة للتحقق...",
+    "verifiedBy": "تم التحقق بواسطة",
+    "verifierName": "أدخل اسم الشخص الذي قام بالتحقق...",
+    "verify": "التحقق من الشهادة",
+    
+    "statuses": {
+      "verified": "تم التحقق",
+      "pending": "قيد الانتظار",
+      "expired": "منتهية الصلاحية"
+    },
+    
+    "messages": {
+      "generatingClassWide": "جاري إنشاء الشهادات لجميع الطلاب...",
+      "downloadingClassWide": "جاري تحضير الملف المضغوط للتحميل...",
+      "certificateGenerated": "تم إنشاء الشهادة بنجاح",
+      "certificateSaved": "تم حفظ الشهادة في قاعدة البيانات",
+      "bulkSuccess": "تم إنشاء الشهادات الجماعية بنجاح",
+      "searchComplete": "تم البحث بنجاح",
+      "verificationSuccess": "تم التحقق من الشهادة بنجاح",
+      "verificationFailed": "فشل التحقق من الشهادة",
+      "archiveSuccess": "تم أرشفة الشهادة بنجاح",
+      "error": "حدث خطأ. يرجى المحاولة مرة أخرى."
+    }
+  }
+    ,
     "CERTIFICATION_STUDENT": {
         "MY_CERTIFICATES": "شهاداتي",
         "LOADING": "جارٍ تحميل الشهادات...",
@@ -398,6 +505,135 @@
         "studentsInClass": "الطلاب في هذا الفصل",
         "studentId": "رقم الطالب"
     },
+    "curriculum": {
+    "title": "إدارة المناهج الدراسية",
+    "subtitle": "قم بإدارة وتنظيم مناهج مدرستك بكفاءة",
+    
+    "stats": {
+      "total": "إجمالي المناهج",
+      "showing": "يتم عرض",
+      "students": "طالب",
+      "teachers": "معلم",
+      "grades": "صف"
+    },
+    
+    "search": {
+      "placeholder": "ابحث في المناهج حسب الاسم أو الكود أو الوصف...",
+      "clear": "مسح",
+      "noResults": "لم يتم العثور على مناهج مطابقة",
+      "tryDifferent": "جرب مصطلح بحث مختلف"
+    },
+    
+    "sort": {
+      "name": "ترتيب حسب الاسم",
+      "code": "ترتيب حسب الكود"
+    },
+    
+    "actions": {
+      "addNew": "إضافة منهج جديد",
+      "refresh": "تحديث",
+      "createFirst": "إنشاء منهج",
+      "viewDetails": "عرض التفاصيل",
+      "edit": "تعديل",
+      "checkStudents": "فحص الطلاب",
+      "checkTeachers": "فحص المعلمين",
+      "delete": "حذف"
+    },
+    
+    "loading": "جاري تحميل المناهج...",
+    
+    "empty": {
+      "title": "لم يتم العثور على مناهج",
+      "subtitle": "ابدأ بإنشاء أول منهج لك."
+    },
+    
+    "noDescription": "لا يوجد وصف",
+    "created": "تم الإنشاء",
+    
+    "tabs": {
+      "code": "الكود",
+      "name": "الاسم",
+      "description": "الوصف",
+      "actions": "الإجراءات",
+      "grades": "الصفوف",
+      "students": "الطلاب",
+      "teachers": "المعلمون",
+      "studentName": "الاسم",
+      "email": "البريد الإلكتروني",
+      "class": "الفصل",
+      "status": "الحالة",
+      "classes": "فصول",
+      "subjects": "مواد",
+      "empty": {
+        "grades": "لا توجد صفوف مرتبطة بهذا المنهج",
+        "students": "لا يوجد طلاب مسجلون في هذا المنهج",
+        "teachers": "لا يوجد معلمون متخصصون في هذا المنهج"
+      }
+    },
+    
+    "form": {
+      "name": {
+        "label": "اسم المنهج",
+        "placeholder": "أدخل اسم المنهج",
+        "hint": "اسم وصفي للمنهج"
+      },
+      "code": {
+        "label": "كود المنهج",
+        "placeholder": "مثال: MATH-101",
+        "hint": "كود فريد للتحديد"
+      },
+      "description": {
+        "label": "الوصف",
+        "placeholder": "أدخل وصف المنهج (اختياري)"
+      },
+      "errors": {
+        "required": "هذا الحقل مطلوب",
+        "maxLength": "الحد الأقصى للطول هو {{max}} حرف",
+        "characters": "حرف"
+      }
+    },
+    
+    "modal": {
+      "create": {
+        "title": "إنشاء منهج جديد",
+        "action": "إنشاء المنهج",
+        "creating": "جاري الإنشاء..."
+      },
+      "edit": {
+        "title": "تعديل المنهج",
+        "action": "تحديث المنهج",
+        "updating": "جاري التحديث...",
+        "lastUpdated": "آخر تحديث:",
+        "never": "أبداً"
+      },
+      "details": {
+        "title": "تفاصيل المنهج",
+        "loading": "جاري تحميل التفاصيل...",
+        "created": "تم الإنشاء",
+        "updated": "آخر تحديث"
+      },
+      "delete": {
+        "title": "تأكيد الحذف",
+        "warning": "تحذير! لا يمكن التراجع عن هذا الإجراء.",
+        "message": "هل أنت متأكد من رغبتك في حذف المنهج \"{{name}}\" ({{code}})?",
+        "has": "هذا المنهج يحتوي على",
+        "action": "حذف نهائي",
+        "deleting": "جاري الحذف..."
+      },
+      "cancel": "إلغاء",
+      "close": "إغلاق"
+    },
+    
+    "check": {
+      "studentsTitle": "فحص الطلاب",
+      "teachersTitle": "فحص المعلمين",
+      "hasStudents": "هذا المنهج يحتوي على {{count}} طالب",
+      "hasNoStudents": "لا يوجد طلاب مسجلون في هذا المنهج",
+      "hasTeachers": "هذا المنهج يحتوي على {{count}} معلم",
+      "hasNoTeachers": "لا يوجد معلمون متخصصون في هذا المنهج"
+    }
+  }
+    ,
     "NAV": {
         "LOGO": "اللوجو",
         "HOME": "الرئيسية",
