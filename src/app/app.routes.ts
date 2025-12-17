@@ -16,6 +16,7 @@ import { accountStatusGuard } from './Guards/acount-status.guard';
 
 export const routes: Routes = [
 
+  // Visitor layout
   {
     path: '',
     component: VisitorComponent,
@@ -23,11 +24,11 @@ export const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
       { path: 'login', component: LoginComponent },
-      { path: 'register', component: RegisterComponent },
-
+      { path: 'register', component: RegisterComponent }
     ]
   },
 
+  // Logged in layout
   {
     path: 'app',
     component: LogedInComponent,
@@ -35,13 +36,15 @@ export const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeloggedinComponent },
       { path: 'exam/:id', component: ExamComponent },
+
+      // Dashboard
       {
         path: 'dashboard',
         component: DashboardComponent,
         canActivate: [accountStatusGuard],
         children: [
 
-          // ✅ Shared
+          // Shared
           {
             path: 'overview',
             loadComponent: () =>
@@ -55,31 +58,36 @@ export const routes: Routes = [
             path: 'admin-overview',
             canActivate: [AdminGuard],
             loadComponent: () =>
-              import('./Components/dashboard/Components/admin/overview/overview.component').then(m => m.OverviewComponent)
+              import('./Components/dashboard/Components/admin/overview/overview.component')
+                .then(m => m.OverviewComponent)
           },
           {
             path: 'admin-all-classes',
             canActivate: [AdminGuard],
             loadComponent: () =>
-              import('./Components/dashboard/Components/admin/admin-all-classes/admin-all-classes.component').then(m => m.AdminAllClassesComponent)
+              import('./Components/dashboard/Components/admin/admin-all-classes/admin-all-classes.component')
+                .then(m => m.AdminAllClassesComponent)
           },
           {
             path: 'admin-all-student-tests-result',
             canActivate: [AdminGuard],
             loadComponent: () =>
-              import('./Components/dashboard/Components/admin/admin-all-student-tests-result/admin-all-student-tests-result.component').then(m => m.AdminAllStudentTestsResultComponent)
+              import('./Components/dashboard/Components/admin/admin-all-student-tests-result/admin-all-student-tests-result.component')
+                .then(m => m.AdminAllStudentTestsResultComponent)
           },
           {
             path: 'admin-teachers-accounts',
             canActivate: [AdminGuard],
             loadComponent: () =>
-              import('./Components/dashboard/Components/admin/admin-teacher-accounts/admin-teacher-accounts.component').then(m => m.AdminTeacherAccountsComponent)
+              import('./Components/dashboard/Components/admin/admin-teacher-accounts/admin-teacher-accounts.component')
+                .then(m => m.AdminTeacherAccountsComponent)
           },
           {
             path: 'admin-students-accounts',
             canActivate: [AdminGuard],
             loadComponent: () =>
-              import('./Components/dashboard/Components/admin/admin-student-accounts/admin-student-accounts.component').then(m => m.AdminStudentAccountsComponent)
+              import('./Components/dashboard/Components/admin/admin-student-accounts/admin-student-accounts.component')
+                .then(m => m.AdminStudentAccountsComponent)
           },
           {
             path: 'parent-management',
@@ -94,109 +102,106 @@ export const routes: Routes = [
             path: 'admin-parents-accounts',
             canActivate: [AdminGuard],
             loadComponent: () =>
-              import('./Components/dashboard/Components/admin/admin-parents-accounts/admin-parents-accounts.component').then(m => m.AdminParentsAccountsComponent)
+              import('./Components/dashboard/Components/admin/admin-parents-accounts/admin-parents-accounts.component')
+                .then(m => m.AdminParentsAccountsComponent)
           },
           {
             path: 'admin-analytics',
             canActivate: [AdminGuard],
             loadComponent: () =>
-              import('./Components/dashboard/Components/admin/analytics/analytics.component').then(m => m.AnalyticsComponent)
+              import('./Components/dashboard/Components/admin/analytics/analytics.component')
+                .then(m => m.AnalyticsComponent)
           },
           {
             path: 'admin-certfication-create',
             canActivate: [AdminGuard],
             loadComponent: () =>
-              import('./Components/dashboard/Components/admin/admin-certificate-generation/admin-certificate-generation.component').then(m => m.AdminCertificateGenerationComponent)
+              import('./Components/dashboard/Components/admin/admin-certificate-generation/admin-certificate-generation.component')
+                .then(m => m.AdminCertificateGenerationComponent)
           },
           {
             path: 'admin-subject-management',
             canActivate: [AdminGuard],
             loadComponent: () =>
-              import('./Components/dashboard/Components/admin/admin-subject-management/admin-subject-management.component').then(m => m.AdminSubjectManagementComponent)
+              import('./Components/dashboard/Components/admin/admin-subject-management/admin-subject-management.component')
+                .then(m => m.AdminSubjectManagementComponent)
           },
           {
             path: 'admin-grade',
             canActivate: [AdminGuard],
             loadComponent: () =>
-              import('./Components/dashboard/Components/admin/admin-grades/admin-grades.component').then(m => m.AdminGradesComponent)
+              import('./Components/dashboard/Components/admin/admin-grades/admin-grades.component')
+                .then(m => m.AdminGradesComponent)
           },
-          // ✅ Teacher-only
+          {
+            path: 'admin-curriculum',
+            canActivate: [AdminGuard],
+            loadComponent: () =>
+              import('./Components/dashboard/Components/admin/curriculum/curriculum.component')
+                .then(m => m.CurriculumComponent)
+          },
+
+          // Teacher
           {
             path: 'teacher-overview',
             canActivate: [TeacherGuard],
-            data: { role: 'teacher' },
             loadComponent: () =>
               import('./Components/dashboard/Components/teacher/overview/overview.component')
-                .then(m => m.OverviewComponent),
-            title: 'Teacher Overview'
+                .then(m => m.OverviewComponent)
           },
           {
             path: 'teacher-create-class',
             canActivate: [TeacherGuard],
-            data: { role: 'teacher' },
             loadComponent: () =>
               import('./Components/dashboard/Components/teacher/class/creating-classes/creating-classes.component')
-                .then(m => m.CreatingClassesComponent),
-            title: 'Creating Classes'
+                .then(m => m.CreatingClassesComponent)
           },
           {
             path: 'teacher-class-list',
             canActivate: [TeacherGuard],
-            data: { role: 'teacher' },
             loadComponent: () =>
               import('./Components/dashboard/Components/teacher/class/class-list/class-list.component')
-                .then(m => m.ClassListComponent),
-            title: 'Classes List'
+                .then(m => m.ClassListComponent)
           },
           {
             path: 'teacher-create-question',
             canActivate: [TeacherGuard],
-            data: { role: 'teacher' },
             loadComponent: () =>
               import('./Components/dashboard/Components/teacher/question-bank/create-question/create-question.component')
-                .then(m => m.CreateQuestionComponent),
-            title: 'Creating Questions'
+                .then(m => m.CreateQuestionComponent)
           },
           {
             path: 'teacher-question-list',
             canActivate: [TeacherGuard],
-            data: { role: 'teacher' },
             loadComponent: () =>
               import('./Components/dashboard/Components/teacher/question-bank/question-list/question-list.component')
-                .then(m => m.QuestionListComponent),
-            title: 'Questions List'
+                .then(m => m.QuestionListComponent)
           },
           {
             path: 'teacher-create-test',
             canActivate: [TeacherGuard],
-            data: { role: 'teacher' },
             loadComponent: () =>
               import('./Components/dashboard/Components/teacher/tests/create-test/create-test.component')
-                .then(m => m.CreateTestComponent),
-            title: 'Creating Test'
+                .then(m => m.CreateTestComponent)
           },
           {
             path: 'teacher-test-list',
             canActivate: [TeacherGuard],
-            data: { role: 'teacher' },
             loadComponent: () =>
               import('./Components/dashboard/Components/teacher/tests/test-list/test-list.component')
-                .then(m => m.TestListComponent),
-            title: 'Tests List'
+                .then(m => m.TestListComponent)
           },
           {
             path: 'teacher-class-grades',
             canActivate: [TeacherGuard],
-            data: { role: 'teacher' },
             loadComponent: () =>
               import('./Components/dashboard/Components/teacher/class-grades/class-grades.component')
-                .then(m => m.ClassGradesComponent),
-            title: 'Class Grades'
+                .then(m => m.ClassGradesComponent)
           },
+
           // Parent
           {
             path: 'children-of-parent',
-            data: { role: 'parent' },
             loadComponent: () =>
               import('./Components/dashboard/Components/parent/children-of-parent/children-of-parent.component')
                 .then(m => m.ChildrenOfParentComponent),
@@ -208,39 +213,44 @@ export const routes: Routes = [
             path: 'grades',
             canActivate: [StudentGuard],
             loadComponent: () =>
-              import('./Components/dashboard/Components/student/student-grades/student-grades.component').then(m => m.StudentGradesComponent)
+              import('./Components/dashboard/Components/student/student-grades/student-grades.component')
+                .then(m => m.StudentGradesComponent)
           },
           {
             path: 'student-classes',
             canActivate: [StudentGuard],
             loadComponent: () =>
-              import('./Components/dashboard/Components/student/student-classes/student-classes.component').then(m => m.StudentClassesComponent)
+              import('./Components/dashboard/Components/student/student-classes/student-classes.component')
+                .then(m => m.StudentClassesComponent)
           },
           {
             path: 'student-tests',
             canActivate: [StudentGuard],
             loadComponent: () =>
-              import('./Components/dashboard/Components/student/student-tests/student-tests.component').then(m => m.StudentTestsComponent)
+              import('./Components/dashboard/Components/student/student-tests/student-tests.component')
+                .then(m => m.StudentTestsComponent)
           },
           {
             path: 'student-profile',
             canActivate: [StudentGuard],
             loadComponent: () =>
-              import('./Components/dashboard/Components/student/studen-profile/studen-profile.component').then(m => m.StudenProfileComponent)
+              import('./Components/dashboard/Components/student/studen-profile/studen-profile.component')
+                .then(m => m.StudenProfileComponent)
           },
           {
             path: 'student-grades',
             canActivate: [StudentGuard],
             loadComponent: () =>
-              import('./Components/dashboard/Components/student/student-grades/student-grades.component').then(m => m.StudentGradesComponent)
+              import('./Components/dashboard/Components/student/student-grades/student-grades.component')
+                .then(m => m.StudentGradesComponent)
           },
           {
             path: 'student-certfication',
             canActivate: [StudentGuard],
             loadComponent: () =>
-              import('./Components/dashboard/Components/student/student-certificates/student-certificates.component').then(m => m.StudentCertificatesComponent)
+              import('./Components/dashboard/Components/student/student-certificates/student-certificates.component')
+                .then(m => m.StudentCertificatesComponent)
           }
-
         ]
       },
 
@@ -253,6 +263,5 @@ export const routes: Routes = [
     ]
   },
 
-  { path: '**', redirectTo: '' },
-
+  { path: '**', redirectTo: '' }
 ];

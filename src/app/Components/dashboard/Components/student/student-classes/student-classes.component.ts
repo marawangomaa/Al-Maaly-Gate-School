@@ -41,7 +41,7 @@ export class StudentClassesComponent implements OnInit {
   }
 
   getClassAppointments() {
-    this._ClassAppointments.GetClassAppointmentsForStudent("ecc98cc7-debe-486e-863a-7c2b032ffc2e").subscribe({
+    this._ClassAppointments.GetClassAppointmentsForStudent("55ff504e-b5c6-4cbe-a435-6117255b27cb").subscribe({
       next: (response: ApiResponse<iclassAppointments[]>) => {
         this.classes = response.data;
         console.log(response.data, response.success);

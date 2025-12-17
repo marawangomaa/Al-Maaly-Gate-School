@@ -1,80 +1,315 @@
+<!-- admin-all-student-tests-result.component.html -->
 <div class="container mt-4">
   <h3 class="main-title mb-4">نتائج الطلاب في الاختبارات</h3>
 
-  <!-- أزرار الفلترة -->
-  <div class="mb-3 d-flex gap-2 flex-wrap justify-content-start">
-    <button
-      class="outline-btn"
-      [class.primary-btn]="selectedType === 'الكل'"
-      (click)="selectedType = 'الكل'"
-    >
-      الكل
-    </button>
-    <button
-      class="outline-btn"
-      [class.primary-btn]="selectedType === 'أعمال السنة'"
-      (click)="selectedType = 'أعمال السنة'"
-    >
-      أعمال السنة
-    </button>
-    <button
-      class="outline-btn"
-      [class.primary-btn]="selectedType === 'نهاية السنة'"
-      (click)="selectedType = 'نهاية السنة'"
-    >
-      نهاية السنة
-    </button>
+  <!-- Filters -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="row">
+        <!-- Class Filter -->
+        <div class="col-md-6 mb-3">
+          <label for="classFilter" class="form-label">اختر الفصل</label>
+          <select 
+            id="classFilter" 
+            class="form-control"
+            [(ngModel)]="selectedClassId"
+            (change)="onClassChange()"
+            [disabled]="loadingClasses"
+          >
+            <option value="">اختر الفصل</option>
+            <option *ngFor="let classItem of classes" [value]="classItem.id">
+              {{ classItem.className }} ({{ classItem.gradeName }})
+            </option>
+          </select>
+          <div *ngIf="loadingClasses" class="mt-2">
+            <div class="spinner-border spinner-border-sm" role="status"></div>
+            <span class="ms-2">جاري تحميل الفصول...</span>
+          </div>
+        </div>
+
+        <!-- Exam Type Filter -->
+        <div class="col-md-6 mb-3">
+          <label class="form-label d-block">نوع الاختبار</label>
+          <div class="d-flex gap-2 flex-wrap">
+            <button
+              class="outline-btn"
+              [class.primary-btn]="selectedType === 'الكل'"
+              (click)="selectedType = 'الكل'; onTypeChange()"
+            >
+              الكل
+            </button>
+            <button
+              class="outline-btn"
+              [class.primary-btn]="selectedType === 'أعمال السنة'"
+              (click)="selectedType = 'أعمال السنة'; onTypeChange()"
+            >
+              أعمال السنة
+            </button>
+            <button
+              class="outline-btn"
+              [class.primary-btn]="selectedType === 'نهاية السنة'"
+              (click)="selectedType = 'نهاية السنة'; onTypeChange()"
+            >
+              نهاية السنة
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- جدول النتائج -->
-  <div class="table-responsive mt-4">
-    <table class="table table-striped align-middle text-center">
-      <thead>
-        <tr>
-          <th>اسم الطالب</th>
-          <th>اسم المدرس</th>
-          <th>اسم المادة</th>
-          <th>نوع الاختبار</th>
-          <th>طريقة الاختبار</th>
-          <th>الدرجة</th>
-          <th>الحالة</th>
-          <th>تفاصيل</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let result of filteredResults()">
-          <td>{{ result.studentName }}</td>
-          <td>{{ result.teacherName }}</td>
-          <td>{{ result.subject }}</td>
-          <td>{{ result.examType }}</td>
-          <td>
-            <span
-              [ngClass]="{
-                'text-success': result.mode === 'أونلاين',
-                'text-primary': result.mode === 'أوفلاين'
-              }"
-            >
-              {{ result.mode }}
-            </span>
-          </td>
-          <td>{{ result.score }} / {{ result.total }}</td>
-          <td>
-            <span
-              [ngClass]="{
-                'text-success': result.score >= result.total * 0.5,
-                'text-danger': result.score < result.total * 0.5
-              }"
-            >
-              {{ result.score >= result.total * 0.5 ? "ناجح" : "راسب" }}
-            </span>
-          </td>
-          <td>
-            <button class="outline-btn" (click)="viewDetails(result)">
-              عرض التفاصيل
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <!-- Class and Students Section -->
+  <div *ngIf="selectedClassId">
+    <!-- Loading Students -->
+    <div *ngIf="loadingStudents" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-2">جاري تحميل الطلاب...</p>
+    </div>
+
+    <!-- Students List -->
+    <div *ngIf="!loadingStudents && students.length > 0" class="mb-4">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">
+            <i class="fas fa-users me-2"></i>
+            طلاب الفصل: {{ getClassName(selectedClassId) }}
+          </h5>
+          <span class="badge bg-primary">{{ students.length }} طالب</span>
+        </div>
+        <div class="card-body p-0">
+          <div class="list-group list-group-flush">
+            <div *ngFor="let student of students" class="list-group-item">
+              <!-- Student Header -->
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                  <button 
+                    class="btn btn-link text-decoration-none p-0 me-3"
+                    (click)="loadStudentDegrees(student.id, student.fullName)"
+                  >
+                    <i class="fas" 
+                       [class.fa-chevron-down]="expandedStudentId !== student.id" 
+                       [class.fa-chevron-up]="expandedStudentId === student.id"></i>
+                  </button>
+                  <div>
+                    <h6 class="mb-1">{{ student.fullName || 'طالب' }}</h6>
+                    <small class="text-muted">رقم الطالب: {{ student.id || student.id }}</small>
+                  </div>
+                </div>
+                <div class="btn-group">
+                  <button 
+                    class="btn btn-sm btn-outline-primary"
+                    (click)="$event.stopPropagation(); openStudentDetailsModal(student.id, student.fullName)"
+                    [disabled]="loadingStudentDetails"
+                    [title]="'عرض جميع النتائج'"
+                  >
+                    <span *ngIf="!loadingStudentDetails">
+                      <i class="fas fa-external-link-alt"></i> عرض التفاصيل
+                    </span>
+                    <span *ngIf="loadingStudentDetails">
+                      <div class="spinner-border spinner-border-sm" role="status"></div>
+                      جاري التحميل...
+                    </span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Student Degrees (Expanded) -->
+              <div *ngIf="expandedStudentId === student.id" class="mt-3">
+                <div *ngIf="loadingDegrees" class="text-center py-3">
+                  <div class="spinner-border spinner-border-sm" role="status"></div>
+                  <span class="ms-2">جاري تحميل النتائج...</span>
+                </div>
+
+                <div *ngIf="!loadingDegrees">
+                  <div *ngIf="hasDegrees(student.id); else noDegrees">
+                    <div class="table-responsive">
+                      <table class="table table-sm table-bordered">
+                        <thead class="table-light">
+                          <tr>
+                            <th>المادة</th>
+                            <th>نوع الاختبار</th>
+                            <th>الدرجة</th>
+                            <th>الدرجة الكاملة</th>
+                            <th>النسبة</th>
+                            <th>الحالة</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let degree of (studentDegreesMap.get(student.id) || [])">
+                            <td>{{ degree.subjectName }}</td>
+                            <td>{{ degree.degreeType }}</td>
+                            <td>{{ degree.score }}</td>
+                            <td>{{ degree.maxScore }}</td>
+                            <td>
+                              {{ calculateDegreePercentage(degree.score, degree.maxScore).toFixed(1) }}%
+                            </td>
+                            <td>
+                              <span
+                                [ngClass]="{
+                                  'text-success': getPassStatus(degree.score, degree.maxScore).isPass,
+                                  'text-danger': !getPassStatus(degree.score, degree.maxScore).isPass
+                                }"
+                              >
+                                {{ getPassStatus(degree.score, degree.maxScore).status }}
+                              </span>
+                            </td>
+                          </tr>
+                          <!-- Average Row -->
+                          <tr class="table-info">
+                            <td colspan="4" class="text-end"><strong>المعدل:</strong></td>
+                            <td colspan="2">
+                              <strong>
+                                {{ calculateStudentAverage(studentDegreesMap.get(student.id) || []).toFixed(1) }}%
+                              </strong>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <ng-template #noDegrees>
+                    <div class="alert alert-info mb-0">
+                      <i class="fas fa-info-circle me-2"></i>
+                      لا توجد نتائج لهذا الطالب {{ selectedType !== 'الكل' ? 'من نوع ' + selectedType : '' }}
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Students Message -->
+    <div *ngIf="!loadingStudents && students.length === 0" class="text-center py-5">
+      <i class="fas fa-user-graduate fa-3x text-muted mb-3"></i>
+      <h4>لا يوجد طلاب</h4>
+      <p class="text-muted">لا يوجد طلاب مسجلين في هذا الفصل.</p>
+    </div>
+  </div>
+
+  <!-- No Class Selected Message -->
+  <div *ngIf="!selectedClassId && !loadingClasses" class="text-center py-5">
+    <i class="fas fa-school fa-3x text-muted mb-3"></i>
+    <h4>اختر الفصل</h4>
+    <p class="text-muted">الرجاء اختيار فصل لعرض نتائج الطلاب.</p>
+  </div>
+
+  <!-- Student Details Modal -->
+  <div *ngIf="showStudentDetailsModal" class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <i class="fas fa-graduation-cap me-2"></i>
+            تفاصيل نتائج الطالب: {{ selectedStudentName }}
+          </h5>
+          <button type="button" class="btn-close" (click)="closeStudentDetailsModal()"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Loading state for modal -->
+          <div *ngIf="loadingStudentDetails" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">جاري تحميل النتائج...</p>
+          </div>
+
+          <!-- Student Info (only show when not loading) -->
+          <div *ngIf="!loadingStudentDetails">
+            <!-- Student Info -->
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-body">
+                    <h6 class="card-title"><i class="fas fa-user me-2"></i>معلومات الطالب</h6>
+                    <p><strong>الاسم:</strong> {{ selectedStudentName }}</p>
+                    <p><strong>الفصل:</strong> {{ selectedClassName }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-body">
+                    <h6 class="card-title"><i class="fas fa-chart-bar me-2"></i>إحصائيات</h6>
+                    <p><strong>عدد الاختبارات:</strong> {{ selectedStudentDegrees.length }}</p>
+                    <p><strong>المعدل العام:</strong> 
+                      <span class="badge bg-primary">
+                        {{ calculateStudentAverage(selectedStudentDegrees).toFixed(1) }}%
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Degrees Table -->
+            <div class="table-responsive">
+              <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                  <tr>
+                    <th>#</th>
+                    <th>المادة</th>
+                    <th>نوع الاختبار</th>
+                    <th>الدرجة</th>
+                    <th>الدرجة الكاملة</th>
+                    <th>النسبة</th>
+                    <th>الحالة</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let degree of selectedStudentDegrees; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ degree.subjectName }}</td>
+                    <td>{{ degree.degreeType }}</td>
+                    <td>{{ degree.score }}</td>
+                    <td>{{ degree.maxScore }}</td>
+                    <td>
+                      {{ calculateDegreePercentage(degree.score, degree.maxScore).toFixed(1) }}%
+                    </td>
+                    <td>
+                      <span class="badge" 
+                            [class.bg-success]="getPassStatus(degree.score, degree.maxScore).isPass"
+                            [class.bg-danger]="!getPassStatus(degree.score, degree.maxScore).isPass">
+                        {{ getPassStatus(degree.score, degree.maxScore).status }}
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot class="table-info">
+                  <tr>
+                    <td colspan="5" class="text-end"><strong>المعدل العام:</strong></td>
+                    <td colspan="2">
+                      <strong class="text-primary">
+                        {{ calculateStudentAverage(selectedStudentDegrees).toFixed(1) }}%
+                      </strong>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+            <!-- No Degrees Message -->
+            <div *ngIf="selectedStudentDegrees.length === 0" class="text-center py-5">
+              <i class="fas fa-clipboard-check fa-3x text-muted mb-3"></i>
+              <h4>لا توجد نتائج</h4>
+              <p class="text-muted">لا توجد نتائج لهذا الطالب {{ selectedType !== 'الكل' ? 'من نوع ' + selectedType : '' }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeStudentDetailsModal()" [disabled]="loadingStudentDetails">
+            <i class="fas fa-times me-1"></i> إغلاق
+          </button>
+          <button type="button" class="btn btn-primary" onclick="window.print()" [disabled]="loadingStudentDetails || selectedStudentDegrees.length === 0">
+            <i class="fas fa-print me-1"></i> طباعة
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

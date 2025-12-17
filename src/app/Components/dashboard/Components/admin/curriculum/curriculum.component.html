@@ -1,0 +1,632 @@
+<div class="container-fluid py-4">
+  <!-- Toast Container -->
+  <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+    <div *ngFor="let toast of toastMessages" 
+         class="alert alert-dismissible fade show mb-2"
+         [class]="getToastClass(toast.type)"
+         role="alert">
+      <div class="d-flex align-items-center">
+        <i [class]="toast.type === 'success' ? 'bi bi-check-circle-fill me-2' : 
+                   toast.type === 'error' ? 'bi bi-exclamation-circle-fill me-2' : 
+                   'bi bi-info-circle-fill me-2'"></i>
+        <span>{{toast.message}}</span>
+      </div>
+      <button type="button" class="btn-close" (click)="removeToast(toast.id)"></button>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="row mb-4">
+    <div class="col">
+      <h1 class="h3 text-dark">
+        <i class="bi bi-journal-bookmark me-2"></i>{{ 'curriculum.title' | translate }}
+      </h1>
+      <p class="text-muted">{{ 'curriculum.subtitle' | translate }}</p>
+    </div>
+    <div class="col-auto d-flex align-items-center">
+      <button class="btn btn-primary" (click)="openCreateModal()">
+        <i class="bi bi-plus-circle me-2"></i>{{ 'curriculum.actions.addNew' | translate }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Search and Stats -->
+<div class="card border-0 shadow-sm mb-4">
+  <div class="card-body">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <div class="input-group">
+          <span class="input-group-text bg-light border-end-0">
+            <i class="bi bi-search text-muted"></i>
+          </span>
+          <input 
+            type="text" 
+            class="form-control border-start-0" 
+            [placeholder]="'curriculum.search.placeholder' | translate"
+            [formControl]="searchTermControl"
+          >
+          <button class="btn btn-outline-secondary" type="button" (click)="searchTermControl.setValue('')">
+            {{ 'curriculum.search.clear' | translate }}
+          </button>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="d-flex justify-content-end">
+          <div class="me-4 text-center">
+            <div class="text-muted small">{{ 'curriculum.stats.total' | translate }}</div>
+            <div class="h4 mb-0">{{curricula.length}}</div>
+          </div>
+          <div class="me-4 text-center">
+            <div class="text-muted small">{{ 'curriculum.stats.showing' | translate }}</div>
+            <div class="h4 mb-0">{{filteredCurricula.length}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading && curricula.length === 0" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">{{ 'curriculum.loading' | translate }}</span>
+    </div>
+    <p class="mt-3 text-muted">{{ 'curriculum.loading' | translate }}</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!loading && curricula.length === 0" class="card border-0 shadow-sm">
+    <div class="card-body text-center py-5">
+      <i class="bi bi-journal-x display-4 text-muted"></i>
+      <h5 class="mt-3">{{ 'curriculum.empty.title' | translate }}</h5>
+      <p class="text-muted">{{ 'curriculum.empty.subtitle' | translate }}</p>
+      <button class="btn btn-primary" (click)="openCreateModal()">
+        <i class="bi bi-plus-circle me-2"></i>{{ 'curriculum.actions.createFirst' | translate }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Curriculum Table -->
+  <div *ngIf="!loading && curricula.length > 0" class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead class="table-light">
+            <tr>
+              <th (click)="sort('code')" class="cursor-pointer">
+                {{ 'curriculum.tabs.code' | translate }} <i [class]="'bi ' + getSortIcon('code')"></i>
+              </th>
+              <th (click)="sort('name')" class="cursor-pointer">
+                {{ 'curriculum.tabs.name' | translate }} <i [class]="'bi ' + getSortIcon('name')"></i>
+              </th>
+              <th>{{ 'curriculum.tabs.description' | translate }}</th>
+              <th (click)="sort('gradeCount')" class="cursor-pointer text-center">
+                {{ 'curriculum.stats.grades' | translate }} <i [class]="'bi ' + getSortIcon('gradeCount')"></i>
+              </th>
+              <th (click)="sort('studentCount')" class="cursor-pointer text-center">
+                {{ 'curriculum.stats.students' | translate }} <i [class]="'bi ' + getSortIcon('studentCount')"></i>
+              </th>
+              <th (click)="sort('teacherCount')" class="cursor-pointer text-center">
+                {{ 'curriculum.stats.teachers' | translate }} <i [class]="'bi ' + getSortIcon('teacherCount')"></i>
+              </th>
+              <th class="text-end">{{ 'curriculum.tabs.actions' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let curriculum of filteredCurricula" class="align-middle">
+              <td>
+                <span class="badge bg-primary bg-opacity-10 text-primary fw-medium">
+                  {{curriculum.code}}
+                </span>
+              </td>
+              <td>
+                <div class="fw-medium">{{curriculum.name}}</div>
+                <small class="text-muted">
+                  {{ 'curriculum.created' | translate }} {{curriculum.createdAt | date:'mediumDate'}}
+                </small>
+              </td>
+              <td>
+                <p class="mb-0 text-truncate" style="max-width: 250px;">
+                  {{curriculum.description || ('curriculum.noDescription' | translate)}}
+                </p>
+              </td>
+              <td class="text-center">
+                <span class="badge bg-info bg-opacity-10 text-info">
+                  {{curriculum.gradeCount}}
+                </span>
+              </td>
+              <td class="text-center">
+                <span class="badge bg-success bg-opacity-10 text-success">
+                  {{curriculum.studentCount}}
+                </span>
+              </td>
+              <td class="text-center">
+                <span class="badge bg-warning bg-opacity-10 text-warning">
+                  {{curriculum.teacherCount}}
+                </span>
+              </td>
+              <td class="text-end">
+                <div class="btn-group" role="group">
+                  <button 
+                    class="btn btn-sm btn-outline-info" 
+                    (click)="openDetailsModal(curriculum)"
+                    [title]="'curriculum.actions.viewDetails' | translate"
+                  >
+                    <i class="bi bi-eye"></i>
+                  </button>
+                  <button 
+                    class="btn btn-sm btn-outline-warning" 
+                    (click)="openEditModal(curriculum)"
+                    [title]="'curriculum.actions.edit' | translate"
+                  >
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <div class="btn-group" role="group">
+                    <button 
+                      type="button" 
+                      class="btn btn-sm btn-outline-secondary dropdown-toggle" 
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <i class="bi bi-gear"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li>
+                        <a class="dropdown-item" href="#" (click)="$event.preventDefault(); openCheckModal(curriculum, 'checkStudents')">
+                          <i class="bi bi-people me-2"></i>{{ 'curriculum.actions.checkStudents' | translate }}
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="#" (click)="$event.preventDefault(); openCheckModal(curriculum, 'checkTeachers')">
+                          <i class="bi bi-person-badge me-2"></i>{{ 'curriculum.actions.checkTeachers' | translate }}
+                        </a>
+                      </li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li>
+                        <a class="dropdown-item text-danger" href="#" (click)="$event.preventDefault(); openDeleteModal(curriculum)">
+                          <i class="bi bi-trash me-2"></i>{{ 'curriculum.actions.delete' | translate }}
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Empty Search Results -->
+      <div *ngIf="filteredCurricula.length === 0 && searchTerm" class="text-center py-5">
+        <i class="bi bi-search display-4 text-muted"></i>
+        <h5 class="mt-3">{{ 'curriculum.search.noResults' | translate }}</h5>
+        <p class="text-muted">{{ 'curriculum.search.tryDifferent' | translate }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Create Curriculum Modal -->
+<div #createModal class="modal fade" tabindex="-1" aria-hidden="true" *ngIf="showCreateModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">
+          <i class="bi bi-plus-circle me-2"></i>{{ 'curriculum.modal.create.title' | translate }}
+        </h5>
+        <button type="button" class="btn-close btn-close-white" (click)="closeCreateModal()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="createForm" (ngSubmit)="createCurriculum()">
+          <div class="mb-3">
+            <label for="createName" class="form-label">{{ 'curriculum.form.name.label' | translate }} *</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="createName" 
+              formControlName="name"
+              [class]="getFormControlClass(createForm, 'name')"
+              [placeholder]="'curriculum.form.name.placeholder' | translate"
+            >
+            <div *ngIf="createForm.get('name')?.touched && createForm.get('name')?.errors" class="invalid-feedback">
+              <div *ngIf="createForm.get('name')?.errors?.['required']">
+                {{ 'curriculum.form.errors.required' | translate }}
+              </div>
+              <div *ngIf="createForm.get('name')?.errors?.['maxlength']">
+                {{ 'curriculum.form.errors.maxLength' | translate: {max: 100} }}
+              </div>
+            </div>
+            <small class="text-muted">{{ 'curriculum.form.name.hint' | translate }}</small>
+          </div>
+          
+          <div class="mb-3">
+            <label for="createCode" class="form-label">{{ 'curriculum.form.code.label' | translate }} *</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="createCode" 
+              formControlName="code"
+              [class]="getFormControlClass(createForm, 'code')"
+              [placeholder]="'curriculum.form.code.placeholder' | translate"
+            >
+            <div *ngIf="createForm.get('code')?.touched && createForm.get('code')?.errors" class="invalid-feedback">
+              <div *ngIf="createForm.get('code')?.errors?.['required']">
+                {{ 'curriculum.form.errors.required' | translate }}
+              </div>
+              <div *ngIf="createForm.get('code')?.errors?.['maxlength']">
+                {{ 'curriculum.form.errors.maxLength' | translate: {max: 20} }}
+              </div>
+            </div>
+            <small class="text-muted">{{ 'curriculum.form.code.hint' | translate }}</small>
+          </div>
+          
+          <div class="mb-3">
+            <label for="createDescription" class="form-label">{{ 'curriculum.form.description.label' | translate }}</label>
+            <textarea 
+              class="form-control" 
+              id="createDescription" 
+              formControlName="description"
+              rows="3"
+              [class]="getFormControlClass(createForm, 'description')"
+              [placeholder]="'curriculum.form.description.placeholder' | translate"
+            ></textarea>
+            <small class="text-muted">
+              {{createForm.get('description')?.value?.length || 0}}/500 {{ 'curriculum.form.errors.characters' | translate }}
+            </small>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="closeCreateModal()">
+          {{ 'curriculum.modal.cancel' | translate }}
+        </button>
+        <button 
+          type="button" 
+          class="btn btn-primary" 
+          (click)="createCurriculum()"
+          [disabled]="createForm.invalid || loading"
+        >
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+          {{ loading ? ('curriculum.modal.creating' | translate) : ('curriculum.modal.create.action' | translate) }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Curriculum Modal -->
+<div #editModal class="modal fade" tabindex="-1" aria-hidden="true" *ngIf="showEditModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-warning text-dark">
+        <h5 class="modal-title">
+          <i class="bi bi-pencil-square me-2"></i>{{ 'curriculum.modal.edit.title' | translate }}
+        </h5>
+        <button type="button" class="btn-close" (click)="closeEditModal()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="editForm" (ngSubmit)="updateCurriculum()">
+          <div class="alert alert-info" *ngIf="selectedCurriculum">
+            <small>
+              <i class="bi bi-info-circle me-2"></i>
+              {{ 'curriculum.modal.edit.lastUpdated' | translate }} {{selectedCurriculum.updatedAt || ('curriculum.modal.edit.never' | translate) | date:'medium'}}
+            </small>
+          </div>
+          
+          <div class="mb-3">
+            <label for="editName" class="form-label">{{ 'curriculum.form.name.label' | translate }} *</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="editName" 
+              formControlName="name"
+              [class]="getFormControlClass(editForm, 'name')"
+            >
+            <div *ngIf="editForm.get('name')?.touched && editForm.get('name')?.errors" class="invalid-feedback">
+              <div *ngIf="editForm.get('name')?.errors?.['required']">
+                {{ 'curriculum.form.errors.required' | translate }}
+              </div>
+              <div *ngIf="editForm.get('name')?.errors?.['maxlength']">
+                {{ 'curriculum.form.errors.maxLength' | translate: {max: 100} }}
+              </div>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="editCode" class="form-label">{{ 'curriculum.form.code.label' | translate }} *</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="editCode" 
+              formControlName="code"
+              [class]="getFormControlClass(editForm, 'code')"
+            >
+            <div *ngIf="editForm.get('code')?.touched && editForm.get('code')?.errors" class="invalid-feedback">
+              <div *ngIf="editForm.get('code')?.errors?.['required']">
+                {{ 'curriculum.form.errors.required' | translate }}
+              </div>
+              <div *ngIf="editForm.get('code')?.errors?.['maxlength']">
+                {{ 'curriculum.form.errors.maxLength' | translate: {max: 20} }}
+              </div>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="editDescription" class="form-label">{{ 'curriculum.form.description.label' | translate }}</label>
+            <textarea 
+              class="form-control" 
+              id="editDescription" 
+              formControlName="description"
+              rows="3"
+              [class]="getFormControlClass(editForm, 'description')"
+            ></textarea>
+            <small class="text-muted">
+              {{editForm.get('description')?.value?.length || 0}}/500 {{ 'curriculum.form.errors.characters' | translate }}
+            </small>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="closeEditModal()">
+          {{ 'curriculum.modal.cancel' | translate }}
+        </button>
+        <button 
+          type="button" 
+          class="btn btn-warning" 
+          (click)="updateCurriculum()"
+          [disabled]="editForm.invalid || loading"
+        >
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+          {{ loading ? ('curriculum.modal.updating' | translate) : ('curriculum.modal.edit.action' | translate) }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Details Modal -->
+<div #detailsModal class="modal fade" tabindex="-1" aria-hidden="true" *ngIf="showDetailsModal">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header bg-info text-white">
+        <h5 class="modal-title">
+          <i class="bi bi-journal-text me-2"></i>{{ 'curriculum.modal.details.title' | translate }}
+        </h5>
+        <button type="button" class="btn-close btn-close-white" (click)="closeDetailsModal()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="detailsLoading" class="text-center py-4">
+          <div class="spinner-border text-info" role="status"></div>
+          <p class="mt-2">{{ 'curriculum.modal.details.loading' | translate }}</p>
+        </div>
+        
+        <div *ngIf="!detailsLoading && curriculumDetails">
+          <!-- Header Info -->
+          <div class="row mb-4">
+            <div class="col">
+              <h4 class="text-dark">{{curriculumDetails.name}}</h4>
+              <span class="badge bg-primary">{{curriculumDetails.code}}</span>
+              <p class="mt-2">{{curriculumDetails.description || ('curriculum.noDescription' | translate)}}</p>
+            </div>
+            <div class="col-auto">
+              <div class="d-flex flex-column align-items-end">
+                <div class="text-muted small">{{ 'curriculum.modal.details.created' | translate }}</div>
+                <div class="fw-medium">{{curriculumDetails.createdAt | date:'mediumDate'}}</div>
+                <div class="text-muted small mt-2">{{ 'curriculum.modal.details.updated' | translate }}</div>
+                <div class="fw-medium">{{curriculumDetails.updatedAt ? (curriculumDetails.updatedAt | date:'mediumDate') : ('curriculum.modal.edit.never' | translate)}}</div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Stats Cards -->
+          <div class="row g-3 mb-4">
+            <div class="col-md-4">
+              <div class="card border-0 bg-light">
+                <div class="card-body text-center">
+                  <div class="h2 text-info mb-1">{{curriculumDetails.gradeCount}}</div>
+                  <div class="text-muted">{{ 'curriculum.stats.grades' | translate }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-0 bg-light">
+                <div class="card-body text-center">
+                  <div class="h2 text-success mb-1">{{curriculumDetails.studentCount}}</div>
+                  <div class="text-muted">{{ 'curriculum.stats.students' | translate }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-0 bg-light">
+                <div class="card-body text-center">
+                  <div class="h2 text-warning mb-1">{{curriculumDetails.teacherCount}}</div>
+                  <div class="text-muted">{{ 'curriculum.stats.teachers' | translate }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Tabs -->
+          <ul class="nav nav-tabs" id="detailsTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="grades-tab" data-bs-toggle="tab" data-bs-target="#grades" type="button">
+                {{ 'curriculum.tabs.grades' | translate }} ({{curriculumDetails.grades.length || 0}})
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="students-tab" data-bs-toggle="tab" data-bs-target="#students" type="button">
+                {{ 'curriculum.tabs.students' | translate }} ({{curriculumDetails.students.length || 0}})
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="teachers-tab" data-bs-toggle="tab" data-bs-target="#teachers" type="button">
+                {{ 'curriculum.tabs.teachers' | translate }} ({{curriculumDetails.teachers.length || 0}})
+              </button>
+            </li>
+          </ul>
+          
+          <div class="tab-content p-3 border border-top-0 rounded-bottom" style="min-height: 300px;">
+            <!-- Grades Tab -->
+            <div class="tab-pane fade show active" id="grades" role="tabpanel">
+              <div *ngIf="!curriculumDetails.grades || curriculumDetails.grades.length === 0" class="text-center py-5">
+                <i class="bi bi-journal-x display-4 text-muted"></i>
+                <p class="mt-3 text-muted">{{ 'curriculum.tabs.empty.grades' | translate }}</p>
+              </div>
+              <div *ngIf="curriculumDetails.grades && curriculumDetails.grades.length > 0" class="row g-3">
+                <div *ngFor="let grade of curriculumDetails.grades" class="col-md-6">
+                  <div class="card border">
+                    <div class="card-body">
+                      <h6 class="card-title">{{grade.gradeName}}</h6>
+                      <div class="d-flex justify-content-between">
+                        <small class="text-muted">
+                          <i class="bi bi-door-closed me-1"></i> {{grade.classCount || 0}} {{ 'curriculum.tabs.classes' | translate }}
+                        </small>
+                        <small class="text-muted">
+                          <i class="bi bi-book me-1"></i> {{grade.subjectCount || 0}} {{ 'curriculum.tabs.subjects' | translate }}
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Students Tab -->
+            <div class="tab-pane fade" id="students" role="tabpanel">
+              <div *ngIf="!curriculumDetails.students || curriculumDetails.students.length === 0" class="text-center py-5">
+                <i class="bi bi-person-x display-4 text-muted"></i>
+                <p class="mt-3 text-muted">{{ 'curriculum.tabs.empty.students' | translate }}</p>
+              </div>
+              <div *ngIf="curriculumDetails.students && curriculumDetails.students.length > 0" class="table-responsive">
+                <table class="table table-sm">
+                  <thead>
+                    <tr>
+                      <th>{{ 'curriculum.tabs.studentName' | translate }}</th>
+                      <th>{{ 'curriculum.tabs.email' | translate }}</th>
+                      <th>{{ 'curriculum.tabs.class' | translate }}</th>
+                      <th>{{ 'curriculum.tabs.status' | translate }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let student of curriculumDetails.students">
+                      <td>{{student.fullName}}</td>
+                      <td>{{student.email}}</td>
+                      <td>{{student.className}}</td>
+                      <td>
+                        <span [class]="'badge ' + (student.profileStatus === 'Active' ? 'bg-success' : 'bg-secondary')">
+                          {{student.profileStatus}}
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            
+            <!-- Teachers Tab -->
+            <div class="tab-pane fade" id="teachers" role="tabpanel">
+              <div *ngIf="!curriculumDetails.teachers || curriculumDetails.teachers.length === 0" class="text-center py-5">
+                <i class="bi bi-person-badge-x display-4 text-muted"></i>
+                <p class="mt-3 text-muted">{{ 'curriculum.tabs.empty.teachers' | translate }}</p>
+              </div>
+              <div *ngIf="curriculumDetails.teachers && curriculumDetails.teachers.length > 0" class="row g-3">
+                <div *ngFor="let teacher of curriculumDetails.teachers" class="col-md-6">
+                  <div class="card border">
+                    <div class="card-body">
+                      <h6 class="card-title">{{teacher.fullName}}</h6>
+                      <p class="card-text mb-1">
+                        <i class="bi bi-envelope me-2 text-muted"></i>{{teacher.email}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="closeDetailsModal()">
+          {{ 'curriculum.modal.close' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div #deleteModal class="modal fade" tabindex="-1" aria-hidden="true" *ngIf="showDeleteModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title">
+          <i class="bi bi-exclamation-triangle me-2"></i>{{ 'curriculum.modal.delete.title' | translate }}
+        </h5>
+        <button type="button" class="btn-close btn-close-white" (click)="closeDeleteModal()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-danger" *ngIf="selectedCurriculum">
+          <i class="bi bi-exclamation-octagon-fill me-2"></i>
+          <strong>{{ 'curriculum.modal.delete.warning' | translate }}</strong>
+        </div>
+        
+        <p *ngIf="selectedCurriculum">
+          {{ 'curriculum.modal.delete.message' | translate: {name: selectedCurriculum.name, code: selectedCurriculum.code} }}
+        </p>
+        
+        <div *ngIf="selectedCurriculum" class="alert alert-warning">
+          <small>
+            <i class="bi bi-info-circle me-2"></i>
+            {{ 'curriculum.modal.delete.has' | translate }}:
+            <ul class="mb-0 mt-2">
+              <li>{{selectedCurriculum.gradeCount}} {{ 'curriculum.stats.grades' | translate | lowercase }}</li>
+              <li>{{selectedCurriculum.studentCount}} {{ 'curriculum.stats.students' | translate | lowercase }}</li>
+              <li>{{selectedCurriculum.teacherCount}} {{ 'curriculum.stats.teachers' | translate | lowercase }}</li>
+            </ul>
+          </small>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="closeDeleteModal()">
+          {{ 'curriculum.modal.cancel' | translate }}
+        </button>
+        <button 
+          type="button" 
+          class="btn btn-danger" 
+          (click)="deleteCurriculum()"
+          [disabled]="loading"
+        >
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+          {{ loading ? ('curriculum.modal.delete.deleting' | translate) : ('curriculum.modal.delete.action' | translate) }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Check Results Modal -->
+<div #checkModal class="modal fade" tabindex="-1" aria-hidden="true" *ngIf="showCheckModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" 
+           [ngClass]="{'bg-success text-white': checkResult, 'bg-info text-white': !checkResult}">
+        <h5 class="modal-title">
+          <i [class]="checkResult ? 'bi bi-check-circle me-2' : 'bi bi-info-circle me-2'"></i>
+          {{getCheckModalTitle()}}
+        </h5>
+        <button type="button" class="btn-close btn-close-white" (click)="closeCheckModal()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center py-4">
+        <div [ngClass]="{'text-success': checkResult, 'text-info': !checkResult}">
+          <i [class]="checkResult ? 'bi bi-check-circle display-1' : 'bi bi-info-circle display-1'"></i>
+        </div>
+        <h5 class="mt-3">{{getCheckModalMessage()}}</h5>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="closeCheckModal()">
+          {{ 'curriculum.modal.close' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

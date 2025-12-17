@@ -30,48 +30,55 @@
       {{ successMessage }}
     </div>
 
-    <!-- Filter and Search Section -->
-    <div class="filters-card glass-card mb-3 p-3">
-      <div class="row gy-3">
-        <div class="col-md-3">
-          <label class="form-label small text-muted">Filter by Grade</label>
-          <select class="form-control form-control-sm" [(ngModel)]="selectedGradeFilter" (change)="filterClasses()">
-            <option value="">All Grades</option>
-            <option *ngFor="let grade of allGrades" [value]="grade.id">{{ grade.gradeName }}</option>
-          </select>
-        </div>
-
-        <div class="col-md-3">
-          <label class="form-label small text-muted">Search Classes</label>
-          <input type="text" class="form-control form-control-sm" [(ngModel)]="searchTerm" (input)="filterClasses()" 
-                 placeholder="Search by class name...">
-        </div>
-
-        <div class="col-md-3">
-          <label class="form-label small text-muted">Sort By</label>
-          <select class="form-control form-control-sm" [(ngModel)]="sortBy" (change)="sortClasses()">
-            <option value="className">Class Name</option>
-            <option value="studentCount">Student Count</option>
-            <option value="teacherCount">Teacher Count</option>
-            <option value="gradeName">Grade</option>
-          </select>
-        </div>
-
-        <div class="col-md-3">
-          <label class="form-label small text-muted">Actions</label>
-          <div class="dropdown w-100">
-            <button class="btn btn-outline-secondary dropdown-toggle w-100 btn-sm" type="button" data-bs-toggle="dropdown">
-              Bulk Operations
-            </button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#" (click)="openBulkAssignModal(); $event.preventDefault()">Bulk Assign Teachers</a></li>
-              <li><a class="dropdown-item" href="#" (click)="openBulkMoveModal(); $event.preventDefault()">Bulk Move Classes</a></li>
-              <li><a class="dropdown-item" href="#" (click)="exportAllClasses(); $event.preventDefault()">Export All Classes</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
+    <!-- Updated Filter and Search Section -->
+<div class="filters-card glass-card mb-3 p-3">
+  <div class="row gy-3">
+    <!-- Curriculum Filter - NEW -->
+    <div class="col-md-3">
+      <label class="form-label small text-muted">Filter by Curriculum</label>
+      <select class="form-control form-control-sm" [(ngModel)]="selectedCurriculumFilter" 
+              (change)="onCurriculumFilterChange()">
+        <option value="">All Curricula</option>
+        <option *ngFor="let curriculum of allCurricula" [value]="curriculum.id">
+          {{ curriculum.name }} ({{ curriculum.code }})
+        </option>
+      </select>
     </div>
+
+    <div class="col-md-3">
+      <label class="form-label small text-muted">Filter by Grade</label>
+      <select class="form-control form-control-sm" [(ngModel)]="selectedGradeFilter" 
+              (change)="onGradeFilterChange()">
+        <option value="">All Grades</option>
+        <option *ngFor="let grade of allGrades" 
+                [value]="grade.id"
+                [disabled]="selectedCurriculumFilter && grade.curriculumId !== selectedCurriculumFilter">
+          {{ grade.gradeName }} 
+          <span *ngIf="selectedCurriculumFilter && grade.curriculumId !== selectedCurriculumFilter" class="text-muted">
+            (not in selected curriculum)
+          </span>
+        </option>
+      </select>
+    </div>
+
+    <div class="col-md-3">
+      <label class="form-label small text-muted">Search Classes</label>
+      <input type="text" class="form-control form-control-sm" [(ngModel)]="searchTerm" 
+             (input)="filterClasses()" placeholder="Search by class name, grade, or curriculum...">
+    </div>
+
+    <div class="col-md-3">
+      <label class="form-label small text-muted">Sort By</label>
+      <select class="form-control form-control-sm" [(ngModel)]="sortBy" (change)="sortClasses()">
+        <option value="className">Class Name</option>
+        <option value="studentCount">Student Count</option>
+        <option value="teacherCount">Teacher Count</option>
+        <option value="gradeName">Grade</option>
+        <option value="curriculumName">Curriculum</option> <!-- NEW -->
+      </select>
+    </div>
+  </div>
+</div>
 
     <hr class="divider" />
 
@@ -104,54 +111,57 @@
         </thead>
 
         <tbody>
-          <tr *ngFor="let c of filteredClasses | slice:(currentPage-1)*pageSize:currentPage*pageSize; let i = index">
-            <td class="text-muted">{{ (currentPage-1)*pageSize + i + 1 }}</td>
-            <td>
-              <strong>{{ c.className }}</strong>
-              <br>
-              <small class="muted-id">ID: {{ c.id }}</small>
-            </td>
-            <td>
-              <span class="badge badge-pill grade-badge">{{ c.gradeName }}</span>
-            </td>
-            <td>
-              <span class="fw-bold">{{ c.studentCount || 0 }}</span>
-              <span class="text-muted"> students</span>
-            </td>
-            <td>
-              <span class="fw-bold">{{ c.teacherCount || 0 }}</span>
-              <span class="text-muted"> teachers</span>
-            </td>
-            <td>
-              <span [class]="getStatusBadgeClass(c) + ' status-badge'">
-                {{ getStatusText(c) }}
-              </span>
-            </td>
-            <td>
-              <div class="btn-actions d-flex flex-column flex-sm-row gap-2">
-                <button class="btn btn-ghost btn-sm" (click)="viewClassDetails(c.id)" title="View Details">
-                  <i class="fas fa-eye"></i>
-                </button>
-
-                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#assignTeacherModal"
-                  (click)="openAssignTeacherModal(c.id)" title="Assign Teacher">
-                  <i class="fas fa-user-plus"></i>
-                </button>
-
-                <button class="btn btn-success btn-sm" (click)="exportClassData(c.id, c.className)" title="Export Data">
-                  <i class="fas fa-download"></i>
-                </button>
-
-                <button class="btn btn-warning btn-sm" (click)="moveClassToGrade(c.id, c.className)" title="Move to Another Grade">
-                  <i class="fas fa-exchange-alt"></i>
-                </button>
-
-                <button class="btn btn-danger btn-sm" (click)="deleteClass(c.id, c.className)" title="Delete Class">
-                  <i class="fas fa-trash"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
+          <!-- Updated Classes Table Row -->
+<tr *ngFor="let c of filteredClasses | slice:(currentPage-1)*pageSize:currentPage*pageSize; let i = index">
+  <td class="text-muted">{{ (currentPage-1)*pageSize + i + 1 }}</td>
+  <td>
+    <strong>{{ c.className }}</strong>
+    <br>
+    <small class="muted-id">ID: {{ c.id }}</small>
+  </td>
+  <td>
+    <span class="badge badge-pill grade-badge">{{ c.gradeName }}</span>
+    <br>
+    <!-- NEW: Curriculum Information -->
+    <small class="text-muted" *ngIf="hasClassCurriculum(c)">
+    <i class="fas fa-book me-1"></i>{{ getClassCurriculumName(c) }}
+  </small>
+  </td>
+  <td>
+    <span class="fw-bold">{{ c.studentCount || 0 }}</span>
+    <span class="text-muted"> students</span>
+  </td>
+  <td>
+    <span class="fw-bold">{{ c.teacherCount || 0 }}</span>
+    <span class="text-muted"> teachers</span>
+  </td>
+  <td>
+    <span [class]="getStatusBadgeClass(c) + ' status-badge'">
+      {{ getStatusText(c) }}
+    </span>
+  </td>
+  <td>
+    <div class="btn-actions d-flex flex-column flex-sm-row gap-2">
+      <!-- Existing buttons -->
+      <button class="btn btn-ghost btn-sm" (click)="viewClassDetails(c.id)" title="View Details">
+        <i class="fas fa-eye"></i>
+      </button>
+      <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#assignTeacherModal"
+              (click)="openAssignTeacherModal(c.id)" title="Assign Teacher">
+        <i class="fas fa-user-plus"></i>
+      </button>
+      <button class="btn btn-success btn-sm" (click)="exportClassData(c.id, c.className)" title="Export Data">
+        <i class="fas fa-download"></i>
+      </button>
+      <button class="btn btn-warning btn-sm" (click)="moveClassToGrade(c.id, c.className)" title="Move to Another Grade">
+        <i class="fas fa-exchange-alt"></i>
+      </button>
+      <button class="btn btn-danger btn-sm" (click)="deleteClass(c.id, c.className)" title="Delete Class">
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+  </td>
+</tr>
         </tbody>
       </table>
 
@@ -198,15 +208,23 @@
                    placeholder="Enter class name (e.g., Class 5A)" />
           </div>
 
-          <div class="mb-3">
-            <label class="form-label">Grade *</label>
-            <select class="form-control" [(ngModel)]="newClass.gradeId" name="gradeId" required>
-              <option value="">Select a grade</option>
-              <option *ngFor="let grade of allGrades" [value]="grade.id">
-                {{ grade.gradeName }}
-              </option>
-            </select>
-          </div>
+          <!-- Update the grade dropdown to show curriculum context -->
+<div class="mb-3">
+  <label class="form-label">Grade *</label>
+  <select class="form-control" [(ngModel)]="newClass.gradeId" name="gradeId" required>
+    <option value="">Select a grade</option>
+    <option *ngFor="let grade of allGrades" [value]="grade.id">
+      {{ grade.gradeName }} 
+      <span *ngIf="grade.curriculumName">({{ grade.curriculumName }})</span>
+    </option>
+  </select>
+  <small class="text-muted" *ngIf="newClass.gradeId">
+    Selected grade belongs to: 
+    <span class="badge bg-info">
+      {{ getGradeCurriculumName(newClass.gradeId) }}
+    </span>
+  </small>
+</div>
         </form>
       </div>
 
@@ -242,35 +260,47 @@
 
         <div *ngIf="!isLoadingDetails && selectedClass" class="row">
           <div class="col-md-6">
-            <div class="card small-card">
-              <div class="card-header">
-                <h6 class="card-title mb-0"><i class="fas fa-info-circle me-2"></i>Basic Information</h6>
-              </div>
-              <div class="card-body">
-                <table class="table table-sm table-borderless">
-                  <tr>
-                    <th class="w-40">Class Name:</th>
-                    <td>{{ selectedClass.className }}</td>
-                  </tr>
-                  <tr>
-                    <th>Grade:</th>
-                    <td><span class="badge grade-badge">{{ selectedClass.gradeName }}</span></td>
-                  </tr>
-                  <tr>
-                    <th>Class ID:</th>
-                    <td><code>{{ selectedClass.id }}</code></td>
-                  </tr>
-                  <tr>
-                    <th>Student Count:</th>
-                    <td>{{ selectedClass.studentCount || 0 }}</td>
-                  </tr>
-                  <tr>
-                    <th>Teacher Count:</th>
-                    <td>{{ selectedClass.teacherCount || 0 }}</td>
-                  </tr>
-                </table>
-              </div>
-            </div>
+            <!-- Add curriculum information to class details -->
+<div class="card small-card">
+  <div class="card-header">
+    <h6 class="card-title mb-0"><i class="fas fa-info-circle me-2"></i>Basic Information</h6>
+  </div>
+  <div class="card-body">
+    <table class="table table-sm table-borderless">
+      <tr>
+        <th class="w-40">Class Name:</th>
+        <td>{{ selectedClass.className }}</td>
+      </tr>
+      <tr>
+        <th>Grade:</th>
+        <td><span class="badge grade-badge">{{ selectedClass.gradeName }}</span></td>
+      </tr>
+      <!-- NEW: Curriculum Information -->
+      <tr>
+        <th>Curriculum:</th>
+        <td>
+  <!-- Use helper methods -->
+  <span class="badge curriculum-badge bg-info" *ngIf="hasClassCurriculum(selectedClass)">
+    {{ getClassCurriculumName(selectedClass) }}
+  </span>
+  <span *ngIf="!hasClassCurriculum(selectedClass)" class="text-muted">Not assigned</span>
+</td>
+      </tr>
+      <tr>
+        <th>Class ID:</th>
+        <td><code>{{ selectedClass.id }}</code></td>
+      </tr>
+      <tr>
+        <th>Student Count:</th>
+        <td>{{ selectedClass.studentCount || 0 }}</td>
+      </tr>
+      <tr>
+        <th>Teacher Count:</th>
+        <td>{{ selectedClass.teacherCount || 0 }}</td>
+      </tr>
+    </table>
+  </div>
+</div>
           </div>
 
           <div class="col-md-6">

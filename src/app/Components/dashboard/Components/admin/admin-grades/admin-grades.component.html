@@ -1,1 +1,681 @@
-<p>admin-grades works!</p>
+<!-- admin-grades.component.html -->
+<div class="admin-grades-container">
+  <!-- Header and Search -->
+  <div class="header-section mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="mb-0">{{ 'GRADE.MANAGEMENT' | translate }}</h2>
+      <button class="btn btn-primary" (click)="openGradeModal()">
+        <i class="fas fa-plus"></i> {{ 'GRADE.ADD_GRADE' | translate }}
+      </button>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6">
+        <div class="input-group">
+          <span class="input-group-text">
+            <i class="fas fa-search"></i>
+          </span>
+          <input 
+            type="text" 
+            class="form-control" 
+            [placeholder]="'GRADE.SEARCH_PLACEHOLDER' | translate"
+            [(ngModel)]="searchTerm"
+            (input)="onSearch()"
+          >
+          <button 
+            class="btn btn-outline-secondary" 
+            type="button"
+            (click)="loadGrades()"
+          >
+            <i class="fas fa-sync-alt"></i> {{ 'GRADE.REFRESH' | translate }}
+          </button>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="input-group">
+          <span class="input-group-text">
+            <i class="fas fa-book"></i>
+          </span>
+          <select 
+            class="form-control" 
+            [(ngModel)]="selectedCurriculumId"
+            (change)="onCurriculumFilterChange()"
+            [disabled]="curriculaLoading"
+          >
+            <option value="all">All Curricula</option>
+            <option *ngFor="let curriculum of curricula" [value]="curriculum.id">
+              {{ curriculum.name }} ({{ curriculum.code }})
+            </option>
+          </select>
+          <div *ngIf="curriculaLoading" class="input-group-text">
+            <div class="spinner-border spinner-border-sm" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="gradesLoading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2">{{ 'GRADE.LOADING' | translate }}</p>
+  </div>
+
+  <!-- Grades List -->
+  <div *ngIf="!gradesLoading">
+    <!-- Grade Cards -->
+    <div class="row">
+      <div *ngFor="let grade of filteredGrades" class="col-md-6 mb-4">
+        <div class="card grade-card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <div>
+              <h5 class="mb-0">{{ 'GRADE.GRADE_NAME' | translate:{gradeName: grade.gradeName} }}</h5>
+              <small class="text-muted">
+                <i class="fas fa-book me-1"></i>
+                Curriculum: {{ grade.curriculumName || getCurriculumName(grade.curriculumId) }}
+              </small>
+            </div>
+            <div class="btn-group">
+              <button 
+                class="btn btn-sm btn-outline-primary"
+                (click)="loadGradeDetails(grade.id)"
+              >
+                <i class="fas" [class.fa-chevron-down]="!expandedGrades.has(grade.id)" 
+                   [class.fa-chevron-up]="expandedGrades.has(grade.id)"></i>
+                {{ (expandedGrades.has(grade.id) ? 'GRADE.HIDE_DETAILS' : 'GRADE.SHOW_DETAILS') | translate }}
+              </button>
+              <button 
+                class="btn btn-sm btn-outline-secondary"
+                (click)="openGradeModal(grade)"
+                [title]="'GRADE.EDIT' | translate"
+              >
+                <i class="bi bi-pencil-fill"></i>
+              </button>
+              <button 
+                class="btn btn-sm btn-outline-danger"
+                (click)="openDeleteModal(grade.id, grade.gradeName)"
+                [title]="'GRADE.DELETE' | translate"
+              >
+                <i class="bi bi-trash3"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="card-body">
+            <p class="card-text">{{ grade.description || ('GRADE.NO_DESCRIPTION' | translate) }}</p>
+            <div class="grade-stats d-flex justify-content-between">
+              <span class="badge bg-info">
+                <i class="fas fa-door-open"></i> {{ 'GRADE.CLASSES' | translate:{count: grade.classCount} }}
+              </span>
+              <span class="badge bg-success">
+                <i class="fas fa-book"></i> {{ 'GRADE.SUBJECTS' | translate:{count: grade.subjectCount} }}
+              </span>
+              <small class="text-muted">
+                {{ 'GRADE.CREATED' | translate:{date: (grade.createdAt | date:'mediumDate')} }}
+              </small>
+            </div>
+            
+            <!-- Expanded Details -->
+            <div *ngIf="expandedGrades.has(grade.id)" class="mt-3">
+              <div *ngIf="detailsLoading" class="text-center py-3">
+                <div class="spinner-border spinner-border-sm" role="status"></div>
+              </div>
+              
+              <div *ngIf="selectedGrade && !detailsLoading">
+                <!-- Curriculum Information -->
+                <div class="curriculum-info mb-3 p-3 bg-light rounded">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h6 class="mb-0"><i class="fas fa-book me-2"></i>Curriculum Details</h6>
+                      <div *ngIf="selectedGrade.curriculum" class="mt-2">
+                        <strong>{{ selectedGrade.curriculum.name }}</strong> ({{ selectedGrade.curriculum.code }})
+                        <p class="mb-1 small">{{ selectedGrade.curriculum.description }}</p>
+                        <div class="d-flex mt-2">
+                          <span class="badge bg-primary me-2">
+                            <i class="fas fa-graduation-cap"></i> {{ selectedGrade.curriculum.gradeCount }} Grades
+                          </span>
+                          <span class="badge bg-success me-2">
+                            <i class="fas fa-user-graduate"></i> {{ selectedGrade.curriculum.studentCount }} Students
+                          </span>
+                          <span class="badge bg-warning">
+                            <i class="fas fa-chalkboard-teacher"></i> {{ selectedGrade.curriculum.teacherCount }} Teachers
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Classes Section -->
+                <div class="classes-section mb-4">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="mb-0">
+                      <i class="fas fa-door-open"></i> {{ 'GRADE.CLASSES_SECTION.TITLE' | translate:{count: classes.length} }}
+                    </h6>
+                    <div>
+                      <button 
+                        class="btn btn-sm btn-success me-2"
+                        (click)="openClassModal(grade.id)"
+                      >
+                        <i class="fas fa-plus"></i> {{ 'GRADE.CLASSES_SECTION.ADD_CLASS' | translate }}
+                      </button>
+                      <button 
+                        *ngIf="classes.length > 0"
+                        class="btn btn-sm btn-warning"
+                        [disabled]="selectedClasses.length === 0"
+                        (click)="openBulkMoveModal()"
+                      >
+                        <i class="fas fa-exchange-alt"></i> {{ 'GRADE.CLASSES_SECTION.MOVE_SELECTED' | translate }}
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div *ngIf="classesLoading" class="text-center py-2">
+                    <div class="spinner-border spinner-border-sm" role="status"></div>
+                  </div>
+                  
+                  <div *ngIf="!classesLoading && classes.length === 0" class="alert alert-info">
+                    {{ 'GRADE.CLASSES_SECTION.NO_CLASSES' | translate }}
+                  </div>
+                  
+                  <div *ngIf="!classesLoading && classes.length > 0">
+                    <div class="table-responsive">
+                      <table class="table table-sm table-hover">
+                        <thead>
+                          <tr>
+                            <th width="50">
+                              <input 
+                                type="checkbox" 
+                                [(ngModel)]="selectAllClasses"
+                                (change)="toggleSelectAllClasses()"
+                                [title]="'GRADE.CLASSES_SECTION.SELECT_ALL' | translate"
+                              >
+                            </th>
+                            <th>{{ 'GRADE.CLASSES_SECTION.CLASS_NAME' | translate }}</th>
+                            <th>{{ 'GRADE.CLASSES_SECTION.STUDENTS' | translate }}</th>
+                            <th>{{ 'GRADE.CLASSES_SECTION.TEACHERS' | translate }}</th>
+                            <th>{{ 'GRADE.CLASSES_SECTION.ACTIONS' | translate }}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let classItem of classes">
+                            <td>
+                              <input 
+                                type="checkbox" 
+                                [checked]="selectedClasses.includes(classItem.id)"
+                                (change)="toggleClassSelection(classItem.id)"
+                              >
+                            </td>
+                            <td>{{ classItem.className }}</td>
+                            <td>
+                              <span class="badge bg-primary">{{ classItem.studentCount }}</span>
+                            </td>
+                            <td>
+                              <span class="badge bg-secondary">{{ classItem.teacherCount }}</span>
+                            </td>
+                            <td>
+                              <div class="btn-group btn-group-sm">
+                                <button 
+                                  class="btn btn-outline-primary"
+                                  (click)="openClassModal(grade.id, classItem)"
+                                  [title]="'GRADE.EDIT' | translate"
+                                >
+                                  <i class="bi bi-pencil-fill"></i>
+                                </button>
+                                <button 
+                                  class="btn btn-outline-danger"
+                                  (click)="removeClassFromGrade(classItem.id)"
+                                  [title]="'GRADE.DELETE' | translate"
+                                >
+                                  <i class="bi bi-trash3"></i>
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Subjects Section -->
+                <div class="subjects-section">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="mb-0">
+                      <i class="fas fa-book"></i> {{ 'GRADE.SUBJECTS_SECTION.TITLE' | translate:{count: subjects.length} }}
+                    </h6>
+                    <button 
+                      class="btn btn-sm btn-success"
+                      (click)="openSubjectModal(grade.id)"
+                    >
+                      <i class="fas fa-plus"></i> {{ 'GRADE.SUBJECTS_SECTION.ADD_SUBJECT' | translate }}
+                    </button>
+                  </div>
+                  
+                  <div *ngIf="subjectsLoading" class="text-center py-2">
+                    <div class="spinner-border spinner-border-sm" role="status"></div>
+                  </div>
+                  
+                  <div *ngIf="!subjectsLoading && subjects.length === 0" class="alert alert-info">
+                    {{ 'GRADE.SUBJECTS_SECTION.NO_SUBJECTS' | translate }}
+                  </div>
+                  
+                  <div *ngIf="!subjectsLoading && subjects.length > 0">
+                    <div class="row">
+                      <div *ngFor="let subject of subjects" class="col-md-6 mb-3">
+                        <div class="card subject-card">
+                          <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start">
+                              <div>
+                                <h6 class="card-title mb-1">{{ subject.subjectName }}</h6>
+                                <p class="text-muted mb-2">
+                                  {{ 'GRADE.SUBJECTS_SECTION.CREDIT_HOURS' | translate:{hours: subject.creditHours} }}
+                                </p>
+                              </div>
+                              <div class="btn-group btn-group-sm">
+                                <button 
+                                  class="btn btn-outline-primary"
+                                  (click)="openSubjectModal(grade.id, subject)"
+                                  [title]="'GRADE.EDIT' | translate"
+                                >
+                                  <i class="bi bi-pencil-fill"></i>
+                                </button>
+                                <button 
+                                  class="btn btn-outline-danger"
+                                  (click)="removeSubjectFromGrade(subject.id)"
+                                  [title]="'GRADE.DELETE' | translate"
+                                >
+                                  <i class="bi bi-trash3"></i>
+                                </button>
+                              </div>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                              <small class="text-muted">
+                                {{ 'GRADE.SUBJECTS_SECTION.TEACHER_COUNT' | translate:{count: subject.teacherCount} }}
+                              </small>
+                              <small class="text-muted">
+                                {{ 'GRADE.SUBJECTS_SECTION.EXAM_COUNT' | translate:{count: subject.examCount} }}
+                              </small>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Grades Message -->
+    <div *ngIf="filteredGrades.length === 0" class="text-center py-5">
+      <i class="fas fa-graduation-cap fa-3x text-muted mb-3"></i>
+      <h4>{{ 'GRADE.NO_GRADES' | translate }}</h4>
+      <p class="text-muted">{{ 'GRADE.CREATE_FIRST' | translate }}</p>
+      <button class="btn btn-primary" (click)="openGradeModal()">
+        <i class="fas fa-plus"></i> {{ 'GRADE.CREATE_FIRST_BTN' | translate }}
+      </button>
+    </div>
+
+    <!-- Pagination -->
+    <div *ngIf="filteredGrades.length > 0" class="d-flex justify-content-center mt-4">
+      <nav>
+        <ul class="pagination">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" (click)="onPageChange(currentPage - 1)" href="javascript:void(0)">
+              {{ 'GRADE.PAGINATION.PREVIOUS' | translate }}
+            </a>
+          </li>
+          <li *ngFor="let page of pageNumbers" 
+              class="page-item" 
+              [class.active]="page === currentPage">
+            <a class="page-link" (click)="onPageChange(page)" href="javascript:void(0)">
+              {{ page }}
+            </a>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <a class="page-link" (click)="onPageChange(currentPage + 1)" href="javascript:void(0)">
+              {{ 'GRADE.PAGINATION.NEXT' | translate }}
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Simple Modals using Bootstrap -->
+  
+  <!-- Grade Modal - UPDATED with curriculum field -->
+  <div *ngIf="showGradeModal" class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ (isEditMode ? 'GRADE.MODALS.EDIT_GRADE' : 'GRADE.MODALS.ADD_GRADE') | translate }}</h5>
+          <button type="button" class="btn-close" (click)="closeModals()"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="gradeForm">
+            <div class="mb-3">
+              <label for="gradeName" class="form-label">{{ 'GRADE.MODALS.GRADE_NAME_LABEL' | translate }}</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="gradeName"
+                formControlName="gradeName"
+                [class.is-invalid]="gradeForm.get('gradeName')?.invalid && gradeForm.get('gradeName')?.touched"
+              >
+              <div *ngIf="gradeForm.get('gradeName')?.invalid && gradeForm.get('gradeName')?.touched" 
+                   class="invalid-feedback">
+                <div *ngIf="gradeForm.get('gradeName')?.errors?.['required']">
+                  {{ 'GRADE.MODALS.GRADE_NAME_REQUIRED' | translate }}
+                </div>
+                <div *ngIf="gradeForm.get('gradeName')?.errors?.['minlength']">
+                  {{ 'GRADE.MODALS.GRADE_NAME_MIN_LENGTH' | translate }}
+                </div>
+              </div>
+            </div>
+            
+            <!-- Curriculum Selection Field - NEW -->
+            <div class="mb-3">
+              <label for="curriculumId" class="form-label">{{ 'GRADE.MODALS.CURRICULUM_LABEL' | translate }}</label>
+              <select 
+                class="form-control" 
+                id="curriculumId"
+                formControlName="curriculumId"
+                [class.is-invalid]="gradeForm.get('curriculumId')?.invalid && gradeForm.get('curriculumId')?.touched"
+                [disabled]="curriculaLoading"
+              >
+                <option value="">{{ 'GRADE.MODALS.SELECT_CURRICULUM' | translate }}</option>
+                <option *ngFor="let curriculum of curricula" [value]="curriculum.id">
+                  {{ curriculum.name }} ({{ curriculum.code }})
+                </option>
+              </select>
+              <div *ngIf="gradeForm.get('curriculumId')?.invalid && gradeForm.get('curriculumId')?.touched" 
+                   class="invalid-feedback">
+                {{ 'GRADE.MODALS.CURRICULUM_REQUIRED' | translate }}
+              </div>
+              <div *ngIf="curriculaLoading" class="form-text">
+                <div class="spinner-border spinner-border-sm" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                {{ 'GRADE.MODALS.LOADING_CURRICULA' | translate }}
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="description" class="form-label">{{ 'GRADE.MODALS.DESCRIPTION_LABEL' | translate }}</label>
+              <textarea 
+                class="form-control" 
+                id="description"
+                formControlName="description"
+                rows="3"
+                [class.is-invalid]="gradeForm.get('description')?.invalid && gradeForm.get('description')?.touched"
+              ></textarea>
+              <div class="form-text">
+                {{ 'GRADE.MODALS.DESCRIPTION_HINT' | translate }}
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModals()">
+            {{ 'GRADE.MODALS.CANCEL' | translate }}
+          </button>
+          <button 
+            type="button" 
+            class="btn btn-primary"
+            (click)="saveGrade()"
+            [disabled]="loading || gradeForm.invalid"
+          >
+            <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
+            {{ (isEditMode ? 'GRADE.MODALS.UPDATE' : 'GRADE.MODALS.CREATE') | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Class Modal -->
+  <div *ngIf="showClassModal" class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ (isClassEditMode ? 'GRADE.MODALS.EDIT_CLASS' : 'GRADE.MODALS.ADD_CLASS') | translate }}</h5>
+          <button type="button" class="btn-close" (click)="closeModals()"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="classForm">
+            <div class="mb-3">
+              <label for="className" class="form-label">{{ 'GRADE.MODALS.CLASS_NAME_LABEL' | translate }}</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="className"
+                formControlName="className"
+                [class.is-invalid]="classForm.get('className')?.invalid && classForm.get('className')?.touched"
+              >
+              <div *ngIf="classForm.get('className')?.invalid && classForm.get('className')?.touched" 
+                   class="invalid-feedback">
+                <div *ngIf="classForm.get('className')?.errors?.['required']">
+                  {{ 'GRADE.MODALS.CLASS_NAME_REQUIRED' | translate }}
+                </div>
+                <div *ngIf="classForm.get('className')?.errors?.['minlength']">
+                  {{ 'GRADE.MODALS.CLASS_NAME_MIN_LENGTH' | translate }}
+                </div>
+              </div>
+            </div>
+            
+            <div *ngIf="!isClassEditMode" class="mb-3">
+              <label for="gradeId" class="form-label">{{ 'GRADE.MODALS.GRADE_SELECT_LABEL' | translate }}</label>
+              <select 
+                class="form-control" 
+                id="gradeId"
+                formControlName="gradeId"
+                [class.is-invalid]="classForm.get('gradeId')?.invalid && classForm.get('gradeId')?.touched"
+              >
+                <option value="">{{ 'GRADE.MODALS.GRADE_SELECT_REQUIRED' | translate }}</option>
+                <option *ngFor="let grade of filteredGrades" [value]="grade.id">
+                  {{ grade.gradeName }} ({{ grade.curriculumName || getCurriculumName(grade.curriculumId) }})
+                </option>
+              </select>
+              <div *ngIf="classForm.get('gradeId')?.invalid && classForm.get('gradeId')?.touched" 
+                   class="invalid-feedback">
+                {{ 'GRADE.MODALS.GRADE_SELECT_REQUIRED' | translate }}
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModals()">
+            {{ 'GRADE.MODALS.CANCEL' | translate }}
+          </button>
+          <button 
+            type="button" 
+            class="btn btn-primary"
+            (click)="saveClass()"
+            [disabled]="loading || classForm.invalid"
+          >
+            <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
+            {{ (isClassEditMode ? 'GRADE.MODALS.UPDATE' : 'GRADE.MODALS.CREATE') | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Subject Modal -->
+  <div *ngIf="showSubjectModal" class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ (isSubjectEditMode ? 'GRADE.MODALS.EDIT_SUBJECT' : 'GRADE.MODALS.ADD_SUBJECT') | translate }}</h5>
+          <button type="button" class="btn-close" (click)="closeModals()"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="subjectForm">
+            <div class="mb-3">
+              <label for="subjectName" class="form-label">{{ 'GRADE.MODALS.SUBJECT_NAME_LABEL' | translate }}</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="subjectName"
+                formControlName="subjectName"
+                [class.is-invalid]="subjectForm.get('subjectName')?.invalid && subjectForm.get('subjectName')?.touched"
+              >
+              <div *ngIf="subjectForm.get('subjectName')?.invalid && subjectForm.get('subjectName')?.touched" 
+                   class="invalid-feedback">
+                <div *ngIf="subjectForm.get('subjectName')?.errors?.['required']">
+                  {{ 'GRADE.MODALS.SUBJECT_NAME_REQUIRED' | translate }}
+                </div>
+                <div *ngIf="subjectForm.get('subjectName')?.errors?.['minlength']">
+                  {{ 'GRADE.MODALS.SUBJECT_NAME_MIN_LENGTH' | translate }}
+                </div>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="creditHours" class="form-label">{{ 'GRADE.MODALS.CREDIT_HOURS_LABEL' | translate }}</label>
+              <input 
+                type="number" 
+                class="form-control" 
+                id="creditHours"
+                formControlName="creditHours"
+                min="1"
+                max="10"
+                [class.is-invalid]="subjectForm.get('creditHours')?.invalid && subjectForm.get('creditHours')?.touched"
+              >
+              <div *ngIf="subjectForm.get('creditHours')?.invalid && subjectForm.get('creditHours')?.touched" 
+                   class="invalid-feedback">
+                {{ 'GRADE.MODALS.CREDIT_HOURS_RANGE' | translate }}
+              </div>
+            </div>
+            
+            <div *ngIf="!isSubjectEditMode" class="mb-3">
+              <label for="subjectGradeId" class="form-label">{{ 'GRADE.MODALS.GRADE_SELECT_LABEL' | translate }}</label>
+              <select 
+                class="form-control" 
+                id="subjectGradeId"
+                formControlName="gradeId"
+                [class.is-invalid]="subjectForm.get('gradeId')?.invalid && subjectForm.get('gradeId')?.touched"
+              >
+                <option value="">{{ 'GRADE.MODALS.GRADE_SELECT_REQUIRED' | translate }}</option>
+                <option *ngFor="let grade of filteredGrades" [value]="grade.id">
+                  {{ grade.gradeName }} ({{ grade.curriculumName || getCurriculumName(grade.curriculumId) }})
+                </option>
+              </select>
+              <div *ngIf="subjectForm.get('gradeId')?.invalid && subjectForm.get('gradeId')?.touched" 
+                   class="invalid-feedback">
+                {{ 'GRADE.MODALS.GRADE_SELECT_REQUIRED' | translate }}
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModals()">
+            {{ 'GRADE.MODALS.CANCEL' | translate }}
+          </button>
+          <button 
+            type="button" 
+            class="btn btn-primary"
+            (click)="saveSubject()"
+            [disabled]="loading || subjectForm.invalid"
+          >
+            <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
+            {{ (isSubjectEditMode ? 'GRADE.MODALS.UPDATE' : 'GRADE.MODALS.ADD') | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bulk Move Modal -->
+  <div *ngIf="showBulkMoveModal" class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ 'GRADE.MODALS.BULK_MOVE' | translate }}</h5>
+          <button type="button" class="btn-close" (click)="closeModals()"></button>
+        </div>
+        <div class="modal-body">
+          <p>{{ 'GRADE.MODALS.MOVING_COUNT' | translate:{count: selectedClasses.length} }}</p>
+          <form [formGroup]="bulkMoveForm">
+            <div class="mb-3">
+              <label for="moveGradeId" class="form-label">{{ 'GRADE.MODALS.TARGET_GRADE' | translate }}</label>
+              <select 
+                class="form-control" 
+                id="moveGradeId"
+                formControlName="gradeId"
+                [class.is-invalid]="bulkMoveForm.get('gradeId')?.invalid && bulkMoveForm.get('gradeId')?.touched"
+              >
+                <option value="">{{ 'GRADE.MODALS.TARGET_GRADE_REQUIRED' | translate }}</option>
+                <option *ngFor="let grade of filteredGrades" 
+                        [value]="grade.id"
+                        [disabled]="selectedGrade?.id === grade.id">
+                  {{ grade.gradeName }} ({{ grade.curriculumName || getCurriculumName(grade.curriculumId) }})
+                </option>
+              </select>
+              <div *ngIf="bulkMoveForm.get('gradeId')?.invalid && bulkMoveForm.get('gradeId')?.touched" 
+                   class="invalid-feedback">
+                {{ 'GRADE.MODALS.TARGET_GRADE_REQUIRED' | translate }}
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModals()">
+            {{ 'GRADE.MODALS.CANCEL' | translate }}
+          </button>
+          <button 
+            type="button" 
+            class="btn btn-warning"
+            (click)="bulkMoveClasses()"
+            [disabled]="bulkMoveForm.invalid"
+          >
+            {{ 'GRADE.MODALS.MOVE_CLASSES' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div *ngIf="showDeleteModal" class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-danger">{{ 'GRADE.MODALS.DELETE_CONFIRM' | translate }}</h5>
+          <button type="button" class="btn-close" (click)="closeModals()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-danger">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <strong>{{ 'GRADE.ALERTS.DELETE_WARNING' | translate }}</strong>
+          </div>
+          <p>{{ modalMessage }}</p>
+          <div *ngIf="selectedGrade" class="alert alert-warning mt-3">
+            <small>
+              <i class="fas fa-info-circle me-2"></i>
+              This grade belongs to: <strong>{{ selectedGrade.curriculum.name || getCurriculumName(selectedGrade.curriculumId) }}</strong>
+            </small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModals()">
+            {{ 'GRADE.MODALS.CANCEL' | translate }}
+          </button>
+          <button type="button" class="btn btn-danger" (click)="deleteGrade()" [disabled]="loading">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
+            {{ 'GRADE.MODALS.DELETE_BTN' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

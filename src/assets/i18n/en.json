@@ -157,6 +157,8 @@
         "TEACHER_ACCOUNTS": "Teachers Accounts",
         "ADMIN_SUBJECT_MANAGEMENT": "Subject Management",
         "ADMIN_ANALYTICS": "Analytics",
+        "CURRICULUM": "Curriculum",
+
         "TESTS": "Tests",
         "GRADES": "Grades",
         "SUBTITLE": "Admin",
@@ -164,6 +166,98 @@
         "LOGOUT": "Logout",
         "CREATE_EMPTY_CLASS": "Create New Class"
     },
+    "GRADE": {
+    "MANAGEMENT": "Grade Management",
+    "ADD_GRADE": "Add New Grade",
+    "SEARCH_PLACEHOLDER": "Search grades by name or description...",
+    "REFRESH": "Refresh",
+    "LOADING": "Loading grades...",
+    "NO_GRADES": "No Grades Found",
+    "CREATE_FIRST": "Start by creating your first grade.",
+    "CREATE_FIRST_BTN": "Create First Grade",
+    
+    "GRADE_NAME": "Grade: {{gradeName}}",
+    "SHOW_DETAILS": "Show Details",
+    "HIDE_DETAILS": "Hide Details",
+    "EDIT": "Edit",
+    "DELETE": "Delete",
+    "NO_DESCRIPTION": "No description",
+    "CLASSES": "{{count}} Classes",
+    "SUBJECTS": "{{count}} Subjects",
+    "CREATED": "Created: {{date}}",
+    
+    "CLASSES_SECTION": {
+      "TITLE": "Classes ({{count}})",
+      "ADD_CLASS": "Add Class",
+      "MOVE_SELECTED": "Move Selected",
+      "NO_CLASSES": "No classes assigned to this grade.",
+      "SELECT_ALL": "Select All",
+      "CLASS_NAME": "Class Name",
+      "STUDENTS": "Students",
+      "TEACHERS": "Teachers",
+      "ACTIONS": "Actions"
+    },
+    
+    "SUBJECTS_SECTION": {
+      "TITLE": "Subjects ({{count}})",
+      "ADD_SUBJECT": "Add Subject",
+      "NO_SUBJECTS": "No subjects assigned to this grade.",
+      "CREDIT_HOURS": "Credit Hours: {{hours}}",
+      "TEACHER_COUNT": "Teachers: {{count}}",
+      "EXAM_COUNT": "Exams: {{count}}"
+    },
+    
+    "MODALS": {
+      "ADD_GRADE": "Create New Grade",
+      "EDIT_GRADE": "Edit Grade",
+      "GRADE_NAME_LABEL": "Grade Name *",
+      "GRADE_NAME_REQUIRED": "Grade name is required",
+      "GRADE_NAME_MIN_LENGTH": "Grade name must be at least 2 characters",
+      "DESCRIPTION_LABEL": "Description",
+      "DESCRIPTION_HINT": "Optional. Max 500 characters.",
+      "CANCEL": "Cancel",
+      "CREATE": "Create",
+      "UPDATE": "Update",
+      
+      "ADD_CLASS": "Add New Class",
+      "EDIT_CLASS": "Edit Class",
+      "CLASS_NAME_LABEL": "Class Name *",
+      "CLASS_NAME_REQUIRED": "Class name is required",
+      "CLASS_NAME_MIN_LENGTH": "Class name must be at least 2 characters",
+      "GRADE_SELECT_LABEL": "Grade *",
+      "GRADE_SELECT_REQUIRED": "Please select a grade",
+      
+      "ADD_SUBJECT": "Add New Subject",
+      "EDIT_SUBJECT": "Edit Subject",
+      "SUBJECT_NAME_LABEL": "Subject Name *",
+      "SUBJECT_NAME_REQUIRED": "Subject name is required",
+      "SUBJECT_NAME_MIN_LENGTH": "Subject name must be at least 2 characters",
+      "CREDIT_HOURS_LABEL": "Credit Hours *",
+      "CREDIT_HOURS_RANGE": "Credit hours must be between 1 and 10",
+      "ADD": "Add",
+      
+      "BULK_MOVE": "Move Selected Classes",
+      "MOVING_COUNT": "Moving {{count}} class(es) to a different grade.",
+      "TARGET_GRADE": "Target Grade *",
+      "TARGET_GRADE_REQUIRED": "Please select a target grade",
+      "MOVE_CLASSES": "Move Classes",
+      
+      "DELETE_CONFIRM": "Confirm Delete",
+      "DELETE_WARNING": "Warning! This action cannot be undone.",
+      "DELETE_CONFIRM_MESSAGE": "Are you sure you want to delete grade \"{{gradeName}}\"?",
+      "DELETE_BTN": "Delete Grade"
+    },
+    
+    "PAGINATION": {
+      "PREVIOUS": "Previous",
+      "NEXT": "Next"
+    },
+    
+    "ALERTS": {
+      "DELETE_WARNING": "Warning! This action cannot be undone."
+    }
+  }
+    ,
     "TEACHER_OVERVIEW": {
         "TITLE": "Teacher Overview",
         "LAST_UPDATED": "Last updated",
@@ -308,35 +402,142 @@
         }
     },
     "CLASSAPPOINTMENT": {
-        "SCHEDULED_TITLE": "Scheduled Class Appointments",
-        "TABLE": {
-            "GRADE": "Grade",
-            "SECTION": "Section",
-            "SUBJECT": "Subject",
-            "CLASS": "Classes",
-            "MEETING": "Meeting",
-            "START_TIME": "Start Time",
-            "DURATION": "Duration",
-            "STATUS": "Status",
-            "ACTION": "Action",
-            "JOIN": "Join",
-            "ENDED": "Ended",
-            "ONGOING": "Ongoing",
-            "END": "End",
-            "NO_CLASSES": "No class appointments available"
-        }
+    "SCHEDULED_TITLE": "Scheduled Class Appointments",
+    "TABLE": {
+      "GRADE": "Grade",
+      "SECTION": "Section",
+      "SUBJECT": "Subject",
+      "CLASS": "Classes",
+      "MEETING": "Meeting",
+      "START_TIME": "Start Time",
+      "DURATION": "Duration",
+      "STATUS": "Status",
+      "ACTION": "Action",
+      "JOIN": "Join",
+      "ENDED": "Ended",
+      "ONGOING": "Ongoing",
+      "END": "End",
+      "NO_CLASSES": "No class appointments available"
+    }
+  },
+  "certificate2": {
+    "title": "Certificate Management",
+    "subtitle": "Generate, manage, and verify academic certificates with ease",
+    
+    "tabs": {
+      "generate": "Generate Certificate",
+      "bulk": "Bulk Operations",
+      "search": "Search & Verify"
     },
-    "CERTIFICATION_STUDENT": {
-        "MY_CERTIFICATES": "My Certificates",
-        "LOADING": "Loading certificates...",
-        "NO_CERTIFICATES": "No certificates found",
-        "NO_CERTIFICATES_DESC": "Certificates will appear once generated by your administrator.",
-        "GPA": "GPA",
-        "ISSUED": "Issued",
-        "TEMPLATE": "Template",
-        "FILE_SIZE": "File Size",
-        "VIEW": "View",
-        "DOWNLOAD": "Download"
+    
+    "filterOptions": "Filter Options",
+    "filterDescription": "Filter students by curriculum, grade, and class to generate certificates",
+    "filterByCurriculum": "Filter by Curriculum",
+    "filterByGrade": "Filter by Grade",
+    "selectClass": "Select Class",
+    "allCurricula": "All Curricula",
+    "allGrades": "All Grades",
+    "classPlaceholder": "Select a class...",
+    "studentPlaceholder": "Select a student...",
+    "noClassesAvailable": "No classes available",
+    "noClassesForFilters": "No classes match your filters. Please adjust your selection.",
+    
+    "classWideOperations": "Class-wide Operations",
+    "classWideDescription": "Apply certificate settings to all students in the selected class",
+    "classWideCertificateType": "Certificate Type (All Students)",
+    "classWideAcademicYear": "Academic Year (All Students)",
+    "students": "students",
+    "student": "student",
+    
+    "classWideActions": {
+      "generate": "Generate All Certificates",
+      "download": "Download All as ZIP",
+      "generating": "Generating certificates...",
+      "downloading": "Downloading ZIP..."
+    },
+    
+    "singleStudentOperations": "Single Student Operations",
+    "searchStudent": "Search Student",
+    "searchStudentPlaceholder": "Type student name...",
+    
+    "generatePdf": "Generate PDF",
+    "generateAndSave": "Generate & Save",
+    "saveOnly": "Save to Database Only",
+    "generating": "Generating...",
+    "saving": "Saving...",
+    
+    "studentsInClass": "Students in Class",
+    "studentId": "Student ID",
+    
+    "bulkGeneration": "Bulk Certificate Generation",
+    "bulkDescription": "Generate certificates for an entire class at once",
+    "bulkGenerate": "Generate Bulk Certificates",
+    "bulkGenerating": "Generating bulk certificates...",
+    "downloadBulk": "Download as ZIP",
+    "downloading": "Preparing download...",
+    
+    "searchCertificates": "Search Certificates",
+    "studentName": "Student Name",
+    "studentNamePlaceholder": "Enter student name...",
+    "certificateNumber": "Certificate Number",
+    "certificateNumberPlaceholder": "Enter certificate number...",
+    "certificateType": "Certificate Type",
+    "allTypes": "All Types",
+    "academicYear": "Academic Year",
+    "allYears": "All Years",
+    "fromDate": "From Date",
+    "toDate": "To Date",
+    "search": "Search",
+    "searching": "Searching...",
+    "clear": "Clear Filters",
+    
+    "searchResults": "Search Results",
+    "type": "Type",
+    "issuedDate": "Issued Date",
+    "status": "Status",
+    "actions": "Actions",
+    "view": "View",
+    "download": "Download",
+    "archive": "Archive",
+    
+    "verifyCertificate": "Verify Certificate",
+    "certificateId": "Certificate ID",
+    "certificateIdPlaceholder": "Enter certificate ID to verify...",
+    "verifiedBy": "Verified By",
+    "verifierName": "Enter verifier name...",
+    "verify": "Verify Certificate",
+    
+    "statuses": {
+      "verified": "Verified",
+      "pending": "Pending",
+      "expired": "Expired"
+    },
+    
+    "messages": {
+      "generatingClassWide": "Generating certificates for all students...",
+      "downloadingClassWide": "Preparing ZIP download...",
+      "certificateGenerated": "Certificate generated successfully",
+      "certificateSaved": "Certificate saved to database",
+      "bulkSuccess": "Bulk certificates generated successfully",
+      "searchComplete": "Search completed successfully",
+      "verificationSuccess": "Certificate verified successfully",
+      "verificationFailed": "Certificate verification failed",
+      "archiveSuccess": "Certificate archived successfully",
+      "error": "An error occurred. Please try again."
+    }
+  }
+  ,
+  "CERTIFICATION_STUDENT": {
+    "MY_CERTIFICATES": "My Certificates",
+    "LOADING": "Loading certificates...",
+    "NO_CERTIFICATES": "No certificates found",
+    "NO_CERTIFICATES_DESC": "Certificates will appear once generated by your administrator.",
+    "GPA": "GPA",
+    "ISSUED": "Issued",
+    "TEMPLATE": "Template",
+    "FILE_SIZE": "File Size",
+    "VIEW": "View",
+    "DOWNLOAD": "Download"
     },
     "certificate": {
         "title": "Certificate Generation",
@@ -354,6 +555,135 @@
         "studentsInClass": "Students in Class",
         "studentId": "Student ID"
     },
+    "curriculum": {
+    "title": "Curriculum Management",
+    "subtitle": "Manage and organize your school curricula efficiently",
+    
+    "stats": {
+      "total": "Total Curricula",
+      "showing": "Showing",
+      "students": "Students",
+      "teachers": "Teachers",
+      "grades": "Grades"
+    },
+    
+    "search": {
+      "placeholder": "Search curricula by name, code, or description...",
+      "clear": "Clear",
+      "noResults": "No matching curricula found",
+      "tryDifferent": "Try a different search term"
+    },
+    
+    "sort": {
+      "name": "Sort by Name",
+      "code": "Sort by Code"
+    },
+    
+    "actions": {
+      "addNew": "Add New Curriculum",
+      "refresh": "Refresh",
+      "createFirst": "Create Curriculum",
+      "viewDetails": "View Details",
+      "edit": "Edit",
+      "checkStudents": "Check Students",
+      "checkTeachers": "Check Teachers",
+      "delete": "Delete"
+    },
+    
+    "loading": "Loading curricula...",
+    
+    "empty": {
+      "title": "No Curricula Found",
+      "subtitle": "Get started by creating your first curriculum."
+    },
+    
+    "noDescription": "No description",
+    "created": "Created",
+    
+    "tabs": {
+      "code": "Code",
+      "name": "Name",
+      "description": "Description",
+      "actions": "Actions",
+      "grades": "Grades",
+      "students": "Students",
+      "teachers": "Teachers",
+      "studentName": "Name",
+      "email": "Email",
+      "class": "Class",
+      "status": "Status",
+      "classes": "classes",
+      "subjects": "subjects",
+      "empty": {
+        "grades": "No grades assigned to this curriculum",
+        "students": "No students enrolled in this curriculum",
+        "teachers": "No teachers specialized in this curriculum"
+      }
+    },
+    
+    "form": {
+      "name": {
+        "label": "Curriculum Name",
+        "placeholder": "Enter curriculum name",
+        "hint": "A descriptive name for the curriculum"
+      },
+      "code": {
+        "label": "Curriculum Code",
+        "placeholder": "e.g., MATH-101",
+        "hint": "Unique code for identification"
+      },
+      "description": {
+        "label": "Description",
+        "placeholder": "Enter curriculum description (optional)"
+      },
+      "errors": {
+        "required": "This field is required",
+        "maxLength": "Maximum length is {{max}} characters",
+        "characters": "characters"
+      }
+    },
+    
+    "modal": {
+      "create": {
+        "title": "Create New Curriculum",
+        "action": "Create Curriculum",
+        "creating": "Creating..."
+      },
+      "edit": {
+        "title": "Edit Curriculum",
+        "action": "Update Curriculum",
+        "updating": "Updating...",
+        "lastUpdated": "Last updated:",
+        "never": "Never"
+      },
+      "details": {
+        "title": "Curriculum Details",
+        "loading": "Loading details...",
+        "created": "Created",
+        "updated": "Last Updated"
+      },
+      "delete": {
+        "title": "Confirm Deletion",
+        "warning": "Warning! This action cannot be undone.",
+        "message": "Are you sure you want to delete the curriculum \"{{name}}\" ({{code}})?",
+        "has": "This curriculum has",
+        "action": "Delete Permanently",
+        "deleting": "Deleting..."
+      },
+      "cancel": "Cancel",
+      "close": "Close"
+    },
+    
+    "check": {
+      "studentsTitle": "Check Students",
+      "teachersTitle": "Check Teachers",
+      "hasStudents": "This curriculum has {{count}} student(s)",
+      "hasNoStudents": "No students enrolled in this curriculum",
+      "hasTeachers": "This curriculum has {{count}} teacher(s)",
+      "hasNoTeachers": "No teachers specialized in this curriculum"
+    }
+  }
+    ,
     "NAV": {
         "LOGO": "LOGO",
         "HOME": "Home",

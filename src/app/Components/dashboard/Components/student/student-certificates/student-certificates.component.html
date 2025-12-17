@@ -29,8 +29,8 @@
 
         <div class="d-flex justify-content-between align-items-start mb-3">
           <h3 class="cert-title">{{ certificate.degreeType }}</h3>
-          <span class="badge bg-success px-3 py-2">
-            {{ "CERTIFICATION_STUDENT.GPA" | translate }}: {{ certificate.gpa.toFixed(2) }}
+          <span class="badge px-3 py-2" [ngClass]="getStatusBadgeClass(certificate)">
+            {{ getStatusText(certificate) }}
           </span>
         </div>
 
@@ -42,28 +42,41 @@
           </p>
 
           <p>
-            <i class="bi bi-file-earmark"></i>
-            {{ "CERTIFICATION_STUDENT.TEMPLATE" | translate }}:
-            {{ certificate.templateName }}
+            <i class="bi bi-hash"></i>
+            {{ "CERTIFICATION_STUDENT.CERTIFICATE_NUMBER" | translate }}:
+            {{ certificate.certificateNumber }}
           </p>
 
-          <p>
-            <i class="bi bi-hdd"></i>
-            {{ "CERTIFICATION_STUDENT.FILE_SIZE" | translate }}:
-            {{ formatFileSize(certificate.fileSize) }}
+          <p *ngIf="certificate.verified">
+            <i class="bi bi-check-circle"></i>
+            {{ "CERTIFICATION_STUDENT.VERIFIED_BY" | translate }}:
+            {{ certificate.verifiedBy }} on {{ formatDate(certificate.verifiedDate!) }}
+          </p>
+
+          <p *ngIf="certificate.academicYear">
+            <i class="bi bi-calendar"></i>
+            {{ "CERTIFICATION_STUDENT.ACADEMIC_YEAR" | translate }}:
+            {{ certificate.academicYear }}
           </p>
         </div>
 
         <div class="btn-group mt-3 w-100">
-          <button class="primary-btn w-50" (click)="viewCertificate(certificate)">
+          <button class="primary-btn w-50" (click)="viewCertificate(certificate)" [disabled]="certificate.archived">
             <i class="bi bi-eye me-1"></i>
             {{ "CERTIFICATION_STUDENT.VIEW" | translate }}
           </button>
 
-          <button class="primary-btn w-50" (click)="downloadCertificate(certificate)">
+          <button class="primary-btn w-50" (click)="downloadCertificate(certificate)" [disabled]="certificate.archived">
             <i class="bi bi-download me-1"></i>
             {{ "CERTIFICATION_STUDENT.DOWNLOAD" | translate }}
           </button>
+        </div>
+
+        <div *ngIf="certificate.archived" class="mt-2 text-center">
+          <small class="text-muted">
+            <i class="bi bi-archive"></i>
+            {{ "CERTIFICATION_STUDENT.ARCHIVED_ON" | translate }}: {{ formatDate(certificate.archivedDate!) }}
+          </small>
         </div>
 
       </div>
@@ -74,6 +87,6 @@
   <div *ngIf="message"
     class="alert mt-4"
     [ngClass]="messageType === 'success' ? 'alert-success' : 'alert-danger'">
-    {{ message | translate }}
+    {{ message }}
   </div>
 </div>

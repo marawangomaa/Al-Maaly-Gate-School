@@ -153,6 +153,8 @@
         "TEACHER_ACCOUNTS": "حسابات المعلمين",
         "ADMIN_SUBJECT_MANAGEMENT": "ادارة المواد",
         "ADMIN_ANALYTICS": "تحليلات",
+        "CURRICULUM": "المقرر",
+
         "Admin_Follow_Tests": "متابعة نتائج الاختبارات",
         "Admin_Students_Accounts": "حسابات الطلاب",
         "PARENTS_ACCOUNTS": "حسابات أولياء الأمور",
@@ -163,6 +165,98 @@
         "PROFILE": "الملف الشخصي",
         "CREATE_EMPTY_CLASS": "إنشاء فصل جديدة"
     },
+    "GRADE": {
+    "MANAGEMENT": "إدارة الصفوف",
+    "ADD_GRADE": "إضافة صف جديد",
+    "SEARCH_PLACEHOLDER": "البحث عن الصفوف بالاسم أو الوصف...",
+    "REFRESH": "تحديث",
+    "LOADING": "جاري تحميل الصفوف...",
+    "NO_GRADES": "لا توجد صفوف",
+    "CREATE_FIRST": "ابدأ بإضافة أول صف لك.",
+    "CREATE_FIRST_BTN": "إنشاء أول صف",
+    
+    "GRADE_NAME": "الصف: {{gradeName}}",
+    "SHOW_DETAILS": "عرض التفاصيل",
+    "HIDE_DETAILS": "إخفاء التفاصيل",
+    "EDIT": "تعديل",
+    "DELETE": "حذف",
+    "NO_DESCRIPTION": "لا يوجد وصف",
+    "CLASSES": "{{count}} فصل",
+    "SUBJECTS": "{{count}} مادة",
+    "CREATED": "تم الإنشاء: {{date}}",
+    
+    "CLASSES_SECTION": {
+      "TITLE": "الفصول ({{count}})",
+      "ADD_CLASS": "إضافة فصل",
+      "MOVE_SELECTED": "نقل المحدد",
+      "NO_CLASSES": "لا توجد فصول مخصصة لهذا الصف.",
+      "SELECT_ALL": "تحديد الكل",
+      "CLASS_NAME": "اسم الفصل",
+      "STUDENTS": "الطلاب",
+      "TEACHERS": "المعلمين",
+      "ACTIONS": "الإجراءات"
+    },
+    
+    "SUBJECTS_SECTION": {
+      "TITLE": "المواد ({{count}})",
+      "ADD_SUBJECT": "إضافة مادة",
+      "NO_SUBJECTS": "لا توجد مواد مخصصة لهذا الصف.",
+      "CREDIT_HOURS": "الساعات المعتمدة: {{hours}}",
+      "TEACHER_COUNT": "المعلمين: {{count}}",
+      "EXAM_COUNT": "الامتحانات: {{count}}"
+    },
+    
+    "MODALS": {
+      "ADD_GRADE": "إنشاء صف جديد",
+      "EDIT_GRADE": "تعديل الصف",
+      "GRADE_NAME_LABEL": "اسم الصف *",
+      "GRADE_NAME_REQUIRED": "اسم الصف مطلوب",
+      "GRADE_NAME_MIN_LENGTH": "يجب أن يكون اسم الصف على الأقل حرفين",
+      "DESCRIPTION_LABEL": "الوصف",
+      "DESCRIPTION_HINT": "اختياري. الحد الأقصى 500 حرف.",
+      "CANCEL": "إلغاء",
+      "CREATE": "إنشاء",
+      "UPDATE": "تحديث",
+      
+      "ADD_CLASS": "إضافة فصل جديد",
+      "EDIT_CLASS": "تعديل الفصل",
+      "CLASS_NAME_LABEL": "اسم الفصل *",
+      "CLASS_NAME_REQUIRED": "اسم الفصل مطلوب",
+      "CLASS_NAME_MIN_LENGTH": "يجب أن يكون اسم الفصل على الأقل حرفين",
+      "GRADE_SELECT_LABEL": "الصف *",
+      "GRADE_SELECT_REQUIRED": "الرجاء اختيار صف",
+      
+      "ADD_SUBJECT": "إضافة مادة جديدة",
+      "EDIT_SUBJECT": "تعديل المادة",
+      "SUBJECT_NAME_LABEL": "اسم المادة *",
+      "SUBJECT_NAME_REQUIRED": "اسم المادة مطلوب",
+      "SUBJECT_NAME_MIN_LENGTH": "يجب أن يكون اسم المادة على الأقل حرفين",
+      "CREDIT_HOURS_LABEL": "الساعات المعتمدة *",
+      "CREDIT_HOURS_RANGE": "يجب أن تكون الساعات المعتمدة بين 1 و 10",
+      "ADD": "إضافة",
+      
+      "BULK_MOVE": "نقل الفصول المحددة",
+      "MOVING_COUNT": "جاري نقل {{count}} فصل(فصول) إلى صف مختلف.",
+      "TARGET_GRADE": "الصف الهدف *",
+      "TARGET_GRADE_REQUIRED": "الرجاء اختيار صف هدف",
+      "MOVE_CLASSES": "نقل الفصول",
+      
+      "DELETE_CONFIRM": "تأكيد الحذف",
+      "DELETE_WARNING": "تحذير! لا يمكن التراجع عن هذا الإجراء.",
+      "DELETE_CONFIRM_MESSAGE": "هل أنت متأكد أنك تريد حذف الصف \"{{gradeName}}\"؟",
+      "DELETE_BTN": "حذف الصف"
+    },
+    
+    "PAGINATION": {
+      "PREVIOUS": "السابق",
+      "NEXT": "التالي"
+    },
+    
+    "ALERTS": {
+      "DELETE_WARNING": "تحذير! لا يمكن التراجع عن هذا الإجراء."
+    }
+  }
+    ,
     "TEACHER_OVERVIEW": {
         "TITLE": "نظرة عامة على المعلم",
         "LAST_UPDATED": "آخر تحديث",
@@ -325,6 +419,113 @@
             "NO_CLASSES": "لا توجد حصص مجدولة حالياً."
         }
     },
+    "certificate2": {
+    "title": "إدارة الشهادات",
+    "subtitle": "قم بإنشاء وإدارة والتحقق من الشهادات الأكاديمية بسهولة",
+    
+    "tabs": {
+      "generate": "إنشاء شهادة",
+      "bulk": "عمليات جماعية",
+      "search": "بحث وتحقق"
+    },
+    
+    "filterOptions": "خيارات التصفية",
+    "filterDescription": "قم بتصفية الطلاب حسب المنهج والصف والفصل لإنشاء الشهادات",
+    "filterByCurriculum": "تصفية حسب المنهج",
+    "filterByGrade": "تصفية حسب الصف",
+    "selectClass": "اختر الفصل",
+    "allCurricula": "جميع المناهج",
+    "allGrades": "جميع الصفوف",
+    "classPlaceholder": "اختر فصلاً...",
+    "studentPlaceholder": "اختر طالباً...",
+    "noClassesAvailable": "لا توجد فصول متاحة",
+    "noClassesForFilters": "لا توجد فصول تطابق عوامل التصفية. يرجى تعديل اختيارك.",
+    
+    "classWideOperations": "عمليات على مستوى الفصل",
+    "classWideDescription": "تطبيق إعدادات الشهادات على جميع الطلاب في الفصل المحدد",
+    "classWideCertificateType": "نوع الشهادة (جميع الطلاب)",
+    "classWideAcademicYear": "السنة الأكاديمية (جميع الطلاب)",
+    "students": "طالب",
+    "student": "طالب",
+    
+    "classWideActions": {
+      "generate": "إنشاء جميع الشهادات",
+      "download": "تحميل الكل كمضغوط",
+      "generating": "جاري إنشاء الشهادات...",
+      "downloading": "جاري تحضير الملف المضغوط..."
+    },
+    
+    "singleStudentOperations": "عمليات طالب واحد",
+    "searchStudent": "بحث عن طالب",
+    "searchStudentPlaceholder": "اكتب اسم الطالب...",
+    
+    "generatePdf": "إنشاء PDF",
+    "generateAndSave": "إنشاء وحفظ",
+    "saveOnly": "حفظ في قاعدة البيانات فقط",
+    "generating": "جاري الإنشاء...",
+    "saving": "جاري الحفظ...",
+    
+    "studentsInClass": "الطلاب في الفصل",
+    "studentId": "رقم الطالب",
+    
+    "bulkGeneration": "إنشاء شهادات جماعي",
+    "bulkDescription": "إنشاء شهادات لفصل كامل في وقت واحد",
+    "bulkGenerate": "إنشاء شهادات جماعية",
+    "bulkGenerating": "جاري إنشاء الشهادات الجماعية...",
+    "downloadBulk": "تحميل كمضغوط",
+    "downloading": "جاري تحضير التحميل...",
+    
+    "searchCertificates": "بحث في الشهادات",
+    "studentName": "اسم الطالب",
+    "studentNamePlaceholder": "أدخل اسم الطالب...",
+    "certificateNumber": "رقم الشهادة",
+    "certificateNumberPlaceholder": "أدخل رقم الشهادة...",
+    "certificateType": "نوع الشهادة",
+    "allTypes": "جميع الأنواع",
+    "academicYear": "السنة الأكاديمية",
+    "allYears": "جميع السنوات",
+    "fromDate": "من تاريخ",
+    "toDate": "إلى تاريخ",
+    "search": "بحث",
+    "searching": "جاري البحث...",
+    "clear": "مسح الفلاتر",
+    
+    "searchResults": "نتائج البحث",
+    "type": "النوع",
+    "issuedDate": "تاريخ الإصدار",
+    "status": "الحالة",
+    "actions": "الإجراءات",
+    "view": "عرض",
+    "download": "تحميل",
+    "archive": "أرشفة",
+    
+    "verifyCertificate": "التحقق من الشهادة",
+    "certificateId": "معرف الشهادة",
+    "certificateIdPlaceholder": "أدخل معرف الشهادة للتحقق...",
+    "verifiedBy": "تم التحقق بواسطة",
+    "verifierName": "أدخل اسم الشخص الذي قام بالتحقق...",
+    "verify": "التحقق من الشهادة",
+    
+    "statuses": {
+      "verified": "تم التحقق",
+      "pending": "قيد الانتظار",
+      "expired": "منتهية الصلاحية"
+    },
+    
+    "messages": {
+      "generatingClassWide": "جاري إنشاء الشهادات لجميع الطلاب...",
+      "downloadingClassWide": "جاري تحضير الملف المضغوط للتحميل...",
+      "certificateGenerated": "تم إنشاء الشهادة بنجاح",
+      "certificateSaved": "تم حفظ الشهادة في قاعدة البيانات",
+      "bulkSuccess": "تم إنشاء الشهادات الجماعية بنجاح",
+      "searchComplete": "تم البحث بنجاح",
+      "verificationSuccess": "تم التحقق من الشهادة بنجاح",
+      "verificationFailed": "فشل التحقق من الشهادة",
+      "archiveSuccess": "تم أرشفة الشهادة بنجاح",
+      "error": "حدث خطأ. يرجى المحاولة مرة أخرى."
+    }
+  }
+    ,
     "CERTIFICATION_STUDENT": {
         "MY_CERTIFICATES": "شهاداتي",
         "LOADING": "جارٍ تحميل الشهادات...",
@@ -353,6 +554,135 @@
         "studentsInClass": "الطلاب في هذا الفصل",
         "studentId": "رقم الطالب"
     },
+    "curriculum": {
+    "title": "إدارة المناهج الدراسية",
+    "subtitle": "قم بإدارة وتنظيم مناهج مدرستك بكفاءة",
+    
+    "stats": {
+      "total": "إجمالي المناهج",
+      "showing": "يتم عرض",
+      "students": "طالب",
+      "teachers": "معلم",
+      "grades": "صف"
+    },
+    
+    "search": {
+      "placeholder": "ابحث في المناهج حسب الاسم أو الكود أو الوصف...",
+      "clear": "مسح",
+      "noResults": "لم يتم العثور على مناهج مطابقة",
+      "tryDifferent": "جرب مصطلح بحث مختلف"
+    },
+    
+    "sort": {
+      "name": "ترتيب حسب الاسم",
+      "code": "ترتيب حسب الكود"
+    },
+    
+    "actions": {
+      "addNew": "إضافة منهج جديد",
+      "refresh": "تحديث",
+      "createFirst": "إنشاء منهج",
+      "viewDetails": "عرض التفاصيل",
+      "edit": "تعديل",
+      "checkStudents": "فحص الطلاب",
+      "checkTeachers": "فحص المعلمين",
+      "delete": "حذف"
+    },
+    
+    "loading": "جاري تحميل المناهج...",
+    
+    "empty": {
+      "title": "لم يتم العثور على مناهج",
+      "subtitle": "ابدأ بإنشاء أول منهج لك."
+    },
+    
+    "noDescription": "لا يوجد وصف",
+    "created": "تم الإنشاء",
+    
+    "tabs": {
+      "code": "الكود",
+      "name": "الاسم",
+      "description": "الوصف",
+      "actions": "الإجراءات",
+      "grades": "الصفوف",
+      "students": "الطلاب",
+      "teachers": "المعلمون",
+      "studentName": "الاسم",
+      "email": "البريد الإلكتروني",
+      "class": "الفصل",
+      "status": "الحالة",
+      "classes": "فصول",
+      "subjects": "مواد",
+      "empty": {
+        "grades": "لا توجد صفوف مرتبطة بهذا المنهج",
+        "students": "لا يوجد طلاب مسجلون في هذا المنهج",
+        "teachers": "لا يوجد معلمون متخصصون في هذا المنهج"
+      }
+    },
+    
+    "form": {
+      "name": {
+        "label": "اسم المنهج",
+        "placeholder": "أدخل اسم المنهج",
+        "hint": "اسم وصفي للمنهج"
+      },
+      "code": {
+        "label": "كود المنهج",
+        "placeholder": "مثال: MATH-101",
+        "hint": "كود فريد للتحديد"
+      },
+      "description": {
+        "label": "الوصف",
+        "placeholder": "أدخل وصف المنهج (اختياري)"
+      },
+      "errors": {
+        "required": "هذا الحقل مطلوب",
+        "maxLength": "الحد الأقصى للطول هو {{max}} حرف",
+        "characters": "حرف"
+      }
+    },
+    
+    "modal": {
+      "create": {
+        "title": "إنشاء منهج جديد",
+        "action": "إنشاء المنهج",
+        "creating": "جاري الإنشاء..."
+      },
+      "edit": {
+        "title": "تعديل المنهج",
+        "action": "تحديث المنهج",
+        "updating": "جاري التحديث...",
+        "lastUpdated": "آخر تحديث:",
+        "never": "أبداً"
+      },
+      "details": {
+        "title": "تفاصيل المنهج",
+        "loading": "جاري تحميل التفاصيل...",
+        "created": "تم الإنشاء",
+        "updated": "آخر تحديث"
+      },
+      "delete": {
+        "title": "تأكيد الحذف",
+        "warning": "تحذير! لا يمكن التراجع عن هذا الإجراء.",
+        "message": "هل أنت متأكد من رغبتك في حذف المنهج \"{{name}}\" ({{code}})?",
+        "has": "هذا المنهج يحتوي على",
+        "action": "حذف نهائي",
+        "deleting": "جاري الحذف..."
+      },
+      "cancel": "إلغاء",
+      "close": "إغلاق"
+    },
+    
+    "check": {
+      "studentsTitle": "فحص الطلاب",
+      "teachersTitle": "فحص المعلمين",
+      "hasStudents": "هذا المنهج يحتوي على {{count}} طالب",
+      "hasNoStudents": "لا يوجد طلاب مسجلون في هذا المنهج",
+      "hasTeachers": "هذا المنهج يحتوي على {{count}} معلم",
+      "hasNoTeachers": "لا يوجد معلمون متخصصون في هذا المنهج"
+    }
+  }
+    ,
     "NAV": {
         "LOGO": "اللوجو",
         "HOME": "الرئيسية",

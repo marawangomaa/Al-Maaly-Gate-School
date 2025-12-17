@@ -75,32 +75,40 @@ export class CreatingClassesComponent implements OnInit {
   }
 
   createClass(): void {
-    if (!this.teacherId) {
-      alert('Teacher ID not found.');
-      return;
-    }
-
-    if (this.classForm.invalid) {
-      this.classForm.markAllAsTouched();
-      return;
-    }
-
-    const form = this.classForm.getRawValue();
-
-    const body = {
-      id: '',
-      link: form.link,
-      startTime: form.startTime,
-      endTime: new Date(new Date(form.startTime).getTime() + form.duration * 60000).toISOString(),
-      status: 'Scheduled',
-      classId: form.classId,
-      subjectId: form.subjectId,
-      teacherId: this.teacherId
-    };
-
-    this.appointmentService.create(body).subscribe(() => {
-      alert('Appointment created successfully!');
-      this.classForm.reset({ duration: 60 });
-    });
+  if (!this.teacherId) {
+    alert('Teacher ID not found.');
+    return;
   }
+
+  if (this.classForm.invalid) {
+    this.classForm.markAllAsTouched();
+    return;
+  }
+
+  const form = this.classForm.getRawValue();
+
+  // Parse the startTime string to Date object
+  const startTimeDate = new Date(form.startTime);
+  
+  // Calculate end time by adding duration in milliseconds
+  const endTimeDate = new Date(startTimeDate.getTime() + form.duration * 60000);
+
+  const body = {
+    id: '',
+    link: form.link,
+    startTime: startTimeDate.toISOString(), // Ensure proper ISO string format
+    endTime: endTimeDate.toISOString(),     // Use the calculated end time
+    status: 'Scheduled',
+    classId: form.classId,
+    subjectId: form.subjectId,
+    teacherId: this.teacherId
+  };
+
+  console.log('Creating appointment with:', body); // Debug log
+
+  this.appointmentService.create(body).subscribe(() => {
+    alert('Appointment created successfully!');
+    this.classForm.reset({ duration: 60 });
+  });
+}
 }
