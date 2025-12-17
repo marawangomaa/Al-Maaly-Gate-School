@@ -23,7 +23,6 @@
 
     <div class="collapse navbar-collapse justify-content-end" id="mainNav">
       <ul class="navbar-nav align-items-lg-center gap-3">
-        <!-- 🚫 Visitor Menu -->
         <ng-container *ngIf="!isLoggedIn">
           <li class="nav-item">
             <a
@@ -54,7 +53,6 @@
           </li>
         </ng-container>
 
-        <!-- ✅ Logged-In Menu -->
         <ng-container *ngIf="isLoggedIn">
           <!-- Shared -->
           <li class="nav-item">
@@ -132,36 +130,93 @@
           </li>
         </ng-container>
 
-        <!-- Theme Toggle -->
-        <li class="nav-item">
+        <li class="nav-item theme">
           <button
-            class="outline-btn d-flex align-items-center gap-2"
+            type="button"
             (click)="toggleTheme()"
+            [attr.aria-label]="
+              'Current theme: ' + (isDarkMode ? 'Dark' : 'Light')
+            "
           >
-            <i
-              class="bi"
-              [ngClass]="
+            <img
+              [src]="
                 isDarkMode
-                  ? 'bi-sun-fill text-warning '
-                  : 'bi-moon-stars-fill text-primary'
+                  ? 'assets/images/LightMode_Icon.svg'
+                  : 'assets/images/DarkMode_Icon.svg'
               "
-            ></i>
-            <span>{{
-              (isDarkMode ? "NAV.THEMELIGHT" : "NAV.THEMEDARK") | translate
+              class="theme-icon"
+              width="20"
+              height="20"
+              [alt]="
+                isDarkMode ? 'Switch to light theme' : 'Switch to dark theme'
+              "
+            />
+          </button>
+        </li>
+
+        <li class="nav-item lang-dropdown">
+          <button
+            class="lang-current-btn"
+            type="button"
+            (click)="toggleDropdown()"
+            [attr.aria-label]="
+              'Current language: ' +
+              (currentLang === 'ar' ? 'Arabic' : 'English')
+            "
+            [attr.aria-expanded]="isDropdownOpen"
+          >
+            <img
+              [src]="getCurrentFlag()"
+              class="lang-flag"
+              width="20"
+              height="20"
+              [alt]="currentLang === 'ar' ? 'Arabic flag' : 'English flag'"
+            />
+            <span class="lang-text">{{
+              currentLang === "ar" ? "العربية" : "English"
             }}</span>
+            <span class="lang-arrow">{{ isDropdownOpen ? "▲" : "▼" }}</span>
           </button>
+
+          <div class="lang-options" [class.show]="isDropdownOpen">
+            <button
+              class="lang-option"
+              (click)="switchLanguage('en')"
+              [class.active]="currentLang === 'en'"
+              type="button"
+            >
+              <img
+                src="assets/images/united-kingdom-flag-icon.svg"
+                class="lang-flag"
+                width="20"
+                height="20"
+                alt="English"
+              />
+              <span>English</span>
+              <span class="checkmark" *ngIf="currentLang === 'en'">✓</span>
+            </button>
+
+            <button
+              class="lang-option"
+              (click)="switchLanguage('ar')"
+              [class.active]="currentLang === 'ar'"
+              type="button"
+            >
+              <img
+                src="assets/images/saudi-arabia-flag-icon.svg"
+                class="lang-flag"
+                width="20"
+                height="20"
+                alt="العربية"
+              />
+              <span>العربية</span>
+              <span class="checkmark" *ngIf="currentLang === 'ar'">✓</span>
+            </button>
+          </div>
         </li>
 
-        <!-- Language Toggle -->
-        <li class="nav-item">
-          <button class="outline-btn" (click)="toggleLanguage()">
-            {{ currentLang === "ar" ? "English" : "العربية" }}
-          </button>
-        </li>
-
-        <!-- Logout -->
         <li class="nav-item" *ngIf="isLoggedIn">
-          <button class="login-toggle-btn outline-btn" (click)="logout()">
+          <button class="outline-btn" (click)="logout()">
             {{ "NAV.LOGOUT" | translate }}
           </button>
         </li>
