@@ -28,11 +28,11 @@
         Showing {{ filteredSubjects.length }} of {{ subjects.length }} subjects
       </span>
 
-      <!-- Search placeholder -->
+      <!-- Search -->
       <input class="form-control w-25"
-       placeholder="Search subject or grade..."
-       [(ngModel)]="searchTerm"
-       (input)="onSearchChange()" />
+             placeholder="Search subject or grade..."
+             [(ngModel)]="searchTerm"
+             (input)="onSearchChange()" />
     </div>
 
     <div class="table-responsive">
@@ -42,26 +42,27 @@
             <th style="width: 60px;">#</th>
             <th>Subject Name</th>
             <th>Grade</th>
+            <th style="width: 150px;">Actions</th>
           </tr>
         </thead>
 
         <tbody>
           <tr *ngFor="let s of filteredSubjects; let i = index">
             <td class="text-muted">{{ i + 1 }}</td>
-
-            <td class="fw-semibold">
-              {{ s.subjectName }}
-            </td>
-
+            <td class="fw-semibold">{{ s.subjectName }}</td>
             <td>
-              <span class="badge bg-secondary-subtle
-                           text-dark px-3 py-2">
+              <span class="badge bg-secondary-subtle text-dark px-3 py-2">
                 {{ s.gradeName }}
               </span>
             </td>
+            <td>
+              <button class="btn btn-sm btn-outline-primary"
+                      (click)="openTeachersModal(s.id)">
+                Assign Teachers
+              </button>
+            </td>
           </tr>
         </tbody>
-
       </table>
     </div>
   </div>
@@ -71,83 +72,86 @@
 <div *ngIf="isCreateSubjectModalOpen"
      class="modal show"
      tabindex="-1"
-     style="
-       display: block;
-       background: rgba(0,0,0,.5);
-       z-index: 1055;
-     ">
-
+     style="display: block; background: rgba(0,0,0,.5); z-index: 1055;">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 shadow">
-
-      <!-- Modal Header -->
+      <!-- Header -->
       <div class="modal-header">
-        <h5 class="modal-title fw-bold">
-          Create Subject
-        </h5>
-        <button type="button"
-                class="btn-close"
-                (click)="closeModalCreateSubject()">
-        </button>
+        <h5 class="modal-title fw-bold">Create Subject</h5>
+        <button type="button" class="btn-close"
+                (click)="closeModalCreateSubject()"></button>
       </div>
-
-      <!-- Modal Body -->
+      <!-- Body -->
       <div class="modal-body px-4 py-3">
-
-        <!-- Subject Name -->
         <div class="form-floating mb-3">
-          <input type="text"
-                 class="form-control"
-                 id="subjectName"
-                 placeholder="Subject Name"
+          <input type="text" class="form-control" placeholder="Subject Name"
                  [(ngModel)]="subjectName" />
-          <label for="subjectName">Subject Name</label>
+          <label>Subject Name</label>
         </div>
-
-        <!-- Grade Dropdown -->
         <div class="form-floating mb-3">
-          <select class="form-select"
-                  id="gradeSelect"
-                  [(ngModel)]="gradeId">
-            <option value="" disabled>
-              -- Select Grade --
-            </option>
-            <option *ngFor="let g of grades"
-                    [value]="g.id">
+          <select class="form-select" [(ngModel)]="gradeId">
+            <option value="" disabled>-- Select Grade --</option>
+            <option *ngFor="let g of grades" [value]="g.id">
               {{ g.gradeName }}
             </option>
           </select>
-          <label for="gradeSelect">Grade</label>
+          <label>Grade</label>
         </div>
-
-        <!-- Credit Hours -->
         <div class="form-floating mb-3">
-          <input type="number"
-                 class="form-control"
-                 id="creditHours"
-                 placeholder="Credit Hours"
+          <input type="number" class="form-control" placeholder="Credit Hours"
                  [(ngModel)]="creditHours" />
-          <label for="creditHours">
-            Credit Hours
-          </label>
+          <label>Credit Hours</label>
         </div>
-
       </div>
-
-      <!-- Modal Footer -->
+      <!-- Footer -->
       <div class="modal-footer px-4">
-        <button class="btn btn-light"
-                (click)="closeModalCreateSubject()">
-          Cancel
-        </button>
-
+        <button class="btn btn-light" (click)="closeModalCreateSubject()">Cancel</button>
         <button class="btn btn-primary"
                 [disabled]="!subjectName || !gradeId || creditHours <= 0"
-                (click)="onCreateSubjectClick()">
-          Create Subject
-        </button>
+                (click)="onCreateSubjectClick()">Create Subject</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Teachers Not Assigned Modal -->
+<div *ngIf="isTeachersModalOpen"
+     class="modal show"
+     tabindex="-1"
+     style="display: block; background: rgba(0,0,0,.5); z-index: 1055;">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow">
+
+      <!-- Header -->
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">Teachers Not Assigned to Subject</h5>
+        <button type="button" class="btn-close" (click)="closeTeachersModal()"></button>
       </div>
 
+      <!-- Body -->
+      <div class="modal-body px-4 py-3">
+        <div *ngIf="teachersNotAssignedToSubject.length === 0"
+             class="alert alert-info text-center">
+          No unassigned teachers found.
+        </div>
+
+        <div *ngIf="teachersNotAssignedToSubject.length > 0"
+             class="list-group">
+          <div *ngFor="let teacher of teachersNotAssignedToSubject"
+               class="list-group-item d-flex justify-content-between align-items-center">
+            {{ teacher.fullName }}
+            <button class="btn btn-sm btn-primary"
+                    (click)="clickAssignTeacherToSubject(teacher.id, selectedSubjectId)">
+              Assign
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer px-4">
+        <button class="btn btn-light" (click)="closeTeachersModal()">Close</button>
+      </div>
     </div>
   </div>
 </div>

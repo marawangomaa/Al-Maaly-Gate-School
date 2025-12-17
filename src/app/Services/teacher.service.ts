@@ -98,6 +98,11 @@ export class TeacherService {
       `${this.apiUrl}/specialization/${curriculumId}`
     );
   }
+  getTeachersNotAssignedToSubject(subjectId: string): Observable<ApiResponse<TeacherViewDto[]>> {
+    return this.http.get<ApiResponse<TeacherViewDto[]>>(
+      `${this.apiUrl}/not-assigned/subject/${subjectId}`
+    );
+  }
 
 }
 
