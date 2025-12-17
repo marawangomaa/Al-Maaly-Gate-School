@@ -1,4 +1,9 @@
 /* --- NAVBAR BASE --- */
+
+.outline-btn {
+  font-size: var(--font-sm);
+}
+
 .custom-navbar {
   position: fixed;
   top: 0;
@@ -44,12 +49,12 @@
 .nav-link {
   position: relative;
   font-weight: 500;
-  font-size: 1.05rem;
+  font-size: var(--font-base);
   padding: 0.4rem 0.8rem;
   line-height: 1.2;
   display: inline-block;
   text-decoration: none;
-  color: inherit;
+  color: var(--color-text-light-bg);
   transition: color 0.3s ease, transform 0.3s ease;
 }
 
@@ -116,7 +121,7 @@
 }
 
 .navbar-logo {
-  height: 45px;
+  height: 65px;
   width: auto;
   object-fit: contain;
   transition: transform 0.3s ease;
@@ -124,4 +129,202 @@
 
 .navbar-logo:hover {
   transform: scale(1.05);
+}
+
+/* Language Dropdown Styles - Minimal/Borderless */
+.lang-dropdown {
+  position: relative;
+  margin: 0 8px;
+}
+
+/* Main button - no border, no background */
+.lang-current-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: transparent;
+  /* No background */
+  border: none;
+  /* No border */
+  color: var(--text-color, #333);
+  cursor: pointer;
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  min-width: 100px;
+  border-radius: 4px;
+}
+
+/* Subtle hover effect */
+.lang-current-btn:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+  /* Very subtle hover */
+}
+
+.lang-flag {
+  border-radius: 3px;
+  /* Remove box-shadow for cleaner look if desired */
+  /* box-shadow: 0 1px 2px rgba(0,0,0,0.1); */
+}
+
+.lang-text {
+  flex-grow: 1;
+  text-align: left;
+  font-weight: 500;
+  color: var(--color-text-light-bg);
+}
+
+.lang-arrow {
+  font-size: 10px;
+  opacity: 0.6;
+  transition: transform 0.2s ease;
+  margin-left: 4px;
+  color: var(--color-text-light-bg);
+}
+
+/* Rotate arrow when dropdown is open */
+.lang-dropdown:hover .lang-arrow,
+.lang-current-btn[aria-expanded="true"] .lang-arrow {
+  transform: rotate(180deg);
+}
+
+/* Dropdown Options - Clean design */
+.lang-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--bg-color, #fff);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  /* Subtle border */
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  /* Soft shadow */
+  margin-top: 4px;
+  padding: 6px;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: all 0.2s ease;
+  min-width: 140px;
+}
+
+.lang-options.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Dropdown items */
+.lang-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: var(--text-color, #333);
+  cursor: pointer;
+  font-size: 14px;
+  font-family: inherit;
+  text-align: left;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.lang-option:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+  /* Subtle hover */
+}
+
+.lang-option.active {
+  background-color: rgba(0, 123, 255, 0.08);
+  /* Very subtle active state */
+  color: var(--primary-color, #007bff);
+  font-weight: 500;
+}
+
+.checkmark {
+  margin-left: auto;
+  color: var(--primary-color, #007bff);
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* RTL Support */
+[dir="rtl"] .lang-text {
+  text-align: right;
+}
+
+[dir="rtl"] .lang-option {
+  text-align: right;
+}
+
+[dir="rtl"] .lang-arrow {
+  margin-left: 0;
+  margin-right: 4px;
+}
+
+[dir="rtl"] .checkmark {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+/* Dark Mode Support */
+[data-theme="dark"] .lang-current-btn {
+  background: transparent;
+  color: var(--text-color-dark, #e2e8f0);
+}
+
+[data-theme="dark"] .lang-current-btn:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .lang-text {
+  color: var(--text-color-dark, #e2e8f0);
+}
+
+[data-theme="dark"] .lang-arrow {
+  color: var(--text-color-dark, #a0aec0);
+}
+
+[data-theme="dark"] .lang-options {
+  background: var(--bg-color-dark, #2d3748);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .lang-option {
+  color: var(--text-color-dark, #e2e8f0);
+}
+
+[data-theme="dark"] .lang-option:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .lang-option.active {
+  background-color: rgba(66, 153, 225, 0.15);
+  color: var(--primary-color-dark, #63b3ed);
+}
+
+/* Make sure dropdown works on mobile */
+@media (max-width: 768px) {
+  .lang-current-btn {
+    min-width: 80px;
+    padding: 4px 8px;
+    font-size: 13px;
+  }
+
+  .lang-options {
+    min-width: 120px;
+  }
+
+  .lang-option {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
 }
