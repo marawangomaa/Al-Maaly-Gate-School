@@ -1,100 +1,86 @@
-<div class="contact-section">
-  <div class="row mb-5 text-center">
-    <h2 class="contact-title">{{ "contact.title" | translate }}</h2>
-    <p class="contact-subtitle">{{ "contact.subtitle" | translate }}</p>
+<div class="contact-us-section">
+  <div class="section-header">
+    <h2 class="main-title">تواصل معنا</h2>
+    <p class="paragraph">نحن سعداء دائما باستقبال استفساراتكم او شكاويكم</p>
   </div>
 
-  <div class="row">
-    <!-- Contact Info -->
-    <div class="col-lg-4 mb-4">
+  <div class="container contact-content">
+    <div class="contact-info-map-container">
       <div class="contact-info">
-        <h4>{{ "contact.infoTitle" | translate }}</h4>
-        <p><i class="bi bi-geo-alt"></i> {{ "contact.address" | translate }}</p>
-        <p><i class="bi bi-telephone"></i> {{ "contact.phone" | translate }}</p>
-        <p><i class="bi bi-envelope"></i> {{ "contact.email" | translate }}</p>
+        <h3 class="sub-title">بيانات الاتصال</h3>
+        <div class="info-item">
+          <!-- Placeholder for Phone Icon -->
+          <img src="assets/images/Contact.svg" alt="phone number" />
+          <p class="paragraph">
+            +966 50 123 4567
+            <br />
+            +966 11 123 4567
+          </p>
+        </div>
+        <div class="info-item">
+          <!-- Placeholder for Email Icon -->
+          <img src="assets/images/Mail.svg" alt="mail" />
+          <p class="paragraph">
+            infocompany.com
+            <br />
+            supportcompany.com
+          </p>
+        </div>
+      </div>
+
+      <div class="map-container">
+        <!-- Placeholder for Map Image -->
+        <img src="map-placeholder.png" alt="Location Map" class="map-image" />
       </div>
     </div>
-
-    <!-- Reactive Form -->
-    <div class="col-lg-8">
-      <form
-        [formGroup]="contactForm"
-        (ngSubmit)="onSubmit()"
-        class="contact-form"
-      >
-        <div class="row mb-3">
-          <div class="col-md-6">
-            <input
-              type="text"
-              formControlName="name"
-              class="form-control"
-              [placeholder]="'contact.form.name' | translate"
-            />
-
-            @if (contactForm.get('name')?.touched &&
-            contactForm.get('name')?.invalid) {
-            <div class="text-danger small">
-              {{ "contact.errors.name" | translate }}
-            </div>
-            }
-          </div>
-
-          <div class="col-md-6">
-            <input
-              type="email"
-              formControlName="email"
-              class="form-control"
-              [placeholder]="'contact.form.email' | translate"
-            />
-
-            @if (contactForm.get('email')?.touched &&
-            contactForm.get('email')?.invalid) {
-            <div class="text-danger small">
-              {{ "contact.errors.email" | translate }}
-            </div>
-            }
-          </div>
-        </div>
-
-        <div class="mb-3">
+    <div class="contact-form-container">
+      <form class="contact-form">
+        <!-- Full Name Input -->
+        <div class="div-input">
+          <label for="full-name">الاسم الكامل</label>
           <input
             type="text"
-            formControlName="subject"
-            class="form-control"
-            [placeholder]="'contact.form.subject' | translate"
+            id="full-name"
+            name="fullName"
+            placeholder="أدخل اسمك الكامل"
           />
-
-          @if (contactForm.get('subject')?.touched &&
-          contactForm.get('subject')?.invalid) {
-          <div class="text-danger small">
-            {{ "contact.errors.subject" | translate }}
-          </div>
-          }
         </div>
 
-        <div class="mb-3">
+        <!-- Email Input -->
+        <div class="div-input">
+          <label for="email">البريد الإلكتروني</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="أدخل بريدك الإلكتروني"
+          />
+        </div>
+
+        <!-- Phone Number Input -->
+        <div class="div-input">
+          <label for="phone">رقم الهاتف</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            placeholder="أدخل رقم هاتفك"
+          />
+        </div>
+
+        <!-- Message Textarea -->
+        <div class="div-input message-input">
+          <label for="message">الرسالة</label>
           <textarea
-            rows="5"
-            formControlName="message"
-            class="form-control"
-            placeholder="{{ 'contact.form.message' | translate }}"
+            id="message"
+            name="message"
+            rows="6"
+            placeholder="اكتب رسالتك هنا"
           ></textarea>
-
-          @if (contactForm.get('message')?.touched &&
-          contactForm.get('message')?.invalid) {
-          <div class="text-danger small">
-            {{ "contact.errors.message" | translate }}
-          </div>
-          }
         </div>
 
-        <button
-          type="submit"
-          class="btn contact-btn"
-          [disabled]="contactForm.invalid"
-        >
-          {{ "contact.form.button" | translate }}
-        </button>
+        <!-- Submit Button -->
+        <button type="submit" class="submit-button">إرسال</button>
       </form>
     </div>
   </div>
