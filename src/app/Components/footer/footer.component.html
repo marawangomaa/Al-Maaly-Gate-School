@@ -1,40 +1,73 @@
 <footer class="app-footer">
-  <div class="container">
-    <div class="footer-content">
-      <!-- Brand / About -->
-      <div class="footer-section">
-        <a class="navbar-brand d-flex align-items-center" routerLink="/">
-      <img
-        src="assets/images/logo.png"
-        alt="Logo"
-        class="navbar-logo me-2"
-      />
-    </a>
-        <!-- <h5 class="footer-title">{{ 'FOOTER.LOGO' | translate }}</h5> -->
-        <p class="footer-text">
-          {{ 'FOOTER.DISC' | translate:{ year: currentYear } }}
-        </p>
+  <div class="container footer-main">
+    <div class="footer-column logo-column">
+      <!-- Placeholder for Logo -->
+      <div class="logo-container">
+        <img
+          src="assets/images/logo (4).jpeg"
+          alt="Al Maaly Gate Schools Logo"
+          class="footer-logo"
+        />
       </div>
+      <p class="paragraph footer-description">
+        هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا
+        النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من
+        النصوص الأخرى إضافة إلى زيادة عدد الحروف التى يولدها التطبيق.
+      </p>
+      <div class="social-links">
+        <!-- Placeholder for Social Media Icons -->
+        <!-- <a href="#" class="social-icon"></a>
+        <a href="#" class="social-icon"></a>
+        <a href="#" class="social-icon"></a> -->
+      </div>
+    </div>
 
-      <!-- Quick Links -->
-      <div class="footer-section">
-        <h6 class="footer-title">{{ 'FOOTER.LINKS' | translate }}</h6>
-        <ul class="footer-links">
-          <li><a routerLink="/" class="footer-link">{{ 'FOOTER.HOME' | translate }}</a></li>
-          <li><a routerLink="/about" class="footer-link">{{ 'FOOTER.ABOUT' | translate }}</a></li>
-          <li><a routerLink="/contact" class="footer-link">{{ 'FOOTER.CONTACT' | translate }}</a></li>
-        </ul>
-      </div>
+    <div class="footer-column links-column">
+      <h4 class="sub-title">روابط سريعة</h4>
+      <ul class="footer-links">
+        <li><a href="#" class="custom-link">الرئيسية</a></li>
+        <li><a href="#" class="custom-link">من نحن</a></li>
+        <li><a href="#" class="custom-link">البرامج</a></li>
+        <li><a href="#" class="custom-link">اتصل بنا</a></li>
+      </ul>
+    </div>
 
-      <!-- Social -->
-      <div class="footer-section">
-        <h6 class="footer-title">{{ 'FOOTER.FOLLOW' | translate }}</h6>
-        <div class="footer-social">
-          <a href="#" class="footer-icon"><i class="bi bi-facebook"></i></a>
-          <a href="#" class="footer-icon"><i class="bi bi-twitter"></i></a>
-          <a href="#" class="footer-icon"><i class="bi bi-github"></i></a>
-        </div>
-      </div>
+    <div class="footer-column contact-column">
+      <h4 class="sub-title">سياستنا</h4>
+      <ul class="footer-contact">
+        <li>
+          <p class="paragraph">سياسة الخصوصية</p>
+        </li>
+        <li>
+          <p class="paragraph">شروط الاستخدام</p>
+        </li>
+        <li>
+          <p class="paragraph">سياسة ملفات تعريف الارتباط</p>
+        </li>
+      </ul>
+    </div>
+
+    <div class="footer-column newsletter-column">
+      <h4 class="sub-title">تابعنا على</h4>
+      <ul class="footer-contact">
+        <li>
+          <p class="paragraph">فيسبوك</p>
+        </li>
+        <li>
+          <p class="paragraph">انستاجرام</p>
+        </li>
+        <li>
+          <p class="paragraph">منصة إكس</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="container footer-bottom-content">
+      <p class="paragraph copyright-text">
+        &copy;2026 مدارس بوابة المعالي، كل الحقوق محفوظة
+      </p>
     </div>
   </div>
 </footer>

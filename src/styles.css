@@ -97,6 +97,8 @@ button {
   --font-lg: 1.8rem;
   --font-xl: 2.4rem;
   --font-2xl: 3rem;
+  --font-3xl: 4rem;
+  --font-6xl: 6.2rem;
 
   /* Font weight */
   --font-weight-normal: 400;
@@ -116,6 +118,7 @@ button {
   --radius-sm: 0.5rem;
   --radius-md: 0.8rem;
   --radius-lg: 1.6rem;
+  --radius-3xlg: 3rem;
   --radius-full: 9999px;
 }
 
@@ -151,12 +154,6 @@ button {
   /* Borders & Shadows */
   --color-border: var(--color-gray-200);
 
-  /* Font Sizes */
-  --font-sm: 1.5rem;
-  --font-base: 1.7rem;
-  --font-lg: 1.9rem;
-  --font-xl: 2.6rem;
-  --font-2xl: 3.2rem;
 }
 
 /* =========================================================
@@ -300,8 +297,16 @@ html[dir="rtl"] .icon-flip {
   TYPOGRAPHY BASE
 ========================================================= */
 .hero-title {
-  font-size: var(--font-2xl);
+  font-size: var(--font-6xl);
   font-weight: var(--font-weight-bold);
+  margin-bottom: var(--space-md);
+  color: var(--color-text-light-bg);
+  line-height: 2;
+}
+
+.hero-subtitle {
+  font-size: var(--font-3xl);
+  font-weight: var(--font-weight-medium);
   margin-bottom: var(--space-md);
   color: var(--color-text-light-bg);
 }
