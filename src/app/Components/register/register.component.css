@@ -4,9 +4,12 @@
   width: 100%;
   min-height: 100vh;
   overflow: hidden;
-  background-color: var(--color-bg);
-  color: var(--color-text);
   transition: all 0.4s ease-in-out;
+  color: var(--color-text-light-bg);
+}
+
+input::placeholder {
+  color: var(--color-text-light-bg);
 }
 
 /* === Left Visual Section (65%) === */
@@ -30,6 +33,7 @@
     transform: scale(1);
     opacity: 0.95;
   }
+
   100% {
     transform: scale(1.1);
     opacity: 1;
@@ -55,6 +59,7 @@
   height: 80px;
   transition: transform 0.4s ease, filter 0.3s ease;
 }
+
 .register-logo:hover {
   transform: rotate(-8deg) scale(1.1);
   filter: brightness(1.15);
@@ -68,6 +73,7 @@
   color: var(--color-text);
   transition: all 0.3s ease;
 }
+
 .cool-input:focus {
   border-color: var(--color-primary-400);
   box-shadow: 0 0 12px rgba(0, 102, 255, 0.3);
@@ -86,6 +92,7 @@
   position: relative;
   overflow: hidden;
 }
+
 .cool-btn:hover:not(:disabled) {
   transform: translateY(-3px) scale(1.03);
   box-shadow: 0 6px 18px rgba(0, 102, 255, 0.4);
@@ -100,6 +107,7 @@
   z-index: 0;
   transition: transform 0.6s ease;
 }
+
 .shape-1 {
   width: 120px;
   height: 120px;
@@ -108,6 +116,7 @@
   right: 15%;
   animation: float 7s ease-in-out infinite alternate;
 }
+
 .shape-2 {
   width: 90px;
   height: 90px;
@@ -116,6 +125,7 @@
   left: 20%;
   animation: float 8s ease-in-out infinite alternate-reverse;
 }
+
 .shape-3 {
   width: 70px;
   height: 70px;
@@ -128,9 +138,11 @@
 .register-form:hover .shape-1 {
   transform: rotate(25deg) scale(1.2);
 }
+
 .register-form:hover .shape-2 {
   transform: rotate(-20deg) scale(1.1);
 }
+
 .register-form:hover .shape-3 {
   transform: rotate(15deg) scale(1.05);
 }
@@ -139,6 +151,7 @@
   0% {
     transform: translateY(0);
   }
+
   100% {
     transform: translateY(-25px);
   }
@@ -149,6 +162,7 @@
   font-size: 1.3rem;
   color: var(--color-danger-400);
 }
+
 .alert {
   font-size: var(--font-sm);
   border-radius: var(--radius-md);
@@ -159,54 +173,11 @@
   .register-visual {
     display: none;
   }
+
   .register-content {
     flex: 1;
     padding: 2rem;
   }
-}
-
-/* === RTL & LTR Support === */
-
-/* Default (LTR) — Image Left, Form Right */
-:host-context([dir='ltr']) .register-page {
-  flex-direction: row;
-  text-align: left;
-}
-
-/* RTL — Image Right, Form Left */
-:host-context([dir='rtl']) .register-page {
-  flex-direction: row-reverse;
-  text-align: right;
-}
-
-/* Fix shape positions for RTL */
-:host-context([dir='rtl']) .shape-1 {
-  left: 15%;
-  right: auto;
-}
-:host-context([dir='rtl']) .shape-2 {
-  right: 20%;
-  left: auto;
-}
-:host-context([dir='rtl']) .shape-3 {
-  left: 10%;
-  right: auto;
-}
-
-/* === Dark Mode === */
-[data-theme='dark'] .register-content {
-  background-color: var(--color-bg-secondary);
-}
-[data-theme='dark'] .cool-input {
-  background-color: var(--color-bg);
-  color: var(--color-text-light-bg);
-  border-color: var(--color-gray-300);
-}
-[data-theme='dark'] .cool-btn {
-  background: linear-gradient(135deg, var(--color-primary-300), var(--color-primary-500));
-}
-[data-theme='dark'] .register-logo:hover {
-  filter: brightness(1.25);
 }
 
 
