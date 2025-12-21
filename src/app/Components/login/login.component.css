@@ -5,7 +5,11 @@
   min-height: 100vh;
   overflow: hidden;
   background-color: var(--color-bg);
-  color: var(--color-text);
+  color: var(--color-text-light-bg);
+}
+
+input::placeholder {
+  color: var(--color-text-light-bg);
 }
 
 /* === Left Visual Section (65%) === */
@@ -164,4 +168,3 @@
     padding: 2rem;
   }
 }
-
