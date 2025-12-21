@@ -1,4 +1,6 @@
-.app-footer {}
+.app-footer {
+  margin-top: 4rem;
+}
 
 .footer-main {
   display: flex;

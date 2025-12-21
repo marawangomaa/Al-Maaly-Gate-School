@@ -195,9 +195,9 @@ html[dir="rtl"] .icon-flip {
 /* container */
 .container {
   width: 100%;
-  height: 100%;
   max-width: 1440px;
   margin: 0 auto;
+  padding: 0;
 }
 
 /* Buttons */

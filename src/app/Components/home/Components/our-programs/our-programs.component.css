@@ -29,8 +29,8 @@
 /* Individual Feature Card Styling */
 .feature-card {
   flex: 1;
-  width: 489.2px;
-  height: 432px;
+  max-width: 489.2px;
+  max-height: 432px;
   border-radius: 3rem;
   overflow: hidden;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
@@ -90,7 +90,7 @@
 
 .paragraph {
   font-size: var(--font-3xl);
-  width: 70%;
+  width: 80%;
   margin: 0 auto;
 }
 

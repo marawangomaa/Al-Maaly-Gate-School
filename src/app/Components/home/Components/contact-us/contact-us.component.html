@@ -12,25 +12,37 @@
           <!-- Placeholder for Phone Icon -->
           <img src="assets/images/Contact.svg" alt="phone number" />
           <p class="paragraph">
-            +966 50 123 4567
+            +966 016 369 3555
             <br />
-            +966 11 123 4567
+            +966 016 369 4555
           </p>
         </div>
         <div class="info-item">
           <!-- Placeholder for Email Icon -->
           <img src="assets/images/Mail.svg" alt="mail" />
-          <p class="paragraph">
-            infocompany.com
-            <br />
-            supportcompany.com
-          </p>
+          <p class="paragraph">{{ contactInfo.email }}</p>
+        </div>
+        <div class="info-item">
+          <p class="paragraph">Address:</p>
+          <p class="paragraph">{{ contactInfo.address }}</p>
+        </div>
+        <div class="info-item">
+          <p class="paragraph">Mailing Box Address:</p>
+          <p class="paragraph">{{ contactInfo.MaillingBox }}</p>
         </div>
       </div>
 
       <div class="map-container">
-        <!-- Placeholder for Map Image -->
-        <img src="map-placeholder.png" alt="Location Map" class="map-image" />
+        <iframe
+          class="map-iframe"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d927758.0377266746!2d46.16296366602666!3d24.72499765722435!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e2f03890d489399%3A0xba974d1c98e79fd5!2sRiyadh%20Saudi%20Arabia!5e0!3m2!1sen!2seg!4v1766352877459!5m2!1sen!2seg"
+          width="600"
+          height="450"
+          style="border: 0"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
       </div>
     </div>
     <div class="contact-form-container">

@@ -11,7 +11,13 @@ import { TranslateModule } from '@ngx-translate/core';
 export class ContactUsComponent {
   contactForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  contactInfo = {
+    email: 'aischools555@gmail.com',
+    address: 'Al Qassim - Buraidah - Al Matar Al Qadeem - Al Wehda Street',
+    MaillingBox: 'P.O.Box: 259 Buraidah 51411'
+  };
+
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.contactForm = this.fb.group({
