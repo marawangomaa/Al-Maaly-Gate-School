@@ -1,0 +1,105 @@
+.accordion-container {}
+
+/* Custom Accordion Item Styling */
+.custom-accordion-item {
+    margin-bottom: var(--space-md);
+    border: none;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background-color: transparent;
+}
+
+.paragraph {
+    color: var(--color-text-dark-bg);
+}
+
+/* Custom Accordion Button/Header Styling */
+.custom-accordion-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: var(--space-lg) var(--space-xl);
+    background-color: var(--color-primary-400);
+    color: var(--color-text-dark-bg);
+    text-align: right;
+    border: none;
+    border-radius: var(--radius-lg);
+    font-size: var(--font-xl);
+    font-weight: var(--font-weight-bold);
+    transition: background-color 0.3s ease;
+    box-shadow: none;
+}
+
+.custom-accordion-button:not(.collapsed) {
+    background-color: var(--color-primary-500);
+    color: var(--color-text-dark-bg);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.custom-accordion-button:focus {
+    box-shadow: none;
+    border-color: transparent;
+}
+
+.accordion-title {
+    flex-grow: 1;
+    margin-right: var(--space-lg);
+}
+
+/* Custom Icon Styling */
+.accordion-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: var(--radius-full);
+    background-color: var(--color-text-dark-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    position: relative;
+}
+
+/* Chevron Icon (using CSS for simplicity, Font Awesome or SVG is better) */
+.accordion-icon::before {
+    content: '<';
+    font-size: 2rem;
+    color: var(--color-primary-400);
+    transform: rotate(90deg);
+    transition: transform 0.3s ease;
+    display: block;
+}
+
+.custom-accordion-button.collapsed .accordion-icon::before {
+    transform: rotate(180deg);
+}
+
+/* Custom Accordion Body Styling */
+.custom-accordion-body {
+    padding: var(--space-lg) var(--space-xl);
+    background-color: var(--color-primary-400);
+    color: var(--color-text-dark-bg);
+    border-top: 2px solid #1a1a1a;
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+.custom-accordion-body p {
+    color: var(--color-text-dark-bg);
+    line-height: 1.8;
+}
+
+/* Fix for Bootstrap's default accordion styling */
+.accordion-button::after {
+    display: none;
+}
+
+.accordion-item:last-of-type .accordion-collapse {
+    border-bottom-right-radius: var(--radius-lg);
+    border-bottom-left-radius: var(--radius-lg);
+}
+
+.accordion-item:first-of-type {
+    border-top-left-radius: var(--radius-lg);
+    border-top-right-radius: var(--radius-lg);
+}
