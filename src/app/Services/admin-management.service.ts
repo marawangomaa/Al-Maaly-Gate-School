@@ -142,6 +142,14 @@ export class AdminManagementService {
       this.http.post<ApiResponse<boolean>>(url, {}, { headers: this.headers })
     );
   }
+  //unassign Teacher From Subject
+  UnAssignTeacherFromSubject(teacherId: string, subjectId: string): Observable<boolean> 
+  {
+    const url = `${this.apiUrl}/teachers/unassign-subject?teacherId=${encodeURIComponent(teacherId)}&subjectId=${encodeURIComponent(subjectId)}`;
+    return ApiResponseHandler.handleApiResponse<boolean>(
+      this.http.post<ApiResponse<boolean>>(url,{},{ headers: this.headers })
+    );
+  }
   getTeachersByClass(classId: string): Observable<any> {
     return this.http.get<ApiResponse<any>>(`${this.apiUrl}/teachers/class/${classId}`, { headers: this.headers });
   }
