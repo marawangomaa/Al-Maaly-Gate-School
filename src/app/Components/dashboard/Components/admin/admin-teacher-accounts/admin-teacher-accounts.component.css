@@ -1,0 +1,197 @@
+/* admin-teachers.component.css */
+
+/* Main Container */
+.admin-teachers-container {
+  padding: var(--space-lg);
+  background-color: var(--color-bg);
+  min-height: 100vh;
+  color: var(--color-text-light-bg);
+}
+
+/* Teacher Card Customizations */
+.teacher-info {
+  padding: var(--space-md) 0;
+  border-bottom: 1px solid var(--color-gray-200);
+  margin-bottom: var(--space-md);
+}
+
+.teacher-info:last-child {
+  border-bottom: none;
+}
+
+/* Status Badge Colors */
+.badge.bg-pending {
+  background-color: rgba(245, 158, 11, 0.1) !important;
+  color: #f59e0b !important;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.badge.bg-active {
+  background-color: rgba(72, 187, 120, 0.1) !important;
+  color: #48bb78 !important;
+  border: 1px solid rgba(72, 187, 120, 0.2);
+}
+
+.badge.bg-rejected {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+  color: #ef4444 !important;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.badge.bg-blocked {
+  background-color: rgba(107, 114, 128, 0.1) !important;
+  color: #6b7280 !important;
+  border: 1px solid rgba(107, 114, 128, 0.2);
+}
+
+/* Action Buttons Group */
+.action-buttons {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  margin-top: var(--space-md);
+}
+
+/* Filter Buttons Active State Enhancement */
+.btn-outline-secondary.active,
+.btn-outline-secondary.btn-primary {
+  background-color: var(--color-primary-400) !important;
+  color: var(--color-text-dark-bg) !important;
+  border-color: var(--color-primary-400) !important;
+}
+
+/* Empty State Styling */
+.empty-state {
+  background-color: var(--color-bg-secondary);
+  border: 2px dashed var(--color-gray-300);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2xl) var(--space-xl);
+  text-align: center;
+}
+
+.empty-state i {
+  color: var(--color-gray-400);
+  margin-bottom: var(--space-lg);
+}
+
+/* Card Header Status Alignment */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}
+
+.card-header h5 {
+  margin: 0;
+  flex: 1;
+  min-width: 200px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .admin-teachers-container {
+    padding: var(--space-md);
+  }
+  
+  .header-section .d-flex {
+    justify-content: center;
+  }
+  
+  .header-section h2 {
+    text-align: center;
+    margin-bottom: var(--space-lg);
+  }
+  
+  .card-header {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--space-sm);
+  }
+  
+  .card-header h5 {
+    min-width: auto;
+  }
+  
+  .action-buttons {
+    justify-content: center;
+  }
+  
+  .action-buttons .btn {
+    flex: 1;
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 576px) {
+  .col-md-6.col-lg-4 {
+    width: 100%;
+  }
+  
+  .badge {
+    font-size: var(--font-xs);
+    padding: var(--space-xs) var(--space-sm);
+  }
+  
+  .btn-sm {
+    padding: var(--space-xs) var(--space-sm);
+    font-size: var(--font-xs);
+  }
+}
+
+/* RTL Support */
+html[dir="rtl"] .card-header {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .action-buttons {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .me-1,
+html[dir="rtl"] .me-2 {
+  margin-right: 0;
+  margin-left: var(--space-sm);
+}
+
+html[dir="rtl"] .me-2 {
+  margin-left: var(--space-md);
+}
+
+/* Loading Spinner Animation */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner-border {
+  animation: spin 1s linear infinite;
+}
+
+/* Hover Effects Enhancement */
+.grade-card:hover .card-header {
+  background-color: var(--color-primary-50);
+  transition: background-color 0.3s ease;
+}
+
+/* Status-specific hover effects */
+.badge.bg-pending:hover {
+  background-color: rgba(245, 158, 11, 0.2) !important;
+}
+
+.badge.bg-active:hover {
+  background-color: rgba(72, 187, 120, 0.2) !important;
+}
+
+.badge.bg-rejected:hover {
+  background-color: rgba(239, 68, 68, 0.2) !important;
+}
+
+.badge.bg-blocked:hover {
+  background-color: rgba(107, 114, 128, 0.2) !important;
+}

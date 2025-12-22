@@ -6,6 +6,8 @@ import { ApiResponseHandler } from '../utils/api-response-handler';
 import { Teacher } from '../Interfaces/teacher';
 import { ApiResponse } from '../Interfaces/auth';
 import { BulkAssignTeachersDto, CreateTeacherDto, ServiceResult, TeacherAdminViewDto, TeacherDetailsDto, TeacherViewDto, UpdateTeacherDto } from '../Interfaces/iteacher';
+import { SubjectViewDto } from '../Interfaces/isubject';
+import { ClassViewDto } from '../Interfaces/iclass';
 
 @Injectable({
   providedIn: 'root'
@@ -104,5 +106,22 @@ export class TeacherService {
     );
   }
 
+  // NEW: Get teachers not assigned to a class
+  getTeachersNotAssignedToClass(classId: string): Observable<ApiResponse<TeacherViewDto[]>> {
+    return this.http.get<ApiResponse<TeacherViewDto[]>>(
+      `${this.apiUrl}/not-assigned/class/${classId}`
+    );
+  }
+
+  getTeacherSubjects(teacherId: string): Observable<ServiceResult<SubjectViewDto[]>> {
+    return this.http.get<ServiceResult<SubjectViewDto[]>>(
+      `${this.apiUrl}/${teacherId}/subjects`
+    );
+  }
+  getTeacherClasses(teacherId: string): Observable<ServiceResult<ClassViewDto[]>> {
+    return this.http.get<ServiceResult<ClassViewDto[]>>(
+      `${this.apiUrl}/${teacherId}/classes`
+    );
+  }
 }
 

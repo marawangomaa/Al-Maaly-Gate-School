@@ -43,5 +43,6 @@ export class DashboardNavComponent {
 
   logout() {
     this.auth.logout();
+    this.router.navigate(['/login']);
   }
 }

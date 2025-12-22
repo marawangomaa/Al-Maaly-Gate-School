@@ -33,9 +33,14 @@ export class GradeService {
     return this.http.get<ApiResponse<GradeWithDetailsDto>>(`${this.apiUrl}/${id}/with-details`);
   }
 
-  // NEW: Get grades by curriculum
+  // Get grades by curriculum
   getByCurriculum(curriculumId: string): Observable<ApiResponse<GradeViewDto[]>> {
     return this.http.get<ApiResponse<GradeViewDto[]>>(`${this.apiUrl}/curriculum/${curriculumId}`);
+  }
+
+  // Get grade count
+  getCount(): Observable<ApiResponse<number>> {
+    return this.http.get<ApiResponse<number>>(`${this.apiUrl}/count`);
   }
 
   create(grade: CreateGradeDto): Observable<ApiResponse<GradeViewDto>> {
@@ -50,7 +55,7 @@ export class GradeService {
     return this.http.delete<ApiResponse<boolean>>(`${this.apiUrl}/${id}`);
   }
 
-  // NEW: Check if grade exists
+  // Check if grade exists
   exists(id: string): Observable<ApiResponse<boolean>> {
     return this.http.get<ApiResponse<boolean>>(`${this.apiUrl}/exists/${id}`);
   }
@@ -100,12 +105,12 @@ export class GradeService {
     return this.http.post<ApiResponse<boolean>>(`${this.apiUrl}/bulk-move-classes`, dto);
   }
 
-  // NEW: Check if grade has classes
+  // Check if grade has classes
   hasClasses(gradeId: string): Observable<ApiResponse<boolean>> {
     return this.http.get<ApiResponse<boolean>>(`${this.apiUrl}/${gradeId}/has-classes`);
   }
 
-  // NEW: Check if grade has subjects
+  // Check if grade has subjects
   hasSubjects(gradeId: string): Observable<ApiResponse<boolean>> {
     return this.http.get<ApiResponse<boolean>>(`${this.apiUrl}/${gradeId}/has-subjects`);
   }

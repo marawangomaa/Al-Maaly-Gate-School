@@ -31,7 +31,7 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
   // Main data arrays
   allClasses: ClassViewDto[] = [];
   filteredClasses: ClassViewDto[] = [];
-  allTeachers: Teacher[] = [];
+  allTeachers: any[] = [];
   filteredTeachers: Teacher[] = [];
   allGrades: GradeViewDto[] = [];
   allCurricula: Curriculum[] = []; // Added
@@ -371,27 +371,27 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
   // ========== TEACHER MANAGEMENT METHODS ==========
 
   loadAllTeachers(): void {
-    if (!this.selectedClassId) return;
+  if (!this.selectedClassId) return;
 
-    this.subscription.add(
-      this.teacherService.GetAllTeachers().subscribe({
-        next: teachers => {
-          this.allTeachers = teachers.filter(teacher => {
-            const isAssigned = teacher.classNames?.some(className =>
-              className.toLowerCase().includes(this.selectedClassId!.toLowerCase())
-            );
-            return !isAssigned;
-          });
-          this.filteredTeachers = [...this.allTeachers];
-        },
-        error: err => {
-          console.error('Error loading teachers:', err);
-          this.allTeachers = [];
-          this.filteredTeachers = [];
-        }
-      })
-    );
-  }
+  // Use the new service method to get teachers NOT assigned to this class
+  this.teacherService.getTeachersNotAssignedToClass(this.selectedClassId).subscribe({
+    next: (response) => {
+      if (response.success && response.data) {
+        this.allTeachers = response.data;
+        this.filteredTeachers = [...this.allTeachers];
+      } else {
+        console.error('Error loading teachers:', response.message);
+        this.allTeachers = [];
+        this.filteredTeachers = [];
+      }
+    },
+    error: (err) => {
+      console.error('Error loading teachers:', err);
+      this.allTeachers = [];
+      this.filteredTeachers = [];
+    }
+  });
+}
 
   openAssignTeacherModal(classId: string): void {
     this.selectedClassId = classId;
@@ -399,18 +399,26 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
   }
 
   assignTeacherToClass(teacherId: string, classId: string): void {
-    this.adminManagementService.AssignTeacherToClass(teacherId, classId).subscribe({
-      next: (result) => {
+  this.adminManagementService.AssignTeacherToClass(teacherId, classId).subscribe({
+    next: (result) => {
+      if (result) {
         this.showSuccess("Teacher assigned successfully!");
+        // Refresh the teacher list (remove assigned teacher)
+        this.allTeachers = this.allTeachers.filter(t => t.id !== teacherId);
+        this.filteredTeachers = this.filteredTeachers.filter(t => t.id !== teacherId);
+        // Refresh class details
+        this.loadClassTeachers(classId);
         this.loadAllClasses();
-        this.closeModal('assignTeacherModal');
-      },
-      error: (error) => {
-        console.error('Error assigning teacher to class:', error);
-        alert(error.message || 'Failed to assign teacher');
+      } else {
+        alert(result || 'Failed to assign teacher');
       }
-    });
-  }
+    },
+    error: (error) => {
+      console.error('Error assigning teacher to class:', error);
+      alert(error.message || 'Failed to assign teacher');
+    }
+  });
+}
 
   selectTeacher(teacherId: string): void {
     if (!this.selectedClassId) return;

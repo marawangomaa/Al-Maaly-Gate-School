@@ -153,9 +153,9 @@
       <button class="btn btn-success btn-sm" (click)="exportClassData(c.id, c.className)" title="Export Data">
         <i class="fas fa-download"></i>
       </button>
-      <button class="btn btn-warning btn-sm" (click)="moveClassToGrade(c.id, c.className)" title="Move to Another Grade">
+      <!-- <button class="btn btn-warning btn-sm" (click)="moveClassToGrade(c.id, c.className)" title="Move to Another Grade">
         <i class="fas fa-exchange-alt"></i>
-      </button>
+      </button> -->
       <button class="btn btn-danger btn-sm" (click)="deleteClass(c.id, c.className)" title="Delete Class">
         <i class="fas fa-trash"></i>
       </button>
@@ -494,9 +494,9 @@
 
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-warning" (click)="moveClassToGrade(selectedClass!.id, selectedClass!.className)">
+        <!-- <button type="button" class="btn btn-warning" (click)="moveClassToGrade(selectedClass!.id, selectedClass!.className)">
           <i class="fas fa-exchange-alt me-1"></i> Move Class
-        </button>
+        </button> -->
         <button type="button" class="btn btn-success" (click)="exportClassData(selectedClass!.id, selectedClass!.className)">
           <i class="fas fa-download me-1"></i> Export Data
         </button>

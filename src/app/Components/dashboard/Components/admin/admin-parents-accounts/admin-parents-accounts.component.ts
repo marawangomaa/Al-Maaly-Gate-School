@@ -30,7 +30,7 @@ export class AdminParentsAccountsComponent {
   searchResults: istudentSearchResult[] = [];
   isSearching: boolean = false;
   selectedStudent: any = null;
-  relation: string = 'Parent';
+  relation: string = 'father'; // Changed default to 'father'
   isAssigning: boolean = false;
   hasPerformedSearch: boolean = false;
 
@@ -50,6 +50,36 @@ export class AdminParentsAccountsComponent {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  // Add missing method: getStatusDisplayName
+  getStatusDisplayName(status: AccountStatus | 'all'): string {
+    switch(status) {
+      case 'all':
+        return 'parents.statusDisplay.all';
+      case AccountStatus.Pending:
+        return 'parents.statusDisplay.pending';
+      case AccountStatus.Active:
+        return 'parents.statusDisplay.active';
+      case AccountStatus.Rejected:
+        return 'parents.statusDisplay.rejected';
+      case AccountStatus.Blocked:
+        return 'parents.statusDisplay.blocked';
+      default:
+        return 'parents.statusDisplay.all';
+    }
+  }
+
+  // Add missing method: openAssignModal
+  openAssignModal(parentId: string, parentName: string): void {
+    this.selectedParentIdForModal = parentId;
+    this.selectedParentNameForModal = parentName;
+    this.showAssignModal = true;
+    this.searchQuery = '';
+    this.searchResults = [];
+    this.selectedStudent = null;
+    this.relation = 'father';
+    this.hasPerformedSearch = false;
   }
 
   filteredParents() {
@@ -76,7 +106,6 @@ export class AdminParentsAccountsComponent {
     return this.convertToAccountStatus(Parent.accountStatus) === AccountStatus.Blocked;
   }
 
-
   convertToAccountStatus(status: string | AccountStatus): AccountStatus {
     if (typeof status === 'number') {
       return status;
@@ -100,24 +129,26 @@ export class AdminParentsAccountsComponent {
     }
   }
 
+  // Update getStatusName to use translation
   getStatusName(status: string | AccountStatus): string {
-    const accountStatus = typeof status === 'string'
-      ? this.convertToAccountStatus(status)
-      : status;
-
+    const accountStatus = this.convertToAccountStatus(status);
+    
     switch (accountStatus) {
-      case AccountStatus.Pending: return 'قيد الانتظار';
-      case AccountStatus.Active: return 'نشط';
-      case AccountStatus.Blocked: return 'محظور';
-      case AccountStatus.Rejected: return 'مرفوض';
-      default: return 'غير معروف';
+      case AccountStatus.Pending: 
+        return this.translate.instant('parents.status.pending');
+      case AccountStatus.Active: 
+        return this.translate.instant('parents.status.active');
+      case AccountStatus.Blocked: 
+        return this.translate.instant('parents.status.blocked');
+      case AccountStatus.Rejected: 
+        return this.translate.instant('parents.status.rejected');
+      default: 
+        return this.translate.instant('parents.status.pending');
     }
   }
 
   getStatusColor(status: string | AccountStatus): string {
-    const accountStatus = typeof status === 'string'
-      ? this.convertToAccountStatus(status)
-      : status;
+    const accountStatus = this.convertToAccountStatus(status);
 
     switch (accountStatus) {
       case AccountStatus.Pending: return 'warning';
@@ -128,30 +159,28 @@ export class AdminParentsAccountsComponent {
     }
   }
 
-  ApproveParentAction(ParentId: string): void {
-
+  // Updated ApproveParentAction to use modal instead of immediate approval
+  ApproveParentAction(parentId: string): void {
     const adminUserId = this.authService.userId;
     if (!adminUserId) {
-      alert('لم يتم العثور على معرف مسؤول. يرجى تسجيل الدخول مرة أخرى.');
+      alert(this.translate.instant('parents.messages.adminNotFound'));
       return;
     }
 
-    const parent = this.allparents.find(t => t.id === ParentId);
+    const parent = this.allparents.find(t => t.id === parentId);
     if (!parent) {
-      alert('لم يتم العثور على الحساب');
+      alert(this.translate.instant('parents.messages.accountNotFound'));
       return;
     }
 
-    this.selectedParentIdForModal = ParentId;
-    this.selectedParentNameForModal = parent.fullName;
-    this.showAssignModal = true;
-
+    // Open modal for student assignment
+    this.openAssignModal(parentId, parent.fullName);
   }
 
   private approveParentAccountAfterAssignment(parentId: string): void {
     const adminUserId = this.authService.userId;
     if (!adminUserId) {
-      alert('لم يتم العثور على معرف مسؤول. يرجى تسجيل الدخول مرة أخرى.');
+      alert(this.translate.instant('parents.messages.adminNotFound'));
       return;
     }
 
@@ -159,19 +188,19 @@ export class AdminParentsAccountsComponent {
       this.adminService.ApproveAccount(parentId, adminUserId, 'parent').subscribe({
         next: (result) => {
           if (result) {
-            alert('✅ تمت الموافقة على الحساب بنجاح');
+            alert(this.translate.instant('parents.messages.approved'));
             // Update UI locally
             const parent = this.allparents.find(t => t.id === parentId);
             if (parent) {
               parent.accountStatus = AccountStatus.Active;
             }
           } else {
-            alert('❌ فشل في الموافقة على الحساب');
+            alert(this.translate.instant('parents.messages.approveFailed'));
           }
         },
         error: (err) => {
           console.error('Approval error:', err);
-          alert(`❌ خطأ في الموافقة على الحساب: ${err.message}`);
+          alert(`${this.translate.instant('parents.messages.error')}: ${err.message}`);
         }
       })
     );
@@ -179,7 +208,7 @@ export class AdminParentsAccountsComponent {
 
   searchStudentsInPopup(parentId: string): void {
     if (this.searchQuery.length < 2) {
-      alert('يرجى كتابة حرفين على الأقل للبحث');
+      alert(this.translate.instant('parents.modal.minChars'));
       return;
     }
 
@@ -190,12 +219,12 @@ export class AdminParentsAccountsComponent {
     this.subscription.add(
       this._StudentService.searchStudents(this.searchQuery, parentId).subscribe({
         next: (results: ApiResponse<istudentSearchResult[]>) => {
-          console.log('نتائج البحث عن الطلاب:', results);
+          console.log('Search results:', results);
           this.searchResults = results.data || [];
           this.isSearching = false;
         },
         error: (err) => {
-          alert(`خطأ في البحث: ${err.message}`);
+          alert(`${this.translate.instant('parents.messages.error')}: ${err.message}`);
           this.isSearching = false;
           this.searchResults = [];
         }
@@ -209,9 +238,17 @@ export class AdminParentsAccountsComponent {
 
   assignStudentToParentInPopup(): void {
     if (!this.selectedStudent) {
-      alert('يرجى اختيار طالب');
+      alert(this.translate.instant('parents.messages.selectStudent'));
       return;
     }
+
+    if (this.selectedStudent.isInRelation) {
+      alert(this.translate.instant('parents.messages.alreadyAssigned'));
+      return;
+    }
+
+    const confirmation = confirm(this.translate.instant('parents.confirmations.assignStudent'));
+    if (!confirmation) return;
 
     this.isAssigning = true;
 
@@ -221,16 +258,16 @@ export class AdminParentsAccountsComponent {
           this.isAssigning = false;
 
           if (result.data) {
-            alert(`تم تعيين الطالب ${this.selectedStudent.fullName} بنجاح`);
+            alert(`${this.translate.instant('parents.messages.assignSuccess')}: ${this.selectedStudent.fullName}`);
             this.approveParentAccountAfterAssignment(this.selectedParentIdForModal);
             this.closeAssignModal();
           } else {
-            alert('فشل في تعيين الطالب');
+            alert(this.translate.instant('parents.messages.assignFailed'));
           }
         },
         error: err => {
           this.isAssigning = false;
-          alert(`خطأ في تعيين الطالب: ${err.message}`);
+          alert(`${this.translate.instant('parents.messages.error')}: ${err.message}`);
         }
       })
     );
@@ -243,95 +280,112 @@ export class AdminParentsAccountsComponent {
     this.searchQuery = '';
     this.searchResults = [];
     this.selectedStudent = null;
-    this.relation = 'Parent';
+    this.relation = 'father';
     this.isSearching = false;
     this.isAssigning = false;
+    this.hasPerformedSearch = false;
   }
 
-  RejectParentAction(ParentId: string): void {
-    if (!confirm('هل أنت متأكد من رغبتك في رفض هذا الحساب')) return;
+  // Update RejectParentAction to use translation
+  async RejectParentAction(parentId: string): Promise<void> {
+    const confirmation = confirm(this.translate.instant('parents.confirmations.reject'));
+    if (!confirmation) return;
+    
     const adminUserId = this.authService.userId;
     if (!adminUserId) {
-      alert('لم يتم العثور على معرف مسؤول. يرجى تسجيل الدخول مرة أخرى.');
+      alert(this.translate.instant('parents.messages.adminNotFound'));
       return;
     }
+    
     this.subscription.add(
-      this.adminService.RejectAccount(ParentId, adminUserId, 'parent').subscribe({
+      this.adminService.RejectAccount(parentId, adminUserId, 'parent').subscribe({
         next: result => {
           if (result) {
-            alert('تم رفض الحساب بنجاح');
+            alert(this.translate.instant('parents.messages.rejected'));
             // Update UI locally
-            const parent = this.allparents.find(t => t.id === ParentId);
+            const parent = this.allparents.find(t => t.id === parentId);
             if (parent) parent.accountStatus = AccountStatus.Rejected;
           }
           else {
-            alert('فشل في رفض الحساب');
+            alert(this.translate.instant('parents.messages.rejectFailed'));
           }
         },
-        error: err => alert(`خطأ في رفض الحساب: ${err.message}`)
+        error: err => alert(`${this.translate.instant('parents.messages.error')}: ${err.message}`)
       })
     );
   }
 
-  BlockParentAction(ParentId: string): void {
-    if (!confirm('هل أنت متأكد من رغبتك في حظر هذا الحساب')) return;
+  // Update BlockParentAction to use translation
+  async BlockParentAction(parentId: string): Promise<void> {
+    const confirmation = confirm(this.translate.instant('parents.confirmations.block'));
+    if (!confirmation) return;
+    
     const adminUserId = this.authService.userId;
     if (!adminUserId) {
-      alert('لم يتم العثور على معرف مسؤول. يرجى تسجيل الدخول مرة أخرى.');
+      alert(this.translate.instant('parents.messages.adminNotFound'));
       return;
     }
 
     this.subscription.add(
-      this.adminService.BlockAccount(ParentId, adminUserId, 'parent').subscribe({
+      this.adminService.BlockAccount(parentId, adminUserId, 'parent').subscribe({
         next: result => {
           if (result) {
-            alert('تم حظر الحساب بنجاح');
+            alert(this.translate.instant('parents.messages.blocked'));
             // Update UI locally
-            const parent = this.allparents.find(t => t.id === ParentId);
+            const parent = this.allparents.find(t => t.id === parentId);
             if (parent) parent.accountStatus = AccountStatus.Blocked;
           }
           else {
-            alert('فشل في حظر الحساب');
+            alert(this.translate.instant('parents.messages.blockFailed'));
           }
         },
-        error: err => alert(`خطأ في حظر الحساب: ${err.message}`)
+        error: err => alert(`${this.translate.instant('parents.messages.error')}: ${err.message}`)
       })
     );
   }
 
-  UnblockParentAction(ParentId: string): void {
-    if (!confirm('هل أنت متأكد من رغبتك في فك حظر هذا الحساب')) return;
+  // Update UnblockParentAction to use translation
+  async UnblockParentAction(parentId: string): Promise<void> {
+    const confirmation = confirm(this.translate.instant('parents.confirmations.unblock'));
+    if (!confirmation) return;
+    
     const adminUserId = this.authService.userId;
     if (!adminUserId) {
-      alert('لم يتم العثور على معرف مسؤول. يرجى تسجيل الدخول مرة أخرى.');
+      alert(this.translate.instant('parents.messages.adminNotFound'));
       return;
     }
+    
     this.subscription.add(
-      this.adminService.UnblockAccount(ParentId, adminUserId, 'parent').subscribe({
+      this.adminService.UnblockAccount(parentId, adminUserId, 'parent').subscribe({
         next: result => {
           if (result) {
-            alert('تم فك حظر الحساب بنجاح');
+            alert(this.translate.instant('parents.messages.unblocked'));
             // Update UI locally
-            const parent = this.allparents.find(t => t.id === ParentId);
+            const parent = this.allparents.find(t => t.id === parentId);
             if (parent) parent.accountStatus = AccountStatus.Active;
           }
           else {
-            alert('فشل في فك حظر الحساب');
+            alert(this.translate.instant('parents.messages.unblockFailed'));
           }
         },
-        error: err => alert(`خطأ في فك حظر الحساب: ${err.message}`)
+        error: err => alert(`${this.translate.instant('parents.messages.error')}: ${err.message}`)
       })
     );
   }
 
   private LoadAllParents(): void {
+    this.isLoading = true;
     this.subscription.add(
       this._parentService.GetAllParents().subscribe({
         next: (response: ApiResponse<iparentViewDto[]>) => {
-          this.allparents = response.data;
+          this.allparents = response.data || [];
+          this.isLoading = false;
           console.log('All Parents:', response.data);
         },
-        error: err => alert(`خطأ في تحميل جميع الحسابات: ${err.message}`)
+        error: err => {
+          this.isLoading = false;
+          alert(`${this.translate.instant('parents.messages.loadError')}: ${err.message}`);
+        }
       })
     );
   }

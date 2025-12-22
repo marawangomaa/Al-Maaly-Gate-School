@@ -183,4 +183,13 @@ export class AdminManagementService {
       .map(key => `${key}=${params[key]}`)
       .join('&');
   }
+
+  // In admin-management.service.ts (or wherever you have assignment methods)
+  assignTeacherToClass(teacherId: string, classId: string): Observable<any> {
+    // Call the API endpoint to assign teacher to class
+    return this.http.post<any>(
+      `${this.apiUrl}/Teacher/${teacherId}/assign-to-class`,
+      { classId: classId }
+    );
+  }
 }

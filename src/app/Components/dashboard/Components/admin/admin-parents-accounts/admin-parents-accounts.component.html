@@ -1,327 +1,375 @@
-<div class="container mt-4">
-  <h3 class="main-title">إدارة حسابات الأولياء الأمور</h3>
-
-  <!-- أزرار الفلترة -->
-  <div class="mb-3 d-flex gap-2 flex-wrap">
-    <button
-      class="outline-btn"
-      [class.primary-btn]="selectedStatus === 'all'"
-      (click)="selectedStatus = 'all'"
-    >
-      جميع الأولياء الأمور
-    </button>
-    <button
-      class="outline-btn"
-      [class.primary-btn]="selectedStatus === accountStatusEnum.Pending"
-      (click)="selectedStatus = accountStatusEnum.Pending"
-    >
-      قيد الانتظار
-    </button>
-    <button
-      class="outline-btn"
-      [class.primary-btn]="selectedStatus === accountStatusEnum.Active"
-      (click)="selectedStatus = accountStatusEnum.Active"
-    >
-      نشط
-    </button>
-    <button
-      class="outline-btn"
-      [class.primary-btn]="selectedStatus === accountStatusEnum.Rejected"
-      (click)="selectedStatus = accountStatusEnum.Rejected"
-    >
-      مرفوض
-    </button>
-    <button
-      class="outline-btn"
-      [class.primary-btn]="selectedStatus === accountStatusEnum.Blocked"
-      (click)="selectedStatus = accountStatusEnum.Blocked"
-    >
-      محظور
-    </button>
+<div class="admin-teachers-container">
+  <!-- Header Section -->
+  <div class="header-section">
+    <h2>{{ 'parents.management' | translate }}</h2>
+    
+    <!-- Filter Buttons -->
+    <div class="d-flex gap-2 flex-wrap mb-4">
+      <button
+        class="btn btn-outline-secondary"
+        [class.btn-primary]="selectedStatus === 'all'"
+        (click)="selectedStatus = 'all'"
+      >
+        <i class="fas fa-users me-1"></i> {{ 'parents.allParents' | translate }}
+      </button>
+      <button
+        class="btn btn-outline-secondary"
+        [class.btn-primary]="selectedStatus === accountStatusEnum.Pending"
+        (click)="selectedStatus = accountStatusEnum.Pending"
+      >
+        <i class="fas fa-clock me-1"></i> {{ 'parents.pending' | translate }}
+      </button>
+      <button
+        class="btn btn-outline-secondary"
+        [class.btn-primary]="selectedStatus === accountStatusEnum.Active"
+        (click)="selectedStatus = accountStatusEnum.Active"
+      >
+        <i class="fas fa-check-circle me-1"></i> {{ 'parents.active' | translate }}
+      </button>
+      <button
+        class="btn btn-outline-secondary"
+        [class.btn-primary]="selectedStatus === accountStatusEnum.Rejected"
+        (click)="selectedStatus = accountStatusEnum.Rejected"
+      >
+        <i class="fas fa-times-circle me-1"></i> {{ 'parents.rejected' | translate }}
+      </button>
+      <button
+        class="btn btn-outline-secondary"
+        [class.btn-primary]="selectedStatus === accountStatusEnum.Blocked"
+        (click)="selectedStatus = accountStatusEnum.Blocked"
+      >
+        <i class="fas fa-ban me-1"></i> {{ 'parents.blocked' | translate }}
+      </button>
+    </div>
   </div>
 
-  <!-- عرض جميع الأولياء الأمور -->
-  <div class="row g-3">
-    <div *ngFor="let parent of filteredParents()" class="col-md-6 col-lg-4">
-      <div class="card p-3 h-100 d-flex flex-column justify-content-between">
-        <div>
-          <h5 class="sub-title mb-1">{{ parent.fullName }}</h5>
-          <p class="text-muted mb-1">
-            <i class="fas fa-envelope me-1"></i>
-            {{ parent.email }}
-          </p>
-          <p class="text-muted mb-1" *ngIf="parent.contactInfo">
-            <i class="fas fa-phone me-1"></i>
-            {{ parent.contactInfo }}
-          </p>
-        </div>
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">{{ 'parents.loading' | translate }}</span>
+    </div>
+    <p class="mt-3 text-muted">{{ 'parents.loadingParents' | translate }}</p>
+  </div>
 
-        <div class="mt-3 d-flex justify-content-between align-items-center">
-          <span
-            class="badge"
-            [ngClass]="'bg-' + getStatusColor(parent.accountStatus)"
-          >
+  <!-- Parents Grid -->
+  <div class="row g-4" *ngIf="!isLoading">
+    <div *ngFor="let parent of filteredParents()" class="col-md-6 col-lg-4">
+      <div class="grade-card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5>{{ parent.fullName }}</h5>
+          <span class="badge" [ngClass]="'bg-' + getStatusColor(parent.accountStatus)">
             {{ getStatusName(parent.accountStatus) }}
           </span>
+        </div>
+        
+        <div class="card-body">
+          <!-- Parent Info -->
+          <div class="mb-3">
+            <p class="text-muted mb-2">
+              <i class="fas fa-envelope me-2"></i>
+              {{ parent.email }}
+            </p>
+            <p class="text-muted mb-3" *ngIf="parent.contactInfo">
+              <i class="fas fa-phone me-2"></i>
+              {{ parent.contactInfo }}
+            </p>
+          </div>
 
-          <div class="d-flex gap-2 flex-wrap">
-            <!-- زر الموافقة -->
+          <!-- Action Buttons -->
+          <div class="d-flex justify-content-between align-items-center mt-4">
             <button
-              class="primary-btn btn-sm"
-              *ngIf="isParentPending(parent) || isParentRejected(parent)"
-              (click)="ApproveParentAction(parent.id)"
-              title="موافقة"
+              class="btn btn-outline-primary btn-sm"
+              (click)="openAssignModal(parent.id, parent.fullName)"
+              [title]="'parents.assignStudent' | translate"
             >
-              <i class="fas fa-check me-1"></i> قبول
+              <i class="fas fa-user-plus me-1"></i> {{ 'parents.assignStudent' | translate }}
             </button>
+            
+            <div class="d-flex gap-2 flex-wrap">
+              <!-- Approve Button -->
+              <button
+                class="btn btn-success btn-sm"
+                *ngIf="isParentPending(parent) || isParentRejected(parent)"
+                (click)="ApproveParentAction(parent.id)"
+                [title]="'parents.approve' | translate"
+              >
+                <i class="fas fa-check me-1"></i> {{ 'parents.approve' | translate }}
+              </button>
 
-            <!-- زر الرفض -->
-            <button
-              class="outline-btn btn-sm"
-              *ngIf="isParentPending(parent)"
-              (click)="RejectParentAction(parent.id)"
-              title="رفض"
-            >
-              <i class="fas fa-times me-1"></i> رفض
-            </button>
+              <!-- Reject Button -->
+              <button
+                class="btn btn-outline-danger btn-sm"
+                *ngIf="isParentPending(parent)"
+                (click)="RejectParentAction(parent.id)"
+                [title]="'parents.reject' | translate"
+              >
+                <i class="fas fa-times me-1"></i> {{ 'parents.reject' | translate }}
+              </button>
 
-            <!-- زر الحظر -->
-            <button
-              class="danger-btn btn-sm"
-              *ngIf="isParentActive(parent)"
-              (click)="BlockParentAction(parent.id)"
-              title="حظر"
-            >
-              <i class="fas fa-ban me-1"></i> حظر
-            </button>
+              <!-- Block Button -->
+              <button
+                class="btn btn-danger btn-sm"
+                *ngIf="isParentActive(parent)"
+                (click)="BlockParentAction(parent.id)"
+                [title]="'parents.block' | translate"
+              >
+                <i class="fas fa-ban me-1"></i> {{ 'parents.block' | translate }}
+              </button>
 
-            <!-- زر فك الحظر -->
-            <button
-              class="success-btn btn-sm"
-              *ngIf="isParentBlocked(parent)"
-              (click)="UnblockParentAction(parent.id)"
-              title="فك الحظر"
-            >
-              <i class="fas fa-unlock me-1"></i> فك الحظر
-            </button>
+              <!-- Unblock Button -->
+              <button
+                class="btn btn-warning btn-sm"
+                *ngIf="isParentBlocked(parent)"
+                (click)="UnblockParentAction(parent.id)"
+                [title]="'parents.unblock' | translate"
+              >
+                <i class="fas fa-unlock me-1"></i> {{ 'parents.unblock' | translate }}
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- رسالة عدم وجود الأولياء الأمور -->
-  <div
-    *ngIf="filteredParents().length === 0 && allparents.length > 0"
-    class="alert alert-info mt-4"
-  >
-    لا توجد الأولياء الأمور بحالة "{{
-      selectedStatus === "all"
-        ? "جميع"
-        : selectedStatus === accountStatusEnum.Pending
-        ? "قيد الانتظار"
-        : selectedStatus === accountStatusEnum.Active
-        ? "نشط"
-        : selectedStatus === accountStatusEnum.Rejected
-        ? "مرفوض"
-        : selectedStatus === accountStatusEnum.Blocked
-        ? "محظور"
-        : ""
-    }}"
-  </div>
+  <!-- Empty States -->
+  <div *ngIf="!isLoading">
+    <!-- No parents in filtered category -->
+    <div
+      *ngIf="filteredParents().length === 0 && allparents.length > 0"
+      class="alert alert-info mt-4 text-center"
+    >
+      <i class="fas fa-info-circle me-2"></i>
+      {{ 'parents.noParentsInCategory' | translate }} 
+      <span *ngIf="selectedStatus !== 'all'">
+        ({{ getStatusDisplayName(selectedStatus) | translate }})
+      </span>
+    </div>
 
-  <!-- رسالة عدم وجود الأولياء الأمور مطلقا -->
-  <div
-    *ngIf="allparents.length === 0 && !isLoading"
-    class="alert alert-warning mt-4"
-  >
-    لا يوجد أولياء الأمور مسجلين في النظام
+    <!-- No parents at all -->
+    <div
+      *ngIf="allparents.length === 0 && !isLoading"
+      class="text-center py-5"
+    >
+      <i class="fas fa-user-friends fa-4x text-muted mb-4"></i>
+      <h4 class="mb-3">{{ 'parents.noParents' | translate }}</h4>
+      <p class="text-muted mb-4">{{ 'parents.noParentsInCategory' | translate }}</p>
+    </div>
   </div>
 </div>
 
 <!-- POPUP MODAL FOR ASSIGNING STUDENT -->
-<div *ngIf="showAssignModal" class="assign-modal-backdrop fade show">
-  <div class="assign-modal-content">
-    <!-- Modal Header -->
-    <div class="assign-modal-header">
-      <h4 class="assign-modal-title">تعيين طالب للوالد/ة</h4>
-      <button
-        type="button"
-        class="assign-modal-close-btn"
-        (click)="closeAssignModal()"
-      >
-        &times;
-      </button>
-    </div>
-
-    <!-- Modal Body -->
-    <div class="modal-body">
-      <!-- Parent Info -->
-      <div class="alert parent-info-alert mb-4">
-        <div class="parent-info-content">
-          <i class="fas fa-user-circle parent-info-icon"></i>
-          <div>
-            <strong>اسم القريب: </strong> {{ selectedParentNameForModal }}
-          </div>
-        </div>
+<div *ngIf="showAssignModal" class="modal fade show" style="display: block;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title">{{ 'parents.modal.assignStudent' | translate }}</h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="closeAssignModal()"
+          [attr.aria-label]="'common.close' | translate"
+        ></button>
       </div>
 
-      <!-- Search Input -->
-      <div class="mb-4">
-        <label class="form-label fw-medium mb-2"> ابحث عن طالب: </label>
-        <div class="d-flex gap-2">
-          <div class="search-input-wrapper">
-            <input
-              type="text"
-              class="form-control search-input"
-              [(ngModel)]="searchQuery"
-              (keyup.enter)="searchStudentsInPopup(selectedParentIdForModal)"
-              placeholder="اكتب اسم الطالب، البريد الإلكتروني، رقم الإقامة أو رقم الهوية..."
-            />
-            <div class="search-icon">
-              <i class="fas fa-search"></i>
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <!-- Parent Info -->
+        <div class="alert alert-info mb-4">
+          <div class="d-flex align-items-center">
+            <i class="fas fa-user-circle fa-2x me-3 text-primary"></i>
+            <div>
+              <strong>{{ 'parents.modal.parentName' | translate }}: </strong> 
+              {{ selectedParentNameForModal }}
             </div>
           </div>
-          <button
-            type="button"
-            class="btn btn-primary search-btn"
-            (click)="searchStudentsInPopup(selectedParentIdForModal)"
-            [disabled]="searchQuery.length < 2"
-          >
-            <i class="fas fa-search me-1"></i> بحث
-          </button>
         </div>
-        <div
-          *ngIf="searchQuery.length > 0 && searchQuery.length < 2"
-          class="text-muted small mt-1"
-        >
-          اكتب حرفين على الأقل للبحث
-        </div>
-      </div>
 
-      <!-- Loading Spinner -->
-      <div *ngIf="isSearching" class="text-center py-3">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">جاري البحث...</span>
-        </div>
-        <p class="text-muted mt-2">جاري البحث عن الطلاب...</p>
-      </div>
-
-      <!-- Search Results -->
-      <div *ngIf="searchResults.length > 0" class="mb-4">
-        <h6 class="mb-3">نتائج البحث:</h6>
-        <div class="search-results-container">
+        <!-- Search Input -->
+        <div class="mb-4">
+          <label class="form-label fw-medium mb-2"> 
+            {{ 'parents.modal.searchStudent' | translate }}:
+          </label>
+          <div class="d-flex gap-2 align-items-center">
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="searchQuery"
+                (keyup.enter)="searchStudentsInPopup(selectedParentIdForModal)"
+                [placeholder]="'parents.modal.searchPlaceholder' | translate"
+              />
+              <span class="input-group-text">
+                <i class="fas fa-search"></i>
+              </span>
+            </div>
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="searchStudentsInPopup(selectedParentIdForModal)"
+              [disabled]="searchQuery.length < 2"
+            >
+              <i class="fas fa-search me-1"></i> {{ 'common.search' | translate }}
+            </button>
+          </div>
           <div
-            *ngFor="let student of searchResults"
-            class="student-item"
-            [class.selected]="selectedStudent?.id === student.id"
-            (click)="selectStudentInPopup(student)"
+            *ngIf="searchQuery.length > 0 && searchQuery.length < 2"
+            class="text-muted small mt-1"
           >
-            <div class="student-info">
-              <div>
-                <div class="student-name">
-                  {{ student.fullName }}
-                </div>
-                <div class="student-details">
-                  <div>
-                    <i class="fas fa-envelope me-1"></i> {{ student.email }}
-                  </div>
-                  <div *ngIf="student.iqamaNumber">
-                    <i class="fas fa-id-card me-1"></i>
-                    {{ student.iqamaNumber }}
-                  </div>
-                  <div *ngIf="student.passportNumber">
-                    <i class="fas fa-passport me-1"></i>
-                    {{ student.passportNumber }}
-                  </div>
-                  <div class="badge bg-success" *ngIf="student.isInRelation">
-                    مضاف بالفعل الي هذا القريب
-                  </div>
-                </div>
-              </div>
-              <div
-                *ngIf="selectedStudent?.id === student.id"
-                class="student-selected-icon"
-              >
-                <i class="fas fa-check-circle"></i>
-              </div>
+            {{ 'parents.modal.minChars' | translate }}
+          </div>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div *ngIf="isSearching" class="text-center py-3">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">{{ 'common.loading' | translate }}</span>
+          </div>
+          <p class="text-muted mt-2">{{ 'parents.modal.searching' | translate }}</p>
+        </div>
+
+        <!-- Search Results -->
+        <div *ngIf="searchResults.length > 0" class="mb-4">
+          <h6 class="mb-3">{{ 'parents.modal.searchResults' | translate }}:</h6>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>{{ 'parents.modal.name' | translate }}</th>
+                  <th>{{ 'parents.modal.email' | translate }}</th>
+                  <th>{{ 'parents.modal.idNumber' | translate }}</th>
+                  <th>{{ 'parents.modal.status' | translate }}</th>
+                  <th>{{ 'parents.modal.action' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let student of searchResults"
+                  [class.table-primary]="selectedStudent?.id === student.id"
+                  [class.table-warning]="student.isInRelation"
+                >
+                  <td>{{ student.fullName }}</td>
+                  <td>{{ student.email }}</td>
+                  <td>
+                    <span *ngIf="student.iqamaNumber">
+                      <i class="fas fa-id-card me-1"></i> {{ student.iqamaNumber }}
+                    </span>
+                    <span *ngIf="student.passportNumber">
+                      <i class="fas fa-passport me-1"></i> {{ student.passportNumber }}
+                    </span>
+                  </td>
+                  <td>
+                    <span *ngIf="student.isInRelation" class="badge bg-success">
+                      {{ 'parents.modal.alreadyAssigned' | translate }}
+                    </span>
+                  </td>
+                  <td>
+                    <button
+                      type="button"
+                      class="btn btn-sm"
+                      [class.btn-primary]="selectedStudent?.id !== student.id"
+                      [class.btn-success]="selectedStudent?.id === student.id"
+                      [disabled]="student.isInRelation"
+                      (click)="selectStudentInPopup(student)"
+                    >
+                      <span *ngIf="selectedStudent?.id === student.id">
+                        <i class="fas fa-check-circle me-1"></i> {{ 'parents.modal.selected' | translate }}
+                      </span>
+                      <span *ngIf="selectedStudent?.id !== student.id">
+                        {{ 'parents.modal.select' | translate }}
+                      </span>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- No Results -->
+        <div
+          *ngIf="
+            hasPerformedSearch &&
+            searchQuery.length >= 2 &&
+            searchResults.length === 0 &&
+            !isSearching
+          "
+          class="alert alert-warning mb-4"
+        >
+          <i class="fas fa-exclamation-triangle me-2"></i>
+          {{ 'parents.modal.noResults' | translate }}
+        </div>
+
+        <!-- Selected Student Info -->
+        <div *ngIf="selectedStudent" class="selected-student-container p-3 mb-4">
+          <h6 class="mb-3">
+            <i class="fas fa-user-check me-2 text-success"></i>
+            {{ 'parents.modal.selectedStudent' | translate }}:
+          </h6>
+          <div class="row">
+            <div class="col-md-6 mb-2">
+              <strong>{{ 'parents.modal.name' | translate }}:</strong> 
+              {{ selectedStudent.fullName }}
+            </div>
+            <div class="col-md-6 mb-2">
+              <strong>{{ 'parents.modal.email' | translate }}:</strong> 
+              {{ selectedStudent.email }}
+            </div>
+            <div class="col-md-6 mb-2" *ngIf="selectedStudent.IqamaNumber">
+              <strong>{{ 'parents.modal.iqamaNumber' | translate }}:</strong> 
+              {{ selectedStudent.IqamaNumber }}
+            </div>
+            <div class="col-md-6 mb-2" *ngIf="selectedStudent.PassportNumber">
+              <strong>{{ 'parents.modal.passportNumber' | translate }}:</strong> 
+              {{ selectedStudent.PassportNumber }}
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- No Results -->
-      <div
-        *ngIf="
-          hasPerformedSearch &&
-          searchQuery.length >= 2 &&
-          searchResults.length === 0 &&
-          !isSearching
-        "
-        class="alert alert-warning mb-4"
-      >
-        <i class="fas fa-exclamation-triangle me-2"></i>
-        لم يتم العثور على طلاب مطابقين للبحث
-      </div>
-
-      <!-- Selected Student Info -->
-      <div *ngIf="selectedStudent" class="selected-student-container mb-4 p-3">
-        <h6 class="selected-student-title mb-2">
-          <i class="fas fa-user-check me-2"></i>الطالب المحدد:
-        </h6>
-        <div class="selected-student-grid">
-          <div><strong>الاسم:</strong> {{ selectedStudent.fullName }}</div>
-          <div>
-            <strong>البريد الإلكتروني:</strong> {{ selectedStudent.email }}
-          </div>
-          <div *ngIf="selectedStudent.IqamaNumber">
-            <strong>رقم الإقامة:</strong> {{ selectedStudent.IqamaNumber }}
-          </div>
-          <div *ngIf="selectedStudent.PassportNumber">
-            <strong>رقم الجواز:</strong> {{ selectedStudent.PassportNumber }}
-          </div>
+        <!-- Relation Selection -->
+        <div class="mb-4">
+          <label class="form-label fw-medium mb-2">
+            {{ 'parents.modal.relation' | translate }}:
+          </label>
+          <select class="form-select" [(ngModel)]="relation">
+            <option value="father">{{ 'parents.relations.father' | translate }}</option>
+            <option value="mother">{{ 'parents.relations.mother' | translate }}</option>
+            <option value="guardian">{{ 'parents.relations.guardian' | translate }}</option>
+            <option value="other">{{ 'parents.relations.other' | translate }}</option>
+          </select>
         </div>
       </div>
 
-      <!-- Relation Selection -->
-      <div class="mb-4">
-        <label class="form-label fw-medium mb-2"> العلاقة: </label>
-        <select class="form-select" [(ngModel)]="relation">
-          <option value="father">أب</option>
-          <option value="mother">أم</option>
-          <option value="gaurdian">وصى</option>
-          <option value="other">أخر</option>
-        </select>
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="closeAssignModal()"
+        >
+          {{ 'common.cancel' | translate }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="assignStudentToParentInPopup()"
+          [disabled]="!selectedStudent || isAssigning"
+        >
+          <span *ngIf="!isAssigning">
+            <i class="fas fa-link me-1"></i> {{ 'parents.modal.assign' | translate }}
+          </span>
+          <span *ngIf="isAssigning">
+            <span
+              class="spinner-border spinner-border-sm me-2"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            {{ 'parents.modal.assigning' | translate }}
+          </span>
+        </button>
       </div>
-    </div>
-
-    <!-- Modal Footer -->
-    <div class="assign-modal-footer">
-      <button
-        type="button"
-        class="btn btn-secondary modal-action-btn"
-        (click)="closeAssignModal()"
-      >
-        إلغاء
-      </button>
-      <button
-        type="button"
-        class="btn btn-primary modal-action-btn"
-        (click)="assignStudentToParentInPopup()"
-        [disabled]="!selectedStudent || isAssigning"
-      >
-        <span *ngIf="!isAssigning">
-          <i class="fas fa-link me-1"></i> تعيين
-        </span>
-        <span *ngIf="isAssigning">
-          <span
-            class="spinner-border spinner-border-sm me-2"
-            role="status"
-            aria-hidden="true"
-          ></span>
-          جاري التعيين...
-        </span>
-      </button>
     </div>
   </div>
 </div>
+<div *ngIf="showAssignModal" class="modal-backdrop fade show"></div>

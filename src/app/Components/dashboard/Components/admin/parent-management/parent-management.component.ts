@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subject, takeUntil, finalize } from 'rxjs';
+import { Subject, takeUntil, finalize, debounceTime, distinctUntilChanged } from 'rxjs';
 import { ParentService } from '../../../../../Services/parent.service';
 import { StudentService } from '../../../../../Services/student.service';
 import { iparentViewWithChildrenDto } from '../../../../../Interfaces/iparentViewWithChildrenDto';
@@ -34,8 +34,16 @@ export class ParentManagementComponent implements OnInit, OnDestroy {
 
   // Data
   parents: iparentViewWithChildrenDto[] = [];
+  filteredParents: iparentViewWithChildrenDto[] = [];
   availableStudents: istudentProfile[] = [];
+  filteredAvailableStudents: istudentProfile[] = [];
   selectedParent: iparentViewWithChildrenDto | null = null;
+
+  // Search and Filter
+  searchQuery: string = '';
+  showWithStudentsOnly: boolean = false;
+  showWithoutStudentsOnly: boolean = false;
+  private searchSubject = new Subject<string>();
 
   // Forms
   addStudentForm: FormGroup;
@@ -65,11 +73,121 @@ export class ParentManagementComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadAllParentsWithChildren();
     this.loadAvailableStudents();
+    
+    // Setup search debounce
+    this.searchSubject.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
+      this.applyFilters();
+    });
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  // Filter Methods
+  onSearch(): void {
+    this.searchSubject.next(this.searchQuery);
+  }
+
+  applyFilters(): void {
+    this.filteredParents = this.parents.filter(parent => {
+      // Search filter
+      if (this.searchQuery) {
+        const searchLower = this.searchQuery.toLowerCase();
+        const matchesSearch = 
+          parent.fullName.toLowerCase().includes(searchLower) ||
+          parent.email.toLowerCase().includes(searchLower) ||
+          (parent.contactInfo && parent.contactInfo.toLowerCase().includes(searchLower));
+        
+        if (!matchesSearch) return false;
+      }
+
+      // Students filter
+      if (this.showWithStudentsOnly && !this.showWithoutStudentsOnly) {
+        if (parent.students.length === 0) return false;
+      }
+      
+      if (this.showWithoutStudentsOnly && !this.showWithStudentsOnly) {
+        if (parent.students.length > 0) return false;
+      }
+
+      return true;
+    });
+
+    // Filter available students for modal
+    this.filterAvailableStudents();
+  }
+
+  filterAvailableStudents(): void {
+    if (!this.selectedParent || !this.availableStudents.length) {
+      this.filteredAvailableStudents = [...this.availableStudents];
+      return;
+    }
+
+    const searchLower = this.searchQuery.toLowerCase();
+    this.filteredAvailableStudents = this.availableStudents.filter(student => {
+      // Search filter for students
+      if (searchLower) {
+        const matchesSearch = 
+          student.fullName.toLowerCase().includes(searchLower) ||
+          student.email.toLowerCase().includes(searchLower) ||
+          (student.className && student.className.toLowerCase().includes(searchLower));
+        
+        if (!matchesSearch) return false;
+      }
+      return true;
+    });
+  }
+
+  clearSearch(): void {
+    this.searchQuery = '';
+    this.applyFilters();
+  }
+
+  clearFilter(filterType: string): void {
+    switch(filterType) {
+      case 'withStudents':
+        this.showWithStudentsOnly = false;
+        break;
+      case 'withoutStudents':
+        this.showWithoutStudentsOnly = false;
+        break;
+    }
+    this.applyFilters();
+  }
+
+  clearAllFilters(): void {
+    this.searchQuery = '';
+    this.showWithStudentsOnly = false;
+    this.showWithoutStudentsOnly = false;
+    this.applyFilters();
+  }
+
+  hasActiveFilters(): boolean {
+    return !!this.searchQuery || this.showWithStudentsOnly || this.showWithoutStudentsOnly;
+  }
+
+  // Stats getters
+  get totalParents(): number {
+    return this.parents.length;
+  }
+
+  get parentsWithStudents(): number {
+    return this.parents.filter(p => p.students.length > 0).length;
+  }
+
+  get totalStudents(): number {
+    return this.parents.reduce((total, parent) => total + parent.students.length, 0);
+  }
+
+  get averageStudentsPerParent(): string {
+    if (this.parentsWithStudents === 0) return '0';
+    return (this.totalStudents / this.parentsWithStudents).toFixed(1);
   }
 
   // Load all parents with their children data
@@ -104,6 +222,7 @@ export class ParentManagementComponent implements OnInit, OnDestroy {
 
     if (parentsWithoutChildren.length === 0) {
       this.parents = [];
+      this.filteredParents = [];
       return;
     }
 
@@ -127,6 +246,7 @@ export class ParentManagementComponent implements OnInit, OnDestroy {
             // When all parents are processed
             if (completedCount === parentsWithoutChildren.length) {
               this.parents = parentsWithChildren;
+              this.applyFilters();
             }
           },
           error: (error) => {
@@ -141,6 +261,7 @@ export class ParentManagementComponent implements OnInit, OnDestroy {
             completedCount++;
             if (completedCount === parentsWithoutChildren.length) {
               this.parents = parentsWithChildren;
+              this.applyFilters();
             }
           }
         });
@@ -152,17 +273,12 @@ export class ParentManagementComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (result: ApiResponse<iparentViewWithChildrenDto>) => {
-          console.log('[loadParentWithChildren] Response received:', {
-            success: result.success,
-            hasData: !!result.data,
-            message: result.message
-          });
-
           if (result.success && result.data) {
             // Update the parent in our array
             const parentIndex = this.parents.findIndex(p => p.id === parentId);
             if (parentIndex !== -1) {
               this.parents[parentIndex] = result.data;
+              this.applyFilters();
             }
           }
         },
@@ -180,6 +296,7 @@ export class ParentManagementComponent implements OnInit, OnDestroy {
         next: (result: ApiResponse<istudentProfile[]>) => {
           if (result.success && result.data) {
             this.availableStudents = result.data;
+            this.filteredAvailableStudents = [...result.data];
           }
         },
         error: (error) => {
@@ -196,6 +313,7 @@ export class ParentManagementComponent implements OnInit, OnDestroy {
       relation: 'other' // Default value
     });
     this.showAddStudentModal = true;
+    this.filterAvailableStudents();
   }
 
   closeAddStudentModal(): void {

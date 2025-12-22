@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AccountStatus } from '../../../../../Interfaces/AccountStatus';
 import { Subscription } from 'rxjs';
 import { StudentService } from '../../../../../Services/student.service';
@@ -7,15 +7,16 @@ import { AdminManagementService } from '../../../../../Services/admin-management
 import { istudentProfile } from '../../../../../Interfaces/istudentProfile';
 import { ApiResponse } from '../../../../../Interfaces/auth';
 import { AuthService } from '../../../../../Services/AuthService';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin-student-accounts',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './admin-student-accounts.component.html',
   styleUrl: './admin-student-accounts.component.css'
 })
-export class AdminStudentAccountsComponent {
+export class AdminStudentAccountsComponent implements OnInit, OnDestroy {
   allStudents: istudentProfile[] = [];
   isLoading: boolean = false;
   accountStatusEnum = AccountStatus;
@@ -26,7 +27,8 @@ export class AdminStudentAccountsComponent {
   constructor(
     private _StudentService: StudentService,
     private adminService: AdminManagementService,
-    private authService: AuthService
+    private authService: AuthService,
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -35,6 +37,24 @@ export class AdminStudentAccountsComponent {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  // Add missing method
+  getStatusDisplayName(status: AccountStatus | 'all'): string {
+    switch(status) {
+      case 'all':
+        return 'students.statusDisplay.all';
+      case AccountStatus.Pending:
+        return 'students.statusDisplay.pending';
+      case AccountStatus.Active:
+        return 'students.statusDisplay.active';
+      case AccountStatus.Rejected:
+        return 'students.statusDisplay.rejected';
+      case AccountStatus.Blocked:
+        return 'students.statusDisplay.blocked';
+      default:
+        return 'students.statusDisplay.all';
+    }
   }
 
   filteredStudents() {
@@ -61,7 +81,6 @@ export class AdminStudentAccountsComponent {
     return this.convertToAccountStatus(student.accountStatus) === AccountStatus.Blocked;
   }
 
-
   convertToAccountStatus(status: string | AccountStatus): AccountStatus {
     if (typeof status === 'number') {
       return status;
@@ -85,24 +104,26 @@ export class AdminStudentAccountsComponent {
     }
   }
 
+  // Updated to use translation
   getStatusName(status: string | AccountStatus): string {
-    const accountStatus = typeof status === 'string'
-      ? this.convertToAccountStatus(status)
-      : status;
-
+    const accountStatus = this.convertToAccountStatus(status);
+    
     switch (accountStatus) {
-      case AccountStatus.Pending: return 'قيد الانتظار';
-      case AccountStatus.Active: return 'نشط';
-      case AccountStatus.Blocked: return 'محظور';
-      case AccountStatus.Rejected: return 'مرفوض';
-      default: return 'غير معروف';
+      case AccountStatus.Pending: 
+        return this.translate.instant('students.status.pending');
+      case AccountStatus.Active: 
+        return this.translate.instant('students.status.active');
+      case AccountStatus.Blocked: 
+        return this.translate.instant('students.status.blocked');
+      case AccountStatus.Rejected: 
+        return this.translate.instant('students.status.rejected');
+      default: 
+        return this.translate.instant('students.status.unknown');
     }
   }
 
   getStatusColor(status: string | AccountStatus): string {
-    const accountStatus = typeof status === 'string'
-      ? this.convertToAccountStatus(status)
-      : status;
+    const accountStatus = this.convertToAccountStatus(status);
 
     switch (accountStatus) {
       case AccountStatus.Pending: return 'warning';
@@ -113,12 +134,14 @@ export class AdminStudentAccountsComponent {
     }
   }
 
-  ApproveStudentAction(studentId: string): void {
-    if (!confirm('هل أنت متأكد من رغبتك في الموافقة على هذا الطالب؟')) return;
+  // Updated to use translation
+  async ApproveStudentAction(studentId: string): Promise<void> {
+    const confirmation = confirm(this.translate.instant('students.confirmations.approve'));
+    if (!confirmation) return;
 
     const adminUserId = this.authService.userId;
     if (!adminUserId) {
-      alert('لم يتم العثور على معرف مسؤول. يرجى تسجيل الدخول مرة أخرى.');
+      alert(this.translate.instant('students.messages.adminNotFound'));
       return;
     }
 
@@ -126,49 +149,56 @@ export class AdminStudentAccountsComponent {
       this.adminService.ApproveAccount(studentId, adminUserId, 'student').subscribe({
         next: result => {
           if (result) {
-            alert('تمت الموافقة على الطالب بنجاح');
+            alert(this.translate.instant('students.messages.approved'));
             // Update UI locally
             const student = this.allStudents.find(t => t.id === studentId);
             if (student) student.accountStatus = AccountStatus.Active;
           } else {
-            alert('فشل في الموافقة على الطالب');
+            alert(this.translate.instant('students.messages.approveFailed'));
           }
         },
-        error: err => alert(`خطأ في الموافقة على الطالب: ${err.message}`)
+        error: err => alert(`${this.translate.instant('students.messages.error')}: ${err.message}`)
       })
     );
   }
 
-  RejectStudentAction(studentId: string): void {
-    if (!confirm('هل أنت متأكد من رغبتك في رفض هذا الطالب؟')) return;
+  // Updated to use translation
+  async RejectStudentAction(studentId: string): Promise<void> {
+    const confirmation = confirm(this.translate.instant('students.confirmations.reject'));
+    if (!confirmation) return;
+    
     const adminUserId = this.authService.userId;
     if (!adminUserId) {
-      alert('لم يتم العثور على معرف مسؤول. يرجى تسجيل الدخول مرة أخرى.');
+      alert(this.translate.instant('students.messages.adminNotFound'));
       return;
     }
+    
     this.subscription.add(
       this.adminService.RejectAccount(studentId, adminUserId, 'student').subscribe({
         next: result => {
           if (result) {
-            alert('تم رفض الطالب بنجاح');
+            alert(this.translate.instant('students.messages.rejected'));
             // Update UI locally
             const student = this.allStudents.find(t => t.id === studentId);
             if (student) student.accountStatus = AccountStatus.Rejected;
           }
           else {
-            alert('فشل في رفض الطالب');
+            alert(this.translate.instant('students.messages.rejectFailed'));
           }
         },
-        error: err => alert(`خطأ في رفض الطالب: ${err.message}`)
+        error: err => alert(`${this.translate.instant('students.messages.error')}: ${err.message}`)
       })
     );
   }
 
-  BlockStudentAction(studentId: string): void {
-    if (!confirm('هل أنت متأكد من رغبتك في حظر هذا الطالب؟')) return;
+  // Updated to use translation
+  async BlockStudentAction(studentId: string): Promise<void> {
+    const confirmation = confirm(this.translate.instant('students.confirmations.block'));
+    if (!confirmation) return;
+    
     const adminUserId = this.authService.userId;
     if (!adminUserId) {
-      alert('لم يتم العثور على معرف مسؤول. يرجى تسجيل الدخول مرة أخرى.');
+      alert(this.translate.instant('students.messages.adminNotFound'));
       return;
     }
 
@@ -176,54 +206,66 @@ export class AdminStudentAccountsComponent {
       this.adminService.BlockAccount(studentId, adminUserId, 'student').subscribe({
         next: result => {
           if (result) {
-            alert('تم حظر الطالب بنجاح');
+            alert(this.translate.instant('students.messages.blocked'));
             // Update UI locally
             const student = this.allStudents.find(t => t.id === studentId);
             if (student) student.accountStatus = AccountStatus.Blocked;
           }
           else {
-            alert('فشل في حظر الطالب');
+            alert(this.translate.instant('students.messages.blockFailed'));
           }
         },
-        error: err => alert(`خطأ في حظر الطالب: ${err.message}`)
+        error: err => alert(`${this.translate.instant('students.messages.error')}: ${err.message}`)
       })
     );
   }
 
-  UnblockStudentAction(studentId: string): void {
-    if (!confirm('هل أنت متأكد من رغبتك في فك حظر هذا الطالب؟')) return;
+  // Updated to use translation
+  async UnblockStudentAction(studentId: string): Promise<void> {
+    const confirmation = confirm(this.translate.instant('students.confirmations.unblock'));
+    if (!confirmation) return;
+    
     const adminUserId = this.authService.userId;
     if (!adminUserId) {
-      alert('لم يتم العثور على معرف مسؤول. يرجى تسجيل الدخول مرة أخرى.');
+      alert(this.translate.instant('students.messages.adminNotFound'));
       return;
     }
+    
     this.subscription.add(
       this.adminService.UnblockAccount(studentId, adminUserId, 'student').subscribe({
         next: result => {
           if (result) {
-            alert('تم فك حظر الطالب بنجاح');
+            alert(this.translate.instant('students.messages.unblocked'));
             // Update UI locally
             const student = this.allStudents.find(t => t.id === studentId);
             if (student) student.accountStatus = AccountStatus.Active;
           }
           else {
-            alert('فشل في فك حظر الطالب');
+            alert(this.translate.instant('students.messages.unblockFailed'));
           }
         },
-        error: err => alert(`خطأ في فك حظر الطالب: ${err.message}`)
+        error: err => alert(`${this.translate.instant('students.messages.error')}: ${err.message}`)
       })
     );
   }
 
   private LoadAllStudents(): void {
+    this.isLoading = true;
     this.subscription.add(
       this._StudentService.GetAllStudents().subscribe({
         next: (response: ApiResponse<istudentProfile[]>) => {
-          this.allStudents = response.data;
+          this.allStudents = response.data || [];
+          this.isLoading = false;
           console.log('All Students:', response.data);
         },
-        error: err => alert(`خطأ في تحميل جميع الحسابات: ${err.message}`)
+        error: err => {
+          this.isLoading = false;
+          alert(`${this.translate.instant('students.messages.loadError')}: ${err.message}`);
+        }
       })
     );
   }
+  getDisplayValue(value: any, defaultValue: string = ''): string {
+  return value || defaultValue;
+}
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { ClassDto, ClassViewDto, CreateClassDto, UpdateClassDto } from '../Interfaces/iclass';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { environment } from '../Environment/Environment';
 import { StudentModel } from '../Interfaces/istudent';
 import { SubjectViewDto } from '../Interfaces/isubject';
@@ -84,4 +84,9 @@ export class ClassService {
       responseType: 'blob'
     });
   }
+
+    getCount(): Observable<ApiResponse<number>> {
+      return this.http.get<ApiResponse<number>>(`${this.apiUrl}/count`);
+    }
+
 }

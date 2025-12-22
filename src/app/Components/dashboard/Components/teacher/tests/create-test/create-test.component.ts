@@ -6,9 +6,11 @@ import { Observable, map } from 'rxjs';
 import { QuestionService } from '../../../../../../Services/question.service';
 import { ExamService } from '../../../../../../Services/exam.service';
 import { ClassService } from '../../../../../../Services/class.service';
-import { SubjectService } from '../../../../../../Services/subject.service';
+import { TeacherService } from '../../../../../../Services/teacher.service';
 import { CreateExamWithQuestionsDto } from '../../../../../../Interfaces/iexam';
 import { QuestionModel } from '../../../../../../Interfaces/iquestoin';
+import { SubjectViewDto } from '../../../../../../Interfaces/isubject';
+import { ClassViewDto } from '../../../../../../Interfaces/iclass';
 import { QuestionTypes } from "../../../../../../Interfaces/QuestionTypes";
 
 @Component({
@@ -26,8 +28,6 @@ export class CreateTestComponent implements OnInit {
   subjectId = '';
 
   startDate = '';  // yyyy-mm-dd
-  startTime = '';  // HH:mm
-
   startHour: number | null = null;
   startMinute: number | null = null;
   startPeriod: "AM" | "PM" = "AM";
@@ -41,8 +41,10 @@ export class CreateTestComponent implements OnInit {
   maxDegree = 100;
   minDegree = 50;
 
-  classes: any[] = [];
-  subjects: any[] = [];
+  classes: ClassViewDto[] = [];
+  teacherSubjects: SubjectViewDto[] = [];
+  loading = false;
+  teacherId: string | null = null;
 
   selectedQuestions: string[] = [];
 
@@ -57,12 +59,80 @@ export class CreateTestComponent implements OnInit {
     private questionService: QuestionService,
     private examService: ExamService,
     private classService: ClassService,
-    private subjectService: SubjectService
+    private teacherService: TeacherService
   ) { }
 
   ngOnInit() {
-    this.questionService.loadAll();
+    this.getTeacherIdFromLocalStorage();
+    
+    if (this.teacherId) {
+      this.loadTeacherData();
+    } else {
+      console.warn('Teacher ID not found, loading all data');
+      this.loadAllData();
+    }
+  }
 
+  getTeacherIdFromLocalStorage(): void {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      this.teacherId = localStorage.getItem('teacherId');
+      console.log('Teacher ID from localStorage:', this.teacherId);
+    }
+  }
+
+  loadTeacherData(): void {
+    this.loading = true;
+    
+    // Load teacher's classes
+    this.teacherService.getTeacherClasses(this.teacherId!).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.classes = res.data || [];
+          console.log('Teacher classes loaded:', this.classes);
+        } else {
+          console.error('Failed to load teacher classes:', res.message);
+          this.loadAllClasses();
+        }
+      },
+      error: (err) => {
+        console.error('Error loading teacher classes:', err);
+        this.loadAllClasses();
+      }
+    });
+
+    // Load teacher's subjects
+    this.teacherService.getTeacherSubjects(this.teacherId!).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.teacherSubjects = res.data || [];
+          console.log('Teacher subjects loaded:', this.teacherSubjects);
+          
+          // Load all questions (don't filter by subject for now)
+          this.loadAllQuestions();
+        } else {
+          console.error('Failed to load teacher subjects:', res.message);
+          this.loadAllQuestions();
+        }
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error loading teacher subjects:', err);
+        this.loadAllQuestions();
+        this.loading = false;
+      }
+    });
+  }
+
+  loadAllData(): void {
+    this.loading = true;
+    this.loadAllQuestions();
+    this.loadAllClasses();
+    this.loading = false;
+  }
+
+  loadAllQuestions(): void {
+    this.questionService.loadAll();
+    
     this.questions$ = this.questionService.questions$.pipe(
       map((questions: QuestionModel[]) => ({
         mcq: questions.filter(q => q.type === QuestionTypes.Choices),
@@ -71,28 +141,25 @@ export class CreateTestComponent implements OnInit {
         complete: questions.filter(q => q.type === QuestionTypes.Complete),
       }))
     );
-
-
-
-    this.classService.getAll().subscribe(res => this.classes = res.data);
-    this.subjectService.getAll().subscribe(res => this.subjects = res.data);
   }
 
+  loadAllClasses(): void {
+    this.classService.getAll().subscribe(res => {
+      this.classes = res.data || [];
+    });
+  }
+
+  // Remove the loadAllSubjects() method since you're not using it anymore
+
   calculateDegrees(): void {
-    // احصل على جميع الأسئلة
     this.questionService.questions$.subscribe(questions => {
-      // احسب مجموع درجات الأسئلة المختارة
       this.totalQuestionsDegree = questions
         .filter(q => this.selectedQuestions.includes(q.id))
         .reduce((sum, q) => sum + (q.degree || 0), 0);
 
-      // احسب درجة النجاح (50% من المجموع الكلي)
       this.calculatedMinDegree = Math.round(this.totalQuestionsDegree * 0.5);
-
-      // أقصى درجة تساوي المجموع الكلي
       this.calculatedMaxDegree = this.totalQuestionsDegree;
 
-      // تحديث القيم في النموذج تلقائياً
       this.minDegree = this.calculatedMinDegree;
       this.maxDegree = this.calculatedMaxDegree;
     });
@@ -129,7 +196,6 @@ export class CreateTestComponent implements OnInit {
       return;
     }
 
-    // ✅ Convert 12-hour time → 24-hour time
     let hour = this.startHour;
 
     if (this.startPeriod === "PM" && hour < 12) hour += 12;
@@ -174,13 +240,14 @@ export class CreateTestComponent implements OnInit {
     });
   }
 
-
   resetForm() {
     this.testTitle = '';
     this.classId = '';
     this.subjectId = '';
     this.startDate = '';
-    this.startTime = '';
+    this.startHour = null;
+    this.startMinute = null;
+    this.startPeriod = "AM";
     this.duration = 1;
     this.maxDegree = 100;
     this.minDegree = 50;
