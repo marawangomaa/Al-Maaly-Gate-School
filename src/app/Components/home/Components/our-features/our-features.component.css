@@ -90,7 +90,6 @@
 .floating-icon:hover .icon-circle {
     background: transparent;
     transform: scale(1.1);
-    box-shadow: 0 0 40px 10px rgba(0, 102, 255, 0.3);
 }
 
 /* INDIVIDUAL ICON POSITIONS */

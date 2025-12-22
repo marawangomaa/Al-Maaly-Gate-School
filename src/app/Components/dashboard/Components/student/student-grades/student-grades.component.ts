@@ -120,8 +120,10 @@ export class StudentGradesComponent implements OnInit {
   StudentExamsResults(studentId: string) {
     this._StudentService.GetStudentExamsResults(studentId).subscribe({
       next: (response: ApiResponse<istudentExamResults[]>) => {
-        this.ExamsResults = response.data;
+
+        this.ExamsResults = response.data || [];
         console.log(response.data, response.success);
+        // console.log(response.data, response.message);
       },
       error: (error: ApiResponse<istudentExamResults[]>) => {
         console.log(error.message);

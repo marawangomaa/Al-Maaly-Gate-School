@@ -122,6 +122,7 @@
     "FILES_COUNT": "Files: {{current}}/{{max}}"
   },
   "DASH": {
+    "YEAR_GRADE": "Year/Grade",
     "PARENT_MANAGEMENT": " Parent Management ",
     "STUDENT_PROFILE": "Student Profile",
     "CHILDREN OF PARENT": "Children of Parent",
@@ -454,6 +455,9 @@
       "generating": "Generating certificates...",
       "downloading": "Downloading ZIP..."
     },
+    "singleStudentOperations": "Single Student Operations",
+    "searchStudent": "Search Student",
+    "searchStudentPlaceholder": "Type student name...",
 
     "singleStudentOperations": "Single Student Operations",
     "searchStudent": "Search Student",
@@ -464,6 +468,8 @@
     "saveOnly": "Save to Database Only",
     "generating": "Generating...",
     "saving": "Saving...",
+    "studentsInClass": "Students in Class",
+    "studentId": "Student ID",
 
     "studentsInClass": "Students in Class",
     "studentId": "Student ID",
@@ -587,6 +593,7 @@
       "checkTeachers": "Check Teachers",
       "delete": "Delete"
     },
+    "loading": "Loading curricula...",
 
     "loading": "Loading curricula...",
 
@@ -594,6 +601,8 @@
       "title": "No Curricula Found",
       "subtitle": "Get started by creating your first curriculum."
     },
+    "noDescription": "No description",
+    "created": "Created",
 
     "noDescription": "No description",
     "created": "Created",
@@ -815,6 +824,9 @@
       "errorOccurred": "An error occurred",
       "confirmRemove": "Are you sure you want to remove this student from the parent?",
       "fillAllFields": "Please fill all required fields"
+    }
+  }
+}
     },
     "SUBJECTS": {
       "TITLE": "Subjects Management",
