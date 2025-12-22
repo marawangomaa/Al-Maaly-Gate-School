@@ -124,7 +124,7 @@
     "DASH": {
         "PARENT_MANAGEMENT": " Parent Management ",
         "STUDENT_PROFILE": "Student Profile",
-        "CHILDREN OF PARENT": "Children of Parent",
+        "CHILDREN_OF_PARENT": "Children of Parent",
         "ADMIN_CERTFICATION_CREATE": "Create Certfications",
         "STUDENT_CERTFICATION": "Certfications",
         "ALL_CLASSES": "All Classes",
@@ -149,7 +149,7 @@
         "CREATE_TEST": "Create Test",
         "TEST_LIST": "Tests List",
         "CLASS_GRADES": "Class Grades",
-        "YEAR-GRADE": "Grades",
+        "YEAR_GRADE": "Grades",
         "ACCEPT_TEACHERS": "Accept Teachers",
         "ALL_STUDENT_TEST_RESULT": "Student Test Restults",
         "STUDENT_ACCOUNTS": "Students Accounts",
@@ -157,7 +157,7 @@
         "TEACHER_ACCOUNTS": "Teachers Accounts",
         "ADMIN_SUBJECT_MANAGEMENT": "Subject Management",
         "ADMIN_ANALYTICS": "Analytics",
-        "CURRICULUM": "Curriculum",
+        "CURRICULUM": "Curriculums",
 
         "TESTS": "Tests",
         "GRADES": "Grades",
@@ -313,12 +313,7 @@
         "DELETE": "Delete",
         "DIFF": "Difficulty"
     },
-    "COMMON": {
-        "LOADING": "Loading...",
-        "SAVE": "Save",
-        "EXPAND": "Expand",
-        "COLLAPSE": "Collapse"
-    },
+    
     "TEACHER_CLASSES": {
         "TITLE": "My Classes and Students",
         "STUDENT_NAME": "Student Name",
@@ -425,6 +420,8 @@
   "certificate2": {
     "title": "Certificate Management",
     "subtitle": "Generate, manage, and verify academic certificates with ease",
+    "generateClassWide": "Create Certificates For Class",
+    "downloadClassWide": "Download Certificates For Class",
     
     "tabs": {
       "generate": "Generate Certificate",
@@ -530,6 +527,8 @@
   }
   ,
   "CERTIFICATION_STUDENT": {
+    "CERTIFICATE_NUMBER": "Certfications Number",
+    "ACADEMIC_YEAR": "Academic Year",
     "MY_CERTIFICATES": "My Certificates",
     "LOADING": "Loading certificates...",
     "NO_CERTIFICATES": "No certificates found",
@@ -939,89 +938,7 @@
             "FALSE": "False"
         }
     },
-    "parentManagement": {
-        "header": {
-            "title": "Parent Management",
-            "description": "Manage parent accounts and their associated students in the system",
-            "parentsCount": "parent",
-            "parentsCount_plural": "parents",
-            "refresh": "Refresh"
-        },
-        "loading": {
-            "title": "Loading Parent Data",
-            "message": "Please wait while we fetch the latest information"
-        },
-        "parentCard": {
-            "noPhone": "No phone",
-            "associatedStudents": "Associated Students",
-            "noStudents": {
-                "title": "No students associated yet",
-                "button": "Add First Student"
-            },
-            "addStudent": "Add Another Student",
-            "removeStudent": "Remove",
-            "removeTooltip": "Remove student",
-            "relations": {
-                "father": "Father",
-                "mother": "Mother",
-                "guardian": "Guardian",
-                "other": "Other"
-            }
-        },
-        "emptyState": {
-            "title": "No Parent Accounts",
-            "description": "There are no parent accounts in the system yet.",
-            "button": "Invite Parents"
-        },
-        "addStudentModal": {
-            "header": {
-                "title": "Add Student",
-                "description": "Link a student to"
-            },
-            "form": {
-                "studentSelection": {
-                    "label": "Select Student",
-                    "placeholder": "Choose a student...",
-                    "alreadyLinked": "✓ Already linked",
-                    "validationError": "Please select a student"
-                },
-                "relation": {
-                    "label": "Relationship Type",
-                    "options": {
-                        "father": "Father",
-                        "mother": "Mother",
-                        "guardian": "Guardian",
-                        "other": "Other"
-                    },
-                    "validationError": "Please select a relationship"
-                }
-            },
-            "buttons": {
-                "cancel": "Cancel",
-                "submit": {
-                    "adding": "Adding...",
-                    "default": "Link Student"
-                },
-                "close": "Close"
-            }
-        },
-        "messages": {
-            "loadingFailed": "Failed to load data",
-            "errorLoadingParents": "Error loading parents:",
-            "errorLoadingParentDetails": "Error loading parent details:",
-            "errorLoadingChildren": "Error loading children for parent",
-            "errorLoadingAvailableStudents": "Error loading available students:",
-            "errorAddingStudent": "Error adding student:",
-            "errorRemovingStudent": "Error removing student:",
-            "addStudentSuccess": "Student added successfully!",
-            "addStudentFailed": "Failed to add student",
-            "removeStudentSuccess": "Student removed successfully!",
-            "removeStudentFailed": "Failed to remove student",
-            "errorOccurred": "An error occurred",
-            "confirmRemove": "Are you sure you want to remove this student from the parent?",
-            "fillAllFields": "Please fill all required fields"
-        }
-    },
+    
     "parentManagement2": {
     "search": {
       "placeholder": "Search parent by name, email or phone...",
@@ -1103,5 +1020,142 @@
     "optimal": "Optimal",
     "good": "Good",
     "needsImprovement": "Needs Improvement"
+        },
+    "SUBJECTS": {
+      "TITLE": "Subjects Management",
+      "CREATE_SUBJECT": "Create Subject",
+      "NO_SUBJECTS": "No subjects found.",
+      "SEARCH_PLACEHOLDER": "Search subject or grade...",
+      "SHOWING": "Showing {{filtered}} of {{total}} subjects",
+      "SUBJECT_NAME": "Subject Name",
+      "GRADE": "Grade",
+      "SELECT_GRADE": "-- Select Grade --",
+      "CREDIT_HOURS": "Credit Hours",
+      "MANAGE_TEACHERS": "Manage Teachers"
+    },
+    "TEACHERS": {
+      "MANAGE_TEACHERS": "Manage Teachers for Subject",
+      "ASSIGNED": "Assigned Teachers",
+      "AVAILABLE": "Available Teachers",
+      "NO_ASSIGNED": "No teachers assigned.",
+      "NO_AVAILABLE": "No available teachers."
+    },
+    "COMMON": {
+      "ACTIONS": "Actions",
+      "CREATE": "Create",
+      "CANCEL": "Cancel",
+      "CLOSE": "Close",
+      "ASSIGN": "Assign",
+      "UNASSIGN": "Unassign"
+    },
+    "parentManagement": {
+    "header": {
+      "title": "Parent Management",
+      "description": "Manage parent accounts and their associated students in the system",
+      "parentsCount": "Parent",
+      "parentsCount_plural": "Parents",
+      "refresh": "Refresh"
+    },
+    "loading": {
+      "title": "Loading Parents Data",
+      "message": "Please wait while we fetch the latest information"
+    },
+    "parentCard": {
+      "noPhone": "No phone number",
+      "associatedStudents": "Associated Students",
+      "noStudents": {
+        "title": "No students associated yet",
+        "button": "Add first student"
+      },
+      "addStudent": "Add another student",
+      "removeStudent": "Remove",
+      "removeTooltip": "Remove student",
+      "relations": {
+        "father": "Father",
+        "mother": "Mother",
+        "guardian": "Guardian",
+        "other": "Other"
+      }
+    },
+    "emptyState": {
+      "title": "No Parent Accounts",
+      "description": "There are no parent accounts in the system yet.",
+      "button": "Invite Parents"
+    },
+    "addStudentModal": {
+      "header": {
+        "title": "Add Student",
+        "description": "Link a student to"
+      },
+      "form": {
+        "studentSelection": {
+          "label": "Select Student",
+          "placeholder": "Choose a student...",
+          "alreadyLinked": "✓ Already linked",
+          "validationError": "Please select a student"
+        },
+        "relation": {
+          "label": "Relation Type",
+          "options": {
+            "father": "Father",
+            "mother": "Mother",
+            "guardian": "Guardian",
+            "other": "Other"
+          },
+          "validationError": "Please select a relation"
+        }
+      },
+      "buttons": {
+        "cancel": "Cancel",
+        "submit": {
+          "adding": "Adding...",
+          "default": "Link Student"
+        },
+        "close": "Close"
+      }
+    },
+    "messages": {
+      "loadingFailed": "Failed to load data",
+      "errorLoadingParents": "Error loading parents:",
+      "errorLoadingParentDetails": "Error loading parent details:",
+      "errorLoadingChildren": "Error loading students for parent",
+      "errorLoadingAvailableStudents": "Error loading available students:",
+      "errorAddingStudent": "Error adding student:",
+      "errorRemovingStudent": "Error removing student:",
+      "addStudentSuccess": "Student added successfully!",
+      "addStudentFailed": "Failed to add student",
+      "removeStudentSuccess": "Student removed successfully!",
+      "removeStudentFailed": "Failed to remove student",
+      "errorOccurred": "An error occurred",
+      "confirmRemove": "Are you sure you want to remove this student from the parent?",
+      "fillAllFields": "Please fill in all required fields"
+    },
+    "SUBJECTS": {
+      "TITLE": "Subject Management",
+      "CREATE_SUBJECT": "Add Subject",
+      "NO_SUBJECTS": "No subjects available.",
+      "SEARCH_PLACEHOLDER": "Search by subject or grade...",
+      "SHOWING": "Showing {{filtered}} of {{total}} subjects",
+      "SUBJECT_NAME": "Subject Name",
+      "GRADE": "Grade",
+      "SELECT_GRADE": "-- Select Grade --",
+      "CREDIT_HOURS": "Credit Hours",
+      "MANAGE_TEACHERS": "Manage Teachers"
+    },
+    "TEACHERS": {
+      "MANAGE_TEACHERS": "Manage Subject Teachers",
+      "ASSIGNED": "Assigned Teachers",
+      "AVAILABLE": "Available Teachers",
+      "NO_ASSIGNED": "No assigned teachers.",
+      "NO_AVAILABLE": "No available teachers."
+    },
+    "COMMON": {
+      "ACTIONS": "Actions",
+      "CREATE": "Create",
+      "CANCEL": "Cancel",
+      "CLOSE": "Close",
+      "ASSIGN": "Assign",
+      "UNASSIGN": "Unassign"
+    }
   }
-}
+  }

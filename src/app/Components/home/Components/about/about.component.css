@@ -1,29 +1,329 @@
-.about-section {
-  background-color: var(--color-bg-secondary);
-  border-radius: 1rem;
-  padding: 3rem;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+/* =========================================================
+   CTA SECTION WITH STUDENT IMAGES
+   ========================================================= */
+
+.cta-section {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+.cta-container {
+  max-width: 1520px;
+  margin: 0 auto;
+  width: 100%;
+  height: auto;
+}
+
+.cta-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6rem;
+  position: relative;
+  width: 100%;
+  height: 865.34px;
+}
+
+/* =========================================================
+     CTA LEFT SIDE - Checkmarks and Button
+     ========================================================= */
+
+.cta-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 6rem;
+  min-width: 300px;
+}
+
+
+
+.checkmarks-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  animation: fadeInLeft 0.8s ease-out;
+}
+
+.checkmark-item {
+  font-size: 2rem;
+  color: var(--color-primary-400);
   transition: all 0.3s ease;
 }
 
-.about-title {
-  font-size: 2.6rem;
-  font-weight: 700;
-  color: var(--color-primary-400);
-  margin-bottom: 1rem;
+.checkmark-item:hover {
+  transform: scale(1.1);
+  color: var(--color-primary-500);
 }
 
-.about-subtitle {
-  font-size: 1.6rem;
-  font-weight: 500;
-  color: var(--color-primary-400);
-  opacity: 0.8;
+.cta-button {
+  padding: var(--space-md) var(--space-xl);
+  font-size: var(--font-lg);
+  border-radius: var(--radius-full);
+  min-width: 250px;
+  animation: fadeInLeft 0.8s ease-out 0.2s both;
 }
 
-.about-description {
-  font-size: 1.4rem;
-  line-height: 1.9;
-  color: var(--color-text-muted);
-  max-width: 700px;
-  margin: 0 auto;
+.paragraph {
+  font-size: var(--font-xl);
+  font-weight: var(--font-weight-medium);
+  line-height: 59px;
+  width: 90%;
+}
+
+/* =========================================================
+     CTA RIGHT SIDE - Student Images
+     ========================================================= */
+
+.cta-right {
+  flex: 1;
+  position: relative;
+  height: 100%;
+  width: 865px;
+  min-width: 300px;
+  animation: fadeInRight 0.8s ease-out;
+}
+
+.decorative-circle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 150px;
+  height: 150px;
+  z-index: 1;
+}
+
+/* Main Student Image */
+.student-image-main {
+  position: absolute;
+  left: 50px;
+  top: 50px;
+  width: 484px;
+  height: 727px;
+  background-color: var(--color-primary-400);
+  border-radius: var(--radius-3xlg);
+  overflow: hidden;
+  z-index: 3;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  animation: slideInLeft 0.8s ease-out;
+}
+
+.student-image-main img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Top Right Image */
+.student-image-top-right {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 315px;
+  height: 316px;
+  background-color: var(--color-gray-100);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  z-index: 31;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  animation: slideInRight 0.8s ease-out 0.2s both;
+}
+
+.student-image-top-right img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+}
+
+/* Bottom Right Image */
+.student-image-bottom-right {
+  position: absolute;
+  right: 80px;
+  bottom: 0;
+  width: 268px;
+  height: 269px;
+  background-color: #ffc107;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  z-index: 31;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  animation: slideInRight 0.8s ease-out 0.4s both;
+}
+
+.student-image-bottom-right img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* =========================================================
+     ANIMATIONS FOR CTA SECTION
+     ========================================================= */
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* =========================================================
+     CTA SECTION RESPONSIVE DESIGN
+     ========================================================= */
+
+@media (max-width: 1024px) {
+  .cta-content {
+    gap: var(--space-lg);
+  }
+
+  .cta-right {
+    height: 400px;
+  }
+
+  .student-image-main {
+    width: 300px;
+    height: 350px;
+  }
+
+  .student-image-top-right,
+  .student-image-bottom-right {
+    width: 150px;
+    height: 150px;
+  }
+
+  .decorative-circle {
+    width: 120px;
+    height: 120px;
+    right: 80px;
+  }
+}
+
+@media (max-width: 768px) {
+  .cta-section {
+    padding: var(--space-xl) var(--space-md);
+    margin-top: 100px;
+  }
+
+  .cta-content {
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  .cta-left {
+    width: 100%;
+    align-items: center;
+    text-align: center;
+  }
+
+  .cta-right {
+    width: 100%;
+    height: 350px;
+  }
+
+  .student-image-main {
+    width: 250px;
+    height: 300px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .student-image-top-right {
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    top: -50px;
+
+  }
+
+  .student-image-bottom-right {
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -50px;
+  }
+
+  .decorative-circle {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .cta-section {
+    padding: var(--space-lg) var(--space-md);
+    margin-top: 80px;
+  }
+
+  .cta-left {
+    gap: var(--space-lg);
+  }
+
+  .checkmark-item {
+    font-size: 1.5rem;
+  }
+
+  .cta-button {
+    min-width: 200px;
+    padding: var(--space-sm) var(--space-md);
+    font-size: var(--font-base);
+  }
+
+  .cta-right {
+    height: 300px;
+  }
+
+  .student-image-main {
+    width: 200px;
+    height: 250px;
+  }
+
+  .student-image-top-right,
+  .student-image-bottom-right {
+    width: 120px;
+    height: 120px;
+  }
 }

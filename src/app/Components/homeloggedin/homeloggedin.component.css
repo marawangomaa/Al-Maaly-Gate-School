@@ -1,0 +1,36 @@
+.card {
+    border-radius: 12px;
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+}
+
+h1 {
+    color: var(--text-primary);
+}
+
+p {
+    color: var(--text-secondary);
+}
+
+.home-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 6rem;
+    /* vertical spacing between sections */
+}
+
+/* Optional: reduce spacing on smaller screens */
+@media (max-width: 768px) {
+    .home-sections {
+        gap: 4rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .home-sections {
+        gap: 3rem;
+    }
+}

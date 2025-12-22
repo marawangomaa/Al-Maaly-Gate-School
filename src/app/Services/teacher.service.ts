@@ -121,6 +121,12 @@ export class TeacherService {
   getTeacherClasses(teacherId: string): Observable<ServiceResult<ClassViewDto[]>> {
     return this.http.get<ServiceResult<ClassViewDto[]>>(
       `${this.apiUrl}/${teacherId}/classes`
+      );
+  }
+  getTeachersAssignedToSubject(subjectId: string): Observable<ApiResponse<TeacherViewDto[]>>
+  {
+    return this.http.get<ApiResponse<TeacherViewDto[]>>(
+      `${this.apiUrl}/assigned/subject/${subjectId}`
     );
   }
 }

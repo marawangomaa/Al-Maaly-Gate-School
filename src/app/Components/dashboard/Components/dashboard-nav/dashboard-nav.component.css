@@ -4,6 +4,12 @@
   gap: var(--space-xl);
 }
 
+.hero-title {
+  font-size: var(--font-3xl);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--space-lg);
+}
+
 .nav-link {
   font-size: var(--font-base);
   padding: var(--space-md) var(--space-sm);

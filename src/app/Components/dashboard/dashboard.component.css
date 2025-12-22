@@ -7,6 +7,14 @@
   overflow: hidden;
 }
 
+.dashboard-nav {
+  margin-top: 25px;
+}
+
+.dashboard-content {
+  margin-top: 45px;
+}
+
 /* Sidebar host (the custom element) */
 app-dashboard-nav {
   width: 240px;
@@ -46,7 +54,9 @@ app-dashboard-nav .card {
 
 /* Reduce sidebar width on medium-large screens */
 @media (max-width: 1200px) {
-  app-dashboard-nav { width: 220px; }
+  app-dashboard-nav {
+    width: 220px;
+  }
 }
 
 /* At tablet & below: stack nav on top and make nav horizontal for quick access */
@@ -65,7 +75,8 @@ app-dashboard-nav .card {
   app-dashboard-nav .dashboard-nav {
     position: sticky;
     top: 0;
-    height: auto; /* allow content height */
+    height: auto;
+    /* allow content height */
     display: flex;
     align-items: center;
     gap: 0.75rem;
@@ -82,6 +93,7 @@ app-dashboard-nav .card {
 
 /* At small mobile: allow horizontal scroll for nav links (preserve functionality, no JS) */
 @media (max-width: 768px) {
+
   /* Make the top nav links horizontally scrollable */
   .dashboard-nav .nav {
     display: flex;
@@ -118,6 +130,11 @@ app-dashboard-nav .card {
 
 /* Small visual corrections for extremely small screens */
 @media (max-width: 420px) {
-  app-dashboard-nav { font-size: 0.95rem; }
-  .dashboard-content { padding-top: calc(var(--space-lg,1rem) + 3.25rem); }
+  app-dashboard-nav {
+    font-size: 0.95rem;
+  }
+
+  .dashboard-content {
+    padding-top: calc(var(--space-lg, 1rem) + 3.25rem);
+  }
 }

@@ -1,61 +1,123 @@
-.programs-section {
-  background-color: var(--color-bg-secondary);
-  border-radius: 1rem;
-  padding: 3rem;
+.feature-section {
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.section-header {
+  text-align: center;
   position: relative;
+  z-index: 1;
+}
+
+
+
+/* Feature Cards Container */
+.feature-cards-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 40px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Individual Feature Card Styling */
+.feature-card {
+  flex: 1;
+  max-width: 489.2px;
+  max-height: 432px;
+  border-radius: 3rem;
   overflow: hidden;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
 }
 
-.programs-title {
-  font-size: 2.4rem;
-  font-weight: 700;
-  color: var(--color-primary-400);
-  transition: color 0.3s ease;
+.feature-card:hover {
+  transform: translateY(-5px);
 }
 
-/* Card Styling */
-.program-card {
-  border-radius: 15px;
-  overflow: hidden;
-  border: none;
-  background: var(--color-bg); /* use theme variable */
-  color: var(--color-text); /* adapt text color */
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
-  transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.3s ease, color 0.3s ease;
-  animation: floatCard 5s ease-in-out infinite;
+.illustration {
+  height: 269px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0047AB;
 }
 
-.program-card:hover {
-  transform: translateY(-12px) scale(1.03);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
-}
-
-/* Image flush with edges */
-.program-img {
-  height: 200px;
+.illustration img {
   object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.card-content {
+  padding: 2.4rem;
+  color: white;
+  height: 50%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  border-radius: 0 0 30px 30px;
+  background-color: #0047AB;
+}
+
+
+
+.main-title {
+  color: white;
+}
+
+.card-content .paragraph {
+  color: white;
+  font-size: var(--font-lg);
   margin: 0;
-  display: block;
 }
 
-/* Floating animation */
-@keyframes floatCard {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0px); }
+.primary-btn {
+  margin-top: 2rem;
 }
 
-/* Text inside cards */
-.card-title {
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: var(--color-primary-400);
-  transition: color 0.3s ease;
+.hero-title {
+  font-size: var(--font-6xl);
 }
 
-.card-text {
-  font-size: 1.2rem;
-  color: var(--color-text-muted);
-  transition: color 0.3s ease;
+.paragraph {
+  font-size: var(--font-3xl);
+  width: 80%;
+  margin: 0 auto;
+}
+
+
+/* Responsive Design (Optional but good practice) */
+@media (max-width: 1000px) {
+  .feature-cards-container {
+    flex-wrap: wrap;
+  }
+
+  .feature-card {
+    max-width: 45%;
+  }
+}
+
+@media (max-width: 600px) {
+  .feature-cards-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .feature-card {
+    max-width: 100%;
+  }
+
+  .section-header {
+    padding: 40px 20px 80px;
+    margin-bottom: -40px;
+  }
 }
