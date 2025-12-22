@@ -1,171 +1,171 @@
 {
-    "HOME": {
-        "TITLE": "مرحبًا بك في موقعنا",
-        "DESCRIPTION": "استكشف ميزاتنا وخدماتنا"
+  "HOME": {
+    "TITLE": "مرحبًا بك في موقعنا",
+    "DESCRIPTION": "استكشف ميزاتنا وخدماتنا"
+  },
+  "ABOUT": {
+    "TITLE": "معلومات عنا",
+    "SUBTITLE": "من نحن",
+    "DESCRIPTION": "نحن مدرسة مكرسة لتمكين الطلاب بالمعرفة والإبداع والابتكار. مهمتنا هي توفير بيئة داعمة وملهمة حيث يمكن لكل متعلم أن يحقق إمكاناته الكاملة."
+  },
+  "programs": {
+    "title": "برامجنا",
+    "learningMethods": "طرق تعلم فعالة",
+    "learningMethodsDesc": "نقدم أساليب تعلم حديثة وعملية.",
+    "quizzes": "الاختبارات القصيرة",
+    "quizzesDesc": "اختبارات تفاعلية لتعزيز فهمك.",
+    "exams": "الامتحانات",
+    "examsDesc": "امتحانات منظمة لتقييم تقدمك."
+  },
+  "community": {
+    "title": "ماذا يقول مجتمعنا",
+    "testimonial1": "المعلمون هنا يهتمون حقًا بكل طالب ويبذلون جهدًا أكبر للتأكد من نجاحه. لقد رأيت طفلي ينمو ليس فقط في أدائه الأكاديمي، ولكن أيضًا في ثقته بنفسه وقدرته على العمل الجماعي والتفكير النقدي. الاهتمام الفردي الذي يحصل عليه كل طالب يحدث فرقًا كبيرًا في تطوره بشكل عام، ونحن ممتنون جدًا لهذا المجتمع الداعم.",
+    "author1": "أحمد س.",
+    "testimonial2": "توفر هذه المدرسة بيئة متميزة للتعلم. طرق التدريس الحديثة، إلى جانب التكنولوجيا المبتكرة والأنشطة الممتعة، تضمن أن الطلاب لا يحفظون فقط بل يفهمون المفاهيم بعمق. أصبحت ابنتي أكثر إبداعًا، وأكثر استقلالية، وأكثر حماسًا للتعلم. إن الطاقم التعليمي يستثمر حقًا في نجاح كل طالب، وهذا ما يصنع الفارق الكبير.",
+    "author2": "سارة ك.",
+    "testimonial3": "كان الانضمام إلى مجتمع هذه المدرسة أفضل قرار لعائلتنا. أطفالي يتطلعون للذهاب يوميًا لأن الدروس تفاعلية، والمعلمون ودودون، والجو العام يشجع على الفضول والنمو. بالإضافة إلى الجانب الأكاديمي، يتعلمون مهارات حياتية مثل المسؤولية، وحل المشكلات، والتعاطف. أشعر بالاطمئنان لأنني أعلم أنهم في أيدٍ أمينة.",
+    "author3": "عمر أ."
+  },
+  "admission": {
+    "title": "القبول أصبح سهلاً",
+    "description": "التقديم في مدرستنا هو عملية بسيطة وخالية من التعقيد، مصممة خصيصًا لتناسب احتياجات العائلات. نحن نؤمن أن التعليم يجب أن يبدأ برحلة قبول ترحيبية وشفافة. كل ما عليك فعله هو زيارة صفحة القبول الخاصة بنا، حيث ستجد تعليمات تفصيلية خطوة بخطوة حول كيفية إكمال طلبك. بدءًا من ملء النماذج المطلوبة وصولاً إلى تقديم المستندات اللازمة، يتم شرح كل خطوة بوضوح لتجنب أي لبس. فريق القبول لدينا دائمًا على استعداد لمساعدتك والإجابة على جميع أسئلتك واستفساراتك، ونشجع العائلات على التواصل معنا عند الحاجة إلى الدعم. نحن ملتزمون بجعل هذه العملية سلسة وداعمة ومتاحة للجميع، لأن اختيار المدرسة المناسبة هو أحد أهم القرارات لمستقبل طفلك.",
+    "button": "زيارة صفحة القبول"
+  },
+  "contact": {
+    "title": "تواصل معنا",
+    "subtitle": "يسعدنا دائمًا سماعكم! سواء كان لديكم أسئلة أو اقتراحات أو تحتاجون إلى مساعدة، لا تترددوا في التواصل معنا عبر النموذج أدناه أو من خلال بيانات الاتصال الخاصة بنا.",
+    "infoTitle": "معلومات التواصل الخاصة بنا",
+    "address": "١٢٣ شارع رئيسي، المدينة، البلد",
+    "phone": "+٩٦٦ ١٢٣ ٤٥٦ ٧٨٩",
+    "email": "info@school.com",
+    "form": {
+      "name": "اسمك",
+      "email": "بريدك الإلكتروني",
+      "subject": "الموضوع",
+      "message": "رسالتك",
+      "button": "إرسال الرسالة"
     },
-    "ABOUT": {
-        "TITLE": "معلومات عنا",
-        "SUBTITLE": "من نحن",
-        "DESCRIPTION": "نحن مدرسة مكرسة لتمكين الطلاب بالمعرفة والإبداع والابتكار. مهمتنا هي توفير بيئة داعمة وملهمة حيث يمكن لكل متعلم أن يحقق إمكاناته الكاملة."
-    },
-    "programs": {
-        "title": "برامجنا",
-        "learningMethods": "طرق تعلم فعالة",
-        "learningMethodsDesc": "نقدم أساليب تعلم حديثة وعملية.",
-        "quizzes": "الاختبارات القصيرة",
-        "quizzesDesc": "اختبارات تفاعلية لتعزيز فهمك.",
-        "exams": "الامتحانات",
-        "examsDesc": "امتحانات منظمة لتقييم تقدمك."
-    },
-    "community": {
-        "title": "ماذا يقول مجتمعنا",
-        "testimonial1": "المعلمون هنا يهتمون حقًا بكل طالب ويبذلون جهدًا أكبر للتأكد من نجاحه. لقد رأيت طفلي ينمو ليس فقط في أدائه الأكاديمي، ولكن أيضًا في ثقته بنفسه وقدرته على العمل الجماعي والتفكير النقدي. الاهتمام الفردي الذي يحصل عليه كل طالب يحدث فرقًا كبيرًا في تطوره بشكل عام، ونحن ممتنون جدًا لهذا المجتمع الداعم.",
-        "author1": "أحمد س.",
-        "testimonial2": "توفر هذه المدرسة بيئة متميزة للتعلم. طرق التدريس الحديثة، إلى جانب التكنولوجيا المبتكرة والأنشطة الممتعة، تضمن أن الطلاب لا يحفظون فقط بل يفهمون المفاهيم بعمق. أصبحت ابنتي أكثر إبداعًا، وأكثر استقلالية، وأكثر حماسًا للتعلم. إن الطاقم التعليمي يستثمر حقًا في نجاح كل طالب، وهذا ما يصنع الفارق الكبير.",
-        "author2": "سارة ك.",
-        "testimonial3": "كان الانضمام إلى مجتمع هذه المدرسة أفضل قرار لعائلتنا. أطفالي يتطلعون للذهاب يوميًا لأن الدروس تفاعلية، والمعلمون ودودون، والجو العام يشجع على الفضول والنمو. بالإضافة إلى الجانب الأكاديمي، يتعلمون مهارات حياتية مثل المسؤولية، وحل المشكلات، والتعاطف. أشعر بالاطمئنان لأنني أعلم أنهم في أيدٍ أمينة.",
-        "author3": "عمر أ."
-    },
-    "admission": {
-        "title": "القبول أصبح سهلاً",
-        "description": "التقديم في مدرستنا هو عملية بسيطة وخالية من التعقيد، مصممة خصيصًا لتناسب احتياجات العائلات. نحن نؤمن أن التعليم يجب أن يبدأ برحلة قبول ترحيبية وشفافة. كل ما عليك فعله هو زيارة صفحة القبول الخاصة بنا، حيث ستجد تعليمات تفصيلية خطوة بخطوة حول كيفية إكمال طلبك. بدءًا من ملء النماذج المطلوبة وصولاً إلى تقديم المستندات اللازمة، يتم شرح كل خطوة بوضوح لتجنب أي لبس. فريق القبول لدينا دائمًا على استعداد لمساعدتك والإجابة على جميع أسئلتك واستفساراتك، ونشجع العائلات على التواصل معنا عند الحاجة إلى الدعم. نحن ملتزمون بجعل هذه العملية سلسة وداعمة ومتاحة للجميع، لأن اختيار المدرسة المناسبة هو أحد أهم القرارات لمستقبل طفلك.",
-        "button": "زيارة صفحة القبول"
-    },
-    "contact": {
-        "title": "تواصل معنا",
-        "subtitle": "يسعدنا دائمًا سماعكم! سواء كان لديكم أسئلة أو اقتراحات أو تحتاجون إلى مساعدة، لا تترددوا في التواصل معنا عبر النموذج أدناه أو من خلال بيانات الاتصال الخاصة بنا.",
-        "infoTitle": "معلومات التواصل الخاصة بنا",
-        "address": "١٢٣ شارع رئيسي، المدينة، البلد",
-        "phone": "+٩٦٦ ١٢٣ ٤٥٦ ٧٨٩",
-        "email": "info@school.com",
-        "form": {
-            "name": "اسمك",
-            "email": "بريدك الإلكتروني",
-            "subject": "الموضوع",
-            "message": "رسالتك",
-            "button": "إرسال الرسالة"
-        },
-        "errors": {
-            "name": "الاسم يجب أن يكون 3 أحرف على الأقل.",
-            "email": "الرجاء إدخال بريد إلكتروني صحيح.",
-            "subject": "الرجاء إدخال موضوع.",
-            "message": "الرسالة يجب أن تكون 10 أحرف على الأقل."
-        }
-    },
-    "LOGIN": {
-        "TITLE": "تسجيل الدخول إلى حسابك",
-        "USERNAME": "اسم المستخدم",
-        "PASSWORD": "كلمة المرور",
-        "SUBMIT": "تسجيل الدخول"
-    },
-    "REGISTER": {
-        "TITLE": "إنشاء حساب جديد",
-        "FULLNAME": "الاسم الكامل",
-        "FULLNAME_REQUIRED": "الاسم الكامل مطلوب",
-        "USERNAME": "اسم المستخدم",
-        "USERNAME_REQUIRED": "اسم المستخدم مطلوب",
-        "EMAIL": "البريد الإلكتروني",
-        "EMAIL_INVALID": "يرجى إدخال بريد إلكتروني صحيح",
-        "CONTACT_INFO": "معلومات الاتصال",
-        "PASSWORD": "كلمة المرور",
-        "PASSWORD_REQUIRED": "كلمة المرور مطلوبة (على الأقل 6 أحرف)",
-        "CONFIRM_PASSWORD": "تأكيد كلمة المرور",
-        "PASSWORD_MISMATCH": "كلمات المرور غير متطابقة",
-        "ROLE": "الدور",
-        "ROLE_SELECT": "اختر الدور",
-        "ROLE_STUDENT": "طالب",
-        "ROLE_TEACHER": "معلم",
-        "ROLE_PARENT": "ولي أمر",
-        "ROLE_REQUIRED": "يجب اختيار الدور",
-        "RELATION": "صلة القرابة",
-        "RELATION_REQUIRED": "صلة القرابة مطلوبة",
-        "DOCUMENTS": "المستندات",
-        "SELECT_DOCUMENTS": "اختر المستندات",
-        "FILE_MAX_LIMIT": "الحد الأقصى 3 ملفات مسموح بها",
-        "FILE_INVALID_TYPE": "نوع ملف غير صالح: {{fileName}}. الأنواع المسموحة: PDF, JPG, PNG, DOC, DOCX",
-        "FILE_TOO_LARGE": "الملف {{fileName}} كبير جداً. الحد الأقصى: 5 ميجابايت",
-        "FILE_REQUIRED": "مطلوب ملف واحد على الأقل لتسجيل ولي الأمر",
-        "REMOVE_FILE": "إزالة الملف",
-        "SUBMIT": "تسجيل",
-        "CANCEL": "إلغاء",
-        "LOADING": "جارٍ إنشاء الحساب...",
-        "PARENT_SUCCESS": "تم تسجيل ولي الأمر بنجاح! يتم التوجيه...",
-        "PARENT_FAILED": "فشل تسجيل ولي الأمر",
-        "SUCCESS": "تم التسجيل بنجاح! يتم التوجيه...",
-        "FAILED": "فشل التسجيل",
-        "FORM_ERRORS": "يرجى تصحيح الأخطاء في النموذج",
-        "SOMETHING_WRONG": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
-        "FULLNAME_PLACEHOLDER": "أدخل الاسم الكامل",
-        "FULLNAME_MIN_ERROR": "الاسم يجب أن يكون على الأقل 3 أحرف",
-        "USERNAME_PLACEHOLDER": "اختر اسم مستخدم",
-        "USERNAME_MIN_ERROR": "اسم المستخدم يجب أن يكون على الأقل 3 أحرف",
-        "EMAIL_PLACEHOLDER": "أدخل عنوان البريد الإلكتروني",
-        "CONTACT_PLACEHOLDER": "رقم الهاتف (اختياري)",
-        "CONTACT_MIN_ERROR": "يجب أن يكون على الأقل 10 أحرف إذا تم توفيره",
-        "PASSWORD_PLACEHOLDER": "أدخل كلمة المرور",
-        "PASSWORD_MIN_ERROR": "كلمة المرور يجب أن تكون على الأقل 6 أحرف",
-        "CONFIRM_PASSWORD_PLACEHOLDER": "تأكيد كلمة المرور",
-        "RELATION_SELECT": "اختر صلة القرابة",
-        "RELATION_FATHER": "أب",
-        "RELATION_MOTHER": "أم",
-        "RELATION_GUARDIAN": "وصي",
-        "RELATION_OTHER": "آخر",
-        "PARENT_INFO": "معلومات ولي الأمر",
-        "DOCUMENTS_TITLE": "رفع المستندات (الحد الأقصى 3 ملفات، 5 ميجابايت لكل ملف) *",
-        "ADD_MORE_DOCUMENTS": "إضافة المزيد من المستندات",
-        "FIRST_FILE_IDENTITY": "سيتم التعامل مع الملف الأول كمستند هوية",
-        "REQUIREMENTS": "المتطلبات",
-        "FILE_REQUIREMENTS_DETAIL": "مطلوب مستند واحد على الأقل. الصيغ المسموحة: PDF, JPG, PNG, DOC, DOCX. الحد الأقصى 5 ميجابايت لكل ملف.",
-        "SELECTED_FILES": "الملفات المحددة",
-        "IDENTITY_BADGE": "هوية",
-        "NO_DOCUMENTS": "لا توجد مستندات محددة",
-        "FILES_COUNT": "الملفات: {{current}}/{{max}}"
-    },
-    "DASH": {
-        "PARENT_MANAGEMENT": "إدارة أولياء الأمور",
-        "STUDENT_PROFILE": "الملف الشخصي",
-        "ADMIN_CERTFICATION_CREATE": "انشاء شهادة",
-        "CHILDREN OF PARENT": "أبناء ولي الأمر",
-        "STUDENT_CERTFICATION": "الشهادات",
-        "ALL_CLASSES": "جميع الفصول",
-        "TITLE": "لوحة تحكمى",
-        "OVERVIEW": "نظرة عامة",
-        "ANALYTICS": "احصائيات",
-        "SETTINGS": "الاعدادات",
-        "LOGOUT": "تسجيل الخروج",
-        "TEACHER": "معلم",
-        "STUDENT": "طالب",
-        "ADMIN": "مسؤول",
-        "Admin_Teachers_Accounts": "حسابات المعلمين",
-        "FOLLOW_CLASSES": "متابعة الفصول",
-        "TEACHER_OVERVIEW": "نظرة عامة",
-        "CREATE_CLASS": "انشاء حصة اونلاين",
-        "CLASS_LIST": "الحصص الاونلاين",
-        "CREATE_QUESTION": "انشاء سؤال",
-        "QUESTION_LIST": "قائمة الاسالة",
-        "CREATE_TEST": "انشاء اختبار",
-        "TEST_LIST": "قائمة الاختبارات",
-        "CLASS_GRADES": "درجات الصف",
-        "YEAR-GRADE": "العام الدراسى",
-        "ACCEPT_TEACHERS": "قبول المعلمين",
-        "ALL_STUDENT_TEST_RESULT": "درجات اختبارات التلاميذ",
-        "STUDENT_ACCOUNTS": "حسابات الطلاب",
-        "TEACHER_ACCOUNTS": "حسابات المعلمين",
-        "ADMIN_SUBJECT_MANAGEMENT": "ادارة المواد",
-        "ADMIN_ANALYTICS": "تحليلات",
-        "CURRICULUM": "المقرر",
-
-        "Admin_Follow_Tests": "متابعة نتائج الاختبارات",
-        "Admin_Students_Accounts": "حسابات الطلاب",
-        "PARENTS_ACCOUNTS": "حسابات أولياء الأمور",
-        "MAKE_TESTS": "إنشاء اختبارات",
-        "ONLINE_CLASSES": "حصص أونلاين",
-        "TESTS": "الاختبارات",
-        "GRADES": "الدرجات",
-        "PROFILE": "الملف الشخصي",
-        "CREATE_EMPTY_CLASS": "إنشاء فصل جديدة"
-    },
-    "GRADE": {
+    "errors": {
+      "name": "الاسم يجب أن يكون 3 أحرف على الأقل.",
+      "email": "الرجاء إدخال بريد إلكتروني صحيح.",
+      "subject": "الرجاء إدخال موضوع.",
+      "message": "الرسالة يجب أن تكون 10 أحرف على الأقل."
+    }
+  },
+  "LOGIN": {
+    "TITLE": "تسجيل الدخول إلى حسابك",
+    "USERNAME": "اسم المستخدم",
+    "PASSWORD": "كلمة المرور",
+    "SUBMIT": "تسجيل الدخول"
+  },
+  "REGISTER": {
+    "TITLE": "إنشاء حساب جديد",
+    "FULLNAME": "الاسم الكامل",
+    "FULLNAME_REQUIRED": "الاسم الكامل مطلوب",
+    "USERNAME": "اسم المستخدم",
+    "USERNAME_REQUIRED": "اسم المستخدم مطلوب",
+    "EMAIL": "البريد الإلكتروني",
+    "EMAIL_INVALID": "يرجى إدخال بريد إلكتروني صحيح",
+    "CONTACT_INFO": "معلومات الاتصال",
+    "PASSWORD": "كلمة المرور",
+    "PASSWORD_REQUIRED": "كلمة المرور مطلوبة (على الأقل 6 أحرف)",
+    "CONFIRM_PASSWORD": "تأكيد كلمة المرور",
+    "PASSWORD_MISMATCH": "كلمات المرور غير متطابقة",
+    "ROLE": "الدور",
+    "ROLE_SELECT": "اختر الدور",
+    "ROLE_STUDENT": "طالب",
+    "ROLE_TEACHER": "معلم",
+    "ROLE_PARENT": "ولي أمر",
+    "ROLE_REQUIRED": "يجب اختيار الدور",
+    "RELATION": "صلة القرابة",
+    "RELATION_REQUIRED": "صلة القرابة مطلوبة",
+    "DOCUMENTS": "المستندات",
+    "SELECT_DOCUMENTS": "اختر المستندات",
+    "FILE_MAX_LIMIT": "الحد الأقصى 3 ملفات مسموح بها",
+    "FILE_INVALID_TYPE": "نوع ملف غير صالح: {{fileName}}. الأنواع المسموحة: PDF, JPG, PNG, DOC, DOCX",
+    "FILE_TOO_LARGE": "الملف {{fileName}} كبير جداً. الحد الأقصى: 5 ميجابايت",
+    "FILE_REQUIRED": "مطلوب ملف واحد على الأقل لتسجيل ولي الأمر",
+    "REMOVE_FILE": "إزالة الملف",
+    "SUBMIT": "تسجيل",
+    "CANCEL": "إلغاء",
+    "LOADING": "جارٍ إنشاء الحساب...",
+    "PARENT_SUCCESS": "تم تسجيل ولي الأمر بنجاح! يتم التوجيه...",
+    "PARENT_FAILED": "فشل تسجيل ولي الأمر",
+    "SUCCESS": "تم التسجيل بنجاح! يتم التوجيه...",
+    "FAILED": "فشل التسجيل",
+    "FORM_ERRORS": "يرجى تصحيح الأخطاء في النموذج",
+    "SOMETHING_WRONG": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+    "FULLNAME_PLACEHOLDER": "أدخل الاسم الكامل",
+    "FULLNAME_MIN_ERROR": "الاسم يجب أن يكون على الأقل 3 أحرف",
+    "USERNAME_PLACEHOLDER": "اختر اسم مستخدم",
+    "USERNAME_MIN_ERROR": "اسم المستخدم يجب أن يكون على الأقل 3 أحرف",
+    "EMAIL_PLACEHOLDER": "أدخل عنوان البريد الإلكتروني",
+    "CONTACT_PLACEHOLDER": "رقم الهاتف (اختياري)",
+    "CONTACT_MIN_ERROR": "يجب أن يكون على الأقل 10 أحرف إذا تم توفيره",
+    "PASSWORD_PLACEHOLDER": "أدخل كلمة المرور",
+    "PASSWORD_MIN_ERROR": "كلمة المرور يجب أن تكون على الأقل 6 أحرف",
+    "CONFIRM_PASSWORD_PLACEHOLDER": "تأكيد كلمة المرور",
+    "RELATION_SELECT": "اختر صلة القرابة",
+    "RELATION_FATHER": "أب",
+    "RELATION_MOTHER": "أم",
+    "RELATION_GUARDIAN": "وصي",
+    "RELATION_OTHER": "آخر",
+    "PARENT_INFO": "معلومات ولي الأمر",
+    "DOCUMENTS_TITLE": "رفع المستندات (الحد الأقصى 3 ملفات، 5 ميجابايت لكل ملف) *",
+    "ADD_MORE_DOCUMENTS": "إضافة المزيد من المستندات",
+    "FIRST_FILE_IDENTITY": "سيتم التعامل مع الملف الأول كمستند هوية",
+    "REQUIREMENTS": "المتطلبات",
+    "FILE_REQUIREMENTS_DETAIL": "مطلوب مستند واحد على الأقل. الصيغ المسموحة: PDF, JPG, PNG, DOC, DOCX. الحد الأقصى 5 ميجابايت لكل ملف.",
+    "SELECTED_FILES": "الملفات المحددة",
+    "IDENTITY_BADGE": "هوية",
+    "NO_DOCUMENTS": "لا توجد مستندات محددة",
+    "FILES_COUNT": "الملفات: {{current}}/{{max}}"
+  },
+  "DASH": {
+    "YEAR_GRADE": "العام الدراسي - الصف",
+    "PARENT_MANAGEMENT": "إدارة أولياء الأمور",
+    "STUDENT_PROFILE": "الملف الشخصي",
+    "ADMIN_CERTFICATION_CREATE": "انشاء شهادة",
+    "CHILDREN OF PARENT": "أبناء ولي الأمر",
+    "STUDENT_CERTFICATION": "الشهادات",
+    "ALL_CLASSES": "جميع الفصول",
+    "TITLE": "لوحة تحكمى",
+    "OVERVIEW": "نظرة عامة",
+    "ANALYTICS": "احصائيات",
+    "SETTINGS": "الاعدادات",
+    "LOGOUT": "تسجيل الخروج",
+    "TEACHER": "معلم",
+    "STUDENT": "طالب",
+    "ADMIN": "مسؤول",
+    "Admin_Teachers_Accounts": "حسابات المعلمين",
+    "FOLLOW_CLASSES": "متابعة الفصول",
+    "TEACHER_OVERVIEW": "نظرة عامة",
+    "CREATE_CLASS": "انشاء حصة اونلاين",
+    "CLASS_LIST": "الحصص الاونلاين",
+    "CREATE_QUESTION": "انشاء سؤال",
+    "QUESTION_LIST": "قائمة الاسالة",
+    "CREATE_TEST": "انشاء اختبار",
+    "TEST_LIST": "قائمة الاختبارات",
+    "CLASS_GRADES": "درجات الصف",
+    "YEAR-GRADE": "العام الدراسى",
+    "ACCEPT_TEACHERS": "قبول المعلمين",
+    "ALL_STUDENT_TEST_RESULT": "درجات اختبارات التلاميذ",
+    "STUDENT_ACCOUNTS": "حسابات الطلاب",
+    "TEACHER_ACCOUNTS": "حسابات المعلمين",
+    "ADMIN_SUBJECT_MANAGEMENT": "ادارة المواد",
+    "ADMIN_ANALYTICS": "تحليلات",
+    "CURRICULUM": "المقرر",
+    "Admin_Follow_Tests": "متابعة نتائج الاختبارات",
+    "Admin_Students_Accounts": "حسابات الطلاب",
+    "PARENTS_ACCOUNTS": "حسابات أولياء الأمور",
+    "MAKE_TESTS": "إنشاء اختبارات",
+    "ONLINE_CLASSES": "حصص أونلاين",
+    "TESTS": "الاختبارات",
+    "GRADES": "الدرجات",
+    "PROFILE": "الملف الشخصي",
+    "CREATE_EMPTY_CLASS": "إنشاء فصل جديدة"
+  },
+  "GRADE": {
     "MANAGEMENT": "إدارة الصفوف",
     "ADD_GRADE": "إضافة صف جديد",
     "SEARCH_PLACEHOLDER": "البحث عن الصفوف بالاسم أو الوصف...",
@@ -174,7 +174,6 @@
     "NO_GRADES": "لا توجد صفوف",
     "CREATE_FIRST": "ابدأ بإضافة أول صف لك.",
     "CREATE_FIRST_BTN": "إنشاء أول صف",
-    
     "GRADE_NAME": "الصف: {{gradeName}}",
     "SHOW_DETAILS": "عرض التفاصيل",
     "HIDE_DETAILS": "إخفاء التفاصيل",
@@ -184,7 +183,6 @@
     "CLASSES": "{{count}} فصل",
     "SUBJECTS": "{{count}} مادة",
     "CREATED": "تم الإنشاء: {{date}}",
-    
     "CLASSES_SECTION": {
       "TITLE": "الفصول ({{count}})",
       "ADD_CLASS": "إضافة فصل",
@@ -196,7 +194,6 @@
       "TEACHERS": "المعلمين",
       "ACTIONS": "الإجراءات"
     },
-    
     "SUBJECTS_SECTION": {
       "TITLE": "المواد ({{count}})",
       "ADD_SUBJECT": "إضافة مادة",
@@ -205,7 +202,6 @@
       "TEACHER_COUNT": "المعلمين: {{count}}",
       "EXAM_COUNT": "الامتحانات: {{count}}"
     },
-    
     "MODALS": {
       "ADD_GRADE": "إنشاء صف جديد",
       "EDIT_GRADE": "تعديل الصف",
@@ -217,7 +213,6 @@
       "CANCEL": "إلغاء",
       "CREATE": "إنشاء",
       "UPDATE": "تحديث",
-      
       "ADD_CLASS": "إضافة فصل جديد",
       "EDIT_CLASS": "تعديل الفصل",
       "CLASS_NAME_LABEL": "اسم الفصل *",
@@ -225,7 +220,6 @@
       "CLASS_NAME_MIN_LENGTH": "يجب أن يكون اسم الفصل على الأقل حرفين",
       "GRADE_SELECT_LABEL": "الصف *",
       "GRADE_SELECT_REQUIRED": "الرجاء اختيار صف",
-      
       "ADD_SUBJECT": "إضافة مادة جديدة",
       "EDIT_SUBJECT": "تعديل المادة",
       "SUBJECT_NAME_LABEL": "اسم المادة *",
@@ -234,201 +228,194 @@
       "CREDIT_HOURS_LABEL": "الساعات المعتمدة *",
       "CREDIT_HOURS_RANGE": "يجب أن تكون الساعات المعتمدة بين 1 و 10",
       "ADD": "إضافة",
-      
       "BULK_MOVE": "نقل الفصول المحددة",
       "MOVING_COUNT": "جاري نقل {{count}} فصل(فصول) إلى صف مختلف.",
       "TARGET_GRADE": "الصف الهدف *",
       "TARGET_GRADE_REQUIRED": "الرجاء اختيار صف هدف",
       "MOVE_CLASSES": "نقل الفصول",
-      
       "DELETE_CONFIRM": "تأكيد الحذف",
       "DELETE_WARNING": "تحذير! لا يمكن التراجع عن هذا الإجراء.",
       "DELETE_CONFIRM_MESSAGE": "هل أنت متأكد أنك تريد حذف الصف \"{{gradeName}}\"؟",
       "DELETE_BTN": "حذف الصف"
     },
-    
     "PAGINATION": {
       "PREVIOUS": "السابق",
       "NEXT": "التالي"
     },
-    
     "ALERTS": {
       "DELETE_WARNING": "تحذير! لا يمكن التراجع عن هذا الإجراء."
     }
-  }
-    ,
-    "TEACHER_OVERVIEW": {
-        "TITLE": "نظرة عامة على المعلم",
-        "LAST_UPDATED": "آخر تحديث",
-        "LOADING": "جارٍ التحميل...",
-        "PROFILE_ALT": "صورة الملف الشخصي للمعلم",
-        "NO_NAME": "لا يوجد اسم",
-        "NO_PHONE": "لا يوجد رقم",
-        "NO_EMAIL": "لا يوجد بريد إلكتروني",
+  },
+  "TEACHER_OVERVIEW": {
+    "TITLE": "نظرة عامة على المعلم",
+    "LAST_UPDATED": "آخر تحديث",
+    "LOADING": "جارٍ التحميل...",
+    "PROFILE_ALT": "صورة الملف الشخصي للمعلم",
+    "NO_NAME": "لا يوجد اسم",
+    "NO_PHONE": "لا يوجد رقم",
+    "NO_EMAIL": "لا يوجد بريد إلكتروني",
+    "SUBJECT": "المادة",
+    "NO_SUBJECT": "لم تُعيّن مادة",
+    "VIEW_PROFILE": "عرض الملف الشخصي",
+    "EDIT_PROFILE": "تعديل الملف الشخصي",
+    "CLASSES": "الفصول",
+    "TESTS": "الاختبارات",
+    "QUESTIONS": "الأسئلة",
+    "ACTIVITIES": "الأنشطة",
+    "RECENT_ACTIVITY": "النشاطات الأخيرة",
+    "NO_RECENT": "لا توجد نشاطات مؤخراً"
+  },
+  "QUESTIONS": {
+    "CREATE_TITLE": "إنشاء سؤال",
+    "LABEL_QUESTION": "السؤال",
+    "PLACEHOLDER_QUESTION": "اكتب السؤال هنا...",
+    "ERROR_QUESTION": "يجب أن يتكون السؤال من 5 أحرف على الأقل.",
+    "TYPE": "نوع السؤال",
+    "TYPE_MCQ": "اختيار من متعدد",
+    "TYPE_TRUEFALSE": "صح أو خطأ",
+    "TYPE_Complete": "إكمال الفراغ",
+    "TYPE_Connection": "توصيل",
+    "OPTIONS": "الخيارات",
+    "OPTION_PLACEHOLDER": "خيار",
+    "ADD_OPTION": "إضافة خيار",
+    "REMOVE_OPTION": "إزالة",
+    "ERROR_CORRECT": "يرجى تحديد الخيار الصحيح.",
+    "TRUEFALSE": "إجابة صح أو خطأ",
+    "TRUE": "صح",
+    "FALSE": "خطأ",
+    "ANSWER_PLACEHOLDER": "الإجابة",
+    "TEXT_INFO": "هذا النوع يسمح للطالب بكتابة إجابة نصية.",
+    "DIFFICULTY": "الصعوبة",
+    "EASY": "سهل",
+    "MEDIUM": "متوسط",
+    "HARD": "صعب",
+    "TAGS": "الوسوم (مفصولة بفواصل)",
+    "TAGS_PLACEHOLDER": "مثال: جبر, نصف الفصل",
+    "SAVE": "حفظ",
+    "CANCEL": "إلغاء",
+    "LIST_TITLE": "الأسئلة",
+    "NO_QUESTIONS": "لا توجد أسئلة بعد. أنشئ السؤال الأول!",
+    "EDIT": "تعديل",
+    "DELETE": "حذف",
+    "DIFF": "الصعوبة"
+  },
+  "COMMON": {
+    "LOADING": "جارٍ التحميل...",
+    "SAVE": "حفظ",
+    "EXPAND": "عرض",
+    "COLLAPSE": "إخفاء"
+  },
+  "TEACHER_CLASSES": {
+    "TITLE": "صفوفي وطلابي",
+    "STUDENT_NAME": "اسم الطالب",
+    "TEST_GRADE": "درجة الاختبار",
+    "MIDTERM_GRADE": "درجة منتصف الترم",
+    "ATTENDANCE": "الحضور"
+  },
+  "TEST": {
+    "LIST_TITLE": "الاختبارات المتاحة",
+    "QUESTIONS_COUNT": "عدد الأسئلة",
+    "DELETE": "حذف",
+    "NO_TESTS": "لا توجد اختبارات متاحة حالياً.",
+    "CREATE_TITLE": "إنشاء اختبار جديد",
+    "SETTINGS": "إعدادات الاختبار",
+    "SETTINGS_DESC": "قم بضبط تفاصيل الاختبار والمدة الزمنية ودرجات التقييم قبل الإنشاء.",
+    "TITLE": "عنوان الاختبار",
+    "TITLE_PLACEHOLDER": "أدخل عنوان الاختبار",
+    "CLASS": "اسم الفصل",
+    "CLASS_PLACEHOLDER": "أدخل اسم الفصل",
+    "SUBJECT": "اسم المادة",
+    "DURATION": "المدة الزمنية",
+    "MAX": "الدرجة العظمى",
+    "MIN": "الدرجة الصغرى",
+    "START": "البداية",
+    "END": "النهاية",
+    "CREATE_BTN": "إنشاء الاختبار",
+    "TIPS_TITLE": "نصائح سريعة",
+    "TIP_ONE": "اختر أسئلة من فئات مختلفة لتحقيق توازن في مستوى الصعوبة.",
+    "TIP_TWO": "راجع الإعدادات قبل إنشاء الاختبار.",
+    "MCQ_QUESTIONS": "أسئلة الاختيار من متعدد",
+    "TRUE_FALSE_QUESTIONS": "أسئلة صح أو خطأ",
+    "TEXT_QUESTIONS": "أسئلة النصوص",
+    "NO_MCQ": "لا توجد أسئلة اختيار من متعدد متاحة.",
+    "NO_TRUEFALSE": "لا توجد أسئلة صح أو خطأ متاحة.",
+    "NO_TEXT": "لا توجد أسئلة نصية متاحة.",
+    "VIEW": "عرض"
+  },
+  "CLASSES": {
+    "CREATE_TITLE": "إنشاء حصة جديدة",
+    "SCHEDULED_TITLE": "الحصص المجدولة",
+    "FORM": {
+      "GRADE": "الصف",
+      "SECTION": "القسم",
+      "SUBJECT": "المادة",
+      "MEETING_LINK": "رابط الاجتماع",
+      "START_TIME": "وقت البدء",
+      "DURATION": "المدة (بالدقائق)",
+      "PLACEHOLDERS": {
+        "GRADE": "أدخل الصف",
+        "SECTION": "أدخل القسم",
+        "CLASS": "أدخل الفصل",
+        "SUBJECT": "أدخل المادة",
+        "MEETING_LINK": "https://...",
+        "DURATION": "مثال: 45"
+      },
+      "ERRORS": {
+        "GRADE_REQUIRED": "الصف مطلوب.",
+        "SECTION_REQUIRED": "القسم مطلوب.",
+        "CLASS_REQUIRED": "الفصل مطلوب.",
+        "SUBJECT_REQUIRED": "الفصل مطلوب.",
+        "MEETING_LINK_INVALID": "يرجى إدخال رابط صالح.",
+        "START_TIME_REQUIRED": "وقت البدء مطلوب.",
+        "DURATION_INVALID": "يرجى إدخال مدة صحيحة (لا تقل عن 10 دقائق)."
+      },
+      "BUTTON": {
+        "CREATE": "إنشاء الحصة"
+      }
+    },
+    "CLASSAPPOINTMENT": {
+      "SCHEDULED_TITLE": "المواعيد المجدولة للصفوف",
+      "TABLE": {
+        "GRADE": "الصف",
+        "SECTION": "الشعبة",
         "SUBJECT": "المادة",
-        "NO_SUBJECT": "لم تُعيّن مادة",
-        "VIEW_PROFILE": "عرض الملف الشخصي",
-        "EDIT_PROFILE": "تعديل الملف الشخصي",
-        "CLASSES": "الفصول",
-        "TESTS": "الاختبارات",
-        "QUESTIONS": "الأسئلة",
-        "ACTIVITIES": "الأنشطة",
-        "RECENT_ACTIVITY": "النشاطات الأخيرة",
-        "NO_RECENT": "لا توجد نشاطات مؤخراً"
+        "MEETING": "الاجتماع",
+        "START_TIME": "وقت البدء",
+        "DURATION": "المدة",
+        "STATUS": "الحالة",
+        "ACTION": "الإجراء",
+        "JOIN": "انضم",
+        "ENDED": "انتهى",
+        "ONGOING": "جاري",
+        "END": "إنهاء",
+        "NO_CLASSES": "لا توجد مواعيد للصفوف"
+      }
     },
-    "QUESTIONS": {
-        "CREATE_TITLE": "إنشاء سؤال",
-        "LABEL_QUESTION": "السؤال",
-        "PLACEHOLDER_QUESTION": "اكتب السؤال هنا...",
-        "ERROR_QUESTION": "يجب أن يتكون السؤال من 5 أحرف على الأقل.",
-        "TYPE": "نوع السؤال",
-        "TYPE_MCQ": "اختيار من متعدد",
-        "TYPE_TRUEFALSE": "صح أو خطأ",
-        "TYPE_Complete": "إكمال الفراغ",
-        "TYPE_Connection": "توصيل",
-        "OPTIONS": "الخيارات",
-        "OPTION_PLACEHOLDER": "خيار",
-        "ADD_OPTION": "إضافة خيار",
-        "REMOVE_OPTION": "إزالة",
-        "ERROR_CORRECT": "يرجى تحديد الخيار الصحيح.",
-        "TRUEFALSE": "إجابة صح أو خطأ",
-        "TRUE": "صح",
-        "FALSE": "خطأ",
-        "ANSWER_PLACEHOLDER": "الإجابة",
-        "TEXT_INFO": "هذا النوع يسمح للطالب بكتابة إجابة نصية.",
-        "DIFFICULTY": "الصعوبة",
-        "EASY": "سهل",
-        "MEDIUM": "متوسط",
-        "HARD": "صعب",
-        "TAGS": "الوسوم (مفصولة بفواصل)",
-        "TAGS_PLACEHOLDER": "مثال: جبر, نصف الفصل",
-        "SAVE": "حفظ",
-        "CANCEL": "إلغاء",
-        "LIST_TITLE": "الأسئلة",
-        "NO_QUESTIONS": "لا توجد أسئلة بعد. أنشئ السؤال الأول!",
-        "EDIT": "تعديل",
-        "DELETE": "حذف",
-        "DIFF": "الصعوبة"
-    },
-    "COMMON": {
-        "LOADING": "جارٍ التحميل...",
-        "SAVE": "حفظ",
-        "EXPAND": "عرض",
-        "COLLAPSE": "إخفاء"
-    },
-    "TEACHER_CLASSES": {
-        "TITLE": "صفوفي وطلابي",
-        "STUDENT_NAME": "اسم الطالب",
-        "TEST_GRADE": "درجة الاختبار",
-        "MIDTERM_GRADE": "درجة منتصف الترم",
-        "ATTENDANCE": "الحضور"
-    },
-    "TEST": {
-        "LIST_TITLE": "الاختبارات المتاحة",
-        "QUESTIONS_COUNT": "عدد الأسئلة",
-        "DELETE": "حذف",
-        "NO_TESTS": "لا توجد اختبارات متاحة حالياً.",
-        "CREATE_TITLE": "إنشاء اختبار جديد",
-        "SETTINGS": "إعدادات الاختبار",
-        "SETTINGS_DESC": "قم بضبط تفاصيل الاختبار والمدة الزمنية ودرجات التقييم قبل الإنشاء.",
-        "TITLE": "عنوان الاختبار",
-        "TITLE_PLACEHOLDER": "أدخل عنوان الاختبار",
-        "CLASS": "اسم الفصل",
-        "CLASS_PLACEHOLDER": "أدخل اسم الفصل",
-        "SUBJECT": "اسم المادة",
-        "DURATION": "المدة الزمنية",
-        "MAX": "الدرجة العظمى",
-        "MIN": "الدرجة الصغرى",
-        "START": "البداية",
-        "END": "النهاية",
-        "CREATE_BTN": "إنشاء الاختبار",
-        "TIPS_TITLE": "نصائح سريعة",
-        "TIP_ONE": "اختر أسئلة من فئات مختلفة لتحقيق توازن في مستوى الصعوبة.",
-        "TIP_TWO": "راجع الإعدادات قبل إنشاء الاختبار.",
-        "MCQ_QUESTIONS": "أسئلة الاختيار من متعدد",
-        "TRUE_FALSE_QUESTIONS": "أسئلة صح أو خطأ",
-        "TEXT_QUESTIONS": "أسئلة النصوص",
-        "NO_MCQ": "لا توجد أسئلة اختيار من متعدد متاحة.",
-        "NO_TRUEFALSE": "لا توجد أسئلة صح أو خطأ متاحة.",
-        "NO_TEXT": "لا توجد أسئلة نصية متاحة.",
-        "VIEW": "عرض"
-    },
-    "CLASSES": {
-        "CREATE_TITLE": "إنشاء حصة جديدة",
-        "SCHEDULED_TITLE": "الحصص المجدولة",
-        "FORM": {
-            "GRADE": "الصف",
-            "SECTION": "القسم",
-            "SUBJECT": "المادة",
-            "MEETING_LINK": "رابط الاجتماع",
-            "START_TIME": "وقت البدء",
-            "DURATION": "المدة (بالدقائق)",
-            "PLACEHOLDERS": {
-                "GRADE": "أدخل الصف",
-                "SECTION": "أدخل القسم",
-                "CLASS": "أدخل الفصل",
-                "SUBJECT": "أدخل المادة",
-                "MEETING_LINK": "https://...",
-                "DURATION": "مثال: 45"
-            },
-            "ERRORS": {
-                "GRADE_REQUIRED": "الصف مطلوب.",
-                "SECTION_REQUIRED": "القسم مطلوب.",
-                "CLASS_REQUIRED": "الفصل مطلوب.",
-                "SUBJECT_REQUIRED": "الفصل مطلوب.",
-                "MEETING_LINK_INVALID": "يرجى إدخال رابط صالح.",
-                "START_TIME_REQUIRED": "وقت البدء مطلوب.",
-                "DURATION_INVALID": "يرجى إدخال مدة صحيحة (لا تقل عن 10 دقائق)."
-            },
-            "BUTTON": {
-                "CREATE": "إنشاء الحصة"
-            }
-        },
-        "CLASSAPPOINTMENT": {
-            "SCHEDULED_TITLE": "المواعيد المجدولة للصفوف",
-            "TABLE": {
-                "GRADE": "الصف",
-                "SECTION": "الشعبة",
-                "SUBJECT": "المادة",
-                "MEETING": "الاجتماع",
-                "START_TIME": "وقت البدء",
-                "DURATION": "المدة",
-                "STATUS": "الحالة",
-                "ACTION": "الإجراء",
-                "JOIN": "انضم",
-                "ENDED": "انتهى",
-                "ONGOING": "جاري",
-                "END": "إنهاء",
-                "NO_CLASSES": "لا توجد مواعيد للصفوف"
-            }
-        },
-        "TABLE": {
-            "GRADE": "الصف",
-            "SECTION": "القسم",
-            "SUBJECT": "المادة",
-            "CLASS": "الفصول",
-            "MEETING": "الاجتماع",
-            "START_TIME": "وقت البدء",
-            "DURATION": "المدة",
-            "STATUS": "الحالة",
-            "ACTION": "إجراء",
-            "JOIN": "انضمام",
-            "END": "إنهاء",
-            "ONGOING": "قيد التنفيذ",
-            "ENDED": "انتهت",
-            "NO_CLASSES": "لا توجد حصص مجدولة حالياً."
-        }
-    },
-    "certificate2": {
+    "TABLE": {
+      "GRADE": "الصف",
+      "SECTION": "القسم",
+      "SUBJECT": "المادة",
+      "CLASS": "الفصول",
+      "MEETING": "الاجتماع",
+      "START_TIME": "وقت البدء",
+      "DURATION": "المدة",
+      "STATUS": "الحالة",
+      "ACTION": "إجراء",
+      "JOIN": "انضمام",
+      "END": "إنهاء",
+      "ONGOING": "قيد التنفيذ",
+      "ENDED": "انتهت",
+      "NO_CLASSES": "لا توجد حصص مجدولة حالياً."
+    }
+  },
+  "certificate2": {
     "title": "إدارة الشهادات",
     "subtitle": "قم بإنشاء وإدارة والتحقق من الشهادات الأكاديمية بسهولة",
-    
     "tabs": {
       "generate": "إنشاء شهادة",
       "bulk": "عمليات جماعية",
       "search": "بحث وتحقق"
     },
-    
     "filterOptions": "خيارات التصفية",
     "filterDescription": "قم بتصفية الطلاب حسب المنهج والصف والفصل لإنشاء الشهادات",
     "filterByCurriculum": "تصفية حسب المنهج",
@@ -440,41 +427,34 @@
     "studentPlaceholder": "اختر طالباً...",
     "noClassesAvailable": "لا توجد فصول متاحة",
     "noClassesForFilters": "لا توجد فصول تطابق عوامل التصفية. يرجى تعديل اختيارك.",
-    
     "classWideOperations": "عمليات على مستوى الفصل",
     "classWideDescription": "تطبيق إعدادات الشهادات على جميع الطلاب في الفصل المحدد",
     "classWideCertificateType": "نوع الشهادة (جميع الطلاب)",
     "classWideAcademicYear": "السنة الأكاديمية (جميع الطلاب)",
     "students": "طالب",
     "student": "طالب",
-    
     "classWideActions": {
       "generate": "إنشاء جميع الشهادات",
       "download": "تحميل الكل كمضغوط",
       "generating": "جاري إنشاء الشهادات...",
       "downloading": "جاري تحضير الملف المضغوط..."
     },
-    
     "singleStudentOperations": "عمليات طالب واحد",
     "searchStudent": "بحث عن طالب",
     "searchStudentPlaceholder": "اكتب اسم الطالب...",
-    
     "generatePdf": "إنشاء PDF",
     "generateAndSave": "إنشاء وحفظ",
     "saveOnly": "حفظ في قاعدة البيانات فقط",
     "generating": "جاري الإنشاء...",
     "saving": "جاري الحفظ...",
-    
     "studentsInClass": "الطلاب في الفصل",
     "studentId": "رقم الطالب",
-    
     "bulkGeneration": "إنشاء شهادات جماعي",
     "bulkDescription": "إنشاء شهادات لفصل كامل في وقت واحد",
     "bulkGenerate": "إنشاء شهادات جماعية",
     "bulkGenerating": "جاري إنشاء الشهادات الجماعية...",
     "downloadBulk": "تحميل كمضغوط",
     "downloading": "جاري تحضير التحميل...",
-    
     "searchCertificates": "بحث في الشهادات",
     "studentName": "اسم الطالب",
     "studentNamePlaceholder": "أدخل اسم الطالب...",
@@ -489,7 +469,6 @@
     "search": "بحث",
     "searching": "جاري البحث...",
     "clear": "مسح الفلاتر",
-    
     "searchResults": "نتائج البحث",
     "type": "النوع",
     "issuedDate": "تاريخ الإصدار",
@@ -498,20 +477,17 @@
     "view": "عرض",
     "download": "تحميل",
     "archive": "أرشفة",
-    
     "verifyCertificate": "التحقق من الشهادة",
     "certificateId": "معرف الشهادة",
     "certificateIdPlaceholder": "أدخل معرف الشهادة للتحقق...",
     "verifiedBy": "تم التحقق بواسطة",
     "verifierName": "أدخل اسم الشخص الذي قام بالتحقق...",
     "verify": "التحقق من الشهادة",
-    
     "statuses": {
       "verified": "تم التحقق",
       "pending": "قيد الانتظار",
       "expired": "منتهية الصلاحية"
     },
-    
     "messages": {
       "generatingClassWide": "جاري إنشاء الشهادات لجميع الطلاب...",
       "downloadingClassWide": "جاري تحضير الملف المضغوط للتحميل...",
@@ -524,40 +500,38 @@
       "archiveSuccess": "تم أرشفة الشهادة بنجاح",
       "error": "حدث خطأ. يرجى المحاولة مرة أخرى."
     }
-  }
-    ,
-    "CERTIFICATION_STUDENT": {
-        "MY_CERTIFICATES": "شهاداتي",
-        "LOADING": "جارٍ تحميل الشهادات...",
-        "NO_CERTIFICATES": "لا توجد شهادات",
-        "NO_CERTIFICATES_DESC": "ستظهر الشهادات هنا بمجرد أن يقوم المسؤول بإصدارها.",
-        "GPA": "المعدل",
-        "ISSUED": "تاريخ الإصدار",
-        "TEMPLATE": "القالب",
-        "FILE_SIZE": "حجم الملف",
-        "VIEW": "عرض",
-        "DOWNLOAD": "تحميل"
-    },
-    "certificate": {
-        "title": "إنشاء الشهادات",
-        "subtitle": "قم بإنشاء شهادات الطلاب بسهولة مع إمكانية حفظها في قاعدة البيانات أو تحميلها كملف PDF.",
-        "selectClass": "اختيار الفصل",
-        "classPlaceholder": "اختر الفصل",
-        "selectStudent": "اختيار الطالب",
-        "studentPlaceholder": "اختر الطالب",
-        "certificateType": "نوع الشهادة",
-        "generatePdf": "إنشاء PDF",
-        "generateAndSave": "إنشاء وحفظ في قاعدة البيانات",
-        "saveOnly": "حفظ في قاعدة البيانات فقط",
-        "generating": "جاري الإنشاء...",
-        "saving": "جاري الحفظ...",
-        "studentsInClass": "الطلاب في هذا الفصل",
-        "studentId": "رقم الطالب"
-    },
-    "curriculum": {
+  },
+  "CERTIFICATION_STUDENT": {
+    "MY_CERTIFICATES": "شهاداتي",
+    "LOADING": "جارٍ تحميل الشهادات...",
+    "NO_CERTIFICATES": "لا توجد شهادات",
+    "NO_CERTIFICATES_DESC": "ستظهر الشهادات هنا بمجرد أن يقوم المسؤول بإصدارها.",
+    "GPA": "المعدل",
+    "ISSUED": "تاريخ الإصدار",
+    "TEMPLATE": "القالب",
+    "FILE_SIZE": "حجم الملف",
+    "VIEW": "عرض",
+    "DOWNLOAD": "تحميل"
+  },
+  "certificate": {
+    "title": "إنشاء الشهادات",
+    "subtitle": "قم بإنشاء شهادات الطلاب بسهولة مع إمكانية حفظها في قاعدة البيانات أو تحميلها كملف PDF.",
+    "selectClass": "اختيار الفصل",
+    "classPlaceholder": "اختر الفصل",
+    "selectStudent": "اختيار الطالب",
+    "studentPlaceholder": "اختر الطالب",
+    "certificateType": "نوع الشهادة",
+    "generatePdf": "إنشاء PDF",
+    "generateAndSave": "إنشاء وحفظ في قاعدة البيانات",
+    "saveOnly": "حفظ في قاعدة البيانات فقط",
+    "generating": "جاري الإنشاء...",
+    "saving": "جاري الحفظ...",
+    "studentsInClass": "الطلاب في هذا الفصل",
+    "studentId": "رقم الطالب"
+  },
+  "curriculum": {
     "title": "إدارة المناهج الدراسية",
     "subtitle": "قم بإدارة وتنظيم مناهج مدرستك بكفاءة",
-    
     "stats": {
       "total": "إجمالي المناهج",
       "showing": "يتم عرض",
@@ -565,19 +539,16 @@
       "teachers": "معلم",
       "grades": "صف"
     },
-    
     "search": {
       "placeholder": "ابحث في المناهج حسب الاسم أو الكود أو الوصف...",
       "clear": "مسح",
       "noResults": "لم يتم العثور على مناهج مطابقة",
       "tryDifferent": "جرب مصطلح بحث مختلف"
     },
-    
     "sort": {
       "name": "ترتيب حسب الاسم",
       "code": "ترتيب حسب الكود"
     },
-    
     "actions": {
       "addNew": "إضافة منهج جديد",
       "refresh": "تحديث",
@@ -588,17 +559,13 @@
       "checkTeachers": "فحص المعلمين",
       "delete": "حذف"
     },
-    
     "loading": "جاري تحميل المناهج...",
-    
     "empty": {
       "title": "لم يتم العثور على مناهج",
       "subtitle": "ابدأ بإنشاء أول منهج لك."
     },
-    
     "noDescription": "لا يوجد وصف",
     "created": "تم الإنشاء",
-    
     "tabs": {
       "code": "الكود",
       "name": "الاسم",
@@ -619,7 +586,6 @@
         "teachers": "لا يوجد معلمون متخصصون في هذا المنهج"
       }
     },
-    
     "form": {
       "name": {
         "label": "اسم المنهج",
@@ -641,7 +607,6 @@
         "characters": "حرف"
       }
     },
-    
     "modal": {
       "create": {
         "title": "إنشاء منهج جديد",
@@ -672,7 +637,6 @@
       "cancel": "إلغاء",
       "close": "إغلاق"
     },
-    
     "check": {
       "studentsTitle": "فحص الطلاب",
       "teachersTitle": "فحص المعلمين",
@@ -681,142 +645,141 @@
       "hasTeachers": "هذا المنهج يحتوي على {{count}} معلم",
       "hasNoTeachers": "لا يوجد معلمون متخصصون في هذا المنهج"
     }
-  }
-    ,
-    "NAV": {
-        "LOGO": "اللوجو",
-        "HOME": "الرئيسية",
-        "LOGIN": "تسجيل الدخول",
-        "REGISTER": "تسجيل",
-        "DASHBOARD": "لوحة التحكم",
-        "PROFILE": "الملف الشخصي",
-        "SETTINGS": "الاعدادات",
-        "LOGOUT": "تسجيل الخروج",
-        "LANGUAGE": "English",
-        "THEMEDARK": "ليلى",
-        "THEMELIGHT": "نهارى"
+  },
+  "NAV": {
+    "LOGO": "اللوجو",
+    "HOME": "الرئيسية",
+    "LOGIN": "تسجيل الدخول",
+    "REGISTER": "تسجيل",
+    "DASHBOARD": "لوحة التحكم",
+    "PROFILE": "الملف الشخصي",
+    "SETTINGS": "الاعدادات",
+    "LOGOUT": "تسجيل الخروج",
+    "LANGUAGE": "English",
+    "THEMEDARK": "ليلى",
+    "THEMELIGHT": "نهارى"
+  },
+  "FOOTER": {
+    "LOGO": "اللوجو",
+    "DISC": "بناء تطبيقات ويب حديثة باستخدام Angular وBootstrap. © {{year}} MyApp. جميع الحقوق محفوظة.",
+    "LINKS": "لينكات سريعه",
+    "HOME": "الرئيسية",
+    "ABOUT": "عن المدرسة",
+    "CONTACT": "تواصل",
+    "FOLLOW": "تابعنا"
+  },
+  "EXAM": {
+    "HEADER": {
+      "TITLE": "اسم المادة",
+      "TIME": "الوقت",
+      "FROM": "من",
+      "TO": "إلى"
     },
-    "FOOTER": {
-        "LOGO": "اللوجو",
-        "DISC": "بناء تطبيقات ويب حديثة باستخدام Angular وBootstrap. © {{year}} MyApp. جميع الحقوق محفوظة.",
-        "LINKS": "لينكات سريعه",
-        "HOME": "الرئيسية",
-        "ABOUT": "عن المدرسة",
-        "CONTACT": "تواصل",
-        "FOLLOW": "تابعنا"
+    "QUESTION_TYPES": {
+      "CHOICES": "اختيارات",
+      "CONNECTION": "توصيل",
+      "COMPLETE": "إكمال الجملة",
+      "TRUE_FALSE": "صح أو خطأ",
+      "COLUMN_A": "العمود أ",
+      "COLUMN_B": "العمود ب",
+      "WRITE_ANSWER": "اكتب إجابتك هنا..."
     },
-    "EXAM": {
-        "HEADER": {
-            "TITLE": "اسم المادة",
-            "TIME": "الوقت",
-            "FROM": "من",
-            "TO": "إلى"
-        },
-        "QUESTION_TYPES": {
-            "CHOICES": "اختيارات",
-            "CONNECTION": "توصيل",
-            "COMPLETE": "إكمال الجملة",
-            "TRUE_FALSE": "صح أو خطأ",
-            "COLUMN_A": "العمود أ",
-            "COLUMN_B": "العمود ب",
-            "WRITE_ANSWER": "اكتب إجابتك هنا..."
-        },
-        "BUTTONS": {
-            "SUBMIT": "إرسال الامتحان",
-            "SUBMITTING": "جارٍ الإرسال...",
-            "ANSWER_ALL": "أجب على كل الأسئلة"
-        },
-        "MESSAGES": {
-            "SHOULD_ANSWER_ALL": "يجب الإجابة على جميع الأسئلة قبل الإرسال.",
-            "SUCCESS": "تم إرسال الامتحان بنجاح!",
-            "ERROR": "فشل في إرسال الامتحان"
-        },
-        "GENERAL": {
-            "TRUE": "صح",
-            "FALSE": "خطأ"
-        }
+    "BUTTONS": {
+      "SUBMIT": "إرسال الامتحان",
+      "SUBMITTING": "جارٍ الإرسال...",
+      "ANSWER_ALL": "أجب على كل الأسئلة"
     },
-    "parentManagement": {
-        "header": {
-            "title": "إدارة أولياء الأمور",
-            "description": "إدارة حسابات أولياء الأمور والطلاب المرتبطين بهم في النظام",
-            "parentsCount": "ولي أمر",
-            "parentsCount_plural": "أولياء أمور",
-            "refresh": "تحديث"
-        },
-        "loading": {
-            "title": "جاري تحميل بيانات أولياء الأمور",
-            "message": "يرجى الانتظار أثناء جلب أحدث المعلومات"
-        },
-        "parentCard": {
-            "noPhone": "لا يوجد هاتف",
-            "associatedStudents": "الطلاب المرتبطين",
-            "noStudents": {
-                "title": "لا يوجد طلاب مرتبطين بعد",
-                "button": "إضافة أول طالب"
-            },
-            "addStudent": "إضافة طالب آخر",
-            "removeStudent": "إزالة",
-            "removeTooltip": "إزالة الطالب",
-            "relations": {
-                "father": "أب",
-                "mother": "أم",
-                "guardian": "وصي",
-                "other": "آخر"
-            }
-        },
-        "emptyState": {
-            "title": "لا توجد حسابات أولياء أمور",
-            "description": "لا توجد حسابات أولياء أمور في النظام حتى الآن.",
-            "button": "دعوة أولياء الأمور"
-        },
-        "addStudentModal": {
-            "header": {
-                "title": "إضافة طالب",
-                "description": "ربط طالب بـ"
-            },
-            "form": {
-                "studentSelection": {
-                    "label": "اختر الطالب",
-                    "placeholder": "اختر طالبًا...",
-                    "alreadyLinked": "✓ مرتبط بالفعل",
-                    "validationError": "يرجى اختيار طالب"
-                },
-                "relation": {
-                    "label": "نوع العلاقة",
-                    "options": {
-                        "father": "أب",
-                        "mother": "أم",
-                        "guardian": "وصي",
-                        "other": "آخر"
-                    },
-                    "validationError": "يرجى اختيار العلاقة"
-                }
-            },
-            "buttons": {
-                "cancel": "إلغاء",
-                "submit": {
-                    "adding": "جاري الإضافة...",
-                    "default": "ربط الطالب"
-                },
-                "close": "إغلاق"
-            }
-        },
-        "messages": {
-            "loadingFailed": "فشل تحميل البيانات",
-            "errorLoadingParents": "خطأ في تحميل أولياء الأمور:",
-            "errorLoadingParentDetails": "خطأ في تحميل تفاصيل الوالد:",
-            "errorLoadingChildren": "خطأ في تحميل الطلاب للوالد",
-            "errorLoadingAvailableStudents": "خطأ في تحميل الطلاب المتاحين:",
-            "errorAddingStudent": "خطأ في إضافة الطالب:",
-            "errorRemovingStudent": "خطأ في إزالة الطالب:",
-            "addStudentSuccess": "تمت إضافة الطالب بنجاح!",
-            "addStudentFailed": "فشل إضافة الطالب",
-            "removeStudentSuccess": "تمت إزالة الطالب بنجاح!",
-            "removeStudentFailed": "فشل إزالة الطالب",
-            "errorOccurred": "حدث خطأ",
-            "confirmRemove": "هل أنت متأكد أنك تريد إزالة هذا الطالب من الوالد؟",
-            "fillAllFields": "يرجى ملء جميع الحقول المطلوبة"
-        }
+    "MESSAGES": {
+      "SHOULD_ANSWER_ALL": "يجب الإجابة على جميع الأسئلة قبل الإرسال.",
+      "SUCCESS": "تم إرسال الامتحان بنجاح!",
+      "ERROR": "فشل في إرسال الامتحان"
+    },
+    "GENERAL": {
+      "TRUE": "صح",
+      "FALSE": "خطأ"
     }
+  },
+  "parentManagement": {
+    "header": {
+      "title": "إدارة أولياء الأمور",
+      "description": "إدارة حسابات أولياء الأمور والطلاب المرتبطين بهم في النظام",
+      "parentsCount": "ولي أمر",
+      "parentsCount_plural": "أولياء أمور",
+      "refresh": "تحديث"
+    },
+    "loading": {
+      "title": "جاري تحميل بيانات أولياء الأمور",
+      "message": "يرجى الانتظار أثناء جلب أحدث المعلومات"
+    },
+    "parentCard": {
+      "noPhone": "لا يوجد هاتف",
+      "associatedStudents": "الطلاب المرتبطين",
+      "noStudents": {
+        "title": "لا يوجد طلاب مرتبطين بعد",
+        "button": "إضافة أول طالب"
+      },
+      "addStudent": "إضافة طالب آخر",
+      "removeStudent": "إزالة",
+      "removeTooltip": "إزالة الطالب",
+      "relations": {
+        "father": "أب",
+        "mother": "أم",
+        "guardian": "وصي",
+        "other": "آخر"
+      }
+    },
+    "emptyState": {
+      "title": "لا توجد حسابات أولياء أمور",
+      "description": "لا توجد حسابات أولياء أمور في النظام حتى الآن.",
+      "button": "دعوة أولياء الأمور"
+    },
+    "addStudentModal": {
+      "header": {
+        "title": "إضافة طالب",
+        "description": "ربط طالب بـ"
+      },
+      "form": {
+        "studentSelection": {
+          "label": "اختر الطالب",
+          "placeholder": "اختر طالبًا...",
+          "alreadyLinked": "✓ مرتبط بالفعل",
+          "validationError": "يرجى اختيار طالب"
+        },
+        "relation": {
+          "label": "نوع العلاقة",
+          "options": {
+            "father": "أب",
+            "mother": "أم",
+            "guardian": "وصي",
+            "other": "آخر"
+          },
+          "validationError": "يرجى اختيار العلاقة"
+        }
+      },
+      "buttons": {
+        "cancel": "إلغاء",
+        "submit": {
+          "adding": "جاري الإضافة...",
+          "default": "ربط الطالب"
+        },
+        "close": "إغلاق"
+      }
+    },
+    "messages": {
+      "loadingFailed": "فشل تحميل البيانات",
+      "errorLoadingParents": "خطأ في تحميل أولياء الأمور:",
+      "errorLoadingParentDetails": "خطأ في تحميل تفاصيل الوالد:",
+      "errorLoadingChildren": "خطأ في تحميل الطلاب للوالد",
+      "errorLoadingAvailableStudents": "خطأ في تحميل الطلاب المتاحين:",
+      "errorAddingStudent": "خطأ في إضافة الطالب:",
+      "errorRemovingStudent": "خطأ في إزالة الطالب:",
+      "addStudentSuccess": "تمت إضافة الطالب بنجاح!",
+      "addStudentFailed": "فشل إضافة الطالب",
+      "removeStudentSuccess": "تمت إزالة الطالب بنجاح!",
+      "removeStudentFailed": "فشل إزالة الطالب",
+      "errorOccurred": "حدث خطأ",
+      "confirmRemove": "هل أنت متأكد أنك تريد إزالة هذا الطالب من الوالد؟",
+      "fillAllFields": "يرجى ملء جميع الحقول المطلوبة"
+    }
+  }
 }
