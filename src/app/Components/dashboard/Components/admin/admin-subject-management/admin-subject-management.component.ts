@@ -36,10 +36,11 @@ export class AdminSubjectManagementComponent {
   isTeachersModalOpen: boolean = false;
   selectedSubjectId: string = '';
   teachersNotAssignedToSubject: TeacherViewDto[] = [];
+  teachersAssignedToSubject: TeacherViewDto[] = [];
   constructor(private _subjectService: SubjectService,
     private _gradeService: GradeService
     , private _teacherService: TeacherService
-  ,private adminManagementService: AdminManagementService) { }
+    , private adminManagementService: AdminManagementService) { }
 
   public openModalCreateSubject(): void {
     console.log("Open Create Subject Modal");
@@ -54,6 +55,7 @@ export class AdminSubjectManagementComponent {
     this.selectedSubjectId = subjectId;
     this.isTeachersModalOpen = true;
     this.loadTeachersNotAssignedToSubject(subjectId);
+    this.loadTeachersAssignedToSubject(subjectId);
   }
 
   public closeTeachersModal(): void {
@@ -67,6 +69,7 @@ export class AdminSubjectManagementComponent {
       this.gradeId,
       this.creditHours
     );
+    this.LoadAllSubjects();
   }
   public onSearchChange(): void {
     const term = this.searchTerm.toLowerCase().trim();
@@ -88,6 +91,13 @@ export class AdminSubjectManagementComponent {
   public clickAssignTeacherToSubject(teacherId: string, subjectId: string): void {
     this.assignTeacherToSubject(teacherId, subjectId);
   }
+  public loadTeachersAssigned(subjectId: string): void {
+    this.loadTeachersAssignedToSubject(subjectId);
+  }
+  public clickUnassignTeacherFromSubject(teacherId: string, subjectId: string): void {
+    this.unassignTeacherFromSubject(teacherId, subjectId);
+  }
+
   ngOnInit(): void {
     this.LoadAllSubjects();
     this.loadAllGrades();
@@ -159,18 +169,43 @@ export class AdminSubjectManagementComponent {
     });
   }
 
-  private assignTeacherToSubject(teacherId: string, subjectId: string): void 
-  {
+  private assignTeacherToSubject(teacherId: string, subjectId: string): void {
     this.adminManagementService.AssignTeacherToSubject(teacherId, subjectId).subscribe({
       next: (result) => {
         console.log(`Teacher ${teacherId} assigned to subject ${subjectId}:`, result);
         // Refresh the list of teachers not assigned to the subject
         this.loadTeachersNotAssignedToSubject(subjectId);
+        this.loadTeachersAssignedToSubject(subjectId);
       },
       error: (error) => {
         console.error('Error assigning teacher to subject:', error.message);
       }
     });
   }
-
+  //Teacher Menu to unassign
+  private loadTeachersAssignedToSubject(subjectId: string): void {
+    ApiResponseHandler.handleApiResponse(this._teacherService.getTeachersAssignedToSubject(subjectId)).subscribe({
+      next: (teachers) => {
+        console.log(teachers);
+        this.teachersAssignedToSubject = teachers ?? [];
+      },
+      error: (error) => {
+        console.error('Error loading teachers assigned to subject:', error.message);
+        this.teachersAssignedToSubject = [];
+      }
+    });
+  }
+  private unassignTeacherFromSubject(teacherId: string, subjectId: string): void {
+    this.adminManagementService.UnAssignTeacherFromSubject(teacherId, subjectId).subscribe({
+      next: (result) => {
+        console.log(`Teacher ${teacherId} unassigned from subject ${subjectId}:`, result);
+        // Refresh the list of teachers assigned to the subject
+        this.loadTeachersAssignedToSubject(subjectId);
+        this.loadTeachersNotAssignedToSubject(subjectId);
+      },
+      error: (error) => {
+        console.error('Error unassigning teacher from subject:', error.message);
+      }
+    });
+  }
 }

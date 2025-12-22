@@ -1,4 +1,6 @@
-<!-- Top Action Bar -->
+<!-- =======================
+     Top Action Bar
+======================== -->
 <div class="d-flex justify-content-between align-items-center mb-4">
   <h2 class="fw-bold mb-0">Subjects Management</h2>
 
@@ -9,7 +11,9 @@
   </button>
 </div>
 
-<!-- Main Content -->
+<!-- =======================
+     Main Content
+======================== -->
 <div class="container-fluid">
 
   <!-- Empty State -->
@@ -42,7 +46,7 @@
             <th style="width: 60px;">#</th>
             <th>Subject Name</th>
             <th>Grade</th>
-            <th style="width: 150px;">Actions</th>
+            <th style="width: 170px;">Actions</th>
           </tr>
         </thead>
 
@@ -58,7 +62,7 @@
             <td>
               <button class="btn btn-sm btn-outline-primary"
                       (click)="openTeachersModal(s.id)">
-                Assign Teachers
+                Manage Teachers
               </button>
             </td>
           </tr>
@@ -68,90 +72,159 @@
   </div>
 </div>
 
-<!-- Create Subject Modal -->
+<!-- =======================
+     Create Subject Modal
+======================== -->
 <div *ngIf="isCreateSubjectModalOpen"
      class="modal show"
      tabindex="-1"
      style="display: block; background: rgba(0,0,0,.5); z-index: 1055;">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 shadow">
+
       <!-- Header -->
       <div class="modal-header">
         <h5 class="modal-title fw-bold">Create Subject</h5>
-        <button type="button" class="btn-close"
+        <button type="button"
+                class="btn-close"
                 (click)="closeModalCreateSubject()"></button>
       </div>
+
       <!-- Body -->
       <div class="modal-body px-4 py-3">
         <div class="form-floating mb-3">
-          <input type="text" class="form-control" placeholder="Subject Name"
+          <input type="text"
+                 class="form-control"
+                 placeholder="Subject Name"
                  [(ngModel)]="subjectName" />
           <label>Subject Name</label>
         </div>
+
         <div class="form-floating mb-3">
-          <select class="form-select" [(ngModel)]="gradeId">
+          <select class="form-select"
+                  [(ngModel)]="gradeId">
             <option value="" disabled>-- Select Grade --</option>
-            <option *ngFor="let g of grades" [value]="g.id">
+            <option *ngFor="let g of grades"
+                    [value]="g.id">
               {{ g.gradeName }}
             </option>
           </select>
           <label>Grade</label>
         </div>
+
         <div class="form-floating mb-3">
-          <input type="number" class="form-control" placeholder="Credit Hours"
+          <input type="number"
+                 class="form-control"
+                 placeholder="Credit Hours"
                  [(ngModel)]="creditHours" />
           <label>Credit Hours</label>
         </div>
       </div>
+
       <!-- Footer -->
       <div class="modal-footer px-4">
-        <button class="btn btn-light" (click)="closeModalCreateSubject()">Cancel</button>
+        <button class="btn btn-light"
+                (click)="closeModalCreateSubject()">Cancel</button>
+
         <button class="btn btn-primary"
                 [disabled]="!subjectName || !gradeId || creditHours <= 0"
-                (click)="onCreateSubjectClick()">Create Subject</button>
+                (click)="onCreateSubjectClick()">
+          Create Subject
+        </button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Teachers Not Assigned Modal -->
+<!-- =======================
+     Teachers Assignment Modal
+======================== -->
 <div *ngIf="isTeachersModalOpen"
      class="modal show"
      tabindex="-1"
      style="display: block; background: rgba(0,0,0,.5); z-index: 1055;">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content border-0 shadow">
 
       <!-- Header -->
       <div class="modal-header">
-        <h5 class="modal-title fw-bold">Teachers Not Assigned to Subject</h5>
-        <button type="button" class="btn-close" (click)="closeTeachersModal()"></button>
+        <h5 class="modal-title fw-bold">
+          Manage Teachers for Subject
+        </h5>
+        <button type="button"
+                class="btn-close"
+                (click)="closeTeachersModal()"></button>
       </div>
 
       <!-- Body -->
       <div class="modal-body px-4 py-3">
-        <div *ngIf="teachersNotAssignedToSubject.length === 0"
-             class="alert alert-info text-center">
-          No unassigned teachers found.
-        </div>
+        <div class="row g-4">
 
-        <div *ngIf="teachersNotAssignedToSubject.length > 0"
-             class="list-group">
-          <div *ngFor="let teacher of teachersNotAssignedToSubject"
-               class="list-group-item d-flex justify-content-between align-items-center">
-            {{ teacher.fullName }}
-            <button class="btn btn-sm btn-primary"
-                    (click)="clickAssignTeacherToSubject(teacher.id, selectedSubjectId)">
-              Assign
-            </button>
+          <!-- Assigned Teachers -->
+          <div class="col-md-6">
+            <h6 class="fw-bold text-success mb-3">
+              Assigned Teachers
+            </h6>
+
+            <div *ngIf="teachersAssignedToSubject.length === 0"
+                 class="alert alert-light text-center">
+              No teachers assigned.
+            </div>
+
+            <div *ngIf="teachersAssignedToSubject.length > 0"
+                 class="list-group shadow-sm">
+              <div *ngFor="let teacher of teachersAssignedToSubject"
+                   class="list-group-item d-flex justify-content-between align-items-center">
+                <span class="fw-semibold">
+                  {{ teacher.fullName }}
+                </span>
+
+                <button class="btn btn-sm btn-outline-danger"
+                        (click)="clickUnassignTeacherFromSubject(teacher.id, selectedSubjectId)">
+                  Unassign
+                </button>
+              </div>
+            </div>
           </div>
+
+          <!-- Available Teachers -->
+          <div class="col-md-6">
+            <h6 class="fw-bold text-primary mb-3">
+              Available Teachers
+            </h6>
+
+            <div *ngIf="teachersNotAssignedToSubject.length === 0"
+                 class="alert alert-light text-center">
+              No available teachers.
+            </div>
+
+            <div *ngIf="teachersNotAssignedToSubject.length > 0"
+                 class="list-group shadow-sm">
+              <div *ngFor="let teacher of teachersNotAssignedToSubject"
+                   class="list-group-item d-flex justify-content-between align-items-center">
+                <span class="fw-semibold">
+                  {{ teacher.fullName }}
+                </span>
+
+                <button class="btn btn-sm btn-primary"
+                        (click)="clickAssignTeacherToSubject(teacher.id, selectedSubjectId)">
+                  Assign
+                </button>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
       <!-- Footer -->
       <div class="modal-footer px-4">
-        <button class="btn btn-light" (click)="closeTeachersModal()">Close</button>
+        <button class="btn btn-light"
+                (click)="closeTeachersModal()">
+          Close
+        </button>
       </div>
+
     </div>
   </div>
 </div>
