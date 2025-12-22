@@ -128,6 +128,13 @@ export class AdminManagementService {
       this.http.post<ApiResponse<boolean>>(url, {}, { headers: this.headers })
     );
   }
+  // move-student-class
+  MoveStudentToAnotherClass(studentId: string, classId: string, adminUserId: string) {
+    const url = `${this.apiUrl}/move-student-class?studentId=${encodeURIComponent(studentId)}&newClassId=${encodeURIComponent(classId)}&adminUserId=${encodeURIComponent(adminUserId)}`;
+    return ApiResponseHandler.handleApiResponse<boolean>(
+      this.http.put<ApiResponse<boolean>>(url, {}, { headers: this.headers })
+    );
+  }
   //Assign Teacher To Subject
   AssignTeacherToSubject(teacherId: string, subjectId: string): Observable<boolean> {
     const url = `${this.apiUrl}/teachers/assign-subject?teacherId=${encodeURIComponent(teacherId)}&subjectId=${encodeURIComponent(subjectId)}`;

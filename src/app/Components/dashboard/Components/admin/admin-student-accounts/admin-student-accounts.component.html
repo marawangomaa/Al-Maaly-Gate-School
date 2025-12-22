@@ -54,6 +54,10 @@
             <i class="fas fa-phone me-1"></i>
             {{ student.contactInfo }}
           </p>
+          <p class="text-muted mb-1" *ngIf="student.classId">
+            <i class="fas fa-graduation-cap me-1"></i>
+            الفصل: {{ getClassName(student.classId) }}
+          </p>
         </div>
 
         <div class="mt-3 d-flex justify-content-between align-items-center">
@@ -65,19 +69,29 @@
           </span>
 
           <div class="d-flex gap-2 flex-wrap">
-            <!-- زر الموافقة -->
+            <!-- زر الموافقة مع الفصل -->
             <button
               class="primary-btn btn-sm"
               *ngIf="isStudentsPending(student) || isStudentsRejected(student)"
-              (click)="ApproveStudentAction(student.id)"
-              title="موافقة"
+              (click)="openAssignToClassModal(student)"
+              title="موافقة وإضافة للفصل"
             >
-              <i class="fas fa-check me-1"></i> قبول
+              <i class="fas fa-check me-1"></i> قبول وإضافة للفصل
             </button>
+
+            <!-- زر الموافقة فقط -->
+            <!-- <button
+              class="outline-btn btn-sm"
+              *ngIf="isStudentsPending(student) || isStudentsRejected(student)"
+              (click)="ApproveStudentAction(student.id)"
+              title="موافقة فقط"
+            >
+              <i class="fas fa-check me-1"></i> قبول فقط
+            </button> -->
 
             <!-- زر الرفض -->
             <button
-              class="outline-btn btn-sm"
+              class="danger-btn btn-sm"
               *ngIf="isStudentsPending(student)"
               (click)="RejectStudentAction(student.id)"
               title="رفض"
@@ -87,7 +101,7 @@
 
             <!-- زر الحظر -->
             <button
-              class="danger-btn btn-sm"
+              class="warning-btn btn-sm"
               *ngIf="isStudentsActive(student)"
               (click)="BlockStudentAction(student.id)"
               title="حظر"
@@ -136,5 +150,77 @@
     class="alert alert-warning mt-4"
   >
     لا يوجد طلاب مسجلين في النظام
+  </div>
+
+  <!-- مودال إضافة الطالب للفصل -->
+  <div
+    *ngIf="showAssignModal"
+    class="modal-backdrop fade show"
+    (click)="closeAssignModal()"
+  ></div>
+
+  <div *ngIf="showAssignModal" class="modal fade show d-block" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h5 class="modal-title">إضافة الطالب للفصل</h5>
+          <button
+            type="button"
+            class="btn-close"
+            (click)="closeAssignModal()"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">الطالب</label>
+            <input
+              type="text"
+              class="form-control"
+              [value]="selectedStudentForModal?.fullName"
+              readonly
+            />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">اختر الفصل</label>
+            <select
+              class="form-control"
+              [(ngModel)]="selectedClassId"
+              [disabled]="isClassesLoading"
+            >
+              <option value="">-- اختر الفصل --</option>
+              <option *ngFor="let class of allClasses" [value]="class.id">
+                {{ class.className }} - {{ class.gradeName }}
+              </option>
+            </select>
+            <div *ngIf="isClassesLoading" class="text-muted small mt-1">
+              جاري تحميل الفصول...
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="closeAssignModal()"
+            [disabled]="isAssigning"
+          >
+            إلغاء
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="approveStudentWithClass()"
+            [disabled]="!selectedClassId || isAssigning"
+          >
+            <span
+              *ngIf="isAssigning"
+              class="spinner-border spinner-border-sm me-2"
+            ></span>
+            {{ isAssigning ? "جاري المعالجة..." : "موافقة وإضافة" }}
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
