@@ -10,7 +10,7 @@ import { GradeViewDto } from '../../../../../Interfaces/igrade';
 import { TeacherService } from '../../../../../Services/teacher.service';
 import { TeacherViewDto } from '../../../../../Interfaces/iteacher';
 import { AdminManagementService } from '../../../../../Services/admin-management.service';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 
@@ -41,10 +41,7 @@ export class AdminSubjectManagementComponent {
   constructor(private _subjectService: SubjectService,
     private _gradeService: GradeService
     , private _teacherService: TeacherService
-    , private adminManagementService: AdminManagementService,
-    private translate: TranslateService) {
-    this.translate.setDefaultLang('en');
-    this.translate.use('en');
+    , private adminManagementService: AdminManagementService) {
   }
 
   public openModalCreateSubject(): void {

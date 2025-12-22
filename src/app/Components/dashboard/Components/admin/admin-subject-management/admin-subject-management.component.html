@@ -3,13 +3,13 @@
 ======================== -->
 <div class="d-flex justify-content-between align-items-center mb-4">
   <h2 class="fw-bold mb-0">
-    {{ 'SUBJECTS.TITLE' | translate }}
+    {{ 'parentManagement.SUBJECTS.TITLE' | translate }}
   </h2>
 
   <button class="btn btn-primary d-flex align-items-center gap-2"
           (click)="openModalCreateSubject()">
     <i class="bi bi-plus-circle"></i>
-    {{ 'SUBJECTS.CREATE_SUBJECT' | translate }}
+    {{ 'parentManagement.SUBJECTS.CREATE_SUBJECT' | translate }}
   </button>
 </div>
 
@@ -21,7 +21,7 @@
   <!-- Empty State -->
   <div *ngIf="subjects.length === 0"
        class="alert alert-info shadow-sm text-center">
-    {{ 'SUBJECTS.NO_SUBJECTS' | translate }}
+    {{ 'parentManagement.SUBJECTS.NO_SUBJECTS' | translate }}
   </div>
 
   <!-- Subjects Table -->
@@ -31,7 +31,7 @@
     <div class="card-header bg-white border-0
                 d-flex justify-content-between align-items-center">
       <span class="fw-semibold text-muted">
-        {{ 'SUBJECTS.SHOWING' | translate:{ 
+        {{ 'parentManagement.SUBJECTS.SHOWING' | translate:{ 
             filtered: filteredSubjects.length, 
             total: subjects.length 
         } }}
@@ -39,7 +39,7 @@
 
       <!-- Search -->
       <input class="form-control w-25"
-             [placeholder]="'SUBJECTS.SEARCH_PLACEHOLDER' | translate"
+             [placeholder]="'parentManagement.SUBJECTS.SEARCH_PLACEHOLDER' | translate"
              [(ngModel)]="searchTerm"
              (input)="onSearchChange()" />
     </div>
@@ -49,10 +49,10 @@
         <thead class="table-light">
           <tr>
             <th style="width: 60px;">#</th>
-            <th>{{ 'SUBJECTS.SUBJECT_NAME' | translate }}</th>
-            <th>{{ 'SUBJECTS.GRADE' | translate }}</th>
+            <th>{{ 'parentManagement.SUBJECTS.SUBJECT_NAME' | translate }}</th>
+            <th>{{ 'parentManagement.SUBJECTS.GRADE' | translate }}</th>
             <th style="width: 170px;">
-              {{ 'COMMON.ACTIONS' | translate }}
+              {{ 'parentManagement.COMMON.ACTIONS' | translate }}
             </th>
           </tr>
         </thead>
@@ -69,7 +69,7 @@
             <td>
               <button class="btn btn-sm btn-outline-primary"
                       (click)="openTeachersModal(s.id)">
-                {{ 'SUBJECTS.MANAGE_TEACHERS' | translate }}
+                {{ 'parentManagement.SUBJECTS.MANAGE_TEACHERS' | translate }}
               </button>
             </td>
           </tr>
@@ -92,7 +92,7 @@
       <!-- Header -->
       <div class="modal-header">
         <h5 class="modal-title fw-bold">
-          {{ 'SUBJECTS.CREATE_SUBJECT' | translate }}
+          {{ 'parentManagement.SUBJECTS.CREATE_SUBJECT' | translate }}
         </h5>
         <button type="button"
                 class="btn-close"
@@ -105,31 +105,31 @@
         <div class="form-floating mb-3">
           <input type="text"
                  class="form-control"
-                 [placeholder]="'SUBJECTS.SUBJECT_NAME' | translate"
+                 [placeholder]="'parentManagement.SUBJECTS.SUBJECT_NAME' | translate"
                  [(ngModel)]="subjectName" />
-          <label>{{ 'SUBJECTS.SUBJECT_NAME' | translate }}</label>
+          <label>{{ 'parentManagement.SUBJECTS.SUBJECT_NAME' | translate }}</label>
         </div>
 
         <div class="form-floating mb-3">
           <select class="form-select"
                   [(ngModel)]="gradeId">
             <option value="" disabled>
-              {{ 'SUBJECTS.SELECT_GRADE' | translate }}
+              {{ 'parentManagement.SUBJECTS.SELECT_GRADE' | translate }}
             </option>
             <option *ngFor="let g of grades"
                     [value]="g.id">
               {{ g.gradeName }}
             </option>
           </select>
-          <label>{{ 'SUBJECTS.GRADE' | translate }}</label>
+          <label>{{ 'parentManagement.SUBJECTS.GRADE' | translate }}</label>
         </div>
 
         <div class="form-floating mb-3">
           <input type="number"
                  class="form-control"
-                 [placeholder]="'SUBJECTS.CREDIT_HOURS' | translate"
+                 [placeholder]="'parentManagement.SUBJECTS.CREDIT_HOURS' | translate"
                  [(ngModel)]="creditHours" />
-          <label>{{ 'SUBJECTS.CREDIT_HOURS' | translate }}</label>
+          <label>{{ 'parentManagement.SUBJECTS.CREDIT_HOURS' | translate }}</label>
         </div>
       </div>
 
@@ -137,13 +137,13 @@
       <div class="modal-footer px-4">
         <button class="btn btn-light"
                 (click)="closeModalCreateSubject()">
-          {{ 'COMMON.CANCEL' | translate }}
+          {{ 'parentManagement.COMMON.CANCEL' | translate }}
         </button>
 
         <button class="btn btn-primary"
                 [disabled]="!subjectName || !gradeId || creditHours <= 0"
                 (click)="onCreateSubjectClick()">
-          {{ 'COMMON.CREATE' | translate }}
+          {{ 'parentManagement.COMMON.CREATE' | translate }}
         </button>
       </div>
     </div>
@@ -163,7 +163,7 @@
       <!-- Header -->
       <div class="modal-header">
         <h5 class="modal-title fw-bold">
-          {{ 'TEACHERS.MANAGE_TEACHERS' | translate }}
+          {{ 'parentManagement.TEACHERS.MANAGE_TEACHERS' | translate }}
         </h5>
         <button type="button"
                 class="btn-close"
@@ -177,12 +177,12 @@
           <!-- Assigned Teachers -->
           <div class="col-md-6">
             <h6 class="fw-bold text-success mb-3">
-              {{ 'TEACHERS.ASSIGNED' | translate }}
+              {{ 'parentManagement.TEACHERS.ASSIGNED' | translate }}
             </h6>
 
             <div *ngIf="teachersAssignedToSubject.length === 0"
                  class="alert alert-light text-center">
-              {{ 'TEACHERS.NO_ASSIGNED' | translate }}
+              {{ 'parentManagement.TEACHERS.NO_ASSIGNED' | translate }}
             </div>
 
             <div *ngIf="teachersAssignedToSubject.length > 0"
@@ -195,7 +195,7 @@
 
                 <button class="btn btn-sm btn-outline-danger"
                         (click)="clickUnassignTeacherFromSubject(teacher.id, selectedSubjectId)">
-                  {{ 'COMMON.UNASSIGN' | translate }}
+                  {{ 'parentManagement.COMMON.UNASSIGN' | translate }}
                 </button>
               </div>
             </div>
@@ -204,12 +204,12 @@
           <!-- Available Teachers -->
           <div class="col-md-6">
             <h6 class="fw-bold text-primary mb-3">
-              {{ 'TEACHERS.AVAILABLE' | translate }}
+              {{ 'parentManagement.TEACHERS.AVAILABLE' | translate }}
             </h6>
 
             <div *ngIf="teachersNotAssignedToSubject.length === 0"
                  class="alert alert-light text-center">
-              {{ 'TEACHERS.NO_AVAILABLE' | translate }}
+              {{ 'parentManagement.TEACHERS.NO_AVAILABLE' | translate }}
             </div>
 
             <div *ngIf="teachersNotAssignedToSubject.length > 0"
@@ -222,7 +222,7 @@
 
                 <button class="btn btn-sm btn-primary"
                         (click)="clickAssignTeacherToSubject(teacher.id, selectedSubjectId)">
-                  {{ 'COMMON.ASSIGN' | translate }}
+                  {{ 'parentManagement.COMMON.ASSIGN' | translate }}
                 </button>
               </div>
             </div>
@@ -235,7 +235,7 @@
       <div class="modal-footer px-4">
         <button class="btn btn-light"
                 (click)="closeTeachersModal()">
-          {{ 'COMMON.CLOSE' | translate }}
+          {{ 'parentManagement.COMMON.CLOSE' | translate }}
         </button>
       </div>
 

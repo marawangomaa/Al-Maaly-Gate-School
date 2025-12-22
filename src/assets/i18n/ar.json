@@ -122,7 +122,6 @@
     "FILES_COUNT": "الملفات: {{current}}/{{max}}"
   },
   "DASH": {
-    "YEAR_GRADE": "العام الدراسي - الصف",
     "PARENT_MANAGEMENT": "إدارة أولياء الأمور",
     "STUDENT_PROFILE": "الملف الشخصي",
     "ADMIN_CERTFICATION_CREATE": "انشاء شهادة",
@@ -174,6 +173,7 @@
     "NO_GRADES": "لا توجد صفوف",
     "CREATE_FIRST": "ابدأ بإضافة أول صف لك.",
     "CREATE_FIRST_BTN": "إنشاء أول صف",
+
     "GRADE_NAME": "الصف: {{gradeName}}",
     "SHOW_DETAILS": "عرض التفاصيل",
     "HIDE_DETAILS": "إخفاء التفاصيل",
@@ -183,6 +183,7 @@
     "CLASSES": "{{count}} فصل",
     "SUBJECTS": "{{count}} مادة",
     "CREATED": "تم الإنشاء: {{date}}",
+
     "CLASSES_SECTION": {
       "TITLE": "الفصول ({{count}})",
       "ADD_CLASS": "إضافة فصل",
@@ -194,6 +195,7 @@
       "TEACHERS": "المعلمين",
       "ACTIONS": "الإجراءات"
     },
+
     "SUBJECTS_SECTION": {
       "TITLE": "المواد ({{count}})",
       "ADD_SUBJECT": "إضافة مادة",
@@ -202,6 +204,7 @@
       "TEACHER_COUNT": "المعلمين: {{count}}",
       "EXAM_COUNT": "الامتحانات: {{count}}"
     },
+
     "MODALS": {
       "ADD_GRADE": "إنشاء صف جديد",
       "EDIT_GRADE": "تعديل الصف",
@@ -213,6 +216,7 @@
       "CANCEL": "إلغاء",
       "CREATE": "إنشاء",
       "UPDATE": "تحديث",
+
       "ADD_CLASS": "إضافة فصل جديد",
       "EDIT_CLASS": "تعديل الفصل",
       "CLASS_NAME_LABEL": "اسم الفصل *",
@@ -442,6 +446,7 @@
     "singleStudentOperations": "عمليات طالب واحد",
     "searchStudent": "بحث عن طالب",
     "searchStudentPlaceholder": "اكتب اسم الطالب...",
+
     "singleStudentOperations": "عمليات طالب واحد",
     "searchStudent": "بحث عن طالب",
     "searchStudentPlaceholder": "اكتب اسم الطالب...",
@@ -452,6 +457,7 @@
     "saving": "جاري الحفظ...",
     "studentsInClass": "الطلاب في الفصل",
     "studentId": "رقم الطالب",
+
     "studentsInClass": "الطلاب في الفصل",
     "studentId": "رقم الطالب",
     "bulkGeneration": "إنشاء شهادات جماعي",
@@ -565,6 +571,7 @@
       "delete": "حذف"
     },
     "loading": "جاري تحميل المناهج...",
+
     "loading": "جاري تحميل المناهج...",
     "empty": {
       "title": "لم يتم العثور على مناهج",
@@ -572,6 +579,7 @@
     },
     "noDescription": "لا يوجد وصف",
     "created": "تم الإنشاء",
+
     "noDescription": "لا يوجد وصف",
     "created": "تم الإنشاء",
     "tabs": {
@@ -816,5 +824,35 @@
     "CLOSE": "إغلاق",
     "ASSIGN": "تعيين",
     "UNASSIGN": "إلغاء التعيين"
+  }
+}
+    },
+    "SUBJECTS": {
+      "TITLE": "إدارة المواد",
+      "CREATE_SUBJECT": "إضافة مادة",
+      "NO_SUBJECTS": "لا توجد مواد.",
+      "SEARCH_PLACEHOLDER": "ابحث عن مادة أو صف...",
+      "SHOWING": "عرض {{filtered}} من {{total}} مواد",
+      "SUBJECT_NAME": "اسم المادة",
+      "GRADE": "الصف",
+      "SELECT_GRADE": "-- اختر الصف --",
+      "CREDIT_HOURS": "عدد الساعات",
+      "MANAGE_TEACHERS": "إدارة المدرسين"
+    },
+    "TEACHERS": {
+      "MANAGE_TEACHERS": "إدارة المدرسين للمادة",
+      "ASSIGNED": "المدرسون المخصصون",
+      "AVAILABLE": "المدرسون المتاحون",
+      "NO_ASSIGNED": "لا يوجد مدرسون مخصصون.",
+      "NO_AVAILABLE": "لا يوجد مدرسون متاحون."
+    },
+    "COMMON": {
+      "ACTIONS": "الإجراءات",
+      "CREATE": "إنشاء",
+      "CANCEL": "إلغاء",
+      "CLOSE": "إغلاق",
+      "ASSIGN": "تعيين",
+      "UNASSIGN": "إلغاء التعيين"
+    }
   }
 }
