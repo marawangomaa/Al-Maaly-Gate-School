@@ -1,21 +1,27 @@
-<!-- Top Action Bar -->
+<!-- =======================
+     Top Action Bar
+======================== -->
 <div class="d-flex justify-content-between align-items-center mb-4">
-  <h2 class="fw-bold mb-0">Subjects Management</h2>
+  <h2 class="fw-bold mb-0">
+    {{ 'SUBJECTS.TITLE' | translate }}
+  </h2>
 
   <button class="btn btn-primary d-flex align-items-center gap-2"
           (click)="openModalCreateSubject()">
     <i class="bi bi-plus-circle"></i>
-    Create Subject
+    {{ 'SUBJECTS.CREATE_SUBJECT' | translate }}
   </button>
 </div>
 
-<!-- Main Content -->
+<!-- =======================
+     Main Content
+======================== -->
 <div class="container-fluid">
 
   <!-- Empty State -->
   <div *ngIf="subjects.length === 0"
        class="alert alert-info shadow-sm text-center">
-    No subjects found.
+    {{ 'SUBJECTS.NO_SUBJECTS' | translate }}
   </div>
 
   <!-- Subjects Table -->
@@ -25,12 +31,15 @@
     <div class="card-header bg-white border-0
                 d-flex justify-content-between align-items-center">
       <span class="fw-semibold text-muted">
-        Showing {{ filteredSubjects.length }} of {{ subjects.length }} subjects
+        {{ 'SUBJECTS.SHOWING' | translate:{ 
+            filtered: filteredSubjects.length, 
+            total: subjects.length 
+        } }}
       </span>
 
       <!-- Search -->
       <input class="form-control w-25"
-             placeholder="Search subject or grade..."
+             [placeholder]="'SUBJECTS.SEARCH_PLACEHOLDER' | translate"
              [(ngModel)]="searchTerm"
              (input)="onSearchChange()" />
     </div>
@@ -40,9 +49,11 @@
         <thead class="table-light">
           <tr>
             <th style="width: 60px;">#</th>
-            <th>Subject Name</th>
-            <th>Grade</th>
-            <th style="width: 150px;">Actions</th>
+            <th>{{ 'SUBJECTS.SUBJECT_NAME' | translate }}</th>
+            <th>{{ 'SUBJECTS.GRADE' | translate }}</th>
+            <th style="width: 170px;">
+              {{ 'COMMON.ACTIONS' | translate }}
+            </th>
           </tr>
         </thead>
 
@@ -58,7 +69,7 @@
             <td>
               <button class="btn btn-sm btn-outline-primary"
                       (click)="openTeachersModal(s.id)">
-                Assign Teachers
+                {{ 'SUBJECTS.MANAGE_TEACHERS' | translate }}
               </button>
             </td>
           </tr>
@@ -68,90 +79,166 @@
   </div>
 </div>
 
-<!-- Create Subject Modal -->
+<!-- =======================
+     Create Subject Modal
+======================== -->
 <div *ngIf="isCreateSubjectModalOpen"
      class="modal show"
      tabindex="-1"
      style="display: block; background: rgba(0,0,0,.5); z-index: 1055;">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 shadow">
+
       <!-- Header -->
       <div class="modal-header">
-        <h5 class="modal-title fw-bold">Create Subject</h5>
-        <button type="button" class="btn-close"
+        <h5 class="modal-title fw-bold">
+          {{ 'SUBJECTS.CREATE_SUBJECT' | translate }}
+        </h5>
+        <button type="button"
+                class="btn-close"
                 (click)="closeModalCreateSubject()"></button>
       </div>
+
       <!-- Body -->
       <div class="modal-body px-4 py-3">
+
         <div class="form-floating mb-3">
-          <input type="text" class="form-control" placeholder="Subject Name"
+          <input type="text"
+                 class="form-control"
+                 [placeholder]="'SUBJECTS.SUBJECT_NAME' | translate"
                  [(ngModel)]="subjectName" />
-          <label>Subject Name</label>
+          <label>{{ 'SUBJECTS.SUBJECT_NAME' | translate }}</label>
         </div>
+
         <div class="form-floating mb-3">
-          <select class="form-select" [(ngModel)]="gradeId">
-            <option value="" disabled>-- Select Grade --</option>
-            <option *ngFor="let g of grades" [value]="g.id">
+          <select class="form-select"
+                  [(ngModel)]="gradeId">
+            <option value="" disabled>
+              {{ 'SUBJECTS.SELECT_GRADE' | translate }}
+            </option>
+            <option *ngFor="let g of grades"
+                    [value]="g.id">
               {{ g.gradeName }}
             </option>
           </select>
-          <label>Grade</label>
+          <label>{{ 'SUBJECTS.GRADE' | translate }}</label>
         </div>
+
         <div class="form-floating mb-3">
-          <input type="number" class="form-control" placeholder="Credit Hours"
+          <input type="number"
+                 class="form-control"
+                 [placeholder]="'SUBJECTS.CREDIT_HOURS' | translate"
                  [(ngModel)]="creditHours" />
-          <label>Credit Hours</label>
+          <label>{{ 'SUBJECTS.CREDIT_HOURS' | translate }}</label>
         </div>
       </div>
+
       <!-- Footer -->
       <div class="modal-footer px-4">
-        <button class="btn btn-light" (click)="closeModalCreateSubject()">Cancel</button>
+        <button class="btn btn-light"
+                (click)="closeModalCreateSubject()">
+          {{ 'COMMON.CANCEL' | translate }}
+        </button>
+
         <button class="btn btn-primary"
                 [disabled]="!subjectName || !gradeId || creditHours <= 0"
-                (click)="onCreateSubjectClick()">Create Subject</button>
+                (click)="onCreateSubjectClick()">
+          {{ 'COMMON.CREATE' | translate }}
+        </button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Teachers Not Assigned Modal -->
+<!-- =======================
+     Teachers Assignment Modal
+======================== -->
 <div *ngIf="isTeachersModalOpen"
      class="modal show"
      tabindex="-1"
      style="display: block; background: rgba(0,0,0,.5); z-index: 1055;">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content border-0 shadow">
 
       <!-- Header -->
       <div class="modal-header">
-        <h5 class="modal-title fw-bold">Teachers Not Assigned to Subject</h5>
-        <button type="button" class="btn-close" (click)="closeTeachersModal()"></button>
+        <h5 class="modal-title fw-bold">
+          {{ 'TEACHERS.MANAGE_TEACHERS' | translate }}
+        </h5>
+        <button type="button"
+                class="btn-close"
+                (click)="closeTeachersModal()"></button>
       </div>
 
       <!-- Body -->
       <div class="modal-body px-4 py-3">
-        <div *ngIf="teachersNotAssignedToSubject.length === 0"
-             class="alert alert-info text-center">
-          No unassigned teachers found.
-        </div>
+        <div class="row g-4">
 
-        <div *ngIf="teachersNotAssignedToSubject.length > 0"
-             class="list-group">
-          <div *ngFor="let teacher of teachersNotAssignedToSubject"
-               class="list-group-item d-flex justify-content-between align-items-center">
-            {{ teacher.fullName }}
-            <button class="btn btn-sm btn-primary"
-                    (click)="clickAssignTeacherToSubject(teacher.id, selectedSubjectId)">
-              Assign
-            </button>
+          <!-- Assigned Teachers -->
+          <div class="col-md-6">
+            <h6 class="fw-bold text-success mb-3">
+              {{ 'TEACHERS.ASSIGNED' | translate }}
+            </h6>
+
+            <div *ngIf="teachersAssignedToSubject.length === 0"
+                 class="alert alert-light text-center">
+              {{ 'TEACHERS.NO_ASSIGNED' | translate }}
+            </div>
+
+            <div *ngIf="teachersAssignedToSubject.length > 0"
+                 class="list-group shadow-sm">
+              <div *ngFor="let teacher of teachersAssignedToSubject"
+                   class="list-group-item d-flex justify-content-between align-items-center">
+                <span class="fw-semibold">
+                  {{ teacher.fullName }}
+                </span>
+
+                <button class="btn btn-sm btn-outline-danger"
+                        (click)="clickUnassignTeacherFromSubject(teacher.id, selectedSubjectId)">
+                  {{ 'COMMON.UNASSIGN' | translate }}
+                </button>
+              </div>
+            </div>
           </div>
+
+          <!-- Available Teachers -->
+          <div class="col-md-6">
+            <h6 class="fw-bold text-primary mb-3">
+              {{ 'TEACHERS.AVAILABLE' | translate }}
+            </h6>
+
+            <div *ngIf="teachersNotAssignedToSubject.length === 0"
+                 class="alert alert-light text-center">
+              {{ 'TEACHERS.NO_AVAILABLE' | translate }}
+            </div>
+
+            <div *ngIf="teachersNotAssignedToSubject.length > 0"
+                 class="list-group shadow-sm">
+              <div *ngFor="let teacher of teachersNotAssignedToSubject"
+                   class="list-group-item d-flex justify-content-between align-items-center">
+                <span class="fw-semibold">
+                  {{ teacher.fullName }}
+                </span>
+
+                <button class="btn btn-sm btn-primary"
+                        (click)="clickAssignTeacherToSubject(teacher.id, selectedSubjectId)">
+                  {{ 'COMMON.ASSIGN' | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
       <!-- Footer -->
       <div class="modal-footer px-4">
-        <button class="btn btn-light" (click)="closeTeachersModal()">Close</button>
+        <button class="btn btn-light"
+                (click)="closeTeachersModal()">
+          {{ 'COMMON.CLOSE' | translate }}
+        </button>
       </div>
+
     </div>
   </div>
 </div>
