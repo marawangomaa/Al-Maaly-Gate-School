@@ -10,13 +10,14 @@ import { GradeViewDto } from '../../../../../Interfaces/igrade';
 import { TeacherService } from '../../../../../Services/teacher.service';
 import { TeacherViewDto } from '../../../../../Interfaces/iteacher';
 import { AdminManagementService } from '../../../../../Services/admin-management.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 
 
 @Component({
   selector: 'app-admin-subject-management',
   standalone: true,
-  imports: [NgIf, NgFor, FormsModule],
+  imports: [NgIf, NgFor, FormsModule, TranslateModule],
   templateUrl: './admin-subject-management.component.html',
   styleUrl: './admin-subject-management.component.css'
 })
@@ -40,7 +41,11 @@ export class AdminSubjectManagementComponent {
   constructor(private _subjectService: SubjectService,
     private _gradeService: GradeService
     , private _teacherService: TeacherService
-    , private adminManagementService: AdminManagementService) { }
+    , private adminManagementService: AdminManagementService,
+    private translate: TranslateService) {
+    this.translate.setDefaultLang('en');
+    this.translate.use('en');
+  }
 
   public openModalCreateSubject(): void {
     console.log("Open Create Subject Modal");
