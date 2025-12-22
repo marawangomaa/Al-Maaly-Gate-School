@@ -225,7 +225,6 @@
       "CLASS_NAME_MIN_LENGTH": "يجب أن يكون اسم الفصل على الأقل حرفين",
       "GRADE_SELECT_LABEL": "الصف *",
       "GRADE_SELECT_REQUIRED": "الرجاء اختيار صف",
-
       "ADD_SUBJECT": "إضافة مادة جديدة",
       "EDIT_SUBJECT": "تعديل المادة",
       "SUBJECT_NAME_LABEL": "اسم المادة *",
@@ -234,24 +233,20 @@
       "CREDIT_HOURS_LABEL": "الساعات المعتمدة *",
       "CREDIT_HOURS_RANGE": "يجب أن تكون الساعات المعتمدة بين 1 و 10",
       "ADD": "إضافة",
-
       "BULK_MOVE": "نقل الفصول المحددة",
       "MOVING_COUNT": "جاري نقل {{count}} فصل(فصول) إلى صف مختلف.",
       "TARGET_GRADE": "الصف الهدف *",
       "TARGET_GRADE_REQUIRED": "الرجاء اختيار صف هدف",
       "MOVE_CLASSES": "نقل الفصول",
-
       "DELETE_CONFIRM": "تأكيد الحذف",
       "DELETE_WARNING": "تحذير! لا يمكن التراجع عن هذا الإجراء.",
       "DELETE_CONFIRM_MESSAGE": "هل أنت متأكد أنك تريد حذف الصف \"{{gradeName}}\"؟",
       "DELETE_BTN": "حذف الصف"
     },
-
     "PAGINATION": {
       "PREVIOUS": "السابق",
       "NEXT": "التالي"
     },
-
     "ALERTS": {
       "DELETE_WARNING": "تحذير! لا يمكن التراجع عن هذا الإجراء."
     }
@@ -317,7 +312,13 @@
     "LOADING": "جارٍ التحميل...",
     "SAVE": "حفظ",
     "EXPAND": "عرض",
-    "COLLAPSE": "إخفاء"
+    "COLLAPSE": "إخفاء",
+    "ACTIONS": "الإجراءات",
+    "CREATE": "إنشاء",
+    "CANCEL": "إلغاء",
+    "CLOSE": "إغلاق",
+    "ASSIGN": "تعيين",
+    "UNASSIGN": "إلغاء التعيين"
   },
   "TEACHER_CLASSES": {
     "TITLE": "صفوفي وطلابي",
@@ -433,7 +434,6 @@
       "bulk": "عمليات جماعية",
       "search": "بحث وتحقق"
     },
-
     "filterOptions": "خيارات التصفية",
     "filterDescription": "قم بتصفية الطلاب حسب المنهج والصف والفصل لإنشاء الشهادات",
     "filterByCurriculum": "تصفية حسب المنهج",
@@ -445,25 +445,21 @@
     "studentPlaceholder": "اختر طالباً...",
     "noClassesAvailable": "لا توجد فصول متاحة",
     "noClassesForFilters": "لا توجد فصول تطابق عوامل التصفية. يرجى تعديل اختيارك.",
-
     "classWideOperations": "عمليات على مستوى الفصل",
     "classWideDescription": "تطبيق إعدادات الشهادات على جميع الطلاب في الفصل المحدد",
     "classWideCertificateType": "نوع الشهادة (جميع الطلاب)",
     "classWideAcademicYear": "السنة الأكاديمية (جميع الطلاب)",
     "students": "طالب",
     "student": "طالب",
-
     "classWideActions": {
       "generate": "إنشاء جميع الشهادات",
       "download": "تحميل الكل كمضغوط",
       "generating": "جاري إنشاء الشهادات...",
       "downloading": "جاري تحضير الملف المضغوط..."
     },
-
     "singleStudentOperations": "عمليات طالب واحد",
     "searchStudent": "بحث عن طالب",
     "searchStudentPlaceholder": "اكتب اسم الطالب...",
-
     "generatePdf": "إنشاء PDF",
     "generateAndSave": "إنشاء وحفظ",
     "saveOnly": "حفظ في قاعدة البيانات فقط",
@@ -472,14 +468,12 @@
 
     "studentsInClass": "الطلاب في الفصل",
     "studentId": "رقم الطالب",
-
     "bulkGeneration": "إنشاء شهادات جماعي",
     "bulkDescription": "إنشاء شهادات لفصل كامل في وقت واحد",
     "bulkGenerate": "إنشاء شهادات جماعية",
     "bulkGenerating": "جاري إنشاء الشهادات الجماعية...",
     "downloadBulk": "تحميل كمضغوط",
     "downloading": "جاري تحضير التحميل...",
-
     "searchCertificates": "بحث في الشهادات",
     "studentName": "اسم الطالب",
     "studentNamePlaceholder": "أدخل اسم الطالب...",
@@ -494,7 +488,6 @@
     "search": "بحث",
     "searching": "جاري البحث...",
     "clear": "مسح الفلاتر",
-
     "searchResults": "نتائج البحث",
     "type": "النوع",
     "issuedDate": "تاريخ الإصدار",
@@ -503,20 +496,17 @@
     "view": "عرض",
     "download": "تحميل",
     "archive": "أرشفة",
-
     "verifyCertificate": "التحقق من الشهادة",
     "certificateId": "معرف الشهادة",
     "certificateIdPlaceholder": "أدخل معرف الشهادة للتحقق...",
     "verifiedBy": "تم التحقق بواسطة",
     "verifierName": "أدخل اسم الشخص الذي قام بالتحقق...",
     "verify": "التحقق من الشهادة",
-
     "statuses": {
       "verified": "تم التحقق",
       "pending": "قيد الانتظار",
       "expired": "منتهية الصلاحية"
     },
-
     "messages": {
       "generatingClassWide": "جاري إنشاء الشهادات لجميع الطلاب...",
       "downloadingClassWide": "جاري تحضير الملف المضغوط للتحميل...",
@@ -563,7 +553,6 @@
   "curriculum": {
     "title": "إدارة المناهج الدراسية",
     "subtitle": "قم بإدارة وتنظيم مناهج مدرستك بكفاءة",
-
     "stats": {
       "total": "إجمالي المناهج",
       "showing": "يتم عرض",
@@ -571,19 +560,16 @@
       "teachers": "معلم",
       "grades": "صف"
     },
-
     "search": {
       "placeholder": "ابحث في المناهج حسب الاسم أو الكود أو الوصف...",
       "clear": "مسح",
       "noResults": "لم يتم العثور على مناهج مطابقة",
       "tryDifferent": "جرب مصطلح بحث مختلف"
     },
-
     "sort": {
       "name": "ترتيب حسب الاسم",
       "code": "ترتيب حسب الكود"
     },
-
     "actions": {
       "addNew": "إضافة منهج جديد",
       "refresh": "تحديث",
@@ -594,7 +580,6 @@
       "checkTeachers": "فحص المعلمين",
       "delete": "حذف"
     },
-
     "loading": "جاري تحميل المناهج...",
 
     "empty": {
@@ -604,7 +589,6 @@
 
     "noDescription": "لا يوجد وصف",
     "created": "تم الإنشاء",
-
     "tabs": {
       "code": "الكود",
       "name": "الاسم",
@@ -625,7 +609,6 @@
         "teachers": "لا يوجد معلمون متخصصون في هذا المنهج"
       }
     },
-
     "form": {
       "name": {
         "label": "اسم المنهج",
@@ -647,7 +630,6 @@
         "characters": "حرف"
       }
     },
-
     "modal": {
       "create": {
         "title": "إنشاء منهج جديد",
@@ -678,7 +660,6 @@
       "cancel": "إلغاء",
       "close": "إغلاق"
     },
-
     "check": {
       "studentsTitle": "فحص الطلاب",
       "teachersTitle": "فحص المعلمين",
@@ -1061,116 +1042,26 @@
       "FALSE": "خطأ"
     }
   },
-  "parentManagement": {
-    "header": {
-      "title": "إدارة أولياء الأمور",
-      "description": "إدارة حسابات أولياء الأمور والطلاب المرتبطين بهم في النظام",
-      "parentsCount": "ولي أمر",
-      "parentsCount_plural": "أولياء أمور",
-      "refresh": "تحديث"
-    },
-    "loading": {
-      "title": "جاري تحميل بيانات أولياء الأمور",
-      "message": "يرجى الانتظار أثناء جلب أحدث المعلومات"
-    },
-    "parentCard": {
-      "noPhone": "لا يوجد هاتف",
-      "associatedStudents": "الطلاب المرتبطين",
-      "noStudents": {
-        "title": "لا يوجد طلاب مرتبطين بعد",
-        "button": "إضافة أول طالب"
-      },
-      "addStudent": "إضافة طالب آخر",
-      "removeStudent": "إزالة",
-      "removeTooltip": "إزالة الطالب",
-      "relations": {
-        "father": "أب",
-        "mother": "أم",
-        "guardian": "وصي",
-        "other": "آخر"
-      }
-    },
-    "emptyState": {
-      "title": "لا توجد حسابات أولياء أمور",
-      "description": "لا توجد حسابات أولياء أمور في النظام حتى الآن.",
-      "button": "دعوة أولياء الأمور"
-    },
-    "addStudentModal": {
-      "header": {
-        "title": "إضافة طالب",
-        "description": "ربط طالب بـ"
-      },
-      "form": {
-        "studentSelection": {
-          "label": "اختر الطالب",
-          "placeholder": "اختر طالبًا...",
-          "alreadyLinked": "✓ مرتبط بالفعل",
-          "validationError": "يرجى اختيار طالب"
-        },
-        "relation": {
-          "label": "نوع العلاقة",
-          "options": {
-            "father": "أب",
-            "mother": "أم",
-            "guardian": "وصي",
-            "other": "آخر"
-          },
-          "validationError": "يرجى اختيار العلاقة"
-        }
-      },
-      "buttons": {
-        "cancel": "إلغاء",
-        "submit": {
-          "adding": "جاري الإضافة...",
-          "default": "ربط الطالب"
-        },
-        "close": "إغلاق"
-      }
-    },
-    "messages": {
-      "loadingFailed": "فشل تحميل البيانات",
-      "errorLoadingParents": "خطأ في تحميل أولياء الأمور:",
-      "errorLoadingParentDetails": "خطأ في تحميل تفاصيل الوالد:",
-      "errorLoadingChildren": "خطأ في تحميل الطلاب للوالد",
-      "errorLoadingAvailableStudents": "خطأ في تحميل الطلاب المتاحين:",
-      "errorAddingStudent": "خطأ في إضافة الطالب:",
-      "errorRemovingStudent": "خطأ في إزالة الطالب:",
-      "addStudentSuccess": "تمت إضافة الطالب بنجاح!",
-      "addStudentFailed": "فشل إضافة الطالب",
-      "removeStudentSuccess": "تمت إزالة الطالب بنجاح!",
-      "removeStudentFailed": "فشل إزالة الطالب",
-      "errorOccurred": "حدث خطأ",
-      "confirmRemove": "هل أنت متأكد أنك تريد إزالة هذا الطالب من الوالد؟",
-      "fillAllFields": "يرجى ملء جميع الحقول المطلوبة"
-    },
-    "SUBJECTS": {
-      "TITLE": "إدارة المواد",
-      "CREATE_SUBJECT": "إضافة مادة",
-      "NO_SUBJECTS": "لا توجد مواد.",
-      "SEARCH_PLACEHOLDER": "ابحث عن مادة أو صف...",
-      "SHOWING": "عرض {{filtered}} من {{total}} مواد",
-      "SUBJECT_NAME": "اسم المادة",
-      "GRADE": "الصف",
-      "SELECT_GRADE": "-- اختر الصف --",
-      "CREDIT_HOURS": "عدد الساعات",
-      "MANAGE_TEACHERS": "إدارة المدرسين"
-    },
-    "TEACHERS": {
-      "MANAGE_TEACHERS": "إدارة المدرسين للمادة",
-      "ASSIGNED": "المدرسون المخصصون",
-      "AVAILABLE": "المدرسون المتاحون",
-      "NO_ASSIGNED": "لا يوجد مدرسون مخصصون.",
-      "NO_AVAILABLE": "لا يوجد مدرسون متاحون."
-    },
-    "COMMON": {
-      "ACTIONS": "الإجراءات",
-      "CREATE": "إنشاء",
-      "CANCEL": "إلغاء",
-      "CLOSE": "إغلاق",
-      "ASSIGN": "تعيين",
-      "UNASSIGN": "إلغاء التعيين"
-    }
+  "SUBJECTS": {
+    "TITLE": "إدارة المواد",
+    "CREATE_SUBJECT": "إضافة مادة",
+    "NO_SUBJECTS": "لا توجد مواد.",
+    "SEARCH_PLACEHOLDER": "ابحث عن مادة أو صف...",
+    "SHOWING": "عرض {{filtered}} من {{total}} مواد",
+    "SUBJECT_NAME": "اسم المادة",
+    "GRADE": "الصف",
+    "SELECT_GRADE": "-- اختر الصف --",
+    "CREDIT_HOURS": "عدد الساعات",
+    "MANAGE_TEACHERS": "إدارة المدرسين"
   },
+  "TEACHERS": {
+    "MANAGE_TEACHERS": "إدارة المدرسين للمادة",
+    "ASSIGNED": "المدرسون المخصصون",
+    "AVAILABLE": "المدرسون المتاحون",
+    "NO_ASSIGNED": "لا يوجد مدرسون مخصصون.",
+    "NO_AVAILABLE": "لا يوجد مدرسون متاحون."
+  },
+  
   "analytics": {
     "title": "تحليلات لوحة التحكم",
     "dateRange": "آخر 6 أشهر",
@@ -1229,5 +1120,116 @@
     "optimal": "مثالي",
     "good": "جيد",
     "needsImprovement": "يحتاج تحسين"
+  },
+  "parentManagement": {
+    "header": {
+      "title": "إدارة أولياء الأمور",
+      "description": "إدارة حسابات أولياء الأمور والطلاب المرتبطين بهم في النظام",
+      "parentsCount": "ولي أمر",
+      "parentsCount_plural": "أولياء أمور",
+      "refresh": "تحديث"
+    },
+    "loading": {
+      "title": "جاري تحميل بيانات أولياء الأمور",
+      "message": "يرجى الانتظار أثناء جلب أحدث المعلومات"
+    },
+    "parentCard": {
+      "noPhone": "لا يوجد رقم هاتف",
+      "associatedStudents": "الطلاب المرتبطون",
+      "noStudents": {
+        "title": "لا يوجد طلاب مرتبطون بعد",
+        "button": "إضافة أول طالب"
+      },
+      "addStudent": "إضافة طالب آخر",
+      "removeStudent": "إزالة",
+      "removeTooltip": "إزالة الطالب",
+      "relations": {
+        "father": "أب",
+        "mother": "أم",
+        "guardian": "وصي",
+        "other": "أخرى"
+      }
+    },
+    "emptyState": {
+      "title": "لا توجد حسابات أولياء أمور",
+      "description": "لا توجد حسابات أولياء أمور في النظام حتى الآن.",
+      "button": "دعوة أولياء الأمور"
+    },
+    "addStudentModal": {
+      "header": {
+        "title": "إضافة طالب",
+        "description": "ربط طالب بـ"
+      },
+      "form": {
+        "studentSelection": {
+          "label": "اختر الطالب",
+          "placeholder": "اختر طالبًا...",
+          "alreadyLinked": "✓ مرتبط بالفعل",
+          "validationError": "يرجى اختيار طالب"
+        },
+        "relation": {
+          "label": "نوع العلاقة",
+          "options": {
+            "father": "أب",
+            "mother": "أم",
+            "guardian": "وصي",
+            "other": "أخرى"
+          },
+          "validationError": "يرجى اختيار نوع العلاقة"
+        }
+      },
+      "buttons": {
+        "cancel": "إلغاء",
+        "submit": {
+          "adding": "جاري الإضافة...",
+          "default": "ربط الطالب"
+        },
+        "close": "إغلاق"
+      }
+    },
+    "messages": {
+      "loadingFailed": "فشل تحميل البيانات",
+      "errorLoadingParents": "خطأ في تحميل أولياء الأمور:",
+      "errorLoadingParentDetails": "خطأ في تحميل تفاصيل ولي الأمر:",
+      "errorLoadingChildren": "خطأ في تحميل الطلاب لولي الأمر",
+      "errorLoadingAvailableStudents": "خطأ في تحميل الطلاب المتاحين:",
+      "errorAddingStudent": "خطأ في إضافة الطالب:",
+      "errorRemovingStudent": "خطأ في إزالة الطالب:",
+      "addStudentSuccess": "تمت إضافة الطالب بنجاح!",
+      "addStudentFailed": "فشل إضافة الطالب",
+      "removeStudentSuccess": "تمت إزالة الطالب بنجاح!",
+      "removeStudentFailed": "فشل إزالة الطالب",
+      "errorOccurred": "حدث خطأ",
+      "confirmRemove": "هل أنت متأكد أنك تريد إزالة هذا الطالب من ولي الأمر؟",
+      "fillAllFields": "يرجى ملء جميع الحقول المطلوبة"
+    },
+    "SUBJECTS": {
+      "TITLE": "إدارة المواد",
+      "CREATE_SUBJECT": "إضافة مادة",
+      "NO_SUBJECTS": "لا توجد مواد.",
+      "SEARCH_PLACEHOLDER": "ابحث عن مادة أو صف...",
+      "SHOWING": "عرض {{filtered}} من {{total}} مواد",
+      "SUBJECT_NAME": "اسم المادة",
+      "GRADE": "الصف",
+      "SELECT_GRADE": "-- اختر الصف --",
+      "CREDIT_HOURS": "عدد الساعات",
+      "MANAGE_TEACHERS": "إدارة المدرسين"
+    },
+    "TEACHERS": {
+      "MANAGE_TEACHERS": "إدارة مدرسو المادة",
+      "ASSIGNED": "المدرسون المعيّنون",
+      "AVAILABLE": "المدرسون المتاحون",
+      "NO_ASSIGNED": "لا يوجد مدرسون معيّنون.",
+      "NO_AVAILABLE": "لا يوجد مدرسون متاحون."
+    },
+    "COMMON": {
+      "ACTIONS": "الإجراءات",
+      "CREATE": "إنشاء",
+      "CANCEL": "إلغاء",
+      "CLOSE": "إغلاق",
+      "ASSIGN": "تعيين",
+      "UNASSIGN": "إلغاء التعيين"
+    }
   }
 }
+

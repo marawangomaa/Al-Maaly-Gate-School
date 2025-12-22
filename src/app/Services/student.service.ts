@@ -32,7 +32,7 @@ export class StudentService {
 
   submitExam(submission: istudentExamSubmission): Observable<ApiResponse<istudentExamAnswer>> {
     return this.http.post<ApiResponse<istudentExamAnswer>>(
-      `${this.apiUrl}/SubmitExam`,
+      `${this.apiUrl}/StudentExamAnswer/SubmitExam`,
       submission
     );
   }

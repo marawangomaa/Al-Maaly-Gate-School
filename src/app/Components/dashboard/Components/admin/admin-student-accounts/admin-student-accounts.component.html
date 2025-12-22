@@ -43,13 +43,25 @@
     </div>
   </div>
 
-  <!-- Loading State -->
-  <div *ngIf="isLoading" class="text-center py-5">
-    <div class="spinner-border" role="status">
-      <span class="visually-hidden">{{ 'students.loading' | translate }}</span>
-    </div>
-    <p class="mt-3 text-muted">{{ 'students.loadingStudents' | translate }}</p>
-  </div>
+  <!-- عرض جميع الطلاب -->
+  <div class="row g-3">
+    <div *ngFor="let student of filteredStudents()" class="col-md-6 col-lg-4">
+      <div class="card p-3 h-100 d-flex flex-column justify-content-between">
+        <div>
+          <h5 class="sub-title mb-1">{{ student.fullName }}</h5>
+          <p class="text-muted mb-1">
+            <i class="fas fa-envelope me-1"></i>
+            {{ student.email }}
+          </p>
+          <p class="text-muted mb-1" *ngIf="student.contactInfo">
+            <i class="fas fa-phone me-1"></i>
+            {{ student.contactInfo }}
+          </p>
+          <p class="text-muted mb-1" *ngIf="student.classId">
+            <i class="fas fa-graduation-cap me-1"></i>
+            الفصل: {{ getClassName(student.classId) }}
+          </p>
+        </div>
 
   <!-- Students Grid -->
   <div class="row g-4" *ngIf="!isLoading">
@@ -83,43 +95,46 @@
             </p>
           </div>
 
-          <!-- Additional Student Information -->
-          <div class="student-details mb-3">
-            <div class="d-flex flex-wrap gap-2">
-              <span class="badge bg-primary">
-                <i class="fas fa-child me-1"></i> {{ student.age || 'غير محدد' }} {{ 'students.age' | translate }}
-              </span>
-              <span class="badge bg-info" *ngIf="student.className">
-                <i class="fas fa-school me-1"></i> {{ student.className }}
-              </span>
-              <span class="badge bg-secondary" *ngIf="student.parents && student.parents.length > 0">
-                <i class="fas fa-user-friends me-1"></i> {{ student.parents.length }} {{ 'students.parents' | translate }}
-              </span>
-            </div>
-          </div>
+          <div class="d-flex gap-2 flex-wrap">
+            <!-- زر الموافقة مع الفصل -->
+            <button
+              class="primary-btn btn-sm"
+              *ngIf="isStudentsPending(student) || isStudentsRejected(student)"
+              (click)="openAssignToClassModal(student)"
+              title="موافقة وإضافة للفصل"
+            >
+              <i class="fas fa-check me-1"></i> قبول وإضافة للفصل
+            </button>
 
-          <!-- Action Buttons -->
-          <div class="d-flex justify-content-between align-items-center mt-4">
-            <div class="d-flex gap-2 flex-wrap">
-              <!-- Approve Button -->
-              <button
-                class="btn btn-success btn-sm"
-                *ngIf="isStudentsPending(student) || isStudentsRejected(student)"
-                (click)="ApproveStudentAction(student.id)"
-                [title]="'students.approve' | translate"
-              >
-                <i class="fas fa-check me-1"></i> {{ 'students.approve' | translate }}
-              </button>
+            <!-- زر الموافقة فقط -->
+            <!-- <button
+              class="outline-btn btn-sm"
+              *ngIf="isStudentsPending(student) || isStudentsRejected(student)"
+              (click)="ApproveStudentAction(student.id)"
+              title="موافقة فقط"
+            >
+              <i class="fas fa-check me-1"></i> قبول فقط
+            </button> -->
 
-              <!-- Reject Button -->
-              <button
-                class="btn btn-outline-danger btn-sm"
-                *ngIf="isStudentsPending(student)"
-                (click)="RejectStudentAction(student.id)"
-                [title]="'students.reject' | translate"
-              >
-                <i class="fas fa-times me-1"></i> {{ 'students.reject' | translate }}
-              </button>
+            <!-- زر الرفض -->
+            <button
+              class="danger-btn btn-sm"
+              *ngIf="isStudentsPending(student)"
+              (click)="RejectStudentAction(student.id)"
+              title="رفض"
+            >
+              <i class="fas fa-times me-1"></i> رفض
+            </button>
+
+            <!-- زر الحظر -->
+            <button
+              class="warning-btn btn-sm"
+              *ngIf="isStudentsActive(student)"
+              (click)="BlockStudentAction(student.id)"
+              title="حظر"
+            >
+              <i class="fas fa-ban me-1"></i> حظر
+            </button>
 
               <!-- Block Button -->
               <button
@@ -169,6 +184,78 @@
       <i class="fas fa-user-graduate fa-4x text-muted mb-4"></i>
       <h4 class="mb-3">{{ 'students.noStudents' | translate }}</h4>
       <p class="text-muted mb-4">{{ 'students.noStudentsInCategory' | translate }}</p>
+    </div>
+  </div>
+
+  <!-- مودال إضافة الطالب للفصل -->
+  <div
+    *ngIf="showAssignModal"
+    class="modal-backdrop fade show"
+    (click)="closeAssignModal()"
+  ></div>
+
+  <div *ngIf="showAssignModal" class="modal fade show d-block" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h5 class="modal-title">إضافة الطالب للفصل</h5>
+          <button
+            type="button"
+            class="btn-close"
+            (click)="closeAssignModal()"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">الطالب</label>
+            <input
+              type="text"
+              class="form-control"
+              [value]="selectedStudentForModal?.fullName"
+              readonly
+            />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">اختر الفصل</label>
+            <select
+              class="form-control"
+              [(ngModel)]="selectedClassId"
+              [disabled]="isClassesLoading"
+            >
+              <option value="">-- اختر الفصل --</option>
+              <option *ngFor="let class of allClasses" [value]="class.id">
+                {{ class.className }} - {{ class.gradeName }}
+              </option>
+            </select>
+            <div *ngIf="isClassesLoading" class="text-muted small mt-1">
+              جاري تحميل الفصول...
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="closeAssignModal()"
+            [disabled]="isAssigning"
+          >
+            إلغاء
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="approveStudentWithClass()"
+            [disabled]="!selectedClassId || isAssigning"
+          >
+            <span
+              *ngIf="isAssigning"
+              class="spinner-border spinner-border-sm me-2"
+            ></span>
+            {{ isAssigning ? "جاري المعالجة..." : "موافقة وإضافة" }}
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
