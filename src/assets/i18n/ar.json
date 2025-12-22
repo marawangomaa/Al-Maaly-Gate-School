@@ -122,7 +122,6 @@
     "FILES_COUNT": "الملفات: {{current}}/{{max}}"
   },
   "DASH": {
-    "YEAR_GRADE": "العام الدراسي - الصف",
     "PARENT_MANAGEMENT": "إدارة أولياء الأمور",
     "STUDENT_PROFILE": "الملف الشخصي",
     "ADMIN_CERTFICATION_CREATE": "انشاء شهادة",
@@ -175,6 +174,7 @@
     "NO_GRADES": "لا توجد صفوف",
     "CREATE_FIRST": "ابدأ بإضافة أول صف لك.",
     "CREATE_FIRST_BTN": "إنشاء أول صف",
+
     "GRADE_NAME": "الصف: {{gradeName}}",
     "SHOW_DETAILS": "عرض التفاصيل",
     "HIDE_DETAILS": "إخفاء التفاصيل",
@@ -184,6 +184,7 @@
     "CLASSES": "{{count}} فصل",
     "SUBJECTS": "{{count}} مادة",
     "CREATED": "تم الإنشاء: {{date}}",
+
     "CLASSES_SECTION": {
       "TITLE": "الفصول ({{count}})",
       "ADD_CLASS": "إضافة فصل",
@@ -195,6 +196,7 @@
       "TEACHERS": "المعلمين",
       "ACTIONS": "الإجراءات"
     },
+
     "SUBJECTS_SECTION": {
       "TITLE": "المواد ({{count}})",
       "ADD_SUBJECT": "إضافة مادة",
@@ -203,6 +205,7 @@
       "TEACHER_COUNT": "المعلمين: {{count}}",
       "EXAM_COUNT": "الامتحانات: {{count}}"
     },
+
     "MODALS": {
       "ADD_GRADE": "إنشاء صف جديد",
       "EDIT_GRADE": "تعديل الصف",
@@ -214,6 +217,7 @@
       "CANCEL": "إلغاء",
       "CREATE": "إنشاء",
       "UPDATE": "تحديث",
+
       "ADD_CLASS": "إضافة فصل جديد",
       "EDIT_CLASS": "تعديل الفصل",
       "CLASS_NAME_LABEL": "اسم الفصل *",
@@ -449,9 +453,6 @@
       "generating": "جاري إنشاء الشهادات...",
       "downloading": "جاري تحضير الملف المضغوط..."
     },
-    "singleStudentOperations": "عمليات طالب واحد",
-    "searchStudent": "بحث عن طالب",
-    "searchStudentPlaceholder": "اكتب اسم الطالب...",
 
     "singleStudentOperations": "عمليات طالب واحد",
     "searchStudent": "بحث عن طالب",
@@ -462,8 +463,6 @@
     "saveOnly": "حفظ في قاعدة البيانات فقط",
     "generating": "جاري الإنشاء...",
     "saving": "جاري الحفظ...",
-    "studentsInClass": "الطلاب في الفصل",
-    "studentId": "رقم الطالب",
 
     "studentsInClass": "الطلاب في الفصل",
     "studentId": "رقم الطالب",
@@ -587,7 +586,6 @@
       "checkTeachers": "فحص المعلمين",
       "delete": "حذف"
     },
-    "loading": "جاري تحميل المناهج...",
 
     "loading": "جاري تحميل المناهج...",
 
@@ -595,8 +593,6 @@
       "title": "لم يتم العثور على مناهج",
       "subtitle": "ابدأ بإنشاء أول منهج لك."
     },
-    "noDescription": "لا يوجد وصف",
-    "created": "تم الإنشاء",
 
     "noDescription": "لا يوجد وصف",
     "created": "تم الإنشاء",
@@ -818,9 +814,6 @@
       "errorOccurred": "حدث خطأ",
       "confirmRemove": "هل أنت متأكد أنك تريد إزالة هذا الطالب من الوالد؟",
       "fillAllFields": "يرجى ملء جميع الحقول المطلوبة"
-    }
-  }
-}
     },
     "SUBJECTS": {
       "TITLE": "إدارة المواد",
