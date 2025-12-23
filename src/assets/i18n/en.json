@@ -168,755 +168,716 @@
   },
   "GRADE": {
     "HOME": {
-        "TITLE": "Welcome to our website",
-        "DESCRIPTION": "Explore our features and services"
+      "TITLE": "Welcome to our website",
+      "DESCRIPTION": "Explore our features and services"
     },
     "ABOUT": {
-        "TITLE": "About Us",
-        "SUBTITLE": "Who We Are",
-        "DESCRIPTION": "We are a school dedicated to empowering students with knowledge, creativity, and innovation. Our mission is to provide a supportive and inspiring environment where every learner can achieve their full potential."
+      "TITLE": "About Us",
+      "SUBTITLE": "Who We Are",
+      "DESCRIPTION": "We are a school dedicated to empowering students with knowledge, creativity, and innovation. Our mission is to provide a supportive and inspiring environment where every learner can achieve their full potential."
     },
     "programs": {
-        "title": "Our Programs",
-        "learningMethods": "Effective Learning Methods",
-        "learningMethodsDesc": "We provide modern and practical learning approaches.",
-        "quizzes": "Quizzes",
-        "quizzesDesc": "Interactive quizzes to reinforce your understanding.",
-        "exams": "Exams",
-        "examsDesc": "Structured exams to evaluate your progress."
+      "title": "Our Programs",
+      "learningMethods": "Effective Learning Methods",
+      "learningMethodsDesc": "We provide modern and practical learning approaches.",
+      "quizzes": "Quizzes",
+      "quizzesDesc": "Interactive quizzes to reinforce your understanding.",
+      "exams": "Exams",
+      "examsDesc": "Structured exams to evaluate your progress."
     },
     "community": {
-        "title": "What Our Community Says",
-        "testimonial1": "The teachers here truly care about every student and go above and beyond to make sure they succeed. I have seen my child grow not only in academic performance but also in self-confidence, teamwork, and critical thinking. The personalized attention each student receives makes a huge difference in their overall development, and we are so grateful for this supportive community.",
-        "author1": "Ahmed S.",
-        "testimonial2": "This school provides an outstanding environment for learning. The modern teaching methods, combined with innovative technology and engaging activities, ensure that students are not just memorizing but actually understanding concepts deeply. My daughter has become more creative, more independent, and more excited about learning. The staff genuinely invests in every student’s success, and that makes all the difference.",
-        "author2": "Sarah K.",
-        "testimonial3": "Joining this school community was truly the best decision for our family. My children look forward to attending every day because the lessons are interactive, the teachers are approachable, and the atmosphere encourages curiosity and growth. Beyond academics, they are learning life skills such as responsibility, problem-solving, and empathy. I feel confident knowing they are in the best hands.",
-        "author3": "Omar A."
+      "title": "What Our Community Says",
+      "testimonial1": "The teachers here truly care about every student and go above and beyond to make sure they succeed. I have seen my child grow not only in academic performance but also in self-confidence, teamwork, and critical thinking. The personalized attention each student receives makes a huge difference in their overall development, and we are so grateful for this supportive community.",
+      "author1": "Ahmed S.",
+      "testimonial2": "This school provides an outstanding environment for learning. The modern teaching methods, combined with innovative technology and engaging activities, ensure that students are not just memorizing but actually understanding concepts deeply. My daughter has become more creative, more independent, and more excited about learning. The staff genuinely invests in every student’s success, and that makes all the difference.",
+      "author2": "Sarah K.",
+      "testimonial3": "Joining this school community was truly the best decision for our family. My children look forward to attending every day because the lessons are interactive, the teachers are approachable, and the atmosphere encourages curiosity and growth. Beyond academics, they are learning life skills such as responsibility, problem-solving, and empathy. I feel confident knowing they are in the best hands.",
+      "author3": "Omar A."
     },
     "admission": {
-        "title": "Admissions Made Simple",
-        "description": "Applying to our school is a straightforward and stress-free process designed with families in mind. We believe that education should begin with a welcoming and transparent admissions journey. All you need to do is visit our admissions page, where you will find detailed step-by-step instructions on how to complete your application. From filling out the required forms to submitting necessary documents, every step is explained clearly to ensure there is no confusion. Our admissions team is always ready to assist you with any questions or concerns you may have, and we encourage families to reach out if they need guidance. We are committed to making this process smooth, supportive, and accessible, because choosing the right school is one of the most important decisions for your child’s future.",
-        "button": "Visit Admissions Page"
+      "title": "Admissions Made Simple",
+      "description": "Applying to our school is a straightforward and stress-free process designed with families in mind. We believe that education should begin with a welcoming and transparent admissions journey. All you need to do is visit our admissions page, where you will find detailed step-by-step instructions on how to complete your application. From filling out the required forms to submitting necessary documents, every step is explained clearly to ensure there is no confusion. Our admissions team is always ready to assist you with any questions or concerns you may have, and we encourage families to reach out if they need guidance. We are committed to making this process smooth, supportive, and accessible, because choosing the right school is one of the most important decisions for your child’s future.",
+      "button": "Visit Admissions Page"
     },
     "contact": {
-        "title": "Contact Us",
-        "subtitle": "We’d love to hear from you! Whether you have questions, suggestions, or need assistance, feel free to reach out to us using the form below or through our contact details.",
-        "infoTitle": "Our Contact Information",
-        "address": "123 Main Street, City, Country",
-        "phone": "+1 234 567 890",
-        "email": "info@school.com",
-        "form": {
-            "name": "Your Name",
-            "email": "Your Email",
-            "subject": "Subject",
-            "message": "Your Message",
-            "button": "Send Message"
-        },
-        "errors": {
-            "name": "Please enter at least 3 characters.",
-            "email": "Please enter a valid email address.",
-            "subject": "Please enter a subject.",
-            "message": "Message must be at least 10 characters."
-        }
-    },
-    "LOGIN": {
-        "TITLE": "Login to your account",
-        "USERNAME": "Username",
-        "PASSWORD": "Password",
-        "SUBMIT": "Login"
-    },
-    "REGISTER": {
-        "TITLE": "Create a new account",
-        "FULLNAME": "Full Name",
-        "FULLNAME_REQUIRED": "Full name is required",
-        "USERNAME": "Username",
-        "USERNAME_REQUIRED": "Username is required",
-        "EMAIL": "Email",
-        "EMAIL_INVALID": "Enter a valid email",
-        "CONTACT_INFO": "Contact Information",
-        "PASSWORD": "Password",
-        "PASSWORD_REQUIRED": "Password is required (min 6 chars)",
-        "CONFIRM_PASSWORD": "Confirm Password",
-        "PASSWORD_MISMATCH": "Passwords do not match",
-        "ROLE": "Role",
-        "ROLE_SELECT": "Select role",
-        "ROLE_STUDENT": "Student",
-        "ROLE_TEACHER": "Teacher",
-        "ROLE_PARENT": "Parent",
-        "ROLE_REQUIRED": "Role is required",
-        "RELATION": "Relation",
-        "RELATION_REQUIRED": "Relation is required",
-        "DOCUMENTS": "Documents",
-        "SELECT_DOCUMENTS": "Select Documents",
-        "FILE_MAX_LIMIT": "Maximum 3 files allowed",
-        "FILE_INVALID_TYPE": "Invalid file type: {{fileName}}. Allowed types: PDF, JPG, PNG, DOC, DOCX",
-        "FILE_TOO_LARGE": "File {{fileName}} is too large. Max size: 5MB",
-        "FILE_REQUIRED": "At least one document is required for parent registration",
-        "REMOVE_FILE": "Remove File",
-        "SUBMIT": "Register",
-        "CANCEL": "Cancel",
-        "LOADING": "Registering...",
-        "PARENT_SUCCESS": "Parent registration successful! Redirecting...",
-        "PARENT_FAILED": "Parent registration failed",
-        "SUCCESS": "Registration successful! Redirecting...",
-        "FAILED": "Registration failed",
-        "FORM_ERRORS": "Please correct the errors in the form",
-        "SOMETHING_WRONG": "Something went wrong. Please try again.",
-        "FULLNAME_PLACEHOLDER": "Enter full name",
-        "FULLNAME_MIN_ERROR": "Full name must be at least 3 characters",
-        "USERNAME_PLACEHOLDER": "Choose a username",
-        "USERNAME_MIN_ERROR": "Username must be at least 3 characters",
-        "EMAIL_PLACEHOLDER": "Enter email address",
-        "CONTACT_PLACEHOLDER": "Phone number (optional)",
-        "CONTACT_MIN_ERROR": "Must be at least 10 characters if provided",
-        "PASSWORD_PLACEHOLDER": "Enter password",
-        "PASSWORD_MIN_ERROR": "Password must be at least 6 characters",
-        "CONFIRM_PASSWORD_PLACEHOLDER": "Confirm password",
-        "RELATION_SELECT": "Select relation",
-        "RELATION_FATHER": "Father",
-        "RELATION_MOTHER": "Mother",
-        "RELATION_GUARDIAN": "Guardian",
-        "RELATION_OTHER": "Other",
-        "PARENT_INFO": "Parent Information",
-        "DOCUMENTS_TITLE": "Upload Documents (Max 3 files, 5MB each) *",
-        "ADD_MORE_DOCUMENTS": "Add More Documents",
-        "FIRST_FILE_IDENTITY": "First file will be treated as Identity Document",
-        "REQUIREMENTS": "Requirements",
-        "FILE_REQUIREMENTS_DETAIL": "At least 1 document required. Allowed formats: PDF, JPG, PNG, DOC, DOCX. Max 5MB per file.",
-        "SELECTED_FILES": "Selected Files",
-        "IDENTITY_BADGE": "Identity",
-        "NO_DOCUMENTS": "No documents selected",
-        "FILES_COUNT": "Files: {{current}}/{{max}}"
-    },
-    "DASH": {
-        "PARENT_MANAGEMENT": " Parent Management ",
-        "STUDENT_PROFILE": "Student Profile",
-        "CHILDREN OF PARENT": "Children of Parent",
-        "ADMIN_CERTFICATION_CREATE": "Create Certfications",
-        "STUDENT_CERTFICATION": "Certfications",
-        "ALL_CLASSES": "All Classes",
-        "TITLE": "MyDashboard",
-        "OVERVIEW": "Overview",
-        "ANALYTICS": "Analytics",
-        "SETTINGS": "Settings",
-        "TEACHER": "Teacher",
-        "STUDENT": "Student",
-        "ADMIN": "Admin",
-        "Admin_Teachers_Accounts": "Teachers Accounts",
-        "FOLLOW_CLASSES": "Follow Classes",
-        "MAKE_TESTS": "Create Tests",
-        "ONLINE_CLASSES": "Online Classes",
-        "Admin_Follow_Tests": "Student Tests",
-        "Admin_Students_Accounts": "Students Accounts Acceptance",
-        "TEACHER_OVERVIEW": "Overview",
-        "CREATE_CLASS": "Create Online Classes",
-        "CLASS_LIST": "Online Classes List",
-        "CREATE_QUESTION": "Create Question",
-        "QUESTION_LIST": "Qustions List",
-        "CREATE_TEST": "Create Test",
-        "TEST_LIST": "Tests List",
-        "CLASS_GRADES": "Class Grades",
-        "YEAR-GRADE": "Grades",
-        "ACCEPT_TEACHERS": "Accept Teachers",
-        "ALL_STUDENT_TEST_RESULT": "Student Test Restults",
-        "STUDENT_ACCOUNTS": "Students Accounts",
-        "PARENTS_ACCOUNTS": "Parents Accounts",
-        "TEACHER_ACCOUNTS": "Teachers Accounts",
-        "ADMIN_SUBJECT_MANAGEMENT": "Subject Management",
-        "ADMIN_ANALYTICS": "Analytics",
-        "CURRICULUM": "Curriculum",
-
-        "TESTS": "Tests",
-        "GRADES": "Grades",
-        "SUBTITLE": "Admin",
-        "PROFILE": "Profile",
-        "LOGOUT": "Logout",
-        "CREATE_EMPTY_CLASS": "Create New Class"
-    },
-    "GRADE": {
-    "MANAGEMENT": "Grade Management",
-    "ADD_GRADE": "Add New Grade",
-    "SEARCH_PLACEHOLDER": "Search grades by name or description...",
-    "REFRESH": "Refresh",
-    "LOADING": "Loading grades...",
-    "NO_GRADES": "No Grades Found",
-    "CREATE_FIRST": "Start by creating your first grade.",
-    "CREATE_FIRST_BTN": "Create First Grade",
-    
-    "GRADE_NAME": "Grade: {{gradeName}}",
-    "SHOW_DETAILS": "Show Details",
-    "HIDE_DETAILS": "Hide Details",
-    "EDIT": "Edit",
-    "DELETE": "Delete",
-    "NO_DESCRIPTION": "No description",
-    "CLASSES": "{{count}} Classes",
-    "SUBJECTS": "{{count}} Subjects",
-    "CREATED": "Created: {{date}}",
-    
-    "CLASSES_SECTION": {
-      "TITLE": "Classes ({{count}})",
-      "ADD_CLASS": "Add Class",
-      "MOVE_SELECTED": "Move Selected",
-      "NO_CLASSES": "No classes assigned to this grade.",
-      "SELECT_ALL": "Select All",
-      "CLASS_NAME": "Class Name",
-      "STUDENTS": "Students",
-      "TEACHERS": "Teachers",
-      "ACTIONS": "Actions"
-    },
-    
-    "SUBJECTS_SECTION": {
-      "TITLE": "Subjects ({{count}})",
-      "ADD_SUBJECT": "Add Subject",
-      "NO_SUBJECTS": "No subjects assigned to this grade.",
-      "CREDIT_HOURS": "Credit Hours: {{hours}}",
-      "TEACHER_COUNT": "Teachers: {{count}}",
-      "EXAM_COUNT": "Exams: {{count}}"
-    },
-    
-    "MODALS": {
-      "ADD_GRADE": "Create New Grade",
-      "EDIT_GRADE": "Edit Grade",
-      "GRADE_NAME_LABEL": "Grade Name *",
-      "GRADE_NAME_REQUIRED": "Grade name is required",
-      "GRADE_NAME_MIN_LENGTH": "Grade name must be at least 2 characters",
-      "DESCRIPTION_LABEL": "Description",
-      "DESCRIPTION_HINT": "Optional. Max 500 characters.",
-      "CANCEL": "Cancel",
-      "CREATE": "Create",
-      "UPDATE": "Update",
-      
-      "ADD_CLASS": "Add New Class",
-      "EDIT_CLASS": "Edit Class",
-      "CLASS_NAME_LABEL": "Class Name *",
-      "CLASS_NAME_REQUIRED": "Class name is required",
-      "CLASS_NAME_MIN_LENGTH": "Class name must be at least 2 characters",
-      "GRADE_SELECT_LABEL": "Grade *",
-      "GRADE_SELECT_REQUIRED": "Please select a grade",
-      
-      "ADD_SUBJECT": "Add New Subject",
-      "EDIT_SUBJECT": "Edit Subject",
-      "SUBJECT_NAME_LABEL": "Subject Name *",
-      "SUBJECT_NAME_REQUIRED": "Subject name is required",
-      "SUBJECT_NAME_MIN_LENGTH": "Subject name must be at least 2 characters",
-      "CREDIT_HOURS_LABEL": "Credit Hours *",
-      "CREDIT_HOURS_RANGE": "Credit hours must be between 1 and 10",
-      "ADD": "Add",
-      
-      "BULK_MOVE": "Move Selected Classes",
-      "MOVING_COUNT": "Moving {{count}} class(es) to a different grade.",
-      "TARGET_GRADE": "Target Grade *",
-      "TARGET_GRADE_REQUIRED": "Please select a target grade",
-      "MOVE_CLASSES": "Move Classes",
-      
-      "DELETE_CONFIRM": "Confirm Delete",
-      "DELETE_WARNING": "Warning! This action cannot be undone.",
-      "DELETE_CONFIRM_MESSAGE": "Are you sure you want to delete grade \"{{gradeName}}\"?",
-      "DELETE_BTN": "Delete Grade"
-    },
-    
-    "PAGINATION": {
-      "PREVIOUS": "Previous",
-      "NEXT": "Next"
-    },
-    
-    "ALERTS": {
-      "DELETE_WARNING": "Warning! This action cannot be undone."
-    }
-  }
-    ,
-    "TEACHER_OVERVIEW": {
-        "TITLE": "Teacher Overview",
-        "LAST_UPDATED": "Last updated",
-        "LOADING": "Loading...",
-        "PROFILE_ALT": "Teacher profile photo",
-        "NO_NAME": "No name available",
-        "NO_PHONE": "No phone",
-        "NO_EMAIL": "No email",
-        "SUBJECT": "Subject",
-        "NO_SUBJECT": "No subject assigned",
-        "VIEW_PROFILE": "View Profile",
-        "EDIT_PROFILE": "Edit Profile",
-        "CLASSES": "Classes",
-        "TESTS": "Tests",
-        "QUESTIONS": "Questions",
-        "ACTIVITIES": "Activities",
-        "RECENT_ACTIVITY": "Recent Activity",
-        "NO_RECENT": "No recent activity"
-    },
-    "QUESTIONS": {
-        "CREATE_TITLE": "Create Question",
-        "LABEL_QUESTION": "Question",
-        "PLACEHOLDER_QUESTION": "Write the question here...",
-        "ERROR_QUESTION": "Question must be at least 5 characters.",
-        "TYPE": "Question Type",
-        "TYPE_MCQ": "Multiple Choice",
-        "TYPE_TRUEFALSE": "True / False",
-        "TYPE_Complete": "Complete the following",
-        "TYPE_Connection": "Connect the following",
-        "OPTIONS": "Options",
-        "OPTION_PLACEHOLDER": "Option",
-        "ADD_OPTION": "Add Option",
-        "REMOVE_OPTION": "Remove",
-        "ERROR_CORRECT": "Please mark the correct option.",
-        "TRUEFALSE": "True / False Answer",
-        "TRUE": "True",
-        "FALSE": "False",
-        "ANSWER_PLACEHOLDER": "Answer",
-        "TEXT_INFO": "This type allows students to provide a written answer.",
-        "DIFFICULTY": "Difficulty",
-        "EASY": "Easy",
-        "MEDIUM": "Medium",
-        "HARD": "Hard",
-        "TAGS": "Tags (comma separated)",
-        "TAGS_PLACEHOLDER": "e.g. algebra, midterm",
-        "SAVE": "Save",
-        "CANCEL": "Cancel",
-        "LIST_TITLE": "Questions",
-        "NO_QUESTIONS": "No questions yet. Create the first one!",
-        "EDIT": "Edit",
-        "DELETE": "Delete",
-        "DIFF": "Difficulty"
-    },
-    "COMMON": {
-        "LOADING": "Loading...",
-        "SAVE": "Save",
-        "EXPAND": "Expand",
-        "COLLAPSE": "Collapse"
-    },
-    "TEACHER_CLASSES": {
-        "TITLE": "My Classes and Students",
-        "STUDENT_NAME": "Student Name",
-        "TEST_GRADE": "Test Grade",
-        "MIDTERM_GRADE": "Midterm Grade",
-        "ATTENDANCE": "Attendance"
-    },
-    "TEST": {
-        "LIST_TITLE": "Available Tests",
-        "QUESTIONS_COUNT": "Questions Count",
-        "DELETE": "Delete",
-        "NO_TESTS": "No tests available yet.",
-        "CREATE_TITLE": "Create a New Test",
-        "SETTINGS": "Test Settings",
-        "SETTINGS_DESC": "Adjust the test details, duration, and grading options before creating.",
-        "TITLE": "Test Title",
-        "TITLE_PLACEHOLDER": "Enter test title",
-        "CLASS": "Class Name",
-        "CLASS_PLACEHOLDER": "Enter class name",
-        "SUBJECT": "Subject Name",
-        "DURATION": "Duration",
-        "MAX": "Max Degree",
-        "MIN": "Min Degree",
-        "START": "Start",
-        "END": "End",
-        "CREATE_BTN": "Create Test",
-        "TIPS_TITLE": "Quick Tips",
-        "TIP_ONE": "Select questions from different categories to balance difficulty.",
-        "TIP_TWO": "Review settings before submitting the test.",
-        "MCQ_QUESTIONS": "Multiple Choice Questions",
-        "TRUE_FALSE_QUESTIONS": "True / False Questions",
-        "TEXT_QUESTIONS": "Text Questions",
-        "NO_MCQ": "No multiple-choice questions available.",
-        "NO_TRUEFALSE": "No true/false questions available.",
-        "NO_TEXT": "No text questions available.",
-        "VIEW": "View"
-    },
-    "CLASSES": {
-        "CREATE_TITLE": "Create a New Class",
-        "SCHEDULED_TITLE": "Scheduled Classes",
-        "FORM": {
-            "GRADE": "Grade",
-            "SECTION": "Section",
-            "SUBJECT": "Subject",
-            "MEETING_LINK": "Meeting Link",
-            "START_TIME": "Start Time",
-            "DURATION": "Duration (min)",
-            "PLACEHOLDERS": {
-                "GRADE": "Enter grade",
-                "SECTION": "Enter section",
-                "CLASS": "Enter class",
-                "SUBJECT": "Enter subject",
-                "MEETING_LINK": "https://...",
-                "DURATION": "e.g. 45"
-            },
-            "ERRORS": {
-                "GRADE_REQUIRED": "Grade is required.",
-                "SECTION_REQUIRED": "Section is required.",
-                "CLASS_REQUIRED": "Class is required.",
-                "SUBJECT_REQUIRED": "Subject is required.",
-                "MEETING_LINK_INVALID": "Please enter a valid link.",
-                "START_TIME_REQUIRED": "Start time is required.",
-                "DURATION_INVALID": "Please enter a valid duration (at least 10 minutes)."
-            },
-            "BUTTON": {
-                "CREATE": "Create Class"
-            }
-        },
-        "TABLE": {
-            "GRADE": "Grade",
-            "SECTION": "Section",
-            "SUBJECT": "Subject",
-            "MEETING": "Meeting",
-            "START_TIME": "Start Time",
-            "DURATION": "Duration",
-            "STATUS": "Status",
-            "ACTION": "Action",
-            "JOIN": "Join",
-            "END": "End",
-            "ONGOING": "Ongoing",
-            "ENDED": "Ended",
-            "NO_CLASSES": "No classes scheduled yet."
-        }
-    },
-    "CLASSAPPOINTMENT": {
-    "SCHEDULED_TITLE": "Scheduled Class Appointments",
-    "TABLE": {
-      "GRADE": "Grade",
-      "SECTION": "Section",
-      "SUBJECT": "Subject",
-      "CLASS": "Classes",
-      "MEETING": "Meeting",
-      "START_TIME": "Start Time",
-      "DURATION": "Duration",
-      "STATUS": "Status",
-      "ACTION": "Action",
-      "JOIN": "Join",
-      "ENDED": "Ended",
-      "ONGOING": "Ongoing",
-      "END": "End",
-      "NO_CLASSES": "No class appointments available"
-    }
-  },
-  "certificate2": {
-    "title": "Certificate Management",
-    "subtitle": "Generate, manage, and verify academic certificates with ease",
-    
-    "tabs": {
-      "generate": "Generate Certificate",
-      "bulk": "Bulk Operations",
-      "search": "Search & Verify"
-    },
-    
-    "filterOptions": "Filter Options",
-    "filterDescription": "Filter students by curriculum, grade, and class to generate certificates",
-    "filterByCurriculum": "Filter by Curriculum",
-    "filterByGrade": "Filter by Grade",
-    "selectClass": "Select Class",
-    "allCurricula": "All Curricula",
-    "allGrades": "All Grades",
-    "classPlaceholder": "Select a class...",
-    "studentPlaceholder": "Select a student...",
-    "noClassesAvailable": "No classes available",
-    "noClassesForFilters": "No classes match your filters. Please adjust your selection.",
-    
-    "classWideOperations": "Class-wide Operations",
-    "classWideDescription": "Apply certificate settings to all students in the selected class",
-    "classWideCertificateType": "Certificate Type (All Students)",
-    "classWideAcademicYear": "Academic Year (All Students)",
-    "students": "students",
-    "student": "student",
-    
-    "classWideActions": {
-      "generate": "Generate All Certificates",
-      "download": "Download All as ZIP",
-      "generating": "Generating certificates...",
-      "downloading": "Downloading ZIP..."
-    },
-    
-    "singleStudentOperations": "Single Student Operations",
-    "searchStudent": "Search Student",
-    "searchStudentPlaceholder": "Type student name...",
-    "singleStudentOperations": "Single Student Operations",
-    "searchStudent": "Search Student",
-    "searchStudentPlaceholder": "Type student name...",
-    
-    "generatePdf": "Generate PDF",
-    "generateAndSave": "Generate & Save",
-    "saveOnly": "Save to Database Only",
-    "generating": "Generating...",
-    "saving": "Saving...",
-    
-    "studentsInClass": "Students in Class",
-    "studentId": "Student ID",
-    "studentsInClass": "Students in Class",
-    "studentId": "Student ID",
-    
-    "bulkGeneration": "Bulk Certificate Generation",
-    "bulkDescription": "Generate certificates for an entire class at once",
-    "bulkGenerate": "Generate Bulk Certificates",
-    "bulkGenerating": "Generating bulk certificates...",
-    "downloadBulk": "Download as ZIP",
-    "downloading": "Preparing download...",
-    
-    "searchCertificates": "Search Certificates",
-    "studentName": "Student Name",
-    "studentNamePlaceholder": "Enter student name...",
-    "certificateNumber": "Certificate Number",
-    "certificateNumberPlaceholder": "Enter certificate number...",
-    "certificateType": "Certificate Type",
-    "allTypes": "All Types",
-    "academicYear": "Academic Year",
-    "allYears": "All Years",
-    "fromDate": "From Date",
-    "toDate": "To Date",
-    "search": "Search",
-    "searching": "Searching...",
-    "clear": "Clear Filters",
-    
-    "searchResults": "Search Results",
-    "type": "Type",
-    "issuedDate": "Issued Date",
-    "status": "Status",
-    "actions": "Actions",
-    "view": "View",
-    "download": "Download",
-    "archive": "Archive",
-    
-    "verifyCertificate": "Verify Certificate",
-    "certificateId": "Certificate ID",
-    "certificateIdPlaceholder": "Enter certificate ID to verify...",
-    "verifiedBy": "Verified By",
-    "verifierName": "Enter verifier name...",
-    "verify": "Verify Certificate",
-    
-    "statuses": {
-      "verified": "Verified",
-      "pending": "Pending",
-      "expired": "Expired"
-    },
-    
-    "messages": {
-      "generatingClassWide": "Generating certificates for all students...",
-      "downloadingClassWide": "Preparing ZIP download...",
-      "certificateGenerated": "Certificate generated successfully",
-      "certificateSaved": "Certificate saved to database",
-      "bulkSuccess": "Bulk certificates generated successfully",
-      "searchComplete": "Search completed successfully",
-      "verificationSuccess": "Certificate verified successfully",
-      "verificationFailed": "Certificate verification failed",
-      "archiveSuccess": "Certificate archived successfully",
-      "error": "An error occurred. Please try again."
-    }
-  }
-  ,
-  "CERTIFICATION_STUDENT": {
-    "MY_CERTIFICATES": "My Certificates",
-    "LOADING": "Loading certificates...",
-    "NO_CERTIFICATES": "No certificates found",
-    "NO_CERTIFICATES_DESC": "Certificates will appear once generated by your administrator.",
-    "GPA": "GPA",
-    "ISSUED": "Issued",
-    "TEMPLATE": "Template",
-    "FILE_SIZE": "File Size",
-    "VIEW": "View",
-    "DOWNLOAD": "Download"
-    },
-    "certificate": {
-        "title": "Certificate Generation",
-        "subtitle": "Generate student certificates easily with PDF output and database saving options.",
-        "selectClass": "Select Class",
-        "classPlaceholder": "Choose a class",
-        "selectStudent": "Select Student",
-        "studentPlaceholder": "Choose a student",
-        "certificateType": "Certificate Type",
-        "generatePdf": "Generate PDF",
-        "generateAndSave": "Generate & Save to DB",
-        "saveOnly": "Save to DB Only",
-        "generating": "Generating...",
-        "saving": "Saving...",
-        "studentsInClass": "Students in Class",
-        "studentId": "Student ID"
-    },
-    "curriculum": {
-    "title": "Curriculum Management",
-    "subtitle": "Manage and organize your school curricula efficiently",
-    
-    "stats": {
-      "total": "Total Curricula",
-      "showing": "Showing",
-      "students": "Students",
-      "teachers": "Teachers",
-      "grades": "Grades"
-    },
-    
-    "search": {
-      "placeholder": "Search curricula by name, code, or description...",
-      "clear": "Clear",
-      "noResults": "No matching curricula found",
-      "tryDifferent": "Try a different search term"
-    },
-    
-    "sort": {
-      "name": "Sort by Name",
-      "code": "Sort by Code"
-    },
-    
-    "actions": {
-      "addNew": "Add New Curriculum",
-      "refresh": "Refresh",
-      "createFirst": "Create Curriculum",
-      "viewDetails": "View Details",
-      "edit": "Edit",
-      "checkStudents": "Check Students",
-      "checkTeachers": "Check Teachers",
-      "delete": "Delete"
-    },
-    
-    "loading": "Loading curricula...",
-    "loading": "Loading curricula...",
-    
-    "empty": {
-      "title": "No Curricula Found",
-      "subtitle": "Get started by creating your first curriculum."
-    },
-    
-    "noDescription": "No description",
-    "created": "Created",
-    "noDescription": "No description",
-    "created": "Created",
-    
-    "tabs": {
-      "code": "Code",
-      "name": "Name",
-      "description": "Description",
-      "actions": "Actions",
-      "grades": "Grades",
-      "students": "Students",
-      "teachers": "Teachers",
-      "studentName": "Name",
-      "email": "Email",
-      "class": "Class",
-      "status": "Status",
-      "classes": "classes",
-      "subjects": "subjects",
-      "empty": {
-        "grades": "No grades assigned to this curriculum",
-        "students": "No students enrolled in this curriculum",
-        "teachers": "No teachers specialized in this curriculum"
-      }
-    },
-    
-    "form": {
-      "name": {
-        "label": "Curriculum Name",
-        "placeholder": "Enter curriculum name",
-        "hint": "A descriptive name for the curriculum"
-      },
-      "code": {
-        "label": "Curriculum Code",
-        "placeholder": "e.g., MATH-101",
-        "hint": "Unique code for identification"
-      },
-      "description": {
-        "label": "Description",
-        "placeholder": "Enter curriculum description (optional)"
+      "title": "Contact Us",
+      "subtitle": "We’d love to hear from you! Whether you have questions, suggestions, or need assistance, feel free to reach out to us using the form below or through our contact details.",
+      "infoTitle": "Our Contact Information",
+      "address": "123 Main Street, City, Country",
+      "phone": "+1 234 567 890",
+      "email": "info@school.com",
+      "form": {
+        "name": "Your Name",
+        "email": "Your Email",
+        "subject": "Subject",
+        "message": "Your Message",
+        "button": "Send Message"
       },
       "errors": {
-        "required": "This field is required",
-        "maxLength": "Maximum length is {{max}} characters",
-        "characters": "characters"
+        "name": "Please enter at least 3 characters.",
+        "email": "Please enter a valid email address.",
+        "subject": "Please enter a subject.",
+        "message": "Message must be at least 10 characters."
       }
     },
-    
-    "modal": {
-      "create": {
-        "title": "Create New Curriculum",
-        "action": "Create Curriculum",
-        "creating": "Creating..."
-      },
-      "edit": {
-        "title": "Edit Curriculum",
-        "action": "Update Curriculum",
-        "updating": "Updating...",
-        "lastUpdated": "Last updated:",
-        "never": "Never"
-      },
-      "details": {
-        "title": "Curriculum Details",
-        "loading": "Loading details...",
-        "created": "Created",
-        "updated": "Last Updated"
-      },
-      "delete": {
-        "title": "Confirm Deletion",
-        "warning": "Warning! This action cannot be undone.",
-        "message": "Are you sure you want to delete the curriculum \"{{name}}\" ({{code}})?",
-        "has": "This curriculum has",
-        "action": "Delete Permanently",
-        "deleting": "Deleting..."
-      },
-      "cancel": "Cancel",
-      "close": "Close"
+    "LOGIN": {
+      "TITLE": "Login to your account",
+      "USERNAME": "Username",
+      "PASSWORD": "Password",
+      "SUBMIT": "Login"
     },
-    
-    "check": {
-      "studentsTitle": "Check Students",
-      "teachersTitle": "Check Teachers",
-      "hasStudents": "This curriculum has {{count}} student(s)",
-      "hasNoStudents": "No students enrolled in this curriculum",
-      "hasTeachers": "This curriculum has {{count}} teacher(s)",
-      "hasNoTeachers": "No teachers specialized in this curriculum"
-    }
-  }
-    ,
+    "REGISTER": {
+      "TITLE": "Create a new account",
+      "FULLNAME": "Full Name",
+      "FULLNAME_REQUIRED": "Full name is required",
+      "USERNAME": "Username",
+      "USERNAME_REQUIRED": "Username is required",
+      "EMAIL": "Email",
+      "EMAIL_INVALID": "Enter a valid email",
+      "CONTACT_INFO": "Contact Information",
+      "PASSWORD": "Password",
+      "PASSWORD_REQUIRED": "Password is required (min 6 chars)",
+      "CONFIRM_PASSWORD": "Confirm Password",
+      "PASSWORD_MISMATCH": "Passwords do not match",
+      "ROLE": "Role",
+      "ROLE_SELECT": "Select role",
+      "ROLE_STUDENT": "Student",
+      "ROLE_TEACHER": "Teacher",
+      "ROLE_PARENT": "Parent",
+      "ROLE_REQUIRED": "Role is required",
+      "RELATION": "Relation",
+      "RELATION_REQUIRED": "Relation is required",
+      "DOCUMENTS": "Documents",
+      "SELECT_DOCUMENTS": "Select Documents",
+      "FILE_MAX_LIMIT": "Maximum 3 files allowed",
+      "FILE_INVALID_TYPE": "Invalid file type: {{fileName}}. Allowed types: PDF, JPG, PNG, DOC, DOCX",
+      "FILE_TOO_LARGE": "File {{fileName}} is too large. Max size: 5MB",
+      "FILE_REQUIRED": "At least one document is required for parent registration",
+      "REMOVE_FILE": "Remove File",
+      "SUBMIT": "Register",
+      "CANCEL": "Cancel",
+      "LOADING": "Registering...",
+      "PARENT_SUCCESS": "Parent registration successful! Redirecting...",
+      "PARENT_FAILED": "Parent registration failed",
+      "SUCCESS": "Registration successful! Redirecting...",
+      "FAILED": "Registration failed",
+      "FORM_ERRORS": "Please correct the errors in the form",
+      "SOMETHING_WRONG": "Something went wrong. Please try again.",
+      "FULLNAME_PLACEHOLDER": "Enter full name",
+      "FULLNAME_MIN_ERROR": "Full name must be at least 3 characters",
+      "USERNAME_PLACEHOLDER": "Choose a username",
+      "USERNAME_MIN_ERROR": "Username must be at least 3 characters",
+      "EMAIL_PLACEHOLDER": "Enter email address",
+      "CONTACT_PLACEHOLDER": "Phone number (optional)",
+      "CONTACT_MIN_ERROR": "Must be at least 10 characters if provided",
+      "PASSWORD_PLACEHOLDER": "Enter password",
+      "PASSWORD_MIN_ERROR": "Password must be at least 6 characters",
+      "CONFIRM_PASSWORD_PLACEHOLDER": "Confirm password",
+      "RELATION_SELECT": "Select relation",
+      "RELATION_FATHER": "Father",
+      "RELATION_MOTHER": "Mother",
+      "RELATION_GUARDIAN": "Guardian",
+      "RELATION_OTHER": "Other",
+      "PARENT_INFO": "Parent Information",
+      "DOCUMENTS_TITLE": "Upload Documents (Max 3 files, 5MB each) *",
+      "ADD_MORE_DOCUMENTS": "Add More Documents",
+      "FIRST_FILE_IDENTITY": "First file will be treated as Identity Document",
+      "REQUIREMENTS": "Requirements",
+      "FILE_REQUIREMENTS_DETAIL": "At least 1 document required. Allowed formats: PDF, JPG, PNG, DOC, DOCX. Max 5MB per file.",
+      "SELECTED_FILES": "Selected Files",
+      "IDENTITY_BADGE": "Identity",
+      "NO_DOCUMENTS": "No documents selected",
+      "FILES_COUNT": "Files: {{current}}/{{max}}"
+    },
+    "DASH": {
+      "PARENT_MANAGEMENT": " Parent Management ",
+      "STUDENT_PROFILE": "Student Profile",
+      "CHILDREN OF PARENT": "Children of Parent",
+      "ADMIN_CERTFICATION_CREATE": "Create Certfications",
+      "STUDENT_CERTFICATION": "Certfications",
+      "ALL_CLASSES": "All Classes",
+      "TITLE": "MyDashboard",
+      "OVERVIEW": "Overview",
+      "ANALYTICS": "Analytics",
+      "SETTINGS": "Settings",
+      "TEACHER": "Teacher",
+      "STUDENT": "Student",
+      "ADMIN": "Admin",
+      "Admin_Teachers_Accounts": "Teachers Accounts",
+      "FOLLOW_CLASSES": "Follow Classes",
+      "MAKE_TESTS": "Create Tests",
+      "ONLINE_CLASSES": "Online Classes",
+      "Admin_Follow_Tests": "Student Tests",
+      "Admin_Students_Accounts": "Students Accounts Acceptance",
+      "TEACHER_OVERVIEW": "Overview",
+      "CREATE_CLASS": "Create Online Classes",
+      "CLASS_LIST": "Online Classes List",
+      "CREATE_QUESTION": "Create Question",
+      "QUESTION_LIST": "Qustions List",
+      "CREATE_TEST": "Create Test",
+      "TEST_LIST": "Tests List",
+      "CLASS_GRADES": "Class Grades",
+      "YEAR-GRADE": "Grades",
+      "ACCEPT_TEACHERS": "Accept Teachers",
+      "ALL_STUDENT_TEST_RESULT": "Student Test Restults",
+      "STUDENT_ACCOUNTS": "Students Accounts",
+      "PARENTS_ACCOUNTS": "Parents Accounts",
+      "TEACHER_ACCOUNTS": "Teachers Accounts",
+      "ADMIN_SUBJECT_MANAGEMENT": "Subject Management",
+      "ADMIN_ANALYTICS": "Analytics",
+      "CURRICULUM": "Curriculum",
+      "TESTS": "Tests",
+      "GRADES": "Grades",
+      "SUBTITLE": "Admin",
+      "PROFILE": "Profile",
+      "LOGOUT": "Logout",
+      "CREATE_EMPTY_CLASS": "Create New Class"
+    },
+    "GRADE": {
+      "MANAGEMENT": "Grade Management",
+      "ADD_GRADE": "Add New Grade",
+      "SEARCH_PLACEHOLDER": "Search grades by name or description...",
+      "REFRESH": "Refresh",
+      "LOADING": "Loading grades...",
+      "NO_GRADES": "No Grades Found",
+      "CREATE_FIRST": "Start by creating your first grade.",
+      "CREATE_FIRST_BTN": "Create First Grade",
+      "GRADE_NAME": "Grade: {{gradeName}}",
+      "SHOW_DETAILS": "Show Details",
+      "HIDE_DETAILS": "Hide Details",
+      "EDIT": "Edit",
+      "DELETE": "Delete",
+      "NO_DESCRIPTION": "No description",
+      "CLASSES": "{{count}} Classes",
+      "SUBJECTS": "{{count}} Subjects",
+      "CREATED": "Created: {{date}}",
+      "CLASSES_SECTION": {
+        "TITLE": "Classes ({{count}})",
+        "ADD_CLASS": "Add Class",
+        "MOVE_SELECTED": "Move Selected",
+        "NO_CLASSES": "No classes assigned to this grade.",
+        "SELECT_ALL": "Select All",
+        "CLASS_NAME": "Class Name",
+        "STUDENTS": "Students",
+        "TEACHERS": "Teachers",
+        "ACTIONS": "Actions"
+      },
+      "SUBJECTS_SECTION": {
+        "TITLE": "Subjects ({{count}})",
+        "ADD_SUBJECT": "Add Subject",
+        "NO_SUBJECTS": "No subjects assigned to this grade.",
+        "CREDIT_HOURS": "Credit Hours: {{hours}}",
+        "TEACHER_COUNT": "Teachers: {{count}}",
+        "EXAM_COUNT": "Exams: {{count}}"
+      },
+      "MODALS": {
+        "ADD_GRADE": "Create New Grade",
+        "EDIT_GRADE": "Edit Grade",
+        "GRADE_NAME_LABEL": "Grade Name *",
+        "GRADE_NAME_REQUIRED": "Grade name is required",
+        "GRADE_NAME_MIN_LENGTH": "Grade name must be at least 2 characters",
+        "DESCRIPTION_LABEL": "Description",
+        "DESCRIPTION_HINT": "Optional. Max 500 characters.",
+        "CANCEL": "Cancel",
+        "CREATE": "Create",
+        "UPDATE": "Update",
+        "ADD_CLASS": "Add New Class",
+        "EDIT_CLASS": "Edit Class",
+        "CLASS_NAME_LABEL": "Class Name *",
+        "CLASS_NAME_REQUIRED": "Class name is required",
+        "CLASS_NAME_MIN_LENGTH": "Class name must be at least 2 characters",
+        "GRADE_SELECT_LABEL": "Grade *",
+        "GRADE_SELECT_REQUIRED": "Please select a grade",
+        "ADD_SUBJECT": "Add New Subject",
+        "EDIT_SUBJECT": "Edit Subject",
+        "SUBJECT_NAME_LABEL": "Subject Name *",
+        "SUBJECT_NAME_REQUIRED": "Subject name is required",
+        "SUBJECT_NAME_MIN_LENGTH": "Subject name must be at least 2 characters",
+        "CREDIT_HOURS_LABEL": "Credit Hours *",
+        "CREDIT_HOURS_RANGE": "Credit hours must be between 1 and 10",
+        "ADD": "Add",
+        "BULK_MOVE": "Move Selected Classes",
+        "MOVING_COUNT": "Moving {{count}} class(es) to a different grade.",
+        "TARGET_GRADE": "Target Grade *",
+        "TARGET_GRADE_REQUIRED": "Please select a target grade",
+        "MOVE_CLASSES": "Move Classes",
+        "DELETE_CONFIRM": "Confirm Delete",
+        "DELETE_WARNING": "Warning! This action cannot be undone.",
+        "DELETE_CONFIRM_MESSAGE": "Are you sure you want to delete grade \"{{gradeName}}\"?",
+        "DELETE_BTN": "Delete Grade"
+      },
+      "PAGINATION": {
+        "PREVIOUS": "Previous",
+        "NEXT": "Next"
+      },
+      "ALERTS": {
+        "DELETE_WARNING": "Warning! This action cannot be undone."
+      }
+    },
+    "TEACHER_OVERVIEW": {
+      "TITLE": "Teacher Overview",
+      "LAST_UPDATED": "Last updated",
+      "LOADING": "Loading...",
+      "PROFILE_ALT": "Teacher profile photo",
+      "NO_NAME": "No name available",
+      "NO_PHONE": "No phone",
+      "NO_EMAIL": "No email",
+      "SUBJECT": "Subject",
+      "NO_SUBJECT": "No subject assigned",
+      "VIEW_PROFILE": "View Profile",
+      "EDIT_PROFILE": "Edit Profile",
+      "CLASSES": "Classes",
+      "TESTS": "Tests",
+      "QUESTIONS": "Questions",
+      "ACTIVITIES": "Activities",
+      "RECENT_ACTIVITY": "Recent Activity",
+      "NO_RECENT": "No recent activity"
+    },
+    "QUESTIONS": {
+      "CREATE_TITLE": "Create Question",
+      "LABEL_QUESTION": "Question",
+      "PLACEHOLDER_QUESTION": "Write the question here...",
+      "ERROR_QUESTION": "Question must be at least 5 characters.",
+      "TYPE": "Question Type",
+      "TYPE_MCQ": "Multiple Choice",
+      "TYPE_TRUEFALSE": "True / False",
+      "TYPE_Complete": "Complete the following",
+      "TYPE_Connection": "Connect the following",
+      "OPTIONS": "Options",
+      "OPTION_PLACEHOLDER": "Option",
+      "ADD_OPTION": "Add Option",
+      "REMOVE_OPTION": "Remove",
+      "ERROR_CORRECT": "Please mark the correct option.",
+      "TRUEFALSE": "True / False Answer",
+      "TRUE": "True",
+      "FALSE": "False",
+      "ANSWER_PLACEHOLDER": "Answer",
+      "TEXT_INFO": "This type allows students to provide a written answer.",
+      "DIFFICULTY": "Difficulty",
+      "EASY": "Easy",
+      "MEDIUM": "Medium",
+      "HARD": "Hard",
+      "TAGS": "Tags (comma separated)",
+      "TAGS_PLACEHOLDER": "e.g. algebra, midterm",
+      "SAVE": "Save",
+      "CANCEL": "Cancel",
+      "LIST_TITLE": "Questions",
+      "NO_QUESTIONS": "No questions yet. Create the first one!",
+      "EDIT": "Edit",
+      "DELETE": "Delete",
+      "DIFF": "Difficulty"
+    },
+    "COMMON": {
+      "LOADING": "Loading...",
+      "SAVE": "Save",
+      "EXPAND": "Expand",
+      "COLLAPSE": "Collapse"
+    },
+    "TEACHER_CLASSES": {
+      "TITLE": "My Classes and Students",
+      "STUDENT_NAME": "Student Name",
+      "TEST_GRADE": "Test Grade",
+      "MIDTERM_GRADE": "Midterm Grade",
+      "ATTENDANCE": "Attendance"
+    },
+    "TEST": {
+      "LIST_TITLE": "Available Tests",
+      "QUESTIONS_COUNT": "Questions Count",
+      "DELETE": "Delete",
+      "NO_TESTS": "No tests available yet.",
+      "CREATE_TITLE": "Create a New Test",
+      "SETTINGS": "Test Settings",
+      "SETTINGS_DESC": "Adjust the test details, duration, and grading options before creating.",
+      "TITLE": "Test Title",
+      "TITLE_PLACEHOLDER": "Enter test title",
+      "CLASS": "Class Name",
+      "CLASS_PLACEHOLDER": "Enter class name",
+      "SUBJECT": "Subject Name",
+      "DURATION": "Duration",
+      "MAX": "Max Degree",
+      "MIN": "Min Degree",
+      "START": "Start",
+      "END": "End",
+      "CREATE_BTN": "Create Test",
+      "TIPS_TITLE": "Quick Tips",
+      "TIP_ONE": "Select questions from different categories to balance difficulty.",
+      "TIP_TWO": "Review settings before submitting the test.",
+      "MCQ_QUESTIONS": "Multiple Choice Questions",
+      "TRUE_FALSE_QUESTIONS": "True / False Questions",
+      "TEXT_QUESTIONS": "Text Questions",
+      "NO_MCQ": "No multiple-choice questions available.",
+      "NO_TRUEFALSE": "No true/false questions available.",
+      "NO_TEXT": "No text questions available.",
+      "VIEW": "View"
+    },
+    "CLASSES": {
+      "CREATE_TITLE": "Create a New Class",
+      "SCHEDULED_TITLE": "Scheduled Classes",
+      "FORM": {
+        "GRADE": "Grade",
+        "SECTION": "Section",
+        "SUBJECT": "Subject",
+        "MEETING_LINK": "Meeting Link",
+        "START_TIME": "Start Time",
+        "DURATION": "Duration (min)",
+        "PLACEHOLDERS": {
+          "GRADE": "Enter grade",
+          "SECTION": "Enter section",
+          "CLASS": "Enter class",
+          "SUBJECT": "Enter subject",
+          "MEETING_LINK": "https://...",
+          "DURATION": "e.g. 45"
+        },
+        "ERRORS": {
+          "GRADE_REQUIRED": "Grade is required.",
+          "SECTION_REQUIRED": "Section is required.",
+          "CLASS_REQUIRED": "Class is required.",
+          "SUBJECT_REQUIRED": "Subject is required.",
+          "MEETING_LINK_INVALID": "Please enter a valid link.",
+          "START_TIME_REQUIRED": "Start time is required.",
+          "DURATION_INVALID": "Please enter a valid duration (at least 10 minutes)."
+        },
+        "BUTTON": {
+          "CREATE": "Create Class"
+        }
+      },
+      "TABLE": {
+        "GRADE": "Grade",
+        "SECTION": "Section",
+        "SUBJECT": "Subject",
+        "MEETING": "Meeting",
+        "START_TIME": "Start Time",
+        "DURATION": "Duration",
+        "STATUS": "Status",
+        "ACTION": "Action",
+        "JOIN": "Join",
+        "END": "End",
+        "ONGOING": "Ongoing",
+        "ENDED": "Ended",
+        "NO_CLASSES": "No classes scheduled yet."
+      }
+    },
+    "CLASSAPPOINTMENT": {
+      "SCHEDULED_TITLE": "Scheduled Class Appointments",
+      "TABLE": {
+        "GRADE": "Grade",
+        "SECTION": "Section",
+        "SUBJECT": "Subject",
+        "CLASS": "Classes",
+        "MEETING": "Meeting",
+        "START_TIME": "Start Time",
+        "DURATION": "Duration",
+        "STATUS": "Status",
+        "ACTION": "Action",
+        "JOIN": "Join",
+        "ENDED": "Ended",
+        "ONGOING": "Ongoing",
+        "END": "End",
+        "NO_CLASSES": "No class appointments available"
+      }
+    },
+    "certificate2": {
+      "title": "Certificate Management",
+      "subtitle": "Generate, manage, and verify academic certificates with ease",
+      "tabs": {
+        "generate": "Generate Certificate",
+        "bulk": "Bulk Operations",
+        "search": "Search & Verify"
+      },
+      "filterOptions": "Filter Options",
+      "filterDescription": "Filter students by curriculum, grade, and class to generate certificates",
+      "filterByCurriculum": "Filter by Curriculum",
+      "filterByGrade": "Filter by Grade",
+      "selectClass": "Select Class",
+      "allCurricula": "All Curricula",
+      "allGrades": "All Grades",
+      "classPlaceholder": "Select a class...",
+      "studentPlaceholder": "Select a student...",
+      "noClassesAvailable": "No classes available",
+      "noClassesForFilters": "No classes match your filters. Please adjust your selection.",
+      "classWideOperations": "Class-wide Operations",
+      "classWideDescription": "Apply certificate settings to all students in the selected class",
+      "classWideCertificateType": "Certificate Type (All Students)",
+      "classWideAcademicYear": "Academic Year (All Students)",
+      "students": "students",
+      "student": "student",
+      "classWideActions": {
+        "generate": "Generate All Certificates",
+        "download": "Download All as ZIP",
+        "generating": "Generating certificates...",
+        "downloading": "Downloading ZIP..."
+      },
+      "singleStudentOperations": "Single Student Operations",
+      "searchStudent": "Search Student",
+      "searchStudentPlaceholder": "Type student name...",
+      "singleStudentOperations": "Single Student Operations",
+      "searchStudent": "Search Student",
+      "searchStudentPlaceholder": "Type student name...",
+      "generatePdf": "Generate PDF",
+      "generateAndSave": "Generate & Save",
+      "saveOnly": "Save to Database Only",
+      "generating": "Generating...",
+      "saving": "Saving...",
+      "studentsInClass": "Students in Class",
+      "studentId": "Student ID",
+      "studentsInClass": "Students in Class",
+      "studentId": "Student ID",
+      "bulkGeneration": "Bulk Certificate Generation",
+      "bulkDescription": "Generate certificates for an entire class at once",
+      "bulkGenerate": "Generate Bulk Certificates",
+      "bulkGenerating": "Generating bulk certificates...",
+      "downloadBulk": "Download as ZIP",
+      "downloading": "Preparing download...",
+      "searchCertificates": "Search Certificates",
+      "studentName": "Student Name",
+      "studentNamePlaceholder": "Enter student name...",
+      "certificateNumber": "Certificate Number",
+      "certificateNumberPlaceholder": "Enter certificate number...",
+      "certificateType": "Certificate Type",
+      "allTypes": "All Types",
+      "academicYear": "Academic Year",
+      "allYears": "All Years",
+      "fromDate": "From Date",
+      "toDate": "To Date",
+      "search": "Search",
+      "searching": "Searching...",
+      "clear": "Clear Filters",
+      "searchResults": "Search Results",
+      "type": "Type",
+      "issuedDate": "Issued Date",
+      "status": "Status",
+      "actions": "Actions",
+      "view": "View",
+      "download": "Download",
+      "archive": "Archive",
+      "verifyCertificate": "Verify Certificate",
+      "certificateId": "Certificate ID",
+      "certificateIdPlaceholder": "Enter certificate ID to verify...",
+      "verifiedBy": "Verified By",
+      "verifierName": "Enter verifier name...",
+      "verify": "Verify Certificate",
+      "statuses": {
+        "verified": "Verified",
+        "pending": "Pending",
+        "expired": "Expired"
+      },
+      "messages": {
+        "generatingClassWide": "Generating certificates for all students...",
+        "downloadingClassWide": "Preparing ZIP download...",
+        "certificateGenerated": "Certificate generated successfully",
+        "certificateSaved": "Certificate saved to database",
+        "bulkSuccess": "Bulk certificates generated successfully",
+        "searchComplete": "Search completed successfully",
+        "verificationSuccess": "Certificate verified successfully",
+        "verificationFailed": "Certificate verification failed",
+        "archiveSuccess": "Certificate archived successfully",
+        "error": "An error occurred. Please try again."
+      }
+    },
+    "CERTIFICATION_STUDENT": {
+      "MY_CERTIFICATES": "My Certificates",
+      "LOADING": "Loading certificates...",
+      "NO_CERTIFICATES": "No certificates found",
+      "NO_CERTIFICATES_DESC": "Certificates will appear once generated by your administrator.",
+      "GPA": "GPA",
+      "ISSUED": "Issued",
+      "TEMPLATE": "Template",
+      "FILE_SIZE": "File Size",
+      "VIEW": "View",
+      "DOWNLOAD": "Download"
+    },
+    "certificate": {
+      "title": "Certificate Generation",
+      "subtitle": "Generate student certificates easily with PDF output and database saving options.",
+      "selectClass": "Select Class",
+      "classPlaceholder": "Choose a class",
+      "selectStudent": "Select Student",
+      "studentPlaceholder": "Choose a student",
+      "certificateType": "Certificate Type",
+      "generatePdf": "Generate PDF",
+      "generateAndSave": "Generate & Save to DB",
+      "saveOnly": "Save to DB Only",
+      "generating": "Generating...",
+      "saving": "Saving...",
+      "studentsInClass": "Students in Class",
+      "studentId": "Student ID"
+    },
+    "curriculum": {
+      "title": "Curriculum Management",
+      "subtitle": "Manage and organize your school curricula efficiently",
+      "stats": {
+        "total": "Total Curricula",
+        "showing": "Showing",
+        "students": "Students",
+        "teachers": "Teachers",
+        "grades": "Grades"
+      },
+      "search": {
+        "placeholder": "Search curricula by name, code, or description...",
+        "clear": "Clear",
+        "noResults": "No matching curricula found",
+        "tryDifferent": "Try a different search term"
+      },
+      "sort": {
+        "name": "Sort by Name",
+        "code": "Sort by Code"
+      },
+      "actions": {
+        "addNew": "Add New Curriculum",
+        "refresh": "Refresh",
+        "createFirst": "Create Curriculum",
+        "viewDetails": "View Details",
+        "edit": "Edit",
+        "checkStudents": "Check Students",
+        "checkTeachers": "Check Teachers",
+        "delete": "Delete"
+      },
+      "loading": "Loading curricula...",
+      "loading": "Loading curricula...",
+      "empty": {
+        "title": "No Curricula Found",
+        "subtitle": "Get started by creating your first curriculum."
+      },
+      "noDescription": "No description",
+      "created": "Created",
+      "noDescription": "No description",
+      "created": "Created",
+      "tabs": {
+        "code": "Code",
+        "name": "Name",
+        "description": "Description",
+        "actions": "Actions",
+        "grades": "Grades",
+        "students": "Students",
+        "teachers": "Teachers",
+        "studentName": "Name",
+        "email": "Email",
+        "class": "Class",
+        "status": "Status",
+        "classes": "classes",
+        "subjects": "subjects",
+        "empty": {
+          "grades": "No grades assigned to this curriculum",
+          "students": "No students enrolled in this curriculum",
+          "teachers": "No teachers specialized in this curriculum"
+        }
+      },
+      "form": {
+        "name": {
+          "label": "Curriculum Name",
+          "placeholder": "Enter curriculum name",
+          "hint": "A descriptive name for the curriculum"
+        },
+        "code": {
+          "label": "Curriculum Code",
+          "placeholder": "e.g., MATH-101",
+          "hint": "Unique code for identification"
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Enter curriculum description (optional)"
+        },
+        "errors": {
+          "required": "This field is required",
+          "maxLength": "Maximum length is {{max}} characters",
+          "characters": "characters"
+        }
+      },
+      "modal": {
+        "create": {
+          "title": "Create New Curriculum",
+          "action": "Create Curriculum",
+          "creating": "Creating..."
+        },
+        "edit": {
+          "title": "Edit Curriculum",
+          "action": "Update Curriculum",
+          "updating": "Updating...",
+          "lastUpdated": "Last updated:",
+          "never": "Never"
+        },
+        "details": {
+          "title": "Curriculum Details",
+          "loading": "Loading details...",
+          "created": "Created",
+          "updated": "Last Updated"
+        },
+        "delete": {
+          "title": "Confirm Deletion",
+          "warning": "Warning! This action cannot be undone.",
+          "message": "Are you sure you want to delete the curriculum \"{{name}}\" ({{code}})?",
+          "has": "This curriculum has",
+          "action": "Delete Permanently",
+          "deleting": "Deleting..."
+        },
+        "cancel": "Cancel",
+        "close": "Close"
+      },
+      "check": {
+        "studentsTitle": "Check Students",
+        "teachersTitle": "Check Teachers",
+        "hasStudents": "This curriculum has {{count}} student(s)",
+        "hasNoStudents": "No students enrolled in this curriculum",
+        "hasTeachers": "This curriculum has {{count}} teacher(s)",
+        "hasNoTeachers": "No teachers specialized in this curriculum"
+      }
+    },
     "NAV": {
-        "LOGO": "LOGO",
-        "HOME": "Home",
-        "LOGIN": "Login",
-        "REGISTER": "Register",
-        "DASHBOARD": "Dashboard",
-        "PROFILE": "Profile",
-        "SETTINGS": "Settings",
-        "LOGOUT": "Logout",
-        "LANGUAGE": "عربي",
-        "THEMEDARK": "Dark",
-        "THEMELIGHT": "Light"
+      "LOGO": "LOGO",
+      "HOME": "Home",
+      "LOGIN": "Login",
+      "REGISTER": "Register",
+      "DASHBOARD": "Dashboard",
+      "PROFILE": "Profile",
+      "SETTINGS": "Settings",
+      "LOGOUT": "Logout",
+      "LANGUAGE": "عربي",
+      "THEMEDARK": "Dark",
+      "THEMELIGHT": "Light"
     },
     "FOOTER": {
-        "LOGO": "LOGO",
-        "DISC": "Building modern web apps with Angular & Bootstrap. © {{year}} MyApp. All rights reserved.",
-        "LINKS": "Quick Links",
-        "HOME": "Home",
-        "ABOUT": "About",
-        "CONTACT": "Contact",
-        "FOLLOW": "Follow Us"
+      "LOGO": "LOGO",
+      "DISC": "Building modern web apps with Angular & Bootstrap. © {{year}} MyApp. All rights reserved.",
+      "LINKS": "Quick Links",
+      "HOME": "Home",
+      "ABOUT": "About",
+      "CONTACT": "Contact",
+      "FOLLOW": "Follow Us"
     },
     "EXAM": {
-        "HEADER": {
-            "TITLE": "Subject Name",
-            "TIME": "Time",
-            "FROM": "From",
-            "TO": "To"
-        },
-        "QUESTION_TYPES": {
-            "CHOICES": "Choices",
-            "CONNECTION": "Matching",
-            "COMPLETE": "Complete the sentence",
-            "TRUE_FALSE": "True or False",
-            "COLUMN_A": "Column A",
-            "COLUMN_B": "Column B",
-            "WRITE_ANSWER": "Type your answer here..."
-        },
-        "close": "Close"
-      }
-    },
-    "messages": {
-      "loadingFailed": "Failed to load data",
-      "errorLoadingParents": "Error loading parents:",
-      "errorLoadingParentDetails": "Error loading parent details:",
-      "errorLoadingChildren": "Error loading children for parent",
-      "errorLoadingAvailableStudents": "Error loading available students:",
-      "errorAddingStudent": "Error adding student:",
-      "errorRemovingStudent": "Error removing student:",
-      "addStudentSuccess": "Student added successfully!",
-      "addStudentFailed": "Failed to add student",
-      "removeStudentSuccess": "Student removed successfully!",
-      "removeStudentFailed": "Failed to remove student",
-      "errorOccurred": "An error occurred",
-      "confirmRemove": "Are you sure you want to remove this student from the parent?",
-      "fillAllFields": "Please fill all required fields"
+      "HEADER": {
+        "TITLE": "Subject Name",
+        "TIME": "Time",
+        "FROM": "From",
+        "TO": "To"
+      },
+      "QUESTION_TYPES": {
+        "CHOICES": "Choices",
+        "CONNECTION": "Matching",
+        "COMPLETE": "Complete the sentence",
+        "TRUE_FALSE": "True or False",
+        "COLUMN_A": "Column A",
+        "COLUMN_B": "Column B",
+        "WRITE_ANSWER": "Type your answer here..."
+      },
+      "close": "Close"
     }
+  },
+  "messages": {
+    "loadingFailed": "Failed to load data",
+    "errorLoadingParents": "Error loading parents:",
+    "errorLoadingParentDetails": "Error loading parent details:",
+    "errorLoadingChildren": "Error loading children for parent",
+    "errorLoadingAvailableStudents": "Error loading available students:",
+    "errorAddingStudent": "Error adding student:",
+    "errorRemovingStudent": "Error removing student:",
+    "addStudentSuccess": "Student added successfully!",
+    "addStudentFailed": "Failed to add student",
+    "removeStudentSuccess": "Student removed successfully!",
+    "removeStudentFailed": "Failed to remove student",
+    "errorOccurred": "An error occurred",
+    "confirmRemove": "Are you sure you want to remove this student from the parent?",
+    "fillAllFields": "Please fill all required fields"
   },
   "SUBJECTS": {
     "TITLE": "Subjects Management",
@@ -943,104 +904,104 @@
     "CANCEL": "Cancel",
     "CLOSE": "Close",
     "ASSIGN": "Assign",
-    "UNASSIGN": "Unassign"
-        "BUTTONS": {
-            "SUBMIT": "Submit Exam",
-            "SUBMITTING": "Submitting...",
-            "ANSWER_ALL": "Answer all questions"
-        },
-        "MESSAGES": {
-            "SHOULD_ANSWER_ALL": "You must answer all questions before submitting.",
-            "SUCCESS": "Exam submitted successfully!",
-            "ERROR": "Failed to submit exam."
-        },
-        "GENERAL": {
-            "TRUE": "True",
-            "FALSE": "False"
-        }
+    "UNASSIGN": "Unassign",
+    "BUTTONS": {
+      "SUBMIT": "Submit Exam",
+      "SUBMITTING": "Submitting...",
+      "ANSWER_ALL": "Answer all questions"
     },
-    "parentManagement": {
-        "header": {
-            "title": "Parent Management",
-            "description": "Manage parent accounts and their associated students in the system",
-            "parentsCount": "parent",
-            "parentsCount_plural": "parents",
-            "refresh": "Refresh"
+    "MESSAGES": {
+      "SHOULD_ANSWER_ALL": "You must answer all questions before submitting.",
+      "SUCCESS": "Exam submitted successfully!",
+      "ERROR": "Failed to submit exam."
+    },
+    "GENERAL": {
+      "TRUE": "True",
+      "FALSE": "False"
+    }
+  },
+  "parentManagement": {
+    "header": {
+      "title": "Parent Management",
+      "description": "Manage parent accounts and their associated students in the system",
+      "parentsCount": "parent",
+      "parentsCount_plural": "parents",
+      "refresh": "Refresh"
+    },
+    "loading": {
+      "title": "Loading Parent Data",
+      "message": "Please wait while we fetch the latest information"
+    },
+    "parentCard": {
+      "noPhone": "No phone",
+      "associatedStudents": "Associated Students",
+      "noStudents": {
+        "title": "No students associated yet",
+        "button": "Add First Student"
+      },
+      "addStudent": "Add Another Student",
+      "removeStudent": "Remove",
+      "removeTooltip": "Remove student",
+      "relations": {
+        "father": "Father",
+        "mother": "Mother",
+        "guardian": "Guardian",
+        "other": "Other"
+      }
+    },
+    "emptyState": {
+      "title": "No Parent Accounts",
+      "description": "There are no parent accounts in the system yet.",
+      "button": "Invite Parents"
+    },
+    "addStudentModal": {
+      "header": {
+        "title": "Add Student",
+        "description": "Link a student to"
+      },
+      "form": {
+        "studentSelection": {
+          "label": "Select Student",
+          "placeholder": "Choose a student...",
+          "alreadyLinked": "✓ Already linked",
+          "validationError": "Please select a student"
         },
-        "loading": {
-            "title": "Loading Parent Data",
-            "message": "Please wait while we fetch the latest information"
+        "relation": {
+          "label": "Relationship Type",
+          "options": {
+            "father": "Father",
+            "mother": "Mother",
+            "guardian": "Guardian",
+            "other": "Other"
+          },
+          "validationError": "Please select a relationship"
+        }
+      },
+      "buttons": {
+        "cancel": "Cancel",
+        "submit": {
+          "adding": "Adding...",
+          "default": "Link Student"
         },
-        "parentCard": {
-            "noPhone": "No phone",
-            "associatedStudents": "Associated Students",
-            "noStudents": {
-                "title": "No students associated yet",
-                "button": "Add First Student"
-            },
-            "addStudent": "Add Another Student",
-            "removeStudent": "Remove",
-            "removeTooltip": "Remove student",
-            "relations": {
-                "father": "Father",
-                "mother": "Mother",
-                "guardian": "Guardian",
-                "other": "Other"
-            }
-        },
-        "emptyState": {
-            "title": "No Parent Accounts",
-            "description": "There are no parent accounts in the system yet.",
-            "button": "Invite Parents"
-        },
-        "addStudentModal": {
-            "header": {
-                "title": "Add Student",
-                "description": "Link a student to"
-            },
-            "form": {
-                "studentSelection": {
-                    "label": "Select Student",
-                    "placeholder": "Choose a student...",
-                    "alreadyLinked": "✓ Already linked",
-                    "validationError": "Please select a student"
-                },
-                "relation": {
-                    "label": "Relationship Type",
-                    "options": {
-                        "father": "Father",
-                        "mother": "Mother",
-                        "guardian": "Guardian",
-                        "other": "Other"
-                    },
-                    "validationError": "Please select a relationship"
-                }
-            },
-            "buttons": {
-                "cancel": "Cancel",
-                "submit": {
-                    "adding": "Adding...",
-                    "default": "Link Student"
-                },
-                "close": "Close"
-            }
-        },
-        "messages": {
-            "loadingFailed": "Failed to load data",
-            "errorLoadingParents": "Error loading parents:",
-            "errorLoadingParentDetails": "Error loading parent details:",
-            "errorLoadingChildren": "Error loading children for parent",
-            "errorLoadingAvailableStudents": "Error loading available students:",
-            "errorAddingStudent": "Error adding student:",
-            "errorRemovingStudent": "Error removing student:",
-            "addStudentSuccess": "Student added successfully!",
-            "addStudentFailed": "Failed to add student",
-            "removeStudentSuccess": "Student removed successfully!",
-            "removeStudentFailed": "Failed to remove student",
-            "errorOccurred": "An error occurred",
-            "confirmRemove": "Are you sure you want to remove this student from the parent?",
-            "fillAllFields": "Please fill all required fields"
-        },
+        "close": "Close"
+      }
+    },
+    "messages": {
+      "loadingFailed": "Failed to load data",
+      "errorLoadingParents": "Error loading parents:",
+      "errorLoadingParentDetails": "Error loading parent details:",
+      "errorLoadingChildren": "Error loading children for parent",
+      "errorLoadingAvailableStudents": "Error loading available students:",
+      "errorAddingStudent": "Error adding student:",
+      "errorRemovingStudent": "Error removing student:",
+      "addStudentSuccess": "Student added successfully!",
+      "addStudentFailed": "Failed to add student",
+      "removeStudentSuccess": "Student removed successfully!",
+      "removeStudentFailed": "Failed to remove student",
+      "errorOccurred": "An error occurred",
+      "confirmRemove": "Are you sure you want to remove this student from the parent?",
+      "fillAllFields": "Please fill all required fields"
+    },
     "SUBJECTS": {
       "TITLE": "Subjects Management",
       "CREATE_SUBJECT": "Create Subject",
