@@ -32,5 +32,24 @@ export class ParentService {
       ${this.apiUrl}/view/${encodeURIComponent(parentId)}`,
       { headers });
   }
+  uploadParentDocs(files: FormData): Observable<ApiResponse<string[]>> {
+    const token = this._Auth?.getToken();
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    const formData = new FormData();
+
+    files.forEach(file => {
+      formData.append('files', file);
+    });
+
+    return this.http.post<ApiResponse<string[]>>(
+      `${this.apiUrl}/files`,
+      formData,
+      { headers }
+    );
+  }
 
 }

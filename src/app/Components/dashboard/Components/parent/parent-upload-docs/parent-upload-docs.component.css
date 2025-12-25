@@ -1,0 +1,13 @@
+.parent-upload-container {
+  text-align: left;
+}
+
+.list-group-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.list-group-item button {
+  font-size: 0.9rem;
+}
