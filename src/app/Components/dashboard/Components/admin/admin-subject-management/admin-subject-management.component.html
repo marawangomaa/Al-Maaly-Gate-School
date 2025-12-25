@@ -72,6 +72,12 @@
                 {{ 'parentManagement.SUBJECTS.MANAGE_TEACHERS' | translate }}
               </button>
             </td>
+            <td>
+              <button class="btn btn-sm btn-outline-danger"
+                      (click)="clickDeleteSubject(s.id)">
+                {{ 'parentManagement.COMMON.DELETE' | translate }}
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
