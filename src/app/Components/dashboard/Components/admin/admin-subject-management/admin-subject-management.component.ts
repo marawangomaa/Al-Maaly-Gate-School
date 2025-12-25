@@ -99,7 +99,9 @@ export class AdminSubjectManagementComponent {
   public clickUnassignTeacherFromSubject(teacherId: string, subjectId: string): void {
     this.unassignTeacherFromSubject(teacherId, subjectId);
   }
-
+  public clickDeleteSubject(subjectId: string): void {
+    this.deleteSubject(subjectId);
+  }
   ngOnInit(): void {
     this.LoadAllSubjects();
     this.loadAllGrades();
@@ -207,6 +209,19 @@ export class AdminSubjectManagementComponent {
       },
       error: (error) => {
         console.error('Error unassigning teacher from subject:', error.message);
+      }
+    });
+  }
+  private deleteSubject(subjectId: string): void 
+  {
+    ApiResponseHandler.handleApiResponse(this._subjectService.delete(subjectId)).subscribe({
+      next: (result) => {
+        console.log(`Subject ${subjectId} deleted:`, result);
+        // Refresh the list of subjects
+        this.LoadAllSubjects();
+      },
+      error: (error) => {
+        console.error('Error deleting subject:', error.message);
       }
     });
   }
