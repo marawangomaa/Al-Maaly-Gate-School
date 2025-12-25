@@ -37,4 +37,9 @@ export class SubjectService {
   getSubjectsByGrade(gradeId: string): Observable<ApiResponse<SubjectViewDto[]>> {
     return this.http.get<ApiResponse<SubjectViewDto[]>>(`${this.apiUrl}/grade/${gradeId}`);
   }
+
+  // Get subject count
+  getCount(): Observable<ApiResponse<number>> {
+    return this.http.get<ApiResponse<number>>(`${this.apiUrl}/count`);
+  }
 }

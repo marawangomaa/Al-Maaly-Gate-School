@@ -129,7 +129,7 @@ export class AdminManagementService {
     );
   }
   // move-student-class
-  MoveStudentToAnotherClass(studentId: string, classId: string, adminUserId: string) {
+  MoveStudentToAnotherClass(studentId: string, classId: string, adminUserId: string): Observable<boolean> {
     const url = `${this.apiUrl}/move-student-class?studentId=${encodeURIComponent(studentId)}&newClassId=${encodeURIComponent(classId)}&adminUserId=${encodeURIComponent(adminUserId)}`;
     return ApiResponseHandler.handleApiResponse<boolean>(
       this.http.put<ApiResponse<boolean>>(url, {}, { headers: this.headers })
@@ -143,11 +143,10 @@ export class AdminManagementService {
     );
   }
   //unassign Teacher From Subject
-  UnAssignTeacherFromSubject(teacherId: string, subjectId: string): Observable<boolean> 
-  {
+  UnAssignTeacherFromSubject(teacherId: string, subjectId: string): Observable<boolean> {
     const url = `${this.apiUrl}/teachers/unassign-subject?teacherId=${encodeURIComponent(teacherId)}&subjectId=${encodeURIComponent(subjectId)}`;
     return ApiResponseHandler.handleApiResponse<boolean>(
-      this.http.post<ApiResponse<boolean>>(url,{},{ headers: this.headers })
+      this.http.post<ApiResponse<boolean>>(url, {}, { headers: this.headers })
     );
   }
   getTeachersByClass(classId: string): Observable<any> {
@@ -197,5 +196,14 @@ export class AdminManagementService {
     return Object.keys(params)
       .map(key => `${key}=${params[key]}`)
       .join('&');
+  }
+
+  // In admin-management.service.ts (or wherever you have assignment methods)
+  assignTeacherToClass(teacherId: string, classId: string): Observable<any> {
+    // Call the API endpoint to assign teacher to class
+    return this.http.post<any>(
+      `${this.apiUrl}/Teacher/${teacherId}/assign-to-class`,
+      { classId: classId }
+    );
   }
 }

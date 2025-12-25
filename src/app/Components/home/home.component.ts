@@ -13,7 +13,7 @@ import { AccordionComponent } from "./Components/accordion/accordion.component";
 @Component({
   selector: 'app-home',
   standalone: true, // This makes it standalone
-  imports: [HeroSectionComponent, AboutComponent, OurProgramsComponent, CommunitySaysComponent, AdmissionsComponent, ContactUsComponent, OurPartnersComponent, OurFeaturesComponent, AccordionComponent],
+  imports: [HeroSectionComponent, AboutComponent, OurProgramsComponent, ContactUsComponent, OurPartnersComponent, OurFeaturesComponent, AccordionComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'] // fixed "styleUrl" -> "styleUrls"
 })

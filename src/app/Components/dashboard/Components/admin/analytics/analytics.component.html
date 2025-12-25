@@ -1,41 +1,381 @@
 <div class="analytics-container">
-
-  <h2 class="title">Dashboard Analytics</h2>
-
-  <div class="cards-grid">
-
-    <!-- Teachers -->
-    <div class="card teachers">
-      <div class="card-icon">
-        <i class="fas fa-chalkboard-teacher"></i>
+  <div class="analytics-header">
+    <h2 class="title">{{ "analytics.title" | translate }}</h2>
+    <div class="header-actions">
+      <div class="date-range">
+        <i class="fas fa-calendar-alt"></i>
+        <span>{{ "analytics.dateRange" | translate }}</span>
       </div>
-      <div class="card-info">
-        <h3>Teachers</h3>
-        <p class="count">{{ teacherCount }}</p>
+      <button class="refresh-btn" (click)="refreshAnalytics()" [disabled]="isLoading">
+        <i class="fas fa-sync-alt" [class.fa-spin]="isLoading"></i>
+        {{ isLoading ? ('analytics.loading' | translate) : ('analytics.refresh' | translate) }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>{{ loadingStatus | translate }}</p>
+  </div>
+
+  <!-- Analytics Content -->
+  <div *ngIf="!isLoading" class="analytics-content">
+    <!-- Quick Stats Bar -->
+    <div class="quick-stats-bar">
+      <div class="stat-item">
+        <div class="stat-icon">
+          <i class="fas fa-heartbeat"></i>
+        </div>
+        <div class="stat-content">
+          <span class="stat-label">{{ "analytics.systemHealth" | translate }}</span>
+          <span class="stat-value" [style.color]="getHealthColor(performanceMetrics.systemHealth)">
+            {{ performanceMetrics.systemHealth }}%
+          </span>
+        </div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <div class="stat-content">
+          <span class="stat-label">{{ "analytics.studentGrowth" | translate }}</span>
+          <span class="stat-value" [style.color]="getGrowthIndicator(performanceMetrics.studentGrowth).color">
+            {{ getGrowthIndicator(performanceMetrics.studentGrowth).text }}
+          </span>
+        </div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon">
+          <i class="fas fa-bullseye"></i>
+        </div>
+        <div class="stat-content">
+          <span class="stat-label">{{ "analytics.classUtilization" | translate }}</span>
+          <span class="stat-value">{{ analyticsInsights.classUtilization }}%</span>
+        </div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon">
+          <i class="fas fa-balance-scale"></i>
+        </div>
+        <div class="stat-content">
+          <span class="stat-label">{{ "analytics.studentTeacherRatio" | translate }}</span>
+          <span class="stat-value">{{ analyticsInsights.studentTeacherRatio }}:1</span>
+        </div>
       </div>
     </div>
 
-    <!-- Students -->
-    <div class="card students">
-      <div class="card-icon">
-        <i class="fas fa-user-graduate"></i>
+    <!-- Main Statistics Cards -->
+    <div class="cards-grid">
+      <!-- Teachers -->
+      <div class="card teachers">
+        <div class="card-icon">
+          <i class="fas fa-chalkboard-teacher"></i>
+        </div>
+        <div class="card-info">
+          <h3>{{ "analytics.teachers" | translate }}</h3>
+          <p class="count">{{ formatNumber(teacherCount) }}</p>
+          <span class="card-subtitle">{{ "analytics.teachingStaff" | translate }}</span>
+          <div class="card-growth">
+            <i [class]="getGrowthIndicator(performanceMetrics.teacherGrowth).icon" 
+               [style.color]="getGrowthIndicator(performanceMetrics.teacherGrowth).color"></i>
+            <span>{{ getGrowthIndicator(performanceMetrics.teacherGrowth).text }}</span>
+          </div>
+        </div>
       </div>
-      <div class="card-info">
-        <h3>Students</h3>
-        <p class="count">{{ studentCount }}</p>
+
+      <!-- Students -->
+      <div class="card students">
+        <div class="card-icon">
+          <i class="fas fa-user-graduate"></i>
+        </div>
+        <div class="card-info">
+          <h3>{{ "analytics.students" | translate }}</h3>
+          <p class="count">{{ formatNumber(studentCount) }}</p>
+          <span class="card-subtitle">{{ "analytics.enrolledLearners" | translate }}</span>
+          <div class="card-growth">
+            <i [class]="getGrowthIndicator(performanceMetrics.studentGrowth).icon" 
+               [style.color]="getGrowthIndicator(performanceMetrics.studentGrowth).color"></i>
+            <span>{{ getGrowthIndicator(performanceMetrics.studentGrowth).text }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Classes -->
+      <div class="card classes">
+        <div class="card-icon">
+          <i class="fas fa-school"></i>
+        </div>
+        <div class="card-info">
+          <h3>{{ "analytics.classes" | translate }}</h3>
+          <p class="count">{{ formatNumber(classCount) }}</p>
+          <span class="card-subtitle">{{ "analytics.activeClasses" | translate }}</span>
+          <div class="card-growth">
+            <i [class]="getGrowthIndicator(performanceMetrics.classGrowth).icon" 
+               [style.color]="getGrowthIndicator(performanceMetrics.classGrowth).color"></i>
+            <span>{{ getGrowthIndicator(performanceMetrics.classGrowth).text }}</span>
+          </div>
+        </div>
+        <div class="card-trend">
+          <div class="trend-badge">{{ analyticsInsights.studentsPerClass }} {{ "analytics.perClass" | translate }}</div>
+        </div>
+      </div>
+
+      <!-- Curricula -->
+      <div class="card curricula">
+        <div class="card-icon">
+          <i class="fas fa-book-open"></i>
+        </div>
+        <div class="card-info">
+          <h3>{{ "analytics.curricula" | translate }}</h3>
+          <p class="count">{{ formatNumber(curriculumCount) }}</p>
+          <span class="card-subtitle">{{ "analytics.learningPrograms" | translate }}</span>
+        </div>
+      </div>
+
+      <!-- Grades -->
+      <div class="card grades">
+        <div class="card-icon">
+          <i class="fas fa-layer-group"></i>
+        </div>
+        <div class="card-info">
+          <h3>{{ "analytics.grades" | translate }}</h3>
+          <p class="count">{{ formatNumber(gradeCount) }}</p>
+          <span class="card-subtitle">{{ "analytics.educationalLevels" | translate }}</span>
+          <div class="distribution-status" [class]="analyticsInsights.gradeDistribution.toLowerCase().replace(' ', '-')">
+            {{ analyticsInsights.gradeDistribution | translate }}
+          </div>
+        </div>
+        <div class="card-trend">
+          <div class="trend-badge">{{ analyticsInsights.classesPerGrade }} {{ "analytics.classesAvg" | translate }}</div>
+        </div>
+      </div>
+
+      <!-- Subjects -->
+      <div class="card subjects">
+        <div class="card-icon">
+          <i class="fas fa-book"></i>
+        </div>
+        <div class="card-info">
+          <h3>{{ "analytics.subjects" | translate }}</h3>
+          <p class="count">{{ formatNumber(subjectCount) }}</p>
+          <span class="card-subtitle">{{ "analytics.coursesTaught" | translate }}</span>
+        </div>
+        <div class="card-trend">
+          <div class="trend-badge">{{ analyticsInsights.subjectsPerGrade }} {{ "analytics.perGrade" | translate }}</div>
+        </div>
       </div>
     </div>
 
-    <!-- Future analytics cards -->
-    <!-- 
-    <div class="card">
-      <div class="card-icon"><i class="fas fa-book"></i></div>
-      <div class="card-info">
-        <h3>Courses</h3>
-        <p class="count">0</p>
+    <!-- Charts Section -->
+    <div class="charts-section">
+      <div class="chart-container">
+        <div class="chart-header">
+          <h3>{{ "analytics.entityDistribution" | translate }}</h3>
+          <span class="chart-subtitle">{{ "analytics.visualBreakdown" | translate }}</span>
+        </div>
+        <div class="chart-wrapper">
+          <canvas #pieChartCanvas></canvas>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-header">
+          <h3>{{ "analytics.entityComparison" | translate }}</h3>
+          <span class="chart-subtitle">{{ "analytics.countComparison" | translate }}</span>
+        </div>
+        <div class="chart-wrapper">
+          <canvas #barChartCanvas></canvas>
+        </div>
       </div>
     </div>
-    -->
 
+    <!-- Detailed Insights -->
+    <div class="detailed-insights">
+      <h3 class="section-title">
+        <i class="fas fa-chart-bar"></i>
+        {{ "analytics.detailedAnalytics" | translate }}
+      </h3>
+
+      <div class="insights-grid">
+        <!-- Performance Metrics -->
+        <div class="insight-card performance">
+          <div class="insight-header">
+            <i class="fas fa-tachometer-alt insight-icon"></i>
+            <h4>{{ "analytics.performanceMetrics" | translate }}</h4>
+          </div>
+          <div class="metric-list">
+            <div class="metric-item">
+              <span class="metric-label">{{ "analytics.systemHealthScore" | translate }}</span>
+              <div class="metric-value">
+                <span class="score">{{ performanceMetrics.systemHealth }}</span>
+                <span class="score-label">/100</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="performanceMetrics.systemHealth" 
+                     [style.background]="getHealthColor(performanceMetrics.systemHealth)"></div>
+              </div>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">{{ "analytics.classUtilizationRate" | translate }}</span>
+              <div class="metric-value">{{ analyticsInsights.classUtilization }}%</div>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">{{ "analytics.gradeDistribution" | translate }}</span>
+              <div class="metric-value">{{ analyticsInsights.gradeDistribution | translate }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Growth Analytics -->
+        <div class="insight-card growth">
+          <div class="insight-header">
+            <i class="fas fa-seedling insight-icon"></i>
+            <h4>{{ "analytics.growthAnalytics" | translate }}</h4>
+          </div>
+          <div class="growth-metrics">
+            <div class="growth-item" *ngFor="let growth of [
+              { label: 'analytics.studentGrowth', value: performanceMetrics.studentGrowth },
+              { label: 'analytics.teacherGrowth', value: performanceMetrics.teacherGrowth },
+              { label: 'analytics.classGrowth', value: performanceMetrics.classGrowth }
+            ]">
+              <span class="growth-label">{{ growth.label | translate }}</span>
+              <div class="growth-value">
+                <i [class]="getGrowthIndicator(growth.value).icon" 
+                   [style.color]="getGrowthIndicator(growth.value).color"></i>
+                <span [style.color]="getGrowthIndicator(growth.value).color">
+                  {{ getGrowthIndicator(growth.value).text }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Efficiency Metrics -->
+        <div class="insight-card efficiency">
+          <div class="insight-header">
+            <i class="fas fa-cogs insight-icon"></i>
+            <h4>{{ "analytics.efficiencyMetrics" | translate }}</h4>
+          </div>
+          <div class="efficiency-metrics">
+            <div class="efficiency-item">
+              <div class="efficiency-info">
+                <span class="efficiency-label">{{ "analytics.studentTeacherRatio" | translate }}</span>
+                <span class="efficiency-value">{{ analyticsInsights.studentTeacherRatio }}:1</span>
+              </div>
+              <div class="efficiency-rating" 
+                   [class.optimal]="analyticsInsights.studentTeacherRatio <= 20"
+                   [class.good]="analyticsInsights.studentTeacherRatio <= 30"
+                   [class.needs-improvement]="analyticsInsights.studentTeacherRatio > 30">
+                {{ 
+                  analyticsInsights.studentTeacherRatio <= 20 ? ('analytics.optimal' | translate) : 
+                  analyticsInsights.studentTeacherRatio <= 30 ? ('analytics.good' | translate) : 
+                  ('analytics.needsImprovement' | translate) 
+                }}
+              </div>
+            </div>
+            <div class="efficiency-item">
+              <div class="efficiency-info">
+                <span class="efficiency-label">{{ "analytics.avgStudentsPerClass" | translate }}</span>
+                <span class="efficiency-value">{{ analyticsInsights.studentsPerClass }}</span>
+              </div>
+              <div class="efficiency-rating" 
+                   [class.optimal]="analyticsInsights.studentsPerClass <= 25"
+                   [class.good]="analyticsInsights.studentsPerClass <= 30"
+                   [class.needs-improvement]="analyticsInsights.studentsPerClass > 30">
+                {{ 
+                  analyticsInsights.studentsPerClass <= 25 ? ('analytics.optimal' | translate) : 
+                  analyticsInsights.studentsPerClass <= 30 ? ('analytics.good' | translate) : 
+                  ('analytics.needsImprovement' | translate) 
+                }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- System Summary -->
+        <div class="insight-card summary">
+          <div class="insight-header">
+            <i class="fas fa-clipboard-list insight-icon"></i>
+            <h4>{{ "analytics.systemSummary" | translate }}</h4>
+          </div>
+          <div class="summary-stats">
+            <div class="summary-item">
+              <i class="fas fa-database"></i>
+              <div class="summary-content">
+                <span class="summary-label">{{ "analytics.totalEntities" | translate }}</span>
+                <span class="summary-value">{{ formatNumber(analyticsInsights.totalEntities) }}</span>
+              </div>
+            </div>
+            <div class="summary-item">
+              <i class="fas fa-calculator"></i>
+              <div class="summary-content">
+                <span class="summary-label">{{ "analytics.avgSubjectsPerGrade" | translate }}</span>
+                <span class="summary-value">{{ analyticsInsights.subjectsPerGrade }}</span>
+              </div>
+            </div>
+            <div class="summary-item">
+              <i class="fas fa-chart-pie"></i>
+              <div class="summary-content">
+                <span class="summary-label">{{ "analytics.avgClassesPerGrade" | translate }}</span>
+                <span class="summary-value">{{ analyticsInsights.classesPerGrade }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommendations Section -->
+    <div class="recommendations-section">
+      <h3 class="section-title">
+        <i class="fas fa-lightbulb"></i>
+        {{ "analytics.recommendations" | translate }}
+      </h3>
+      <div class="recommendations-grid">
+        <div class="recommendation-card">
+          <div class="recommendation-icon">
+            <i class="fas fa-user-plus"></i>
+          </div>
+          <div class="recommendation-content">
+            <h4>{{ "analytics.staffOptimization" | translate }}</h4>
+            <p *ngIf="analyticsInsights.studentTeacherRatio > 30">
+              {{ "analytics.staffOptimizationHighRatio" | translate }}
+            </p>
+            <p *ngIf="analyticsInsights.studentTeacherRatio <= 30">
+              {{ "analytics.staffOptimizationOptimal" | translate }}
+            </p>
+          </div>
+        </div>
+        <div class="recommendation-card">
+          <div class="recommendation-icon">
+            <i class="fas fa-school"></i>
+          </div>
+          <div class="recommendation-content">
+            <h4>{{ "analytics.classManagement" | translate }}</h4>
+            <p *ngIf="analyticsInsights.studentsPerClass > 30">
+              {{ "analytics.classManagementHighCount" | translate }}
+            </p>
+            <p *ngIf="analyticsInsights.studentsPerClass <= 30">
+              {{ "analytics.classManagementOptimal" | translate }}
+            </p>
+          </div>
+        </div>
+        <div class="recommendation-card">
+          <div class="recommendation-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="recommendation-content">
+            <h4>{{ "analytics.growthStrategy" | translate }}</h4>
+            <p *ngIf="performanceMetrics.studentGrowth < 10">
+              {{ "analytics.growthStrategyLow" | translate }}
+            </p>
+            <p *ngIf="performanceMetrics.studentGrowth >= 10">
+              {{ "analytics.growthStrategyGood" | translate }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

@@ -11,5 +11,11 @@ export interface istudentProfile {
     age: number;
     classId: string;
     accountStatus: AccountStatus;
+    nationality: string;
+    iqamaNumber: string;
+    passportNumber: string;
+    gradeName?: string;
+    curriculumName?: string;
+    curriculumId?: string;
     parents: any[];
 }

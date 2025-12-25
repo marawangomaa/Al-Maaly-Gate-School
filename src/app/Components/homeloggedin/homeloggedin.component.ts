@@ -13,7 +13,7 @@ import { OurFeaturesComponent } from '../home/Components/our-features/our-featur
 
 @Component({
   selector: 'app-homeloggedin',
-  imports: [HeroSectionComponent, AboutComponent, OurProgramsComponent, CommunitySaysComponent, AdmissionsComponent, ContactUsComponent, AccordionComponent, OurPartnersComponent, OurFeaturesComponent],
+  imports: [HeroSectionComponent, AboutComponent, OurProgramsComponent, ContactUsComponent, AccordionComponent, OurPartnersComponent, OurFeaturesComponent],
   templateUrl: './homeloggedin.component.html',
   styleUrl: './homeloggedin.component.css'
 })

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Teacher } from '../../../../../Interfaces/teacher';
 import { Subscription } from 'rxjs';
 import { TeacherService } from '../../../../../Services/teacher.service';
@@ -7,15 +7,16 @@ import { AdminManagementService } from '../../../../../Services/admin-management
 import { AuthService } from '../../../../../Services/AuthService';
 import { FormsModule } from '@angular/forms';
 import { AccountStatus } from '../../../../../Interfaces/AccountStatus';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin-teacher-accounts',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   templateUrl: './admin-teacher-accounts.component.html',
   styleUrl: './admin-teacher-accounts.component.css'
 })
-export class AdminTeacherAccountsComponent {
+export class AdminTeacherAccountsComponent implements OnInit, OnDestroy {
 
   subjectName = '';
   teachersBySubject: Teacher[] = [];
@@ -31,7 +32,8 @@ export class AdminTeacherAccountsComponent {
   constructor(
     private teacherService: TeacherService,
     private adminService: AdminManagementService,
-    private authService: AuthService
+    private authService: AuthService,
+    private translate: TranslateService  // Added TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -67,11 +69,9 @@ export class AdminTeacherAccountsComponent {
     return this.convertToAccountStatus(teacher.accountStatus) === AccountStatus.Blocked;
   }
 
-
   // دالة مساعدة لتحويل string إلى AccountStatus
   convertToAccountStatus(status: string | AccountStatus): AccountStatus {
     if (typeof status === 'number') {
-      // إذا كان enum value بالفعل
       return status;
     }
 
@@ -93,26 +93,27 @@ export class AdminTeacherAccountsComponent {
     }
   }
 
-  // ثم استخدمها في الدوال
+  // Updated getStatusName method to use translation
   getStatusName(status: string | AccountStatus): string {
-    const accountStatus = typeof status === 'string'
-      ? this.convertToAccountStatus(status)
-      : status;
-
+    const accountStatus = this.convertToAccountStatus(status);
+    
     switch (accountStatus) {
-      case AccountStatus.Pending: return 'قيد الانتظار';
-      case AccountStatus.Active: return 'نشط';
-      case AccountStatus.Blocked: return 'محظور';
-      case AccountStatus.Rejected: return 'مرفوض';
-      default: return 'غير معروف';
+      case AccountStatus.Pending: 
+        return this.translate.instant('teachers.status.pending');
+      case AccountStatus.Active: 
+        return this.translate.instant('teachers.status.active');
+      case AccountStatus.Blocked: 
+        return this.translate.instant('teachers.status.blocked');
+      case AccountStatus.Rejected: 
+        return this.translate.instant('teachers.status.rejected');
+      default: 
+        return this.translate.instant('teachers.status.pending');
     }
   }
 
   // دالة للحصول على لون الحالة
   getStatusColor(status: string | AccountStatus): string {
-    const accountStatus = typeof status === 'string'
-      ? this.convertToAccountStatus(status)
-      : status;
+    const accountStatus = this.convertToAccountStatus(status);
 
     switch (accountStatus) {
       case AccountStatus.Pending: return 'warning';
@@ -123,7 +124,22 @@ export class AdminTeacherAccountsComponent {
     }
   }
 
-
+  getStatusDisplayName(status: AccountStatus | 'all'): string {
+    switch(status) {
+      case 'all':
+        return 'teachers.statusDisplay.all';
+      case AccountStatus.Pending:
+        return 'teachers.statusDisplay.pending';
+      case AccountStatus.Active:
+        return 'teachers.statusDisplay.active';
+      case AccountStatus.Rejected:
+        return 'teachers.statusDisplay.rejected';
+      case AccountStatus.Blocked:
+        return 'teachers.statusDisplay.blocked';
+      default:
+        return 'teachers.statusDisplay.all';
+    }
+  }
 
   //Load teachers by subject name
   LoadTeachersBySubjectName(): void {
@@ -131,7 +147,7 @@ export class AdminTeacherAccountsComponent {
     this.hasSearched = true;
 
     if (!subject) {
-      alert('الرجاء إدخال اسم المادة');
+      alert(this.translate.instant('teachers.messages.enterSubject'));
       this.teachersBySubject = [];
       return;
     }
@@ -147,19 +163,20 @@ export class AdminTeacherAccountsComponent {
         },
         error: err => {
           this.isLoading = false;
-          alert(`خطأ في تحميل المعلمين للمادة ${subject}: ${err.message}`);
+          alert(`${this.translate.instant('teachers.messages.loadError')} ${subject}: ${err.message}`);
         }
       })
     );
   }
 
   //Approve Teacher
-  ApproveTeacherAction(teacherId: string): void {
-    if (!confirm('هل أنت متأكد من رغبتك في الموافقة على هذا المعلم؟')) return;
+  async ApproveTeacherAction(teacherId: string): Promise<void> {
+    const confirmation = confirm(this.translate.instant('teachers.confirmations.approve'));
+    if (!confirmation) return;
 
     const adminUserId = this.authService.userId;
     if (!adminUserId) {
-      alert('لم يتم العثور على معرف مسؤول. يرجى تسجيل الدخول مرة أخرى.');
+      alert(this.translate.instant('teachers.messages.adminNotFound'));
       return;
     }
 
@@ -167,51 +184,56 @@ export class AdminTeacherAccountsComponent {
       this.adminService.ApproveAccount(teacherId, adminUserId, 'teacher').subscribe({
         next: result => {
           if (result) {
-            alert('تمت الموافقة على المعلم بنجاح');
+            alert(this.translate.instant('teachers.messages.approved'));
             // Update UI locally
             const teacher = this.allTeachers.find(t => t.id === teacherId);
             if (teacher) teacher.accountStatus = AccountStatus.Active;
           } else {
-            alert('فشل في الموافقة على المعلم');
+            alert(this.translate.instant('teachers.messages.approveFailed'));
           }
         },
-        error: err => alert(`خطأ في الموافقة على المعلم: ${err.message}`)
+        error: err => alert(`${this.translate.instant('teachers.messages.error')}: ${err.message}`)
       })
     );
   }
 
   //reject-teacher
-  RejectTeacherAction(teacherId: string): void {
-    if (!confirm('هل أنت متأكد من رغبتك في رفض هذا المعلم؟')) return;
+  async RejectTeacherAction(teacherId: string): Promise<void> {
+    const confirmation = confirm(this.translate.instant('teachers.confirmations.reject'));
+    if (!confirmation) return;
+    
     const adminUserId = this.authService.userId;
     if (!adminUserId) {
-      alert('لم يتم العثور على معرف مسؤول. يرجى تسجيل الدخول مرة أخرى.');
+      alert(this.translate.instant('teachers.messages.adminNotFound'));
       return;
     }
+    
     this.subscription.add(
       this.adminService.RejectAccount(teacherId, adminUserId, 'teacher').subscribe({
         next: result => {
           if (result) {
-            alert('تم رفض المعلم بنجاح');
+            alert(this.translate.instant('teachers.messages.rejected'));
             // Update UI locally
             const teacher = this.allTeachers.find(t => t.id === teacherId);
             if (teacher) teacher.accountStatus = AccountStatus.Rejected;
           }
           else {
-            alert('فشل في رفض المعلم');
+            alert(this.translate.instant('teachers.messages.rejectFailed'));
           }
         },
-        error: err => alert(`خطأ في رفض المعلم: ${err.message}`)
+        error: err => alert(`${this.translate.instant('teachers.messages.error')}: ${err.message}`)
       })
     );
   }
 
   //Block teacher
-  BlockTeacherAction(teacherId: string): void {
-    if (!confirm('هل أنت متأكد من رغبتك في حظر هذا المعلم؟')) return;
+  async BlockTeacherAction(teacherId: string): Promise<void> {
+    const confirmation = confirm(this.translate.instant('teachers.confirmations.block'));
+    if (!confirmation) return;
+    
     const adminUserId = this.authService.userId;
     if (!adminUserId) {
-      alert('لم يتم العثور على معرف مسؤول. يرجى تسجيل الدخول مرة أخرى.');
+      alert(this.translate.instant('teachers.messages.adminNotFound'));
       return;
     }
 
@@ -219,55 +241,63 @@ export class AdminTeacherAccountsComponent {
       this.adminService.BlockAccount(teacherId, adminUserId, 'teacher').subscribe({
         next: result => {
           if (result) {
-            alert('تم حظر المعلم بنجاح');
+            alert(this.translate.instant('teachers.messages.blocked'));
             // Update UI locally
             const teacher = this.allTeachers.find(t => t.id === teacherId);
             if (teacher) teacher.accountStatus = AccountStatus.Blocked;
           }
           else {
-            alert('فشل في حظر المعلم');
+            alert(this.translate.instant('teachers.messages.blockFailed'));
           }
         },
-        error: err => alert(`خطأ في حظر المعلم: ${err.message}`)
+        error: err => alert(`${this.translate.instant('teachers.messages.error')}: ${err.message}`)
       })
     );
   }
 
   //Unblock teacher
-  UnblockTeacherAction(teacherId: string): void {
-    if (!confirm('هل أنت متأكد من رغبتك في فك حظر هذا المعلم؟')) return;
+  async UnblockTeacherAction(teacherId: string): Promise<void> {
+    const confirmation = confirm(this.translate.instant('teachers.confirmations.unblock'));
+    if (!confirmation) return;
+    
     const adminUserId = this.authService.userId;
     if (!adminUserId) {
-      alert('لم يتم العثور على معرف مسؤول. يرجى تسجيل الدخول مرة أخرى.');
+      alert(this.translate.instant('teachers.messages.adminNotFound'));
       return;
     }
+    
     this.subscription.add(
       this.adminService.UnblockAccount(teacherId, adminUserId, 'teacher').subscribe({
         next: result => {
           if (result) {
-            alert('تم فك حظر المعلم بنجاح');
+            alert(this.translate.instant('teachers.messages.unblocked'));
             // Update UI locally
             const teacher = this.allTeachers.find(t => t.id === teacherId);
             if (teacher) teacher.accountStatus = AccountStatus.Active;
           }
           else {
-            alert('فشل في فك حظر المعلم');
+            alert(this.translate.instant('teachers.messages.unblockFailed'));
           }
         },
-        error: err => alert(`خطأ في فك حظر المعلم: ${err.message}`)
+        error: err => alert(`${this.translate.instant('teachers.messages.error')}: ${err.message}`)
       })
     );
   }
 
   //Load all teachers
   private LoadAllTeachers(): void {
+    this.isLoading = true;
     this.subscription.add(
       this.teacherService.GetAllTeachers().subscribe({
         next: teachers => {
           this.allTeachers = teachers;
+          this.isLoading = false;
           console.log('All Teachers:', teachers);
         },
-        error: err => alert(`خطأ في تحميل جميع المعلمين: ${err.message}`)
+        error: err => {
+          this.isLoading = false;
+          alert(`${this.translate.instant('teachers.messages.loadError')}: ${err.message}`);
+        }
       })
     );
   }
