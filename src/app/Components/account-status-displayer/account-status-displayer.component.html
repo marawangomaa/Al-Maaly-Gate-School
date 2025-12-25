@@ -16,6 +16,11 @@
         {{ statusMessage }}
       </p>
 
+      <!-- Parent File Upload (Only if Parent) -->
+      <div *ngIf="isParent" class="mb-3">
+        <app-parent-upload-docs></app-parent-upload-docs>
+      </div>
+
       <!-- Action Buttons -->
       <div class="d-grid gap-3">
         <button class="btn btn-primary" (click)="logout()">

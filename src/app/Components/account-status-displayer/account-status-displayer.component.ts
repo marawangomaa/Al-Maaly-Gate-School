@@ -3,12 +3,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../Services/AuthService';
-import { AccountStatus } from '../../Interfaces/AccountStatus';
+import { ParentUploadDocsComponent } from '../dashboard/Components/parent/parent-upload-docs/parent-upload-docs.component';
+
 
 @Component({
   selector: 'app-account-status-displayer',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,ParentUploadDocsComponent],
   templateUrl: './account-status-displayer.component.html',
   styleUrls: ['./account-status-displayer.component.css']
 })
@@ -18,6 +19,7 @@ export class AccountStatusDisplayerComponent implements OnInit, OnDestroy {
   statusIcon = '';
   statusColorClass = '';
   additionalInfo = '';
+  isParent:boolean  = false;
 
   private routeData: any;
   private statusSubscription: Subscription | undefined;
@@ -29,6 +31,7 @@ export class AccountStatusDisplayerComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.isParent = this.authService.isParent();
     this.routeData = window.history.state;
 
     this.route.paramMap.subscribe(params => {
