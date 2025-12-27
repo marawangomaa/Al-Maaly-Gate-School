@@ -7,9 +7,6 @@ import { GradeService } from '../../../../../Services/grade.service';
 import { SubjectService } from '../../../../../Services/subject.service';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-
-
-// Import Chart.js directly
 import Chart from 'chart.js/auto';
 
 @Component({
@@ -24,7 +21,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewInit {
   // Chart references
   @ViewChild('pieChartCanvas') pieChartCanvas!: ElementRef;
   @ViewChild('barChartCanvas') barChartCanvas!: ElementRef;
-  
+
   private pieChart!: Chart;
   private barChart!: Chart;
 
@@ -72,7 +69,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewInit {
     private curriculumService: CurriculumService,
     private gradeService: GradeService,
     private subjectService: SubjectService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadAllAnalytics();
@@ -243,7 +240,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewInit {
           },
           tooltip: {
             callbacks: {
-              label: (context) => {
+              label: (context: any) => {
                 const label = context.label || '';
                 const value = context.raw as number;
                 const total = context.dataset.data.reduce((a: any, b: any) => a + b, 0);
@@ -312,22 +309,22 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private calculateAnalyticsInsights(): void {
     // Calculate students per class (average)
-    this.analyticsInsights.studentsPerClass = this.classCount > 0 
-      ? Math.round(this.studentCount / this.classCount) 
+    this.analyticsInsights.studentsPerClass = this.classCount > 0
+      ? Math.round(this.studentCount / this.classCount)
       : 0;
 
     // Calculate subjects per grade (average)
-    this.analyticsInsights.subjectsPerGrade = this.gradeCount > 0 
-      ? Math.round(this.subjectCount / this.gradeCount) 
+    this.analyticsInsights.subjectsPerGrade = this.gradeCount > 0
+      ? Math.round(this.subjectCount / this.gradeCount)
       : 0;
 
     // Calculate classes per grade (average)
-    this.analyticsInsights.classesPerGrade = this.gradeCount > 0 
-      ? Math.round(this.classCount / this.gradeCount) 
+    this.analyticsInsights.classesPerGrade = this.gradeCount > 0
+      ? Math.round(this.classCount / this.gradeCount)
       : 0;
 
     // Calculate student-teacher ratio
-    this.analyticsInsights.studentTeacherRatio = this.teacherCount > 0 
+    this.analyticsInsights.studentTeacherRatio = this.teacherCount > 0
       ? parseFloat((this.studentCount / this.teacherCount).toFixed(1))
       : 0;
 
@@ -337,8 +334,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewInit {
       : 0;
 
     // Calculate total entities
-    this.analyticsInsights.totalEntities = 
-      this.teacherCount + this.studentCount + this.classCount + 
+    this.analyticsInsights.totalEntities =
+      this.teacherCount + this.studentCount + this.classCount +
       this.curriculumCount + this.gradeCount + this.subjectCount;
 
     // Grade distribution analysis
@@ -360,7 +357,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewInit {
     const previousTeachers = this.timeSeriesData.teachers[4] || 0;
     const previousClasses = Math.max(0, this.classCount - 5);
 
-    this.performanceMetrics.studentGrowth = previousStudents > 0 
+    this.performanceMetrics.studentGrowth = previousStudents > 0
       ? Math.round(((this.studentCount - previousStudents) / previousStudents) * 100)
       : 0;
 
@@ -374,10 +371,10 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Calculate system health score (0-100)
     const utilizationScore = Math.min(100, this.analyticsInsights.classUtilization);
-    const ratioScore = this.analyticsInsights.studentTeacherRatio <= 30 ? 100 : 
-                      Math.max(0, 100 - (this.analyticsInsights.studentTeacherRatio - 30) * 2);
+    const ratioScore = this.analyticsInsights.studentTeacherRatio <= 30 ? 100 :
+      Math.max(0, 100 - (this.analyticsInsights.studentTeacherRatio - 30) * 2);
     const distributionScore = this.analyticsInsights.gradeDistribution === 'Well Distributed' ? 100 :
-                             this.analyticsInsights.gradeDistribution === 'Moderate' ? 70 : 40;
+      this.analyticsInsights.gradeDistribution === 'Moderate' ? 70 : 40;
 
     this.performanceMetrics.systemHealth = Math.round(
       (utilizationScore * 0.4) + (ratioScore * 0.3) + (distributionScore * 0.3)

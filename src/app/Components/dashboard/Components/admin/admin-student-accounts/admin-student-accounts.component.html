@@ -1,44 +1,47 @@
 <div class="admin-teachers-container">
   <!-- Header Section -->
   <div class="header-section">
-    <h2>{{ 'students.management' | translate }}</h2>
-    
+    <h2>{{ "students.management" | translate }}</h2>
+
     <!-- Filter Buttons -->
     <div class="d-flex gap-2 flex-wrap mb-4">
       <button
-        class="btn btn-outline-secondary"
+        class="btn outline-btn"
         [class.btn-primary]="selectedStatus === 'all'"
         (click)="selectedStatus = 'all'"
       >
-        <i class="fas fa-users me-1"></i> {{ 'students.allStudents' | translate }}
+        <i class="fas fa-users me-1"></i>
+        {{ "students.allStudents" | translate }}
       </button>
       <button
-        class="btn btn-outline-secondary"
+        class="btn outline-btn"
         [class.btn-primary]="selectedStatus === accountStatusEnum.Pending"
         (click)="selectedStatus = accountStatusEnum.Pending"
       >
-        <i class="fas fa-clock me-1"></i> {{ 'students.pending' | translate }}
+        <i class="fas fa-clock me-1"></i> {{ "students.pending" | translate }}
       </button>
       <button
-        class="btn btn-outline-secondary"
+        class="btn outline-btn"
         [class.btn-primary]="selectedStatus === accountStatusEnum.Active"
         (click)="selectedStatus = accountStatusEnum.Active"
       >
-        <i class="fas fa-check-circle me-1"></i> {{ 'students.active' | translate }}
+        <i class="fas fa-check-circle me-1"></i>
+        {{ "students.active" | translate }}
       </button>
       <button
-        class="btn btn-outline-secondary"
+        class="btn outline-btn"
         [class.btn-primary]="selectedStatus === accountStatusEnum.Rejected"
         (click)="selectedStatus = accountStatusEnum.Rejected"
       >
-        <i class="fas fa-times-circle me-1"></i> {{ 'students.rejected' | translate }}
+        <i class="fas fa-times-circle me-1"></i>
+        {{ "students.rejected" | translate }}
       </button>
       <button
-        class="btn btn-outline-secondary"
+        class="btn outline-btn"
         [class.btn-primary]="selectedStatus === accountStatusEnum.Blocked"
         (click)="selectedStatus = accountStatusEnum.Blocked"
       >
-        <i class="fas fa-ban me-1"></i> {{ 'students.blocked' | translate }}
+        <i class="fas fa-ban me-1"></i> {{ "students.blocked" | translate }}
       </button>
     </div>
   </div>
@@ -57,133 +60,123 @@
             <i class="fas fa-phone me-1"></i>
             {{ student.contactInfo }}
           </p>
+          <!-- عرض المعلومات الإضافية -->
+          <div
+            class="additional-info mt-2 pt-2 border-top"
+            *ngIf="
+              student.passportNumber ||
+              student.nationality ||
+              student.iqamaNumber
+            "
+          >
+            <small class="text-muted d-block" *ngIf="student.passportNumber">
+              <i class="fas fa-passport me-1"></i> جواز:
+              {{ student.passportNumber }}
+            </small>
+            <small class="text-muted d-block" *ngIf="student.nationality">
+              <i class="fas fa-flag me-1"></i> جنسية: {{ student.nationality }}
+            </small>
+            <small class="text-muted d-block" *ngIf="student.iqamaNumber">
+              <i class="fas fa-id-card me-1"></i> إقامة:
+              {{ student.iqamaNumber }}
+            </small>
+          </div>
           <p class="text-muted mb-1" *ngIf="student.classId">
             <i class="fas fa-graduation-cap me-1"></i>
             الفصل: {{ getClassName(student.classId) }}
           </p>
         </div>
-
-  <!-- Students Grid -->
-  <div class="row g-4" *ngIf="!isLoading">
-    <div *ngFor="let student of filteredStudents()" class="col-md-6 col-lg-4">
-      <div class="grade-card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          <h5>{{ student.fullName }}</h5>
-          <span class="badge" [ngClass]="'bg-' + getStatusColor(student.accountStatus)">
+        <div
+          class="card-header d-flex justify-content-between align-items-center"
+        >
+          <span
+            class="badge"
+            [ngClass]="'bg-' + getStatusColor(student.accountStatus)"
+          >
             {{ getStatusName(student.accountStatus) }}
           </span>
         </div>
-        
-        <div class="card-body">
-          <!-- Student Info -->
-          <div class="mb-3">
-            <p class="text-muted mb-2">
-              <i class="fas fa-envelope me-2"></i>
-              {{ student.email }}
-            </p>
-            <p class="text-muted mb-2" *ngIf="student.contactInfo">
-              <i class="fas fa-phone me-2"></i>
-              {{ student.contactInfo }}
-            </p>
-            <p class="text-muted mb-2">
-              <i class="fas fa-user-graduate me-2"></i>
-              {{ student.className || 'غير محدد' }}
-            </p>
-            <p class="text-muted mb-3">
-              <i class="fas fa-calendar-alt me-2"></i>
-              {{ student.classYear || 'غير محدد' }}
-            </p>
-          </div>
 
-          <div class="d-flex gap-2 flex-wrap">
-            <!-- زر الموافقة مع الفصل -->
-            <button
-              class="primary-btn btn-sm"
-              *ngIf="isStudentsPending(student) || isStudentsRejected(student)"
-              (click)="openAssignToClassModal(student)"
-              title="موافقة وإضافة للفصل"
-            >
-              <i class="fas fa-check me-1"></i> قبول وإضافة للفصل
-            </button>
+        <div class="d-flex gap-2 flex-wrap">
+          <!-- زر الموافقة مع الفصل -->
+          <button
+            class="btn btn-success btn-sm"
+            *ngIf="isStudentsPending(student) || isStudentsRejected(student)"
+            (click)="openAssignToClassModal(student, false)"
+            title="موافقة وإضافة للفصل"
+          >
+            <i class="fas fa-check me-1"></i> قبول وإضافة للفصل
+          </button>
 
-            <!-- زر الموافقة فقط -->
-            <!-- <button
-              class="outline-btn btn-sm"
-              *ngIf="isStudentsPending(student) || isStudentsRejected(student)"
-              (click)="ApproveStudentAction(student.id)"
-              title="موافقة فقط"
-            >
-              <i class="fas fa-check me-1"></i> قبول فقط
-            </button> -->
+          <!-- زر الرفض -->
+          <button
+            class="btn btn-danger btn-sm"
+            *ngIf="isStudentsPending(student)"
+            (click)="RejectStudentAction(student.id)"
+            title="رفض"
+          >
+            <i class="fas fa-times me-1"></i> رفض
+          </button>
 
-            <!-- زر الرفض -->
-            <button
-              class="danger-btn btn-sm"
-              *ngIf="isStudentsPending(student)"
-              (click)="RejectStudentAction(student.id)"
-              title="رفض"
-            >
-              <i class="fas fa-times me-1"></i> رفض
-            </button>
+          <!-- Block Button -->
+          <button
+            class="btn btn-danger btn-sm"
+            *ngIf="isStudentsActive(student)"
+            (click)="BlockStudentAction(student.id)"
+            [title]="'students.block' | translate"
+          >
+            <i class="fas fa-ban me-1"></i>
+            {{ "students.block" | translate }}
+          </button>
 
-            <!-- زر الحظر -->
-            <button
-              class="warning-btn btn-sm"
-              *ngIf="isStudentsActive(student)"
-              (click)="BlockStudentAction(student.id)"
-              title="حظر"
-            >
-              <i class="fas fa-ban me-1"></i> حظر
-            </button>
+          <!-- UPDATE Button -->
+          <button
+            class="btn btn-success btn-sm"
+            *ngIf="isStudentsActive(student)"
+            (click)="openAssignToClassModal(student, true)"
+          >
+            {{ "students.UPDATE" | translate }}
+          </button>
 
-              <!-- Block Button -->
-              <button
-                class="btn btn-danger btn-sm"
-                *ngIf="isStudentsActive(student)"
-                (click)="BlockStudentAction(student.id)"
-                [title]="'students.block' | translate"
-              >
-                <i class="fas fa-ban me-1"></i> {{ 'students.block' | translate }}
-              </button>
-
-              <!-- Unblock Button -->
-              <button
-                class="btn btn-warning btn-sm"
-                *ngIf="isStudentsBlocked(student)"
-                (click)="UnblockStudentAction(student.id)"
-                [title]="'students.unblock' | translate"
-              >
-                <i class="fas fa-unlock me-1"></i> {{ 'students.unblock' | translate }}
-              </button>
-            </div>
-          </div>
+          <!-- Unblock Button -->
+          <button
+            class="btn btn-warning btn-sm"
+            *ngIf="isStudentsBlocked(student)"
+            (click)="UnblockStudentAction(student.id)"
+            [title]="'students.unblock' | translate"
+          >
+            <i class="fas fa-unlock me-1"></i>
+            {{ "students.unblock" | translate }}
+          </button>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Empty States -->
-  <div *ngIf="!isLoading">
-    <!-- No students in filtered category -->
-    <div
-      *ngIf="filteredStudents().length === 0 && allStudents.length > 0"
-      class="alert alert-info mt-4 text-center"
-    >
-      <i class="fas fa-info-circle me-2"></i>
-      {{ 'students.noStudentsInCategory' | translate }} 
-      <span *ngIf="selectedStatus !== 'all'">
-        ({{ getStatusDisplayName(selectedStatus) | translate }})
-      </span>
-    </div>
+    <!-- Empty States -->
+    <div *ngIf="!isLoading">
+      <!-- No students in filtered category -->
+      <div
+        *ngIf="filteredStudents().length === 0 && allStudents.length > 0"
+        class="alert alert-info mt-4 text-center"
+      >
+        <i class="fas fa-info-circle me-2"></i>
+        {{ "students.noStudentsInCategory" | translate }}
+        <span *ngIf="selectedStatus !== 'all'">
+          ({{ getStatusDisplayName(selectedStatus) | translate }})
+        </span>
+      </div>
 
-    <!-- No students at all -->
-    <div
-      *ngIf="allStudents.length === 0 && !isLoading"
-      class="text-center py-5"
-    >
-      <i class="fas fa-user-graduate fa-4x text-muted mb-4"></i>
-      <h4 class="mb-3">{{ 'students.noStudents' | translate }}</h4>
-      <p class="text-muted mb-4">{{ 'students.noStudentsInCategory' | translate }}</p>
+      <!-- No students at all -->
+      <div
+        *ngIf="allStudents.length === 0 && !isLoading"
+        class="text-center py-5"
+      >
+        <i class="fas fa-user-graduate fa-4x text-muted mb-4"></i>
+        <h4 class="mb-3">{{ "students.noStudents" | translate }}</h4>
+        <p class="text-muted mb-4">
+          {{ "students.noStudentsInCategory" | translate }}
+        </p>
+      </div>
     </div>
   </div>
 
@@ -198,7 +191,9 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content" (click)="$event.stopPropagation()">
         <div class="modal-header">
-          <h5 class="modal-title">إضافة الطالب للفصل</h5>
+          <h5 class="modal-title">
+            {{ isUpdating ? "تحديث بيانات الطالب" : "إضافة الطالب للفصل" }}
+          </h5>
           <button
             type="button"
             class="btn-close"
@@ -216,12 +211,58 @@
             />
           </div>
 
+          <!-- بيانات التحديث المطلوبة -->
           <div class="mb-3">
-            <label class="form-label">اختر الفصل</label>
+            <label class="form-label"
+              >رقم الجواز <span class="text-danger">*</span></label
+            >
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="passportNumber"
+              placeholder="أدخل رقم الجواز"
+              required
+            />
+            <div class="form-text text-muted">رقم الجواز مطلوب للموافقة</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label"
+              >الجنسية <span class="text-danger">*</span></label
+            >
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="nationality"
+              placeholder="أدخل الجنسية"
+              required
+            />
+            <div class="form-text text-muted">الجنسية مطلوبة للموافقة</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label"
+              >رقم الإقامة <span class="text-danger">*</span></label
+            >
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="iqamaNumber"
+              placeholder="أدخل رقم الإقامة"
+              required
+            />
+            <div class="form-text text-muted">رقم الإقامة مطلوب للموافقة</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label"
+              >اختر الفصل <span class="text-danger">*</span></label
+            >
             <select
               class="form-control"
               [(ngModel)]="selectedClassId"
               [disabled]="isClassesLoading"
+              required
             >
               <option value="">-- اختر الفصل --</option>
               <option *ngFor="let class of allClasses" [value]="class.id">
@@ -231,6 +272,21 @@
             <div *ngIf="isClassesLoading" class="text-muted small mt-1">
               جاري تحميل الفصول...
             </div>
+          </div>
+
+          <!-- تحذير إذا كانت البيانات ناقصة -->
+          <div
+            class="alert alert-warning"
+            *ngIf="
+              !passportNumber ||
+              !nationality ||
+              !iqamaNumber ||
+              !selectedClassId
+            "
+          >
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <strong>ملاحظة:</strong> يجب تعبئة جميع الحقول المطلوبة (المميزة بـ
+            *) قبل المتابعة
           </div>
         </div>
         <div class="modal-footer">
@@ -242,17 +298,49 @@
           >
             إلغاء
           </button>
+
+          <!-- زر التحديث فقط -->
           <button
             type="button"
+            *ngIf="isUpdating"
             class="btn btn-primary"
-            (click)="approveStudentWithClass()"
-            [disabled]="!selectedClassId || isAssigning"
+            (click)="updateStudentInfoOnly()"
+            [disabled]="
+              !passportNumber ||
+              !nationality ||
+              !iqamaNumber ||
+              !selectedClassId ||
+              isAssigning
+            "
           >
             <span
               *ngIf="isAssigning"
               class="spinner-border spinner-border-sm me-2"
             ></span>
-            {{ isAssigning ? "جاري المعالجة..." : "موافقة وإضافة" }}
+            <i class="fas fa-save me-1" *ngIf="!isAssigning"></i>
+            {{ isAssigning ? "جاري التحديث..." : "تحديث البيانات" }}
+          </button>
+
+          <!-- زر الموافقة وإضافة للفصل -->
+          <button
+            *ngIf="!isUpdating"
+            type="button"
+            class="btn btn-primary"
+            (click)="approveStudentWithClass()"
+            [disabled]="
+              !passportNumber ||
+              !nationality ||
+              !iqamaNumber ||
+              !selectedClassId ||
+              isAssigning
+            "
+          >
+            <span
+              *ngIf="isAssigning"
+              class="spinner-border spinner-border-sm me-2"
+            ></span>
+            <i class="fas fa-check me-1" *ngIf="!isAssigning"></i>
+            {{ isAssigning ? "جاري المعالجة..." : "موافقة وإضافة للفصل" }}
           </button>
         </div>
       </div>

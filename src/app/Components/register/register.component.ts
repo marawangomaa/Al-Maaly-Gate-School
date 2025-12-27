@@ -35,7 +35,7 @@ export class RegisterComponent {
     private authService: AuthService,
     private router: Router,
     private translate: TranslateService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.registerForm = this.fb.group(
@@ -113,7 +113,14 @@ export class RegisterComponent {
         this.isLoading = false;
         if (response.success) {
           this.successMessage = this.translate.instant('REGISTER.SUCCESS');
-          setTimeout(() => this.router.navigate(['/login']), 1500);
+          setTimeout(() => {
+            this.router.navigate(['/confirm-email']
+              , {
+                queryParams: { email: registerRequest.email }
+              }
+
+            );
+          }, 1500);
           this.registerForm.reset();
         } else {
           this.errorMessage = response.message || this.translate.instant('REGISTER.FAILED');

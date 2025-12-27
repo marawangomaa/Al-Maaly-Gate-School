@@ -1,14 +1,8 @@
 /* GENERAL PAGE STYLE */
 .exam-page {
-    background: #f8f9fc;
+    color: var(--color-text-light-bg);
 }
 
-.hero-title {
-    color: #2a2f4f;
-    letter-spacing: 0.5px;
-}
-
-/* CARD STYLE */
 .card {
     border-radius: 20px;
     border: none;
@@ -18,10 +12,6 @@
 .card:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
-}
-
-.main-title {
-    color: #1d1e2c;
 }
 
 /* RADIO INPUTS GENERAL */
@@ -50,28 +40,30 @@
     padding: 12px 15px;
     border-radius: 12px;
     transition: background 0.2s;
+    color: var(--color-text-light-bg);
 }
 
 .choices-list .form-check:hover,
 .row .form-check:hover {
-    background: #eef2ff;
+    background: var(--color-primary-100);
+    color: var(--color-text-light-bg);
 }
 
 .form-check-input:checked+.form-check-label {
     font-weight: 600;
-    color: #1c3faa;
+    color: var(--color-text-light-bg);
 }
 
 /* CONNECTION QUESTION COLUMNS */
 .col-6 h6 {
-    color: #374151;
+    color: var(--color-text-light-bg);
     font-weight: 700;
 }
 
 .col-6 .form-check {
     border: 1px solid #e4e7ec;
     margin-bottom: 12px;
-    background: white;
+    background: var(--color-primary-200);
 }
 
 /* TEXT INPUT (Complete type) */
@@ -92,7 +84,7 @@ input.form-control-lg:focus {
 .primary-btn {
     border-radius: 14px;
     background: #4e73df;
-    color: #fff;
+    color: var(--color-text-light-bg);
     border: none;
     transition: 0.2s;
 }

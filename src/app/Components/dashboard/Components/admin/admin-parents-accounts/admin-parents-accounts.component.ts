@@ -54,7 +54,7 @@ export class AdminParentsAccountsComponent {
 
   // Add missing method: getStatusDisplayName
   getStatusDisplayName(status: AccountStatus | 'all'): string {
-    switch(status) {
+    switch (status) {
       case 'all':
         return 'parents.statusDisplay.all';
       case AccountStatus.Pending:
@@ -132,17 +132,17 @@ export class AdminParentsAccountsComponent {
   // Update getStatusName to use translation
   getStatusName(status: string | AccountStatus): string {
     const accountStatus = this.convertToAccountStatus(status);
-    
+
     switch (accountStatus) {
-      case AccountStatus.Pending: 
+      case AccountStatus.Pending:
         return this.translate.instant('parents.status.pending');
-      case AccountStatus.Active: 
+      case AccountStatus.Active:
         return this.translate.instant('parents.status.active');
-      case AccountStatus.Blocked: 
+      case AccountStatus.Blocked:
         return this.translate.instant('parents.status.blocked');
-      case AccountStatus.Rejected: 
+      case AccountStatus.Rejected:
         return this.translate.instant('parents.status.rejected');
-      default: 
+      default:
         return this.translate.instant('parents.status.pending');
     }
   }
@@ -290,13 +290,13 @@ export class AdminParentsAccountsComponent {
   async RejectParentAction(parentId: string): Promise<void> {
     const confirmation = confirm(this.translate.instant('parents.confirmations.reject'));
     if (!confirmation) return;
-    
+
     const adminUserId = this.authService.userId;
     if (!adminUserId) {
       alert(this.translate.instant('parents.messages.adminNotFound'));
       return;
     }
-    
+
     this.subscription.add(
       this.adminService.RejectAccount(parentId, adminUserId, 'parent').subscribe({
         next: result => {
@@ -319,7 +319,7 @@ export class AdminParentsAccountsComponent {
   async BlockParentAction(parentId: string): Promise<void> {
     const confirmation = confirm(this.translate.instant('parents.confirmations.block'));
     if (!confirmation) return;
-    
+
     const adminUserId = this.authService.userId;
     if (!adminUserId) {
       alert(this.translate.instant('parents.messages.adminNotFound'));
@@ -348,13 +348,13 @@ export class AdminParentsAccountsComponent {
   async UnblockParentAction(parentId: string): Promise<void> {
     const confirmation = confirm(this.translate.instant('parents.confirmations.unblock'));
     if (!confirmation) return;
-    
+
     const adminUserId = this.authService.userId;
     if (!adminUserId) {
       alert(this.translate.instant('parents.messages.adminNotFound'));
       return;
     }
-    
+
     this.subscription.add(
       this.adminService.UnblockAccount(parentId, adminUserId, 'parent').subscribe({
         next: result => {

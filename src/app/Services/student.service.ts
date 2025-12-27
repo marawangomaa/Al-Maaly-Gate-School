@@ -10,6 +10,7 @@ import { AuthService } from './auth.service';
 import { istudentExamResults } from '../Interfaces/istudentExamResults';
 import { istudentProfile } from '../Interfaces/istudentProfile';
 import { istudentSearchResult } from '../Interfaces/istudentSearchResult';
+import istudentUpdate from '../Interfaces/istudentUpdate';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,11 @@ export class StudentService {
     });
 
     return this.http.get<ApiResponse<any>>(`${this.apiUrl}/AfterAuthentication/profile`, { headers });
+  }
+
+  // /api/Student/{id}/additional-info
+  UpdateStudentAdditionalInfo(studentId: string, data: istudentUpdate): Observable<ApiResponse<istudentProfile>> {
+    return this.http.put<ApiResponse<istudentProfile>>(`${this.apiUrl}/Student/${studentId}/additional-info`, data);
   }
 
   submitExam(submission: istudentExamSubmission): Observable<ApiResponse<istudentExamAnswer>> {
