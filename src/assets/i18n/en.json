@@ -1223,7 +1223,8 @@
       "CANCEL": "Cancel",
       "CLOSE": "Close",
       "ASSIGN": "Assign",
-      "UNASSIGN": "Unassign"
+      "UNASSIGN": "Unassign",
+      "DELETE": "Delete"
     }
   },
   "certificate2": {

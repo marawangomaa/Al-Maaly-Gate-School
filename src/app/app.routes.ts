@@ -222,6 +222,12 @@ export const routes: Routes = [
                 .then(m => m.ChildrenOfParentComponent),
             title: 'children of parent'
           },
+          {
+            path: 'parent-overview',
+            loadComponent: () =>
+              import('./Components/dashboard/Components/parent/overview/overview.component')
+                .then(m => m.OverviewComponent)
+          },
 
           // Student
           {
@@ -249,8 +255,8 @@ export const routes: Routes = [
             path: 'student-profile',
             canActivate: [StudentGuard],
             loadComponent: () =>
-              import('./Components/dashboard/Components/student/studen-profile/studen-profile.component')
-                .then(m => m.StudenProfileComponent)
+              import('./Components/dashboard/Components/student/overview/overview.component')
+                .then(m => m.OverviewComponent)
           },
           {
             path: 'student-grades',
