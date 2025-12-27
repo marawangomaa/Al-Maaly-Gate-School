@@ -30,20 +30,27 @@ export class AuthService {
   }
 
   // In your auth.service.ts
- registerParent(parentData: ParentRegisterRequest): Observable<ApiResponse<ParentRegistrationResponse>> {
-  return this.http.post<ApiResponse<ParentRegistrationResponse>>(
-    `${this.baseUrl}/register/parent`,
-    parentData
-  );
-}
+  registerParent(parentData: ParentRegisterRequest): Observable<ApiResponse<ParentRegistrationResponse>> {
+    return this.http.post<ApiResponse<ParentRegistrationResponse>>(
+      `${this.baseUrl}/register/parent`,
+      parentData
+    );
+  }
 
-  register(request: RegisterRequest): Observable<ApiResponse<AuthResponse>> {
-    return this.http.post<ApiResponse<AuthResponse>>(`${this.baseUrl}/register`, request)
-      .pipe(
-        tap(res => {
-          if (res.success) this.handleAuth(res.data);
-        })
-      );
+  // register(request: RegisterRequest): Observable<ApiResponse<AuthResponse>> {
+  //   return this.http.post<ApiResponse<AuthResponse>>(`${this.baseUrl}/register`, request)
+  //     .pipe(
+  //       tap(res => {
+  //         if (res.success) this.handleAuth(res.data);
+  //       })
+  //     );
+  // }
+
+  register(data: RegisterRequest): Observable<ApiResponse<AuthResponse>> {
+    return this.http.post<ApiResponse<AuthResponse>>(
+      `${this.baseUrl}/register`,
+      data
+    );
   }
 
   refresh(request: RefreshTokenRequest): Observable<ApiResponse<AuthResponse>> {
@@ -57,6 +64,25 @@ export class AuthService {
 
   logout(): void {
     StorageUtil.clear();
+  }
+
+  // /api/Authentication/confirm-email
+  confirmEmailByCode(email: string, confirmationNumber: string) {
+    return this.http.post<any>(`${this.baseUrl}/confirm-email`, {
+      email,
+      confirmationNumber
+    });
+  }
+  // /api/Authentication/resend-confirmation
+  resendConfirmation(Email: string) {
+    return this.http.post<any>(`${this.baseUrl}/resend-confirmation`, { Email });
+  }
+  // /api/Authentication/confirm-email
+  confirmEmailByLink(token: string, userId: string) {
+    return this.http.post<any>(`${this.baseUrl}/confirm-email`, {
+      token,
+      userId
+    });
   }
 
   // ---------------------------------------------------

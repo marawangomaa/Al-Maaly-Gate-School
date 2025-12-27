@@ -1,0 +1,82 @@
+<div class="confirmation-container">
+  <div *ngIf="loading" class="loading-overlay">
+    <div class="spinner"></div>
+    <p>Confirming your email...</p>
+  </div>
+
+  <div *ngIf="!loading">
+    <div
+      class="message"
+      [class.success]="message.includes('success')"
+      [class.error]="message.includes('failed') || message.includes('Failed')"
+    >
+      {{ message }}
+    </div>
+
+    <!-- Manual confirmation form (shows when no token or link confirmation failed) -->
+    <form
+      *ngIf="isManualConfirmation"
+      (ngSubmit)="confirmCode()"
+      class="confirmation-form"
+    >
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input
+          id="email"
+          type="email"
+          placeholder="Enter your email"
+          [(ngModel)]="email"
+          name="email"
+          required
+          [disabled]="loading"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="code">Confirmation Code</label>
+        <input
+          id="code"
+          type="text"
+          placeholder="Enter 6-digit code"
+          [(ngModel)]="code"
+          name="code"
+          maxlength="6"
+          minlength="6"
+          pattern="[0-9]{6}"
+          required
+          [disabled]="loading"
+        />
+        <small>Enter the 6-digit code sent to your email</small>
+      </div>
+
+      <div class="button-group">
+        <button
+          type="submit"
+          [disabled]="loading || !email || !code || code.length !== 6"
+        >
+          {{ loading ? "Confirming..." : "Confirm Email" }}
+        </button>
+      </div>
+    </form>
+
+    <!-- Resend code section -->
+    <div *ngIf="isManualConfirmation" class="resend-section">
+      <p>Didn't receive a code?</p>
+      <button
+        (click)="resend()"
+        [disabled]="loading || !email"
+        class="resend-btn"
+      >
+        {{ loading ? "Sending..." : "Resend Code" }}
+      </button>
+    </div>
+
+    <!-- Link confirmation success -->
+    <div
+      *ngIf="isLinkConfirmation && message.includes('success')"
+      class="success-message"
+    >
+      <p>Redirecting to login page...</p>
+    </div>
+  </div>
+</div>

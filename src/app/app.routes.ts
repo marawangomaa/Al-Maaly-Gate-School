@@ -13,6 +13,8 @@ import { StudentGuard } from './Guards/student.guard';
 import { ExamComponent } from './Components/exam/exam.component';
 import { AccountStatusDisplayerComponent } from './Components/account-status-displayer/account-status-displayer.component';
 import { accountStatusGuard } from './Guards/acount-status.guard';
+import { ConfirmEmailComponent } from './Components/confirm-email/confirm-email.component';
+import { GuestGuard } from './Guards/guest.guard';
 
 export const routes: Routes = [
 
@@ -22,9 +24,23 @@ export const routes: Routes = [
     component: VisitorComponent,
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
-      { path: 'home', component: HomeComponent },
-      { path: 'login', component: LoginComponent },
-      { path: 'register', component: RegisterComponent }
+      {
+        path: 'home', component: HomeComponent,
+        canActivate: [GuestGuard]
+      },
+      {
+        path: 'login', component: LoginComponent,
+        canActivate: [GuestGuard]
+      },
+      {
+        path: 'register', component: RegisterComponent,
+        canActivate: [GuestGuard]
+      },
+      {
+        path: 'confirm-email',
+        component: ConfirmEmailComponent,
+        canActivate: [GuestGuard]
+      }
     ]
   },
 
@@ -36,7 +52,6 @@ export const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeloggedinComponent },
       { path: 'exam/:id', component: ExamComponent },
-
       // Dashboard
       {
         path: 'dashboard',
@@ -252,9 +267,7 @@ export const routes: Routes = [
                 .then(m => m.StudentCertificatesComponent)
           }
         ]
-      },
-
-      {
+      }, {
         path: 'account/status/:status',
         component: AccountStatusDisplayerComponent
       },
