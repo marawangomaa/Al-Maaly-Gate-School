@@ -7,14 +7,6 @@
   overflow: hidden;
 }
 
-.dashboard-nav {
-  margin-top: 25px;
-}
-
-.dashboard-content {
-  margin-top: 45px;
-}
-
 /* Sidebar host (the custom element) */
 app-dashboard-nav {
   width: 240px;

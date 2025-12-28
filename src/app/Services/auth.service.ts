@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../Environment/Environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { ApiResponse, AuthResponse, LoginRequest, RefreshTokenRequest, RegisterRequest } from '../Interfaces/auth';
 import { Observable, tap } from 'rxjs';
 import { StorageUtil } from '../utils/storage.util';
@@ -37,15 +37,6 @@ export class AuthService {
     );
   }
 
-  // register(request: RegisterRequest): Observable<ApiResponse<AuthResponse>> {
-  //   return this.http.post<ApiResponse<AuthResponse>>(`${this.baseUrl}/register`, request)
-  //     .pipe(
-  //       tap(res => {
-  //         if (res.success) this.handleAuth(res.data);
-  //       })
-  //     );
-  // }
-
   register(data: RegisterRequest): Observable<ApiResponse<AuthResponse>> {
     return this.http.post<ApiResponse<AuthResponse>>(
       `${this.baseUrl}/register`,
@@ -76,13 +67,6 @@ export class AuthService {
   // /api/Authentication/resend-confirmation
   resendConfirmation(Email: string) {
     return this.http.post<any>(`${this.baseUrl}/resend-confirmation`, { Email });
-  }
-  // /api/Authentication/confirm-email
-  confirmEmailByLink(token: string, userId: string) {
-    return this.http.post<any>(`${this.baseUrl}/confirm-email`, {
-      token,
-      userId
-    });
   }
 
   // ---------------------------------------------------
