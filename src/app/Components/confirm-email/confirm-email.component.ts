@@ -32,38 +32,24 @@ export class ConfirmEmailComponent implements OnInit {
     this.userId = this.route.snapshot.queryParamMap.get('userId') || '';
     this.email = this.route.snapshot.queryParamMap.get('email') || '';
 
-    // Check if this is a link confirmation (email link)
     if (this.token && this.userId) {
+      // User clicked email link → automatic confirmation
       this.isLinkConfirmation = true;
       this.confirmByLink();
-    }
-    // Check if email is provided (manual code entry)
-    else if (this.email) {
+    } else if (this.email) {
+      // User just registered → pre-filled email for manual code entry
       this.isManualConfirmation = true;
       this.message = 'Please enter the confirmation code sent to your email.';
-    }
-    // No parameters - generic message
-    else {
-      this.message = 'Please confirm your email to activate your account.';
+    } else {
+      // User clicked "Confirm your email" link in login → must type email manually
+      this.isManualConfirmation = true;
+      this.email = ''; // force user to enter email
+      this.message = 'Please enter your email and the confirmation code.';
     }
   }
 
   private confirmByLink(): void {
     this.loading = true;
-    this.auth.confirmEmailByLink(this.token, this.userId).subscribe({
-      next: res => {
-        this.message = res.message || 'Email confirmed successfully';
-        this.loading = false;
-        setTimeout(() => this.router.navigate(['/login']), 2000);
-      },
-      error: err => {
-        this.message = err.error?.message || 'Confirmation failed. Please try again.';
-        this.loading = false;
-        // Fallback to manual confirmation if link fails
-        this.isLinkConfirmation = false;
-        this.isManualConfirmation = true;
-      }
-    });
   }
 
   confirmCode(): void {
