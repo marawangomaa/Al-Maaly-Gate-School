@@ -15,6 +15,7 @@ import { AccountStatusDisplayerComponent } from './Components/account-status-dis
 import { accountStatusGuard } from './Guards/acount-status.guard';
 import { ConfirmEmailComponent } from './Components/confirm-email/confirm-email.component';
 import { GuestGuard } from './Guards/guest.guard';
+import { ConfirmationStatusComponent } from './Components/confirmation-status/confirmation-status.component';
 
 export const routes: Routes = [
 
@@ -39,6 +40,11 @@ export const routes: Routes = [
       {
         path: 'confirm-email',
         component: ConfirmEmailComponent,
+        canActivate: [GuestGuard]
+      },
+      {
+        path: 'confirmation-status',
+        component: ConfirmationStatusComponent,
         canActivate: [GuestGuard]
       }
     ]

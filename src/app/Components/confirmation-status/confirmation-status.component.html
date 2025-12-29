@@ -1,0 +1,22 @@
+<div class="status-container">
+  <div
+    class="card"
+    [class.success]="status === 'success'"
+    [class.error]="status === 'error'"
+  >
+    <h2 *ngIf="status === 'success'">Email Confirmed 🎉</h2>
+    <h2 *ngIf="status === 'error'">Confirmation Failed ❌</h2>
+
+    <p>{{ message }}</p>
+
+    <div class="actions">
+      <button *ngIf="status === 'success'" (click)="goToLogin()">
+        Go to Login
+      </button>
+
+      <button *ngIf="status === 'error'" (click)="goToConfirm()">
+        Try Again
+      </button>
+    </div>
+  </div>
+</div>
