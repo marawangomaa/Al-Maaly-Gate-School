@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiResponse, SubjectCreateDto, SubjectUpdateDto, SubjectViewDto } from '../Interfaces/isubject';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../Environment/Environment';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SubjectService {
 
-  private readonly apiUrl = `${environment.apiBaseUrl}/subject`;
+  private readonly apiUrl = `${environment.apiUrl}/subject`;
   constructor(private http: HttpClient) { }
 
   // Subject CRUD Operations

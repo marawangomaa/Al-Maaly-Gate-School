@@ -2,7 +2,6 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BulkMoveClassesDto, ClassViewDto, CreateClassDto, UpdateClassDto } from '../../../../../Interfaces/iclass';
-import { ApiResponse } from '../../../../../Interfaces/idegree';
 import { SubjectCreateDto, SubjectViewDto, SubjectUpdateDto } from '../../../../../Interfaces/isubject';
 import { CreateClassInGradeDto, CreateGradeDto, GradeViewDto, GradeWithDetailsDto, UpdateGradeDto } from '../../../../../Interfaces/igrade';
 import { Curriculum } from '../../../../../Interfaces/icurriculum';
@@ -12,6 +11,7 @@ import { ClassService } from '../../../../../Services/class.service';
 import { SubjectService } from '../../../../../Services/subject.service';
 import { CurriculumService } from '../../../../../Services/curriculum.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { ApiResponse } from '../../../../../Interfaces/auth';
 
 @Component({
   selector: 'app-admin-grades',

@@ -1,304 +1,419 @@
-<section class="teacher-grades container py-4">
-  <h3 class="main-title mb-4">{{ 'TEACHER_CLASSES.TITLE' | translate }}</h3>
+<section class="teacher-grades container-fluid py-4">
+  <!-- Header -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <h3 class="main-title mb-0">{{ 'TEACHER_CLASSES.TITLE' | translate }}</h3>
+        <button class="btn btn-outline-primary" (click)="toggleAllStudents()">
+          <i class="bi" [class.bi-chevron-down]="!allExpanded" [class.bi-chevron-up]="allExpanded"></i>
+          {{ allExpanded ? 'Collapse All' : 'Expand All' }}
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Loading States -->
-  <div *ngIf="isLoadingClasses || isLoadingSubjects" class="text-center py-5">
-    <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Loading...</span>
+  <div *ngIf="isLoadingClasses || isLoadingSubjects" class="row">
+    <div class="col-12">
+      <div class="text-center py-5">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-3 fs-5 text-muted">Loading your classes and subjects...</p>
+      </div>
     </div>
-    <p class="mt-2">Loading your classes and subjects...</p>
   </div>
 
   <!-- No Classes Message -->
-  <div *ngIf="!isLoadingClasses && !isLoadingSubjects && teacherClasses.length === 0" 
-       class="alert alert-info">
-    <i class="bi bi-info-circle me-2"></i>
-    You are not assigned to any classes yet.
-  </div>
-
-  <div *ngIf="!isLoadingClasses && !isLoadingSubjects && teacherClasses.length > 0">
-    
-    <!-- Classes List -->
-    <div *ngFor="let cls of teacherClasses" class="card class-card mb-4 shadow-sm">
-      
-      <!-- Class Header -->
-      <div class="card-header bg-light d-flex justify-content-between align-items-center"
-           (click)="toggleExpandClass(cls.id)"
-           style="cursor: pointer;">
-        <div class="d-flex align-items-center">
-          <i class="bi bi-mortarboard-fill text-primary me-2"></i>
-          <div>
-            <strong class="h5 mb-0">{{ cls.className }}</strong>
-            <div class="text-muted small">
-              {{ teacherSubjects.length }} subjects assigned
-            </div>
-          </div>
-        </div>
-        
-        <div class="d-flex align-items-center">
-          <span class="badge bg-info me-2">
-            {{ getStudentsForClass(cls.id).length }} students
-          </span>
-          <button class="btn btn-sm btn-outline-primary">
-            <i *ngIf="expandedClassId === cls.id" class="bi bi-chevron-up"></i>
-            <i *ngIf="expandedClassId !== cls.id" class="bi bi-chevron-down"></i>
-          </button>
+  <div *ngIf="!isLoadingClasses && !isLoadingSubjects && teacherClasses.length === 0" class="row">
+    <div class="col-12 col-md-8 mx-auto">
+      <div class="alert alert-info d-flex align-items-center">
+        <i class="bi bi-info-circle-fill fs-4 me-3"></i>
+        <div>
+          <h5 class="alert-heading mb-2">No Classes Assigned</h5>
+          <p class="mb-0">You are not assigned to any classes yet. Please contact the administrator.</p>
         </div>
       </div>
+    </div>
+  </div>
 
-      <!-- Class Content (Expanded) -->
-      <div *ngIf="expandedClassId === cls.id" class="card-body">
+  <!-- Classes Grid -->
+  <div *ngIf="!isLoadingClasses && !isLoadingSubjects && teacherClasses.length > 0" class="row g-4">
+    <div *ngFor="let cls of teacherClasses" class="col-12">
+      <div class="card shadow-lg border-0" [class.expanded]="expandedClassId === cls.id">
         
-        <!-- Subjects List -->
-        <div class="mb-4">
-          <h6 class="fw-bold text-muted mb-3">
-            <i class="bi bi-book me-1"></i> Your Subjects
-          </h6>
-          <div class="d-flex flex-wrap gap-2">
-            <span *ngFor="let subject of teacherSubjects" 
-                  class="badge bg-secondary-subtle text-secondary border">
-              {{ subject.subjectName }}
-            </span>
+        <!-- Class Header -->
+        <div class="card-header bg-gradient-primary text-white border-0 rounded-top-3"
+             (click)="toggleExpandClass(cls.id)"
+             style="cursor: pointer;">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+              <div class="class-icon me-3">
+                <i class="bi bi-mortarboard-fill fs-2"></i>
+              </div>
+              <div>
+                <h4 class="mb-1 fw-bold">{{ cls.className }}</h4>
+                <div class="class-info">
+                  <span class="badge bg-light text-primary me-2">
+                    <i class="bi bi-book me-1"></i>
+                    {{ teacherSubjects.length }} Subjects
+                  </span>
+                  <span class="badge bg-light text-primary">
+                    <i class="bi bi-people me-1"></i>
+                    {{ getStudentsForClass(cls.id).length }} Students
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <span class="badge bg-white text-primary fs-6 px-3 py-2">
+                {{ calculateClassAverage(cls.id) }}% Average
+              </span>
+            </div>
           </div>
         </div>
 
-        <!-- Students List -->
-        <h6 class="fw-bold text-muted mb-3">
-          <i class="bi bi-people me-1"></i> Students
-        </h6>
-        
-        <div *ngIf="getStudentsForClass(cls.id).length === 0" class="alert alert-warning">
-          No students enrolled in this class yet.
-        </div>
+        <!-- Class Content -->
+        <div *ngIf="expandedClassId === cls.id" class="card-body bg-light-subtle p-4">
+          
+          <!-- Subjects Quick View -->
+          <div class="mb-4">
+            <h6 class="section-title">
+              <i class="bi bi-grid-3x3-gap-fill me-2"></i>
+              Assigned Subjects
+            </h6>
+            <div class="d-flex flex-wrap gap-2">
+              <span *ngFor="let subject of teacherSubjects" 
+                    class="subject-badge">
+                {{ subject.subjectName }}
+                <span class="badge bg-primary ms-1">{{ subject.creditHours || 3 }}</span>
+              </span>
+            </div>
+          </div>
 
-        <div *ngFor="let studentId of getStudentsForClass(cls.id)" class="mb-4">
-          <div class="card student-card">
+          <!-- Students Accordion -->
+          <div class="students-section">
+            <h6 class="section-title mb-3">
+              <i class="bi bi-person-lines-fill me-2"></i>
+              Students Grades Management
+            </h6>
             
-            <!-- Student Header -->
-            <div class="card-header bg-white d-flex justify-content-between align-items-center"
-                 (click)="toggleExpandStudent(cls.id, studentId)"
-                 style="cursor: pointer;">
-              <div class="d-flex align-items-center">
-                <i class="bi bi-person-circle text-primary me-2"></i>
-                <div>
-                  <strong>{{ getStudentForm(cls.id, studentId).get('studentName')?.value }}</strong>
-                  <div class="text-muted small">
-                    ID: {{ studentId }}
-                  </div>
-                </div>
-              </div>
-              
-              <div class="d-flex align-items-center gap-3">
-                <!-- Existing Grades Summary -->
-                <div *ngIf="hasExistingGrades(studentId)" class="text-end">
-                  <div class="small text-muted">Current Grades</div>
-                  <strong class="text-success">
-                    {{ calculateStudentTotal(studentId) }} / {{ calculateStudentTotalPossible(studentId) }}
-                  </strong>
-                </div>
-                
-                <button class="btn btn-sm btn-outline-primary">
-                  <span *ngIf="expandedStudentId[cls.id] === studentId">
-                    <i class="bi bi-chevron-up me-1"></i>Collapse
-                  </span>
-                  <span *ngIf="expandedStudentId[cls.id] !== studentId">
-                    <i class="bi bi-chevron-down me-1"></i>Expand
-                  </span>
-                </button>
-              </div>
+            <div *ngIf="getStudentsForClass(cls.id).length === 0" class="alert alert-warning">
+              <i class="bi bi-exclamation-triangle me-2"></i>
+              No students enrolled in this class yet.
             </div>
 
-            <!-- Student Grades Form (Expanded) -->
-            <div *ngIf="expandedStudentId[cls.id] === studentId" class="card-body">
-              <form [formGroup]="getStudentForm(cls.id, studentId)">
+            <div class="accordion" id="studentsAccordion">
+              <div *ngFor="let studentId of getStudentsForClass(cls.id); let i = index" class="accordion-item border-0 mb-3">
                 
-                <!-- Existing Grades Display -->
-                <div *ngIf="hasExistingGrades(studentId)" class="alert alert-info mb-4">
-                  <div class="d-flex align-items-center">
-                    <i class="bi bi-info-circle me-2"></i>
-                    <span>This student already has grades. Edit below to update.</span>
-                  </div>
-                </div>
-
-                <!-- Midterm 1 -->
-                <div class="exam-section mb-4">
-                  <h6 class="fw-bold border-bottom pb-2">
-                    <i class="bi bi-file-text me-2"></i>Midterm 1 (20 marks each)
-                  </h6>
-                  <div formArrayName="midterm1" class="row g-3">
-                    <div *ngFor="let sub of getExamArray(getStudentForm(cls.id, studentId), 'midterm1').controls; let i = index" 
-                         [formGroupName]="i" class="col-md-6 col-lg-4">
-                      <div class="card h-100">
-                        <div class="card-body">
-                          <div class="mb-2">
-                            <strong class="d-block">{{ sub.get('subjectName')?.value }}</strong>
-                            <small class="text-muted">Max: {{ sub.get('maxScore')?.value }} marks</small>
-                          </div>
-                          
-                          <!-- Existing Grade Display -->
-                          <div *ngIf="getExistingGrade(studentId, sub.get('subjectId')?.value, 'Midterm1')" 
-                               class="mb-2">
-                            <small class="text-muted">Current:</small>
-                            <div class="badge bg-info">
-                              {{ getExistingGrade(studentId, sub.get('subjectId')?.value, 'Midterm1')?.score }} / {{ sub.get('maxScore')?.value }}
-                            </div>
-                          </div>
-                          
-                          <input type="number" 
-                                 class="form-control" 
-                                 formControlName="score"
-                                 min="0" 
-                                 [max]="sub.get('maxScore')?.value"
-                                 placeholder="Enter score">
-                          <div *ngIf="sub.get('score')?.invalid && sub.get('score')?.touched" 
-                               class="text-danger small mt-1">
-                            Score must be between 0 and {{ sub.get('maxScore')?.value }}
+                <!-- Student Header -->
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" 
+                          type="button" 
+                          (click)="toggleExpandStudent(cls.id, studentId)"
+                          [class.collapsed]="expandedStudentId[cls.id] !== studentId">
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                      <div class="d-flex align-items-center">
+                        <div class="student-avatar me-3">
+                          <i class="bi bi-person-circle fs-3 text-primary"></i>
+                        </div>
+                        <div class="text-start">
+                          <h6 class="mb-1 fw-bold">{{ getStudentForm(cls.id, studentId).get('studentName')?.value }}</h6>
+                          <div class="text-muted small">
+                            <span class="me-3"><i class="bi bi-person-badge me-1"></i> ID: {{ studentId | shortenId }}</span>
+                            <span *ngIf="hasExistingGrades(studentId)">
+                              <i class="bi bi-star-fill text-warning me-1"></i>
+                              {{ calculateStudentAverage(studentId) }}% Average
+                            </span>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Final 1 -->
-                <div class="exam-section mb-4">
-                  <h6 class="fw-bold border-bottom pb-2">
-                    <i class="bi bi-file-text me-2"></i>Final 1 (80 marks each)
-                  </h6>
-                  <div formArrayName="final1" class="row g-3">
-                    <div *ngFor="let sub of getExamArray(getStudentForm(cls.id, studentId), 'final1').controls; let i = index" 
-                         [formGroupName]="i" class="col-md-6 col-lg-4">
-                      <div class="card h-100">
-                        <div class="card-body">
-                          <div class="mb-2">
-                            <strong class="d-block">{{ sub.get('subjectName')?.value }}</strong>
-                            <small class="text-muted">Max: {{ sub.get('maxScore')?.value }} marks</small>
+                      <div class="d-flex align-items-center">
+                        <div *ngIf="hasExistingGrades(studentId)" class="grade-summary me-3">
+                          <div class="total-score">
+                            {{ calculateStudentTotal(studentId) }}<small class="text-muted">/{{ calculateStudentTotalPossible(studentId) }}</small>
                           </div>
-                          
-                          <!-- Existing Grade Display -->
-                          <div *ngIf="getExistingGrade(studentId, sub.get('subjectId')?.value, 'Final1')" 
-                               class="mb-2">
-                            <small class="text-muted">Current:</small>
-                            <div class="badge bg-info">
-                              {{ getExistingGrade(studentId, sub.get('subjectId')?.value, 'Final1')?.score }} / {{ sub.get('maxScore')?.value }}
+                          <div class="progress" style="height: 6px; width: 100px;">
+                            <div class="progress-bar" 
+                                 [ngClass]="getProgressBarClass(calculateStudentAverage(studentId))"
+                                 [style.width.%]="calculateStudentAverage(studentId)">
                             </div>
                           </div>
-                          
-                          <input type="number" 
-                                 class="form-control" 
-                                 formControlName="score"
-                                 min="0" 
-                                 [max]="sub.get('maxScore')?.value"
-                                 placeholder="Enter score">
-                          <div *ngIf="sub.get('score')?.invalid && sub.get('score')?.touched" 
-                               class="text-danger small mt-1">
-                            Score must be between 0 and {{ sub.get('maxScore')?.value }}
-                          </div>
                         </div>
+                        <span class="badge" [ngClass]="hasExistingGrades(studentId) ? 'bg-success' : 'bg-secondary'">
+                          {{ hasExistingGrades(studentId) ? 'Graded' : 'Pending' }}
+                        </span>
                       </div>
                     </div>
-                  </div>
-                </div>
-
-                <!-- Midterm 2 -->
-                <div class="exam-section mb-4">
-                  <h6 class="fw-bold border-bottom pb-2">
-                    <i class="bi bi-file-text me-2"></i>Midterm 2 (20 marks each)
-                  </h6>
-                  <div formArrayName="midterm2" class="row g-3">
-                    <div *ngFor="let sub of getExamArray(getStudentForm(cls.id, studentId), 'midterm2').controls; let i = index" 
-                         [formGroupName]="i" class="col-md-6 col-lg-4">
-                      <div class="card h-100">
-                        <div class="card-body">
-                          <div class="mb-2">
-                            <strong class="d-block">{{ sub.get('subjectName')?.value }}</strong>
-                            <small class="text-muted">Max: {{ sub.get('maxScore')?.value }} marks</small>
-                          </div>
-                          
-                          <!-- Existing Grade Display -->
-                          <div *ngIf="getExistingGrade(studentId, sub.get('subjectId')?.value, 'Midterm2')" 
-                               class="mb-2">
-                            <small class="text-muted">Current:</small>
-                            <div class="badge bg-info">
-                              {{ getExistingGrade(studentId, sub.get('subjectId')?.value, 'Midterm2')?.score }} / {{ sub.get('maxScore')?.value }}
-                            </div>
-                          </div>
-                          
-                          <input type="number" 
-                                 class="form-control" 
-                                 formControlName="score"
-                                 min="0" 
-                                 [max]="sub.get('maxScore')?.value"
-                                 placeholder="Enter score">
-                          <div *ngIf="sub.get('score')?.invalid && sub.get('score')?.touched" 
-                               class="text-danger small mt-1">
-                            Score must be between 0 and {{ sub.get('maxScore')?.value }}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Final 2 -->
-                <div class="exam-section mb-4">
-                  <h6 class="fw-bold border-bottom pb-2">
-                    <i class="bi bi-file-text me-2"></i>Final 2 (80 marks each)
-                  </h6>
-                  <div formArrayName="final2" class="row g-3">
-                    <div *ngFor="let sub of getExamArray(getStudentForm(cls.id, studentId), 'final2').controls; let i = index" 
-                         [formGroupName]="i" class="col-md-6 col-lg-4">
-                      <div class="card h-100">
-                        <div class="card-body">
-                          <div class="mb-2">
-                            <strong class="d-block">{{ sub.get('subjectName')?.value }}</strong>
-                            <small class="text-muted">Max: {{ sub.get('maxScore')?.value }} marks</small>
-                          </div>
-                          
-                          <!-- Existing Grade Display -->
-                          <div *ngIf="getExistingGrade(studentId, sub.get('subjectId')?.value, 'Final2')" 
-                               class="mb-2">
-                            <small class="text-muted">Current:</small>
-                            <div class="badge bg-info">
-                              {{ getExistingGrade(studentId, sub.get('subjectId')?.value, 'Final2')?.score }} / {{ sub.get('maxScore')?.value }}
-                            </div>
-                          </div>
-                          
-                          <input type="number" 
-                                 class="form-control" 
-                                 formControlName="score"
-                                 min="0" 
-                                 [max]="sub.get('maxScore')?.value"
-                                 placeholder="Enter score">
-                          <div *ngIf="sub.get('score')?.invalid && sub.get('score')?.touched" 
-                               class="text-danger small mt-1">
-                            Score must be between 0 and {{ sub.get('maxScore')?.value }}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Save Button for this student -->
-                <div class="text-end mt-4 pt-3 border-top">
-                  <button type="button" 
-                          class="btn btn-success px-4"
-                          (click)="saveStudentGrades(cls.id, studentId)"
-                          [disabled]="getStudentForm(cls.id, studentId).invalid || savingStudentId === studentId">
-                    
-                    <span *ngIf="savingStudentId === studentId">
-                      <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-                      Saving...
-                    </span>
-                    
-                    <span *ngIf="savingStudentId !== studentId">
-                      <i class="bi bi-save me-2"></i>
-                      {{ hasExistingGrades(studentId) ? 'Update Grades' : 'Save Grades' }}
-                    </span>
                   </button>
+                </h2>
+
+                <!-- Student Grades Form -->
+                <div *ngIf="expandedStudentId[cls.id] === studentId" 
+                     class="accordion-collapse show">
+                  <div class="accordion-body pt-4">
+                    
+                    <!-- Existing Grades Alert -->
+                    <div *ngIf="hasExistingGrades(studentId)" class="alert alert-success d-flex align-items-center mb-4">
+                      <i class="bi bi-check-circle-fill fs-4 me-3"></i>
+                      <div>
+                        <strong>Grades already exist for this student.</strong> 
+                        You can update the scores below. Changes will overwrite existing grades.
+                      </div>
+                    </div>
+
+                    <form [formGroup]="getStudentForm(cls.id, studentId)" class="grades-form">
+                      
+                      <!-- Exam Types Navigation -->
+                      <div class="exam-type-nav mb-4">
+                        <nav>
+                          <div class="nav nav-pills" id="nav-tab" role="tablist">
+                            <button class="nav-link active" 
+                                    type="button"
+                                    (click)="setActiveExamType('midterm1')"
+                                    [class.active]="activeExamType === 'midterm1'">
+                              <i class="bi bi-file-earmark-text me-2"></i>
+                              Midterm 1 (20)
+                            </button>
+                            <button class="nav-link" 
+                                    type="button"
+                                    (click)="setActiveExamType('final1')"
+                                    [class.active]="activeExamType === 'final1'">
+                              <i class="bi bi-file-earmark-medical me-2"></i>
+                              Final 1 (80)
+                            </button>
+                            <button class="nav-link" 
+                                    type="button"
+                                    (click)="setActiveExamType('midterm2')"
+                                    [class.active]="activeExamType === 'midterm2'">
+                              <i class="bi bi-file-earmark-text me-2"></i>
+                              Midterm 2 (20)
+                            </button>
+                            <button class="nav-link" 
+                                    type="button"
+                                    (click)="setActiveExamType('final2')"
+                                    [class.active]="activeExamType === 'final2'">
+                              <i class="bi bi-file-earmark-medical me-2"></i>
+                              Final 2 (80)
+                            </button>
+                          </div>
+                        </nav>
+                      </div>
+
+                      <!-- Component Scores Toggle -->
+                      <div class="mb-4">
+                        <div class="form-check form-switch">
+                          <input class="form-check-input" 
+                                 type="checkbox" 
+                                 role="switch" 
+                                 id="useComponents{{studentId}}"
+                                 [checked]="getStudentForm(cls.id, studentId).get('useComponents')?.value"
+                                 (change)="toggleComponents(cls.id, studentId, $event)">
+                          <label class="form-check-label fw-bold" for="useComponents{{studentId}}">
+                            <i class="bi bi-pie-chart-fill me-2"></i>
+                            Use Component Scores (Oral/Exam/Practical)
+                          </label>
+                          <small class="text-muted d-block ms-4">
+                            Enable to enter detailed scores for subjects that have separate components
+                          </small>
+                        </div>
+                      </div>
+
+                      <!-- Subjects Grid -->
+                      <div class="row g-3">
+                        <div *ngFor="let sub of getActiveExamArray(cls.id, studentId).controls; let i = index" 
+                             [formGroupName]="i" 
+                             class="col-12 col-md-6 col-lg-4 col-xl-3">
+                          
+                          <div class="subject-card card h-100" 
+                               [class.has-components]="sub.get('useComponents')?.value">
+                            <div class="card-body">
+                              
+                              <!-- Subject Header -->
+                              <div class="subject-header mb-3">
+                                <h6 class="subject-name fw-bold mb-1">
+                                  {{ sub.get('subjectName')?.value }}
+                                </h6>
+                                <div class="d-flex justify-content-between align-items-center">
+                                  <small class="text-muted">
+                                    Max: {{ sub.get('maxScore')?.value }} marks
+                                  </small>
+                                  <span *ngIf="getExistingGrade(studentId, sub.get('subjectId')?.value, getActiveDegreeType())" 
+                                        class="badge bg-info">
+                                    <i class="bi bi-check-circle me-1"></i>
+                                    Graded
+                                  </span>
+                                </div>
+                              </div>
+
+                              <!-- Component Toggle for Individual Subject -->
+                              <div *ngIf="getStudentForm(cls.id, studentId).get('useComponents')?.value" 
+                                   class="mb-3">
+                                <div class="form-check">
+                                  <input class="form-check-input" 
+                                         type="checkbox" 
+                                         id="useComponents{{studentId}}{{i}}"
+                                         formControlName="useComponents">
+                                  <label class="form-check-label small" for="useComponents{{studentId}}{{i}}">
+                                    Use components for this subject
+                                  </label>
+                                </div>
+                              </div>
+
+                              <!-- Component Scores (Collapsible) -->
+                              <div *ngIf="sub.get('useComponents')?.value" 
+                                   class="components-section mb-3">
+                                
+                                <!-- Oral Component -->
+                                <div class="mb-2">
+                                  <label class="small fw-semibold text-primary mb-1">
+                                    <i class="bi bi-mic-fill me-1"></i>Oral
+                                  </label>
+                                  <div class="input-group input-group-sm">
+                                    <input type="number" 
+                                           class="form-control"
+                                           formControlName="oralScore"
+                                           placeholder="Score"
+                                           min="0"
+                                           [max]="sub.get('oralMaxScore')?.value">
+                                    <span class="input-group-text">/</span>
+                                    <input type="number" 
+                                           class="form-control"
+                                           formControlName="oralMaxScore"
+                                           placeholder="Max"
+                                           min="0">
+                                  </div>
+                                </div>
+
+                                <!-- Exam Component -->
+                                <div class="mb-2">
+                                  <label class="small fw-semibold text-primary mb-1">
+                                    <i class="bi bi-pencil-fill me-1"></i>Exam
+                                  </label>
+                                  <div class="input-group input-group-sm">
+                                    <input type="number" 
+                                           class="form-control"
+                                           formControlName="examScore"
+                                           placeholder="Score"
+                                           min="0"
+                                           [max]="sub.get('examMaxScore')?.value">
+                                    <span class="input-group-text">/</span>
+                                    <input type="number" 
+                                           class="form-control"
+                                           formControlName="examMaxScore"
+                                           placeholder="Max"
+                                           min="0">
+                                  </div>
+                                </div>
+
+                                <!-- Practical Component -->
+                                <div class="mb-2">
+                                  <label class="small fw-semibold text-primary mb-1">
+                                    <i class="bi bi-tools me-1"></i>Practical
+                                  </label>
+                                  <div class="input-group input-group-sm">
+                                    <input type="number" 
+                                           class="form-control"
+                                           formControlName="practicalScore"
+                                           placeholder="Score"
+                                           min="0"
+                                           [max]="sub.get('practicalMaxScore')?.value">
+                                    <span class="input-group-text">/</span>
+                                    <input type="number" 
+                                           class="form-control"
+                                           formControlName="practicalMaxScore"
+                                           placeholder="Max"
+                                           min="0">
+                                  </div>
+                                </div>
+
+                                <!-- Calculated Total -->
+                                <div class="calculated-total bg-light p-2 rounded text-center">
+                                  <small class="text-muted d-block">Calculated Total</small>
+                                  <strong class="text-success">
+                                    {{ calculateComponentTotalControl(sub) }} / {{ calculateComponentMaxTotalControl(sub) }}
+                                  </strong>
+                                </div>
+
+                              </div>
+
+                              <!-- Simple Score Input -->
+                              <div *ngIf="!sub.get('useComponents')?.value">
+                                <div class="simple-score-input">
+                                  <label class="small fw-semibold mb-2">
+                                    <i class="bi bi-input-cursor-text me-1"></i>Total Score
+                                  </label>
+                                  <div class="input-group">
+                                    <input type="number" 
+                                           class="form-control"
+                                           formControlName="score"
+                                           placeholder="Enter score"
+                                           min="0"
+                                           [max]="sub.get('maxScore')?.value"
+                                           step="0.5">
+                                    <span class="input-group-text">/ {{ sub.get('maxScore')?.value }}</span>
+                                  </div>
+                                  <div *ngIf="sub.get('score')?.invalid && sub.get('score')?.touched" 
+                                       class="invalid-feedback d-block small mt-1">
+                                    Score must be between 0 and {{ sub.get('maxScore')?.value }}
+                                  </div>
+                                </div>
+
+                                <!-- Existing Grade Display -->
+                                <div *ngIf="getExistingGrade(studentId, sub.get('subjectId')?.value, getActiveDegreeType())" 
+                                     class="existing-grade mt-2">
+                                  <small class="text-muted">Current:</small>
+                                  <div class="badge bg-info-subtle text-info border">
+                                    {{ getExistingGrade(studentId, sub.get('subjectId')?.value, getActiveDegreeType())?.score }} / {{ sub.get('maxScore')?.value }}
+                                  </div>
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Action Buttons -->
+                      <div class="action-buttons mt-4 pt-4 border-top">
+                        <div class="d-flex justify-content-between">
+                          <button type="button" 
+                                  class="btn btn-outline-secondary"
+                                  (click)="resetForm(cls.id, studentId)">
+                            <i class="bi bi-arrow-counterclockwise me-2"></i>
+                            Reset
+                          </button>
+                          <div class="d-flex gap-2">
+                            <button type="button" 
+                                    class="btn btn-outline-primary"
+                                    (click)="saveAsDraft(cls.id, studentId)"
+                                    [disabled]="getStudentForm(cls.id, studentId).invalid || savingStudentId === studentId">
+                              <i class="bi bi-save me-2"></i>
+                              Save Draft
+                            </button>
+                            <button type="button" 
+                                    class="btn btn-success"
+                                    (click)="saveStudentGrades(cls.id, studentId)"
+                                    [disabled]="getStudentForm(cls.id, studentId).invalid || savingStudentId === studentId">
+                              
+                              <span *ngIf="savingStudentId === studentId">
+                                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                Saving...
+                              </span>
+                              
+                              <span *ngIf="savingStudentId !== studentId">
+                                <i class="bi bi-check-circle me-2"></i>
+                                {{ hasExistingGrades(studentId) ? 'Update Grades' : 'Save Grades' }}
+                              </span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                    </form>
+                  </div>
                 </div>
-              </form>
+              </div>
             </div>
           </div>
         </div>

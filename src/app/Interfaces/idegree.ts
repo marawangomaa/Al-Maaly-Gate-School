@@ -1,8 +1,18 @@
 export interface DegreeInput {
   subjectId: string;
-  score: number;
-  maxScore: number;
-  degreeType: string; // Or enum if you want
+  degreeType: string;
+  
+  // Either total scores
+  score?: number;
+  maxScore?: number;
+  
+  // Or component scores
+  oralScore?: number;
+  oralMaxScore?: number;
+  examScore?: number;
+  examMaxScore?: number;
+  practicalScore?: number;
+  practicalMaxScore?: number;
 }
 
 export interface AddDegreesDto {
@@ -14,9 +24,22 @@ export interface DegreeItemDto {
   degreeId: string;
   subjectId: string;
   subjectName: string;
+  degreeType: string;
+  
+  // Total scores
   score: number;
   maxScore: number;
-  degreeType: string;
+  
+  // Component details
+  oralScore?: number;
+  oralMaxScore?: number;
+  examScore?: number;
+  examMaxScore?: number;
+  practicalScore?: number;
+  practicalMaxScore?: number;
+  
+  // Helper property
+  hasComponents: boolean;
 }
 
 export interface StudentDegreesDto {
@@ -25,10 +48,4 @@ export interface StudentDegreesDto {
   classId: string;
   className: string;
   degrees: DegreeItemDto[];
-}
-
-export interface ApiResponse<T> {
-  success: boolean;
-  message: string;
-  data: T;
 }

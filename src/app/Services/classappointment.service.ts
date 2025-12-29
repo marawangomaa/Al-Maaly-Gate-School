@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { ApiResponse, ClassAppointmentDto, StudentClassAppointmentDto } from '../Interfaces/iclassappointment';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../Environment/Environment';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClassappointmentService {
 
-  private readonly apiUrl = `${environment.apiBaseUrl}/ClassAppointment`;
+  private readonly apiUrl = `${environment.apiUrl}/ClassAppointment`;
 
   constructor(private http: HttpClient) {}
 

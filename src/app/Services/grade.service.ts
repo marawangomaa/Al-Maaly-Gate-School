@@ -2,17 +2,17 @@ import { Injectable } from '@angular/core';
 import { ApiResponse } from '../Interfaces/auth';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../Environment/Environment';
 import { SubjectCreateDto, SubjectViewDto } from '../Interfaces/isubject';
 import { BulkMoveClassesDto, ClassDto, ClassViewDto } from '../Interfaces/iclass';
 import { CreateClassInGradeDto, CreateGradeDto, GradeViewDto, GradeWithDetailsDto, UpdateGradeDto } from '../Interfaces/igrade';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GradeService {
 
-  private apiUrl = `${environment.apiBaseUrl}/grade`;
+  private apiUrl = `${environment.apiUrl}/grade`;
 
   constructor(private http: HttpClient) { }
 

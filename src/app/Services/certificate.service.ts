@@ -9,14 +9,14 @@ import {
 import { Observable } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../Environment/Environment';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CertificateService {
 
-  private readonly apiUrl = `${environment.apiBaseUrl}/certificate`; // Updated to match backend route
+  private readonly apiUrl = `${environment.apiUrl}/certificate`; // Updated to match backend route
 
   constructor(
     private http: HttpClient,
