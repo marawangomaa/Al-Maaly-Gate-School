@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { ClassDto, ClassViewDto, CreateClassDto, UpdateClassDto } from '../Interfaces/iclass';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { environment } from '../Environment/Environment';
 import { StudentModel } from '../Interfaces/istudent';
 import { SubjectViewDto } from '../Interfaces/isubject';
 import { ApiResponse } from '../Interfaces/auth';
 import { AuthService } from './auth.service';
+import { environment } from '../../environments/environment';
 
 export interface ClassModel {
   id: string;
@@ -23,7 +23,7 @@ export interface ClassModel {
   providedIn: 'root'
 })
 export class ClassService {
-  private apiUrl = `${environment.apiBaseUrl}/class`;
+  private apiUrl = `${environment.apiUrl}/class`;
   private token: string | null;
   private headers: HttpHeaders;
 

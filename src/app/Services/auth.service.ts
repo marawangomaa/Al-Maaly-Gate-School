@@ -1,5 +1,4 @@
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../Environment/Environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ApiResponse, AuthResponse, LoginRequest, RefreshTokenRequest, RegisterRequest } from '../Interfaces/auth';
 import { Observable, tap } from 'rxjs';
@@ -7,6 +6,7 @@ import { StorageUtil } from '../utils/storage.util';
 import { jwtDecode } from 'jwt-decode';
 import { ParentRegistrationResponse } from '../Interfaces/ParentRegistrationResponse';
 import { ParentRegisterRequest } from '../Interfaces/ParentRegisterRequest';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ import { ParentRegisterRequest } from '../Interfaces/ParentRegisterRequest';
 export class AuthService {
 
   private http = inject(HttpClient);
-  private baseUrl = `${environment.apiBaseUrl}/Authentication`;
+  private baseUrl = `${environment.apiUrl}/Authentication`;
 
   // ---------------------------------------------------
   //                     API CALLS

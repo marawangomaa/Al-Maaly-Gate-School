@@ -10,7 +10,7 @@ import {
 } from '../Interfaces/iquestoin';
 import { QuestionTypes } from "../Interfaces/QuestionTypes";
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../Environment/Environment';
+import { environment } from '../../environments/environment';
 
 
 
@@ -19,7 +19,7 @@ import { environment } from '../Environment/Environment';
 })
 export class QuestionService {
 
-  private baseUrl = `${environment.apiBaseUrl}/question`;
+  private baseUrl = `${environment.apiUrl}/question`;
 
   // ✅ STREAM OF QUESTIONS
   private _questions$ = new BehaviorSubject<QuestionModel[]>([]);

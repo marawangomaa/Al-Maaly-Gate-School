@@ -2,15 +2,15 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { ApiResponse, CreateCurriculum, Curriculum, CurriculumDetails, UpdateCurriculum } from '../Interfaces/icurriculum';
-import { environment } from '../Environment/Environment';
 import { AuthService } from './auth.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CurriculumService {
 
-  private apiUrl = `${environment.apiBaseUrl}/curricula`;
+  private apiUrl = `${environment.apiUrl}/curricula`;
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 

@@ -1,19 +1,19 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../Environment/Environment';
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../Interfaces/auth';
 import { Teacher } from '../Interfaces/teacher';
 import { ApiResponseHandler } from '../utils/api-response-handler';
 import { BulkAssignTeachersDto } from '../Interfaces/iteacher';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminManagementService {
 
-  private apiUrl: string = `${environment.apiBaseUrl}/AdminManagement`;
+  private apiUrl: string = `${environment.apiUrl}/AdminManagement`;
   private token: string | null;
   private headers: HttpHeaders;
 

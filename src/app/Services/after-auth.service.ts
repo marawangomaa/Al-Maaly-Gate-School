@@ -1,0 +1,106 @@
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ApiResponse, AuthResponse, ChangePasswordRequest, FileRecord, UpdateProfileRequest } from '../Interfaces/iafter-auth';
+import { catchError, Observable, tap, throwError } from 'rxjs';
+import { AuthService } from './auth.service';
+import { environment } from '../../environments/environment';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AfterAuthService {
+
+  private baseUrl = `${environment.apiUrl}/afterauthentication`;
+  private token: string | null;
+  private headers: HttpHeaders;
+
+  constructor(private http: HttpClient, private authService: AuthService) {
+    this.token = this.authService.getToken();
+    this.headers = new HttpHeaders(
+      {
+        'Authorization': `Bearer ${this.token}`
+      })
+  }
+
+  private getFormDataHeaders(): HttpHeaders {
+    const token = localStorage.getItem('access_token');
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+      // Note: Don't set Content-Type for FormData, let browser set it
+    });
+  }
+
+  // Logout
+  logout(): Observable<ApiResponse<string>> {
+    return this.http.post<ApiResponse<string>>(
+      `${this.baseUrl}/logout`,
+      {},
+      { headers: this.headers }
+    );
+  }
+
+  // Get current user profile
+  getCurrentUser(): Observable<ApiResponse<AuthResponse>> {
+    return this.http.get<ApiResponse<AuthResponse>>(
+      `${this.baseUrl}/profile`, { headers: this.headers }
+    );
+  }
+
+  // Change password
+  changePassword(request: ChangePasswordRequest): Observable<ApiResponse<string>> {
+    return this.http.post<ApiResponse<string>>(
+      `${this.baseUrl}/change-password`,
+      request, { headers: this.headers }
+    );
+  }
+
+  // Delete account
+  deleteAccount(): Observable<ApiResponse<string>> {
+    return this.http.delete<ApiResponse<string>>(
+      `${this.baseUrl}/delete-account`, { headers: this.headers }
+    );
+  }
+
+  // Update profile
+  updateProfile(request: UpdateProfileRequest): Observable<ApiResponse<AuthResponse>> {
+    return this.http.put<ApiResponse<AuthResponse>>(
+      `${this.baseUrl}/update-profile`,
+      request, { headers: this.headers }
+    );
+  }
+
+ // Add debugging to see what you're sending
+uploadProfilePhoto(file: File): Observable<ApiResponse<AuthResponse>> {
+  const formData = new FormData();
+  formData.append('File', file); // Capital F to match [FromForm(Name = "File")]
+  
+  // Debug: Show all FormData entries
+  console.log('FormData contents:');
+  for (let pair of (formData as any).entries()) {
+    console.log(pair[0], ':', pair[1]);
+  }
+  
+  return this.http.post<ApiResponse<AuthResponse>>(
+    `${this.baseUrl}/profile/photo`,
+    formData,
+    { headers: this.headers }
+  ).pipe(
+    tap(response => console.log('Upload success:', response)),
+    catchError(error => {
+      console.error('Upload failed:', {
+        status: error.status,
+        message: error.message,
+        error: error.error
+      });
+      return throwError(() => error);
+    })
+  );
+}
+
+  // Get user's files
+  getMyFiles(): Observable<ApiResponse<FileRecord[]>> {
+    return this.http.get<ApiResponse<FileRecord[]>>(
+      `${this.baseUrl}/my-files`, { headers: this.headers }
+    );
+  }
+}

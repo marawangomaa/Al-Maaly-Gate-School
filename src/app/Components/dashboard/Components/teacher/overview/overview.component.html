@@ -1,1 +1,347 @@
-<p>overview works!</p>
+<section class="teacher-overview standard-section-layout">
+  <div class="container">
+    <!-- Header -->
+    <div class="overview-header d-flex flex-wrap align-items-center justify-content-between mb-4">
+      <h2 class="main-title">
+        {{ 'TEACHER_OVERVIEW.TITLE' | translate }}
+      </h2>
+      <div class="last-updated text-muted small">
+        <span *ngIf="!loading; else loadingTpl">
+          ID: {{ teacherIdShort }}
+        </span>
+        <ng-template #loadingTpl>
+          {{ 'TEACHER_OVERVIEW.LOADING' | translate }}
+        </ng-template>
+      </div>
+    </div>
+
+    <div *ngIf="loading" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-2">{{ 'TEACHER_OVERVIEW.LOADING' | translate }}</p>
+    </div>
+
+    <div *ngIf="!loading && userProfile" class="row g-4">
+      <!-- Teacher Info Card -->
+      <div class="col-12 col-lg-4">
+        <div class="card p-4">
+          <!-- Profile Image Section -->
+          <div class="d-flex align-items-center mb-4">
+            <div class="profile-wrapper me-3 position-relative">
+              <!-- Profile Image with fallback -->
+              <div *ngIf="userProfile.profileImageUrl; else noImage" class="profile-img-container">
+                <img 
+                [src]="getProfileImageUrl()" 
+                alt="Profile Image" 
+                class="profile-img"
+                (load)="handleImageLoad($event)"
+                (error)="handleImageError($event)"
+                loading="lazy"
+                >
+                <div class="image-actions position-absolute bottom-0 end-0">
+                  <button 
+                    type="button" 
+                    class="btn btn-sm btn-light rounded-circle shadow-sm"
+                    (click)="triggerFileInput()"
+                    [title]="'TEACHER_OVERVIEW.CHANGE_PHOTO' | translate"
+                  >
+                    <i class="bi bi-camera text-primary"></i>
+                  </button>
+                </div>
+              </div>
+              <ng-template #noImage>
+                <div class="profile-placeholder d-flex align-items-center justify-content-center">
+                  <i class="bi bi-person-circle"></i>
+                </div>
+                <div class="image-actions position-absolute bottom-0 end-0">
+                  <button 
+                    type="button" 
+                    class="btn btn-sm btn-primary rounded-circle shadow-sm"
+                    (click)="triggerFileInput()"
+                    [title]="'TEACHER_OVERVIEW.UPLOAD_PHOTO' | translate"
+                  >
+                    <i class="bi bi-plus"></i>
+                  </button>
+                </div>
+              </ng-template>
+              
+              <!-- Hidden file input -->
+              <input 
+                type="file" 
+                id="profileImageInput"
+                accept="image/*"
+                (change)="onProfileImageSelected($event)"
+                hidden
+              >
+            </div>
+            <div>
+              <h3 class="h5 mb-1 profile-name">{{ userProfile.fullName || ('TEACHER_OVERVIEW.NO_NAME' | translate) }}</h3>
+              <div class="d-flex align-items-center">
+                <span class="badge bg-primary me-2">
+                  {{ 'TEACHER_OVERVIEW.TEACHER' | translate }}
+                </span>
+                <small class="text-muted">ID: {{ userProfile.userId.substring(0, 8) || 'N/A' }}</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="teacher-info mb-4">
+            <div class="info-item mb-3">
+              <label class="small text-muted d-block">{{ 'TEACHER_OVERVIEW.EMAIL' | translate }}</label>
+              <div class="d-flex align-items-center">
+                <i class="bi bi-envelope me-2 text-primary"></i>
+                <span>{{ userProfile.email || ('TEACHER_OVERVIEW.NO_EMAIL' | translate) }}</span>
+              </div>
+            </div>
+
+            <div class="info-item mb-3" *ngIf="teacherDetails">
+              <label class="small text-muted d-block">{{ 'TEACHER_OVERVIEW.CONTACT' | translate }}</label>
+              <div class="d-flex align-items-center">
+                <i class="bi bi-telephone me-2 text-primary"></i>
+                <span>{{ teacherDetails.contactInfo || ('TEACHER_OVERVIEW.NO_PHONE' | translate) }}</span>
+              </div>
+            </div>
+
+            <div class="info-item mb-3">
+              <label class="small text-muted d-block">{{ 'TEACHER_OVERVIEW.USER_ID' | translate }}</label>
+              <div class="d-flex align-items-center">
+                <i class="bi bi-person-badge me-2 text-primary"></i>
+                <span class="small font-monospace">{{ userProfile.userId.substring(0, 12) + '...' }}</span>
+              </div>
+            </div>
+
+            <!-- Account Status -->
+            <div class="info-item mb-3" *ngIf="userProfile.accountStatus">
+              <label class="small text-muted d-block">{{ 'TEACHER_OVERVIEW.STATUS' | translate }}</label>
+              <div class="d-flex align-items-center">
+                <i class="bi bi-circle-fill me-2" [ngClass]="'text-' + getAccountStatusColor(userProfile.accountStatus)"></i>
+                <span>{{ getAccountStatusText(userProfile.accountStatus) }}</span>
+              </div>
+            </div>
+
+            <!-- Profile Actions -->
+            <div class="info-item mb-3" *ngIf="isUploading">
+              <div class="progress" style="height: 6px;">
+                <div 
+                  class="progress-bar progress-bar-striped progress-bar-animated" 
+                  role="progressbar" 
+                  [style.width.%]="uploadProgress"
+                  aria-valuenow="uploadProgress" 
+                  aria-valuemin="0" 
+                  aria-valuemax="100"
+                ></div>
+              </div>
+              <small class="text-muted d-block text-center mt-1">
+                {{ 'TEACHER_OVERVIEW.UPLOADING' | translate }} {{ uploadProgress }}%
+              </small>
+            </div>
+          </div>
+
+          <div class="d-grid gap-2">
+            <button class="btn btn-outline-primary" (click)="openProfileSettings()">
+              <i class="bi bi-gear me-1"></i>
+              {{ 'TEACHER_OVERVIEW.PROFILE_SETTINGS' | translate }}
+            </button>
+            <button class="btn btn-outline-secondary" (click)="refreshProfile()" [disabled]="loading">
+              <i class="bi bi-arrow-clockwise me-1"></i>
+              {{ 'TEACHER_OVERVIEW.REFRESH' | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Section -->
+      <div class="col-12 col-lg-8">
+        <div class="row g-3 mb-4">
+          <!-- Classes Stat -->
+          <div class="col-6 col-md-3">
+            <div class="stat-card card text-center p-3 h-100">
+              <div class="stat-icon text-primary mb-2">
+                <i class="bi bi-people-fill fs-2"></i>
+              </div>
+              <div class="stat-number h4 mb-1">{{ totalClasses }}</div>
+              <div class="stat-label small text-muted">{{ 'TEACHER_OVERVIEW.CLASSES' | translate }}</div>
+              <div *ngIf="teacherClasses.length" class="stat-subtext mt-2">
+                <small class="text-truncate d-block">{{ formatList(teacherClassNames) }}</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Subjects Stat -->
+          <div class="col-6 col-md-3">
+            <div class="stat-card card text-center p-3 h-100">
+              <div class="stat-icon text-success mb-2">
+                <i class="bi bi-book-fill fs-2"></i>
+              </div>
+              <div class="stat-number h4 mb-1">{{ totalSubjects }}</div>
+              <div class="stat-label small text-muted">{{ 'TEACHER_OVERVIEW.SUBJECTS' | translate }}</div>
+              <div *ngIf="teacherSubjects.length" class="stat-subtext mt-2">
+                <small class="text-truncate d-block">{{ formatList(teacherSubjectNames) }}</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Specializations Stat -->
+          <div class="col-6 col-md-3">
+            <div class="stat-card card text-center p-3 h-100">
+              <div class="stat-icon text-info mb-2">
+                <i class="bi bi-mortarboard-fill fs-2"></i>
+              </div>
+              <div class="stat-number h4 mb-1">{{ totalSpecializations }}</div>
+              <div class="stat-label small text-muted">{{ 'TEACHER_OVERVIEW.SPECIALIZATIONS' | translate }}</div>
+              <div *ngIf="teacherDetails?.specializedCurricula?.length" class="stat-subtext mt-2">
+                <small class="text-truncate d-block">{{ formatList(teacherDetails?.specializedCurricula || []) }}</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Students Stat -->
+          <div class="col-6 col-md-3">
+            <div class="stat-card card text-center p-3 h-100">
+              <div class="stat-icon text-warning mb-2">
+                <i class="bi bi-person-video3 fs-2"></i>
+              </div>
+              <div class="stat-number h4 mb-1">{{ totalStudents }}</div>
+              <div class="stat-label small text-muted">{{ 'TEACHER_OVERVIEW.STUDENTS' | translate }}</div>
+              <div class="stat-subtext mt-2">
+                <small class="text-muted">{{ 'TEACHER_OVERVIEW.CALCULATED_FROM_CLASSES' | translate }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Subjects List -->
+        <div class="card p-4 mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="sub-title d-flex align-items-center mb-0">
+              <i class="bi bi-book me-2 text-success"></i>
+              {{ 'TEACHER_OVERVIEW.ASSIGNED_SUBJECTS' | translate }}
+              <span class="badge bg-success ms-2">{{ totalSubjects }}</span>
+            </h4>
+            <button class="btn btn-sm btn-outline-success" (click)="viewAllSubjects()">
+              <i class="bi bi-arrow-right me-1"></i>
+              {{ 'TEACHER_OVERVIEW.VIEW_ALL' | translate }}
+            </button>
+          </div>
+          
+          <div *ngIf="teacherSubjects.length > 0" class="row g-3">
+            <div *ngFor="let subject of teacherSubjects.slice(0, 4)" class="col-12 col-md-6">
+              <div class="subject-item card border p-3">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div>
+                    <h6 class="mb-1">{{ subject.subjectName || 'Unnamed Subject' }}</h6>
+                    <div class="small text-muted">
+                      <span *ngIf="subject.gradeName">
+                        <i class="bi bi-graph-up me-1"></i>Grade: {{ subject.gradeName }}
+                      </span>
+                      <span *ngIf="subject.creditHours" class="ms-2">
+                        <i class="bi bi-clock me-1"></i>Credits: {{ subject.creditHours }}
+                      </span>
+                    </div>
+                  </div>
+                  <span class="badge bg-light text-dark">
+                    {{ subject.examCount || 0 }} <i class="bi bi-file-text ms-1"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div *ngIf="teacherSubjects.length === 0 && !loading" class="text-center py-4">
+            <i class="bi bi-book text-muted fs-1 mb-3"></i>
+            <p class="text-muted">{{ 'TEACHER_OVERVIEW.NO_SUBJECTS' | translate }}</p>
+            <button class="btn btn-sm btn-outline-secondary">
+              <i class="bi bi-plus me-1"></i>
+              {{ 'TEACHER_OVERVIEW.REQUEST_SUBJECTS' | translate }}
+            </button>
+          </div>
+
+          <div *ngIf="teacherSubjects.length > 4" class="text-center mt-3">
+            <button class="btn btn-link text-decoration-none" (click)="viewAllSubjects()">
+              {{ 'TEACHER_OVERVIEW.SHOW_MORE' | translate }} ({{ teacherSubjects.length - 4 }})
+              <i class="bi bi-chevron-down ms-1"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Classes List -->
+        <div class="card p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="sub-title d-flex align-items-center mb-0">
+              <i class="bi bi-people me-2 text-primary"></i>
+              {{ 'TEACHER_OVERVIEW.ASSIGNED_CLASSES' | translate }}
+              <span class="badge bg-primary ms-2">{{ totalClasses }}</span>
+            </h4>
+            <button class="btn btn-sm btn-outline-primary" (click)="viewAllClasses()">
+              <i class="bi bi-arrow-right me-1"></i>
+              {{ 'TEACHER_OVERVIEW.VIEW_ALL' | translate }}
+            </button>
+          </div>
+          
+          <div *ngIf="teacherClasses.length > 0" class="row g-3">
+            <div *ngFor="let classItem of teacherClasses.slice(0, 4)" class="col-12 col-md-6">
+              <div class="class-item card border p-3">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div>
+                    <h6 class="mb-1">{{ classItem.className || 'Unnamed Class' }}</h6>
+                    <div class="small text-muted">
+                      <i class="bi bi-hash me-1"></i>ID: {{ classItem.id.substring(0, 8) }}...
+                    </div>
+                    <div class="small text-muted mt-1">
+                      <i class="bi bi-person-fill me-1"></i>Students: {{ classItem.studentCount || 'N/A' }}
+                    </div>
+                  </div>
+                  <span class="badge bg-light text-dark">{{ classItem.gradeName || 'No Grade' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div *ngIf="teacherClasses.length === 0 && !loading" class="text-center py-4">
+            <i class="bi bi-people text-muted fs-1 mb-3"></i>
+            <p class="text-muted">{{ 'TEACHER_OVERVIEW.NO_CLASSES' | translate }}</p>
+            <button class="btn btn-sm btn-outline-secondary">
+              <i class="bi bi-plus me-1"></i>
+              {{ 'TEACHER_OVERVIEW.REQUEST_CLASSES' | translate }}
+            </button>
+          </div>
+
+          <div *ngIf="teacherClasses.length > 4" class="text-center mt-3">
+            <button class="btn btn-link text-decoration-none" (click)="viewAllClasses()">
+              {{ 'TEACHER_OVERVIEW.SHOW_MORE' | translate }} ({{ teacherClasses.length - 4 }})
+              <i class="bi bi-chevron-down ms-1"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Data Message -->
+    <div *ngIf="!loading && !userProfile" class="text-center py-5">
+      <i class="bi bi-person-x text-muted fs-1 mb-3"></i>
+      <h4>{{ 'TEACHER_OVERVIEW.NO_TEACHER_DATA' | translate }}</h4>
+      <p class="text-muted">{{ 'TEACHER_OVERVIEW.NO_DATA_MESSAGE' | translate }}</p>
+      <button class="btn btn-primary mt-3" (click)="refreshProfile()">
+        <i class="bi bi-arrow-clockwise me-1"></i>
+        {{ 'TEACHER_OVERVIEW.RETRY' | translate }}
+      </button>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+      <div *ngIf="showToast" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header" [ngClass]="toastType === 'success' ? 'bg-success text-white' : 'bg-danger text-white'">
+          <strong class="me-auto">
+            <i [class]="toastType === 'success' ? 'bi bi-check-circle' : 'bi bi-exclamation-circle'"></i>
+            {{ toastTitle }}
+          </strong>
+          <button type="button" class="btn-close btn-close-white" (click)="hideToast()"></button>
+        </div>
+        <div class="toast-body">
+          {{ toastMessage }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

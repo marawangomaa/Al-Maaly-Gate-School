@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../Environment/Environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiResponseHandler } from '../utils/api-response-handler';
@@ -8,13 +7,14 @@ import { ApiResponse } from '../Interfaces/auth';
 import { BulkAssignTeachersDto, CreateTeacherDto, ServiceResult, TeacherAdminViewDto, TeacherDetailsDto, TeacherViewDto, UpdateTeacherDto } from '../Interfaces/iteacher';
 import { SubjectViewDto } from '../Interfaces/isubject';
 import { ClassViewDto } from '../Interfaces/iclass';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TeacherService {
 
-  private apiUrl: string = `${environment.apiBaseUrl}/Teacher`;
+  private apiUrl: string = `${environment.apiUrl}/Teacher`;
 
   constructor(private http: HttpClient) { }
   //Get All Teachers
