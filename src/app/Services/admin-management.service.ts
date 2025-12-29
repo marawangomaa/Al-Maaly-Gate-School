@@ -7,6 +7,7 @@ import { Teacher } from '../Interfaces/teacher';
 import { ApiResponseHandler } from '../utils/api-response-handler';
 import { BulkAssignTeachersDto } from '../Interfaces/iteacher';
 import { environment } from '../../environments/environment';
+import { ifileRecord } from '../Interfaces/ifileRecord';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,36 @@ export class AdminManagementService {
         'Content-Type': 'application/json'
       })
   }
+
+  ///api/AdminManagement/user-files/{parentId}
+  GetParentDocs(parentId: string): Observable<ApiResponse<ifileRecord[]>> {
+    const token = this.authService?.getToken();
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    return this.http.get<ApiResponse<ifileRecord[]>>(
+      `${this.apiUrl}/user-files/${parentId}`,
+      { headers }
+    );
+
+  }
+  // /api/AdminManagement/user-pdf-files/{parentId}
+  GetParentPdfDocs(parentId: string): Observable<ApiResponse<ifileRecord[]>> {
+    const token = this.authService?.getToken();
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    return this.http.get<ApiResponse<ifileRecord[]>>(
+      `${this.apiUrl}/user-pdf-files/${parentId}`,
+      { headers }
+    );
+
+  }
+
   // /approve-parent-with-student
   ApproveParentWithStudent(parentId: string, studentId: string, relation: string): Observable<ApiResponse<boolean>> {
 

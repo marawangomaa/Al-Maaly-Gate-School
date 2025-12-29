@@ -1,16 +1,20 @@
 <div class="parent-upload-container">
+  <div class="alert alert-info">
+    <strong>Note:</strong> Only PDF files are allowed.
+  </div>
 
   <!-- Dynamic File Inputs -->
-  <div *ngFor="let file of files; let i = index"
-       class="mb-2 d-flex align-items-center gap-2">
-
+  <div
+    *ngFor="let file of files; let i = index"
+    class="mb-2 d-flex align-items-center gap-2"
+  >
     <input
       type="file"
       class="form-control"
+      accept=".pdf"
       [disabled]="isUploading"
       (change)="onFileSelected($event, i)"
     />
-
     <!-- File name -->
     <span *ngIf="file" class="text-truncate">
       {{ file.name }}
@@ -21,7 +25,8 @@
       *ngIf="file"
       type="button"
       class="btn btn-sm btn-outline-danger"
-      (click)="removeFile(i)">
+      (click)="removeFile(i)"
+    >
       <i class="bi bi-x-circle"></i>
     </button>
   </div>
@@ -40,8 +45,8 @@
   <button
     class="btn btn-primary w-100 mt-3"
     (click)="upload()"
-    [disabled]="isUploading || !hasSelectedFiles">
-    {{ isUploading ? 'Uploading...' : 'Upload Files' }}
+    [disabled]="isUploading || !hasSelectedFiles"
+  >
+    {{ isUploading ? "Uploading..." : "Upload Files" }}
   </button>
-
 </div>

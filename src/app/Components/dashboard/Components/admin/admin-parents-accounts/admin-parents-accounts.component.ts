@@ -11,7 +11,8 @@ import { FormsModule } from '@angular/forms';
 import { StudentService } from '../../../../../Services/student.service';
 import { istudentSearchResult } from '../../../../../Interfaces/istudentSearchResult';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-
+import { environment } from '../../../../../../environments/environment';
+import { ifileRecord } from '../../../../../Interfaces/ifileRecord';
 @Component({
   selector: 'app-admin-parent-accounts',
   imports: [CommonModule, FormsModule, TranslateModule],
@@ -157,6 +158,28 @@ export class AdminParentsAccountsComponent {
       case AccountStatus.Rejected: return 'danger';
       default: return 'secondary';
     }
+  }
+
+  GetParentDocs(parentId: string): void {
+    this.adminService.GetParentPdfDocs(parentId).subscribe({
+      next: (result: ApiResponse<ifileRecord[]>) => {
+
+        if (result && result.data && result.data.length > 0) {
+          const url = environment.baseUrl;
+          result.data.forEach((docUrl: ifileRecord) => {
+            const fileUrl = `${url}/${docUrl.relativePath}`;
+            window.open(fileUrl, '_blank');
+            // console.log('Document URL:', fileUrl);
+          });
+          // console.log('Parent Documents:', result.data);
+        } else {
+          alert(this.translate.instant('parents.messages.noDocs'));
+        }
+      },
+      error: (error: ApiResponse<ifileRecord[]>) => {
+        alert(`${this.translate.instant('parents.messages.error')}: ${error.message}`);
+      }
+    });
   }
 
   // Updated ApproveParentAction to use modal instead of immediate approval
@@ -380,7 +403,7 @@ export class AdminParentsAccountsComponent {
         next: (response: ApiResponse<iparentViewDto[]>) => {
           this.allparents = response.data || [];
           this.isLoading = false;
-          console.log('All Parents:', response.data);
+          // console.log('All Parents:', response.data);
         },
         error: err => {
           this.isLoading = false;

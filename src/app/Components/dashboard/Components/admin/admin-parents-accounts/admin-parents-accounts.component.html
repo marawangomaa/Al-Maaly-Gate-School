@@ -124,6 +124,16 @@
                 <i class="fas fa-check me-1"></i>
                 {{ "parents.approve" | translate }}
               </button>
+              <!-- parent Docs -->
+              <button
+                class="btn btn-success btn-sm"
+                *ngIf="isParentPending(parent) || isParentRejected(parent)"
+                (click)="GetParentDocs(parent.appUserId)"
+                [title]="'parents.approve' | translate"
+              >
+                <i class="fas fa-check me-1"></i>
+                {{ "parents.Docs" | translate }}
+              </button>
 
               <!-- Reject Button -->
               <button

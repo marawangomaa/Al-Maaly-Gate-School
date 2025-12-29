@@ -1,5 +1,6 @@
 /* App Layout for Sticky Footer */
-html, body {
+html,
+body {
   height: 100%;
 }
 
@@ -11,13 +12,11 @@ body {
 .app-layout {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* full height */
+  min-height: 100vh;
+  /* full height */
 }
 
 .flex-grow-1 {
-  flex: 1; /* pushes footer down */
-}
-
-.padding{
-  padding-top: 87.14px;
+  flex: 1;
+  /* pushes footer down */
 }
