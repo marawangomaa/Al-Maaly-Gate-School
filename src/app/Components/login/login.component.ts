@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../../Services/auth.service';
 import { ApiResponse, AuthResponse, LoginRequest } from '../../Interfaces/auth';
@@ -8,7 +8,7 @@ import { ApiResponse, AuthResponse, LoginRequest } from '../../Interfaces/auth';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, TranslateModule, ReactiveFormsModule],
+  imports: [FormsModule, TranslateModule, ReactiveFormsModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
