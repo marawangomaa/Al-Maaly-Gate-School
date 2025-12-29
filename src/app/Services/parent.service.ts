@@ -32,6 +32,7 @@ export class ParentService {
       ${this.apiUrl}/view/${encodeURIComponent(parentId)}`,
       { headers });
   }
+
   uploadParentDocs(files: FormData): Observable<ApiResponse<string[]>> {
     const token = this._Auth?.getToken();
 
@@ -51,5 +52,6 @@ export class ParentService {
       { headers }
     );
   }
+
 
 }

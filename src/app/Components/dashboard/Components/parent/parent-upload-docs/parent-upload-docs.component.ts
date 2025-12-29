@@ -17,18 +17,27 @@ export class ParentUploadDocsComponent {
   errorMessage: string | null = null;
   successMessage: string | null = null;
 
-  constructor(private parentService: ParentService) {}
+  constructor(private parentService: ParentService) { }
 
   onFileSelected(event: Event, index: number): void {
     const input = event.target as HTMLInputElement;
     if (!input.files || input.files.length === 0) return;
 
-    this.files[index] = input.files[0];
+    const file = input.files[0];
 
-    // IMPORTANT: allow re-selecting same file
+    // ✅ PDF ONLY
+    if (file.type !== 'application/pdf') {
+      this.errorMessage = 'Only PDF files are allowed';
+      input.value = '';
+      return;
+    }
+
+    this.files[index] = file;
+
+    // Allow re-selecting same file
     input.value = '';
 
-    // Always keep ONE empty placeholder at the end
+    // Keep ONE empty placeholder
     if (index === this.files.length - 1) {
       this.files.push(null);
     }
