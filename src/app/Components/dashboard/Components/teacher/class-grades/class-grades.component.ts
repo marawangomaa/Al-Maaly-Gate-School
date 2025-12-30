@@ -49,7 +49,7 @@ export class ClassGradesComponent implements OnInit {
   savingStudentId: string | null = null;
   
   // Current Teacher ID
-  currentTeacherId: string = '7984e590-b026-427f-845f-c5d141af0552';
+  currentTeacherId: string = '5860456c-c767-4fd5-881d-3a240b8bc2e4';
   
   // Forms
   studentForms: Map<string, FormGroup> = new Map();

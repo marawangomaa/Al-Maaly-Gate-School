@@ -1,0 +1,28 @@
+.status-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    padding: 30px;
+    max-width: 400px;
+    text-align: center;
+    border-radius: 12px;
+}
+
+.card.success {
+    background: #e6fffa;
+    color: #065f46;
+}
+
+.card.error {
+    background: #fee2e2;
+    color: #7f1d1d;
+}
+
+.actions button {
+    margin-top: 20px;
+    padding: 10px 20px;
+}

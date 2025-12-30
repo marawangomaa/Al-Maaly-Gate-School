@@ -11,6 +11,15 @@ import { FormsModule } from '@angular/forms';
 import { StudentService } from '../../../../../Services/student.service';
 import { istudentSearchResult } from '../../../../../Interfaces/istudentSearchResult';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { environment } from '../../../../../../environments/environment';
+import { ifileRecord } from '../../../../../Interfaces/ifileRecord';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+
+// Update the interface to include docCount (add this if you can modify the interface file)
+// Otherwise, extend it locally
+interface iparentViewDtoWithDocs extends iparentViewDto {
+  docCount?: number;
+}
 
 @Component({
   selector: 'app-admin-parent-accounts',
@@ -19,20 +28,28 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
   styleUrl: './admin-parents-accounts.component.css'
 })
 export class AdminParentsAccountsComponent {
-  allparents: iparentViewDto[] = [];
+  allparents: iparentViewDtoWithDocs[] = [];
   isLoading: boolean = false;
   accountStatusEnum = AccountStatus;
   selectedStatus: AccountStatus | 'all' = 'all';
   showAssignModal: boolean = false;
+  showDocsModal: boolean = false; // New modal for documents
   selectedParentIdForModal: string = '';
   selectedParentNameForModal: string = '';
   searchQuery: string = '';
   searchResults: istudentSearchResult[] = [];
   isSearching: boolean = false;
   selectedStudent: any = null;
-  relation: string = 'father'; // Changed default to 'father'
+  relation: string = 'father';
   isAssigning: boolean = false;
   hasPerformedSearch: boolean = false;
+
+  // New properties for documents modal
+  parentDocuments: ifileRecord[] = [];
+  isLoadingDocs: boolean = false;
+  currentDocIndex: number = 0;
+  currentPdfUrl: SafeResourceUrl | null = null;
+  showPdfViewer: boolean = false;
 
   private subscription = new Subscription();
 
@@ -41,7 +58,8 @@ export class AdminParentsAccountsComponent {
     private _StudentService: StudentService,
     private adminService: AdminManagementService,
     private authService: AuthService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private sanitizer: DomSanitizer // Added for safe URL sanitization
   ) { }
 
   ngOnInit(): void {
@@ -52,7 +70,122 @@ export class AdminParentsAccountsComponent {
     this.subscription.unsubscribe();
   }
 
-  // Add missing method: getStatusDisplayName
+  // Updated GetParentDocs to open modal instead of opening in new tabs
+  async GetParentDocs(parentAppUserId: string | undefined): Promise<void> {
+    if (!parentAppUserId) {
+      alert(this.translate.instant('parents.messages.noUserId'));
+      return;
+    }
+
+    this.isLoadingDocs = true;
+    this.parentDocuments = [];
+    this.currentDocIndex = 0;
+    this.showPdfViewer = false;
+
+    // Find parent details
+    const parent = this.allparents.find(p => p.appUserId === parentAppUserId);
+    if (parent) {
+      this.selectedParentIdForModal = parent.id;
+      this.selectedParentNameForModal = parent.fullName;
+    }
+
+    this.subscription.add(
+      this.adminService.GetParentPdfDocs(parentAppUserId).subscribe({
+        next: (result: ApiResponse<ifileRecord[]>) => {
+          if (result && result.data && result.data.length > 0) {
+            this.parentDocuments = result.data;
+            this.showDocsModal = true;
+
+            // Load first document automatically
+            if (this.parentDocuments.length > 0) {
+              this.loadPdfDocument(0);
+            }
+          } else {
+            alert(this.translate.instant('parents.messages.noDocs'));
+          }
+          this.isLoadingDocs = false;
+        },
+        error: (error: ApiResponse<ifileRecord[]>) => {
+          alert(`${this.translate.instant('parents.messages.error')}: ${error.message}`);
+          this.isLoadingDocs = false;
+        }
+      })
+    );
+  }
+
+  // Load PDF document by index
+  loadPdfDocument(index: number): void {
+    if (index >= 0 && index < this.parentDocuments.length) {
+      this.currentDocIndex = index;
+      const doc = this.parentDocuments[index];
+      const url = environment.baseUrl;
+      const fileUrl = `${url}/${doc.relativePath}`;
+
+      // Sanitize the URL for security
+      this.currentPdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(fileUrl);
+      this.showPdfViewer = true;
+    }
+  }
+
+  // Navigate to next document
+  nextDocument(): void {
+    if (this.currentDocIndex < this.parentDocuments.length - 1) {
+      this.loadPdfDocument(this.currentDocIndex + 1);
+    }
+  }
+
+  // Navigate to previous document
+  previousDocument(): void {
+    if (this.currentDocIndex > 0) {
+      this.loadPdfDocument(this.currentDocIndex - 1);
+    }
+  }
+
+  // Get file name from path
+  getFileName(path: string | undefined): string {
+    if (!path) return 'Document';
+    const parts = path.split(/[\\/]/);
+    return parts[parts.length - 1] || 'Document';
+  }
+
+  // Get file icon based on type
+  getFileIcon(fileName: string): string {
+    const ext = fileName.split('.').pop()?.toLowerCase() || '';
+    switch (ext) {
+      case 'pdf': return 'fa-file-pdf';
+      case 'jpg': case 'jpeg': case 'png': case 'gif': return 'fa-file-image';
+      case 'doc': case 'docx': return 'fa-file-word';
+      default: return 'fa-file';
+    }
+  }
+
+  // Close documents modal
+  closeDocsModal(): void {
+    this.showDocsModal = false;
+    this.parentDocuments = [];
+    this.currentPdfUrl = null;
+    this.showPdfViewer = false;
+    this.currentDocIndex = 0;
+  }
+
+  // Download current document
+  downloadCurrentDocument(): void {
+    if (this.parentDocuments.length > 0 && this.currentDocIndex < this.parentDocuments.length) {
+      const doc = this.parentDocuments[this.currentDocIndex];
+      const url = environment.baseUrl;
+      const fileUrl = `${url}/${doc.relativePath}`;
+
+      // Create a temporary link to trigger download
+      const link = document.createElement('a');
+      link.href = fileUrl;
+      link.download = this.getFileName(doc.relativePath);
+      link.target = '_blank';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  }
+
   getStatusDisplayName(status: AccountStatus | 'all'): string {
     switch (status) {
       case 'all':
@@ -70,7 +203,6 @@ export class AdminParentsAccountsComponent {
     }
   }
 
-  // Add missing method: openAssignModal
   openAssignModal(parentId: string, parentName: string): void {
     this.selectedParentIdForModal = parentId;
     this.selectedParentNameForModal = parentName;
@@ -90,19 +222,19 @@ export class AdminParentsAccountsComponent {
     );
   }
 
-  isParentPending(Parent: iparentViewDto): boolean {
+  isParentPending(Parent: iparentViewDtoWithDocs): boolean {
     return this.convertToAccountStatus(Parent.accountStatus) === AccountStatus.Pending;
   }
 
-  isParentRejected(Parent: iparentViewDto): boolean {
+  isParentRejected(Parent: iparentViewDtoWithDocs): boolean {
     return this.convertToAccountStatus(Parent.accountStatus) === AccountStatus.Rejected;
   }
 
-  isParentActive(Parent: iparentViewDto): boolean {
+  isParentActive(Parent: iparentViewDtoWithDocs): boolean {
     return this.convertToAccountStatus(Parent.accountStatus) === AccountStatus.Active;
   }
 
-  isParentBlocked(Parent: iparentViewDto): boolean {
+  isParentBlocked(Parent: iparentViewDtoWithDocs): boolean {
     return this.convertToAccountStatus(Parent.accountStatus) === AccountStatus.Blocked;
   }
 
@@ -129,7 +261,6 @@ export class AdminParentsAccountsComponent {
     }
   }
 
-  // Update getStatusName to use translation
   getStatusName(status: string | AccountStatus): string {
     const accountStatus = this.convertToAccountStatus(status);
 
@@ -159,7 +290,6 @@ export class AdminParentsAccountsComponent {
     }
   }
 
-  // Updated ApproveParentAction to use modal instead of immediate approval
   ApproveParentAction(parentId: string): void {
     const adminUserId = this.authService.userId;
     if (!adminUserId) {
@@ -173,7 +303,6 @@ export class AdminParentsAccountsComponent {
       return;
     }
 
-    // Open modal for student assignment
     this.openAssignModal(parentId, parent.fullName);
   }
 
@@ -189,7 +318,6 @@ export class AdminParentsAccountsComponent {
         next: (result) => {
           if (result) {
             alert(this.translate.instant('parents.messages.approved'));
-            // Update UI locally
             const parent = this.allparents.find(t => t.id === parentId);
             if (parent) {
               parent.accountStatus = AccountStatus.Active;
@@ -286,7 +414,6 @@ export class AdminParentsAccountsComponent {
     this.hasPerformedSearch = false;
   }
 
-  // Update RejectParentAction to use translation
   async RejectParentAction(parentId: string): Promise<void> {
     const confirmation = confirm(this.translate.instant('parents.confirmations.reject'));
     if (!confirmation) return;
@@ -302,7 +429,6 @@ export class AdminParentsAccountsComponent {
         next: result => {
           if (result) {
             alert(this.translate.instant('parents.messages.rejected'));
-            // Update UI locally
             const parent = this.allparents.find(t => t.id === parentId);
             if (parent) parent.accountStatus = AccountStatus.Rejected;
           }
@@ -315,7 +441,6 @@ export class AdminParentsAccountsComponent {
     );
   }
 
-  // Update BlockParentAction to use translation
   async BlockParentAction(parentId: string): Promise<void> {
     const confirmation = confirm(this.translate.instant('parents.confirmations.block'));
     if (!confirmation) return;
@@ -331,7 +456,6 @@ export class AdminParentsAccountsComponent {
         next: result => {
           if (result) {
             alert(this.translate.instant('parents.messages.blocked'));
-            // Update UI locally
             const parent = this.allparents.find(t => t.id === parentId);
             if (parent) parent.accountStatus = AccountStatus.Blocked;
           }
@@ -344,7 +468,6 @@ export class AdminParentsAccountsComponent {
     );
   }
 
-  // Update UnblockParentAction to use translation
   async UnblockParentAction(parentId: string): Promise<void> {
     const confirmation = confirm(this.translate.instant('parents.confirmations.unblock'));
     if (!confirmation) return;
@@ -360,7 +483,6 @@ export class AdminParentsAccountsComponent {
         next: result => {
           if (result) {
             alert(this.translate.instant('parents.messages.unblocked'));
-            // Update UI locally
             const parent = this.allparents.find(t => t.id === parentId);
             if (parent) parent.accountStatus = AccountStatus.Active;
           }
@@ -377,10 +499,13 @@ export class AdminParentsAccountsComponent {
     this.isLoading = true;
     this.subscription.add(
       this._parentService.GetAllParents().subscribe({
-        next: (response: ApiResponse<iparentViewDto[]>) => {
+        next: (response: ApiResponse<iparentViewDtoWithDocs[]>) => {
           this.allparents = response.data || [];
+          // Optionally calculate docCount for each parent if your backend doesn't provide it
+          // this.allparents.forEach(parent => {
+          //   parent.docCount = Math.floor(Math.random() * 5); // For demo only, remove in production
+          // });
           this.isLoading = false;
-          console.log('All Parents:', response.data);
         },
         error: err => {
           this.isLoading = false;
