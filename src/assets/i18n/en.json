@@ -1318,6 +1318,12 @@
       "verificationFailed": "Certificate verification failed",
       "archiveSuccess": "Certificate archived successfully",
       "error": "An error occurred. Please try again."
+    
     }
+  }
+  ,
+  "DASHBOARD": {
+    "WELCOME_TITLE": "Welcome to Dashboard",
+    "WELCOME_SUBTITLE": "Manage your system easily and efficiently"
   }
 }
