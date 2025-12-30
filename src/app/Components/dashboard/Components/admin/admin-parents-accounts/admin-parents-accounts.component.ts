@@ -43,7 +43,7 @@ export class AdminParentsAccountsComponent {
   relation: string = 'father';
   isAssigning: boolean = false;
   hasPerformedSearch: boolean = false;
-  
+
   // New properties for documents modal
   parentDocuments: ifileRecord[] = [];
   isLoadingDocs: boolean = false;
@@ -81,7 +81,7 @@ export class AdminParentsAccountsComponent {
     this.parentDocuments = [];
     this.currentDocIndex = 0;
     this.showPdfViewer = false;
-    
+
     // Find parent details
     const parent = this.allparents.find(p => p.appUserId === parentAppUserId);
     if (parent) {
@@ -95,7 +95,7 @@ export class AdminParentsAccountsComponent {
           if (result && result.data && result.data.length > 0) {
             this.parentDocuments = result.data;
             this.showDocsModal = true;
-            
+
             // Load first document automatically
             if (this.parentDocuments.length > 0) {
               this.loadPdfDocument(0);
@@ -120,7 +120,7 @@ export class AdminParentsAccountsComponent {
       const doc = this.parentDocuments[index];
       const url = environment.baseUrl;
       const fileUrl = `${url}/${doc.relativePath}`;
-      
+
       // Sanitize the URL for security
       this.currentPdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(fileUrl);
       this.showPdfViewer = true;
@@ -142,7 +142,7 @@ export class AdminParentsAccountsComponent {
   }
 
   // Get file name from path
-  getFileName(path: string): string {
+  getFileName(path: string | undefined): string {
     if (!path) return 'Document';
     const parts = path.split(/[\\/]/);
     return parts[parts.length - 1] || 'Document';
@@ -174,7 +174,7 @@ export class AdminParentsAccountsComponent {
       const doc = this.parentDocuments[this.currentDocIndex];
       const url = environment.baseUrl;
       const fileUrl = `${url}/${doc.relativePath}`;
-      
+
       // Create a temporary link to trigger download
       const link = document.createElement('a');
       link.href = fileUrl;
