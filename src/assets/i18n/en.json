@@ -119,7 +119,22 @@
     "SELECTED_FILES": "Selected Files",
     "IDENTITY_BADGE": "Identity",
     "NO_DOCUMENTS": "No documents selected",
-    "FILES_COUNT": "Files: {{current}}/{{max}}"
+    "FILES_COUNT": "Files: {{current}}/{{max}}",
+    "GENDER": "Gender",
+    "GENDER_SELECT": "Select Gender",
+    "GENDER_MALE": "Male",
+    "GENDER_FEMALE": "Female",
+    "GENDER_REQUIRED": "required",
+    "BIRTHDAY": "Birthday",
+    "BIRTHDAY_REQUIRED": "Birthday is required",
+    "BIRTHDAY_INVALID_AGE": "Age must be between 5 and 100 years",
+    "BIRTHDAY_FUTURE": "Birthday cannot be in the future",
+    "MOBILE_NUMBER": "Mobile Number",
+    "COUNTRY_CODE_SELECT": "Select Country Code",
+    "COUNTRY_CODE_REQUIRED": "Country code is required when providing mobile number",
+    "MOBILE_PLACEHOLDER": "Enter mobile number",
+    "MOBILE_INVALID": "Invalid mobile number format for selected country",
+    "MOBILE_REQUIRED": "Mobile number is required"
   },
   "DASH": {
     "YEAR_GRADE": "Year/Grade",
@@ -290,49 +305,48 @@
       "FILES_COUNT": "Files: {{current}}/{{max}}"
     },
     "DASH": {
-        "PARENT_MANAGEMENT": " Parent Management ",
-        "STUDENT_PROFILE": "Student Profile",
-        "CHILDREN_OF_PARENT": "Children of Parent",
-        "ADMIN_CERTFICATION_CREATE": "Create Certfications",
-        "STUDENT_CERTFICATION": "Certfications",
-        "ALL_CLASSES": "All Classes",
-        "TITLE": "MyDashboard",
-        "OVERVIEW": "Overview",
-        "ANALYTICS": "Analytics",
-        "SETTINGS": "Settings",
-        "TEACHER": "Teacher",
-        "STUDENT": "Student",
-        "ADMIN": "Admin",
-        "Admin_Teachers_Accounts": "Teachers Accounts",
-        "FOLLOW_CLASSES": "Follow Classes",
-        "MAKE_TESTS": "Create Tests",
-        "ONLINE_CLASSES": "Online Classes",
-        "Admin_Follow_Tests": "Student Tests",
-        "Admin_Students_Accounts": "Students Accounts Acceptance",
-        "TEACHER_OVERVIEW": "Overview",
-        "CREATE_CLASS": "Create Online Classes",
-        "CLASS_LIST": "Online Classes List",
-        "CREATE_QUESTION": "Create Question",
-        "QUESTION_LIST": "Qustions List",
-        "CREATE_TEST": "Create Test",
-        "TEST_LIST": "Tests List",
-        "CLASS_GRADES": "Class Grades",
-        "YEAR_GRADE": "Grades",
-        "ACCEPT_TEACHERS": "Accept Teachers",
-        "ALL_STUDENT_TEST_RESULT": "Student Test Restults",
-        "STUDENT_ACCOUNTS": "Students Accounts",
-        "PARENTS_ACCOUNTS": "Parents Accounts",
-        "TEACHER_ACCOUNTS": "Teachers Accounts",
-        "ADMIN_SUBJECT_MANAGEMENT": "Subject Management",
-        "ADMIN_ANALYTICS": "Analytics",
-        "CURRICULUM": "Curriculums",
-
-        "TESTS": "Tests",
-        "GRADES": "Grades",
-        "SUBTITLE": "Admin",
-        "PROFILE": "Profile",
-        "LOGOUT": "Logout",
-        "CREATE_EMPTY_CLASS": "Create New Class"
+      "PARENT_MANAGEMENT": " Parent Management ",
+      "STUDENT_PROFILE": "Student Profile",
+      "CHILDREN_OF_PARENT": "Children of Parent",
+      "ADMIN_CERTFICATION_CREATE": "Create Certfications",
+      "STUDENT_CERTFICATION": "Certfications",
+      "ALL_CLASSES": "All Classes",
+      "TITLE": "MyDashboard",
+      "OVERVIEW": "Overview",
+      "ANALYTICS": "Analytics",
+      "SETTINGS": "Settings",
+      "TEACHER": "Teacher",
+      "STUDENT": "Student",
+      "ADMIN": "Admin",
+      "Admin_Teachers_Accounts": "Teachers Accounts",
+      "FOLLOW_CLASSES": "Follow Classes",
+      "MAKE_TESTS": "Create Tests",
+      "ONLINE_CLASSES": "Online Classes",
+      "Admin_Follow_Tests": "Student Tests",
+      "Admin_Students_Accounts": "Students Accounts Acceptance",
+      "TEACHER_OVERVIEW": "Overview",
+      "CREATE_CLASS": "Create Online Classes",
+      "CLASS_LIST": "Online Classes List",
+      "CREATE_QUESTION": "Create Question",
+      "QUESTION_LIST": "Qustions List",
+      "CREATE_TEST": "Create Test",
+      "TEST_LIST": "Tests List",
+      "CLASS_GRADES": "Class Grades",
+      "YEAR_GRADE": "Grades",
+      "ACCEPT_TEACHERS": "Accept Teachers",
+      "ALL_STUDENT_TEST_RESULT": "Student Test Restults",
+      "STUDENT_ACCOUNTS": "Students Accounts",
+      "PARENTS_ACCOUNTS": "Parents Accounts",
+      "TEACHER_ACCOUNTS": "Teachers Accounts",
+      "ADMIN_SUBJECT_MANAGEMENT": "Subject Management",
+      "ADMIN_ANALYTICS": "Analytics",
+      "CURRICULUM": "Curriculums",
+      "TESTS": "Tests",
+      "GRADES": "Grades",
+      "SUBTITLE": "Admin",
+      "PROFILE": "Profile",
+      "LOGOUT": "Logout",
+      "CREATE_EMPTY_CLASS": "Create New Class"
     },
     "GRADE": {
       "MANAGEMENT": "Grade Management",
@@ -470,7 +484,6 @@
       "DELETE": "Delete",
       "DIFF": "Difficulty"
     },
-    
     "TEACHER_CLASSES": {
       "TITLE": "My Classes and Students",
       "STUDENT_NAME": "Student Name",
@@ -556,38 +569,37 @@
       }
     },
     "CLASSAPPOINTMENT": {
-    "SCHEDULED_TITLE": "Scheduled Class Appointments",
-    "TABLE": {
-      "GRADE": "Grade",
-      "SECTION": "Section",
-      "SUBJECT": "Subject",
-      "CLASS": "Classes",
-      "MEETING": "Meeting",
-      "START_TIME": "Start Time",
-      "DURATION": "Duration",
-      "STATUS": "Status",
-      "ACTION": "Action",
-      "JOIN": "Join",
-      "ENDED": "Ended",
-      "ONGOING": "Ongoing",
-      "END": "End",
-      "NO_CLASSES": "No class appointments available"
-    }
-  }
-  ,
-  "CERTIFICATION_STUDENT": {
-    "CERTIFICATE_NUMBER": "Certfications Number",
-    "ACADEMIC_YEAR": "Academic Year",
-    "MY_CERTIFICATES": "My Certificates",
-    "LOADING": "Loading certificates...",
-    "NO_CERTIFICATES": "No certificates found",
-    "NO_CERTIFICATES_DESC": "Certificates will appear once generated by your administrator.",
-    "GPA": "GPA",
-    "ISSUED": "Issued",
-    "TEMPLATE": "Template",
-    "FILE_SIZE": "File Size",
-    "VIEW": "View",
-    "DOWNLOAD": "Download"
+      "SCHEDULED_TITLE": "Scheduled Class Appointments",
+      "TABLE": {
+        "GRADE": "Grade",
+        "SECTION": "Section",
+        "SUBJECT": "Subject",
+        "CLASS": "Classes",
+        "MEETING": "Meeting",
+        "START_TIME": "Start Time",
+        "DURATION": "Duration",
+        "STATUS": "Status",
+        "ACTION": "Action",
+        "JOIN": "Join",
+        "ENDED": "Ended",
+        "ONGOING": "Ongoing",
+        "END": "End",
+        "NO_CLASSES": "No class appointments available"
+      }
+    },
+    "CERTIFICATION_STUDENT": {
+      "CERTIFICATE_NUMBER": "Certfications Number",
+      "ACADEMIC_YEAR": "Academic Year",
+      "MY_CERTIFICATES": "My Certificates",
+      "LOADING": "Loading certificates...",
+      "NO_CERTIFICATES": "No certificates found",
+      "NO_CERTIFICATES_DESC": "Certificates will appear once generated by your administrator.",
+      "GPA": "GPA",
+      "ISSUED": "Issued",
+      "TEMPLATE": "Template",
+      "FILE_SIZE": "File Size",
+      "VIEW": "View",
+      "DOWNLOAD": "Download"
     },
     "certificate": {
       "title": "Certificate Generation",
@@ -606,334 +618,322 @@
       "studentId": "Student ID"
     },
     "curriculum": {
-    "title": "Curriculum Management",
-    "subtitle": "Manage and organize your school curricula efficiently",
-    
-    "stats": {
-      "total": "Total Curricula",
-      "showing": "Showing",
-      "students": "Students",
-      "teachers": "Teachers",
-      "grades": "Grades"
-    },
-    
-    "search": {
-      "placeholder": "Search curricula by name, code, or description...",
-      "clear": "Clear",
-      "noResults": "No matching curricula found",
-      "tryDifferent": "Try a different search term"
-    },
-    
-    "sort": {
-      "name": "Sort by Name",
-      "code": "Sort by Code"
-    },
-    
-    "actions": {
-      "addNew": "Add New Curriculum",
-      "refresh": "Refresh",
-      "createFirst": "Create Curriculum",
-      "viewDetails": "View Details",
-      "edit": "Edit",
-      "checkStudents": "Check Students",
-      "checkTeachers": "Check Teachers",
-      "delete": "Delete"
-    },
-    
-    "loading": "Loading curricula...",
-    
-    "empty": {
-      "title": "No Curricula Found",
-      "subtitle": "Get started by creating your first curriculum."
-    },
-    
-    "noDescription": "No description",
-    "created": "Created",
-    
-    "tabs": {
-      "code": "Code",
-      "name": "Name",
-      "description": "Description",
-      "actions": "Actions",
-      "grades": "Grades",
-      "students": "Students",
-      "teachers": "Teachers",
-      "studentName": "Name",
-      "email": "Email",
-      "class": "Class",
-      "status": "Status",
-      "classes": "classes",
-      "subjects": "subjects",
+      "title": "Curriculum Management",
+      "subtitle": "Manage and organize your school curricula efficiently",
+      "stats": {
+        "total": "Total Curricula",
+        "showing": "Showing",
+        "students": "Students",
+        "teachers": "Teachers",
+        "grades": "Grades"
+      },
+      "search": {
+        "placeholder": "Search curricula by name, code, or description...",
+        "clear": "Clear",
+        "noResults": "No matching curricula found",
+        "tryDifferent": "Try a different search term"
+      },
+      "sort": {
+        "name": "Sort by Name",
+        "code": "Sort by Code"
+      },
+      "actions": {
+        "addNew": "Add New Curriculum",
+        "refresh": "Refresh",
+        "createFirst": "Create Curriculum",
+        "viewDetails": "View Details",
+        "edit": "Edit",
+        "checkStudents": "Check Students",
+        "checkTeachers": "Check Teachers",
+        "delete": "Delete"
+      },
+      "loading": "Loading curricula...",
       "empty": {
-        "grades": "No grades assigned to this curriculum",
-        "students": "No students enrolled in this curriculum",
-        "teachers": "No teachers specialized in this curriculum"
+        "title": "No Curricula Found",
+        "subtitle": "Get started by creating your first curriculum."
+      },
+      "noDescription": "No description",
+      "created": "Created",
+      "tabs": {
+        "code": "Code",
+        "name": "Name",
+        "description": "Description",
+        "actions": "Actions",
+        "grades": "Grades",
+        "students": "Students",
+        "teachers": "Teachers",
+        "studentName": "Name",
+        "email": "Email",
+        "class": "Class",
+        "status": "Status",
+        "classes": "classes",
+        "subjects": "subjects",
+        "empty": {
+          "grades": "No grades assigned to this curriculum",
+          "students": "No students enrolled in this curriculum",
+          "teachers": "No teachers specialized in this curriculum"
+        }
+      },
+      "form": {
+        "name": {
+          "label": "Curriculum Name",
+          "placeholder": "Enter curriculum name",
+          "hint": "A descriptive name for the curriculum"
+        },
+        "code": {
+          "label": "Curriculum Code",
+          "placeholder": "e.g., MATH-101",
+          "hint": "Unique code for identification"
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Enter curriculum description (optional)"
+        },
+        "errors": {
+          "required": "This field is required",
+          "maxLength": "Maximum length is {{max}} characters",
+          "characters": "characters"
+        }
+      },
+      "modal": {
+        "create": {
+          "title": "Create New Curriculum",
+          "action": "Create Curriculum",
+          "creating": "Creating..."
+        },
+        "edit": {
+          "title": "Edit Curriculum",
+          "action": "Update Curriculum",
+          "updating": "Updating...",
+          "lastUpdated": "Last updated:",
+          "never": "Never"
+        },
+        "details": {
+          "title": "Curriculum Details",
+          "loading": "Loading details...",
+          "created": "Created",
+          "updated": "Last Updated"
+        },
+        "delete": {
+          "title": "Confirm Deletion",
+          "warning": "Warning! This action cannot be undone.",
+          "message": "Are you sure you want to delete the curriculum \"{{name}}\" ({{code}})?",
+          "has": "This curriculum has",
+          "action": "Delete Permanently",
+          "deleting": "Deleting..."
+        },
+        "cancel": "Cancel",
+        "close": "Close"
+      },
+      "check": {
+        "studentsTitle": "Check Students",
+        "teachersTitle": "Check Teachers",
+        "hasStudents": "This curriculum has {{count}} student(s)",
+        "hasNoStudents": "No students enrolled in this curriculum",
+        "hasTeachers": "This curriculum has {{count}} teacher(s)",
+        "hasNoTeachers": "No teachers specialized in this curriculum"
       }
     },
-    
-    "form": {
-      "name": {
-        "label": "Curriculum Name",
-        "placeholder": "Enter curriculum name",
-        "hint": "A descriptive name for the curriculum"
-      },
-      "code": {
-        "label": "Curriculum Code",
-        "placeholder": "e.g., MATH-101",
-        "hint": "Unique code for identification"
-      },
-      "description": {
-        "label": "Description",
-        "placeholder": "Enter curriculum description (optional)"
-      },
-      "errors": {
-        "required": "This field is required",
-        "maxLength": "Maximum length is {{max}} characters",
-        "characters": "characters"
-      }
-    },
-    
-    "modal": {
-      "create": {
-        "title": "Create New Curriculum",
-        "action": "Create Curriculum",
-        "creating": "Creating..."
-      },
-      "edit": {
-        "title": "Edit Curriculum",
-        "action": "Update Curriculum",
-        "updating": "Updating...",
-        "lastUpdated": "Last updated:",
-        "never": "Never"
-      },
-      "details": {
-        "title": "Curriculum Details",
-        "loading": "Loading details...",
-        "created": "Created",
-        "updated": "Last Updated"
-      },
-      "delete": {
-        "title": "Confirm Deletion",
-        "warning": "Warning! This action cannot be undone.",
-        "message": "Are you sure you want to delete the curriculum \"{{name}}\" ({{code}})?",
-        "has": "This curriculum has",
-        "action": "Delete Permanently",
-        "deleting": "Deleting..."
-      },
-      "cancel": "Cancel",
-      "close": "Close"
-    },
-    
-    "check": {
-      "studentsTitle": "Check Students",
-      "teachersTitle": "Check Teachers",
-      "hasStudents": "This curriculum has {{count}} student(s)",
-      "hasNoStudents": "No students enrolled in this curriculum",
-      "hasTeachers": "This curriculum has {{count}} teacher(s)",
-      "hasNoTeachers": "No teachers specialized in this curriculum"
-    }
-  },
-  "teachers": {
-    "management": "Teachers Accounts Management",
-    "allTeachers": "All Teachers",
-    "pending": "Pending",
-    "active": "Active",
-    "rejected": "Rejected",
-    "blocked": "Blocked",
-    "loading": "Loading",
-    "loadingTeachers": "Loading teachers data...",
-    "noTeachers": "No registered teachers",
-    "noTeachersInCategory": "No teachers in this category",
-    "filterByStatus": "Filter by status",
-    "teacherInfo": "Teacher Information",
-    "email": "Email",
-    "phone": "Phone",
-    "subjects": "Subjects",
-    "classes": "Classes",
-    "moreSubjects": "+{{count}} more subjects",
-    "moreClasses": "+{{count}} more classes",
-    "actions": "Actions",
-    "approve": "Approve",
-    "reject": "Reject",
-    "block": "Block",
-    "unblock": "Unblock",
-    "unknown": "Unknown",
-    "status": {
-      "pending": "Pending",
-      "active": "Active",
-      "rejected": "Rejected",
-      "blocked": "Blocked"
-    },
-    "statusDisplay": {
-      "all": "All",
-      "pending": "Pending",
-      "active": "Active",
-      "rejected": "Rejected",
-      "blocked": "Blocked"
-    },
-    "confirmations": {
-      "approve": "Are you sure you want to approve this teacher?",
-      "reject": "Are you sure you want to reject this teacher?",
-      "block": "Are you sure you want to block this teacher?",
-      "unblock": "Are you sure you want to unblock this teacher?"
-    },
-    "messages": {
-      "approved": "Teacher approved successfully",
-      "rejected": "Teacher rejected successfully",
-      "blocked": "Teacher blocked successfully",
-      "unblocked": "Teacher unblocked successfully",
-      "error": "An error occurred while processing the request",
-      "adminNotFound": "Admin ID not found. Please login again.",
-      "enterSubject": "Please enter subject name",
-      "loadError": "Error loading teachers for subject",
-      "approveFailed": "Failed to approve teacher",
-      "rejectFailed": "Failed to reject teacher",
-      "blockFailed": "Failed to block teacher",
-      "unblockFailed": "Failed to unblock teacher"
-    }
-  },
-  "parents": {
-    "management": "Parents Accounts Management",
-    "allParents": "All Parents",
-    "pending": "Pending",
-    "active": "Active",
-    "rejected": "Rejected",
-    "blocked": "Blocked",
-    "loading": "Loading",
-    "loadingParents": "Loading parents data...",
-    "noParents": "No registered parents",
-    "noParentsInCategory": "No parents in this category",
-    "assignStudent": "Assign Student",
-    "approve": "Approve",
-    "reject": "Reject",
-    "block": "Block",
-    "unblock": "Unblock",
-    "status": {
-      "pending": "Pending",
-      "active": "Active",
-      "rejected": "Rejected",
-      "blocked": "Blocked"
-    },
-    "statusDisplay": {
-      "all": "All",
-      "pending": "Pending",
-      "active": "Active",
-      "rejected": "Rejected",
-      "blocked": "Blocked"
-    },
-    "relations": {
-      "father": "Father",
-      "mother": "Mother",
-      "guardian": "Guardian",
-      "other": "Other"
-    },
-    "modal": {
-      "assignStudent": "Assign Student to Parent",
-      "parentName": "Parent Name",
-      "searchStudent": "Search for a student",
-      "searchPlaceholder": "Type student name, email, ID number or passport...",
-      "searching": "Searching for students...",
-      "searchResults": "Search Results",
-      "noResults": "No matching students found",
-      "selectedStudent": "Selected Student",
-      "name": "Name",
-      "email": "Email",
-      "idNumber": "ID Number",
-      "status": "Status",
-      "action": "Action",
-      "alreadyAssigned": "Already Assigned",
-      "selected": "Selected",
-      "select": "Select",
-      "relation": "Relation",
-      "iqamaNumber": "Iqama Number",
-      "passportNumber": "Passport Number",
-      "assign": "Assign",
-      "assigning": "Assigning...",
-      "minChars": "Type at least 2 characters to search",
-      "accountNotFound": "Account not found"
-    },
-    "messages": {
-      "approved": "Parent approved successfully",
-      "rejected": "Parent rejected successfully",
-      "blocked": "Parent blocked successfully",
-      "unblocked": "Parent unblocked successfully",
-      "error": "An error occurred while processing the request",
-      "adminNotFound": "Admin ID not found. Please login again.",
-      "assignSuccess": "Student assigned successfully",
-      "assignFailed": "Failed to assign student",
-      "alreadyAssigned": "Student is already assigned to this parent",
-      "accountNotFound": "Account not found",
-      "selectStudent": "Please select a student",
-      "loadError": "Error loading accounts"
-    },
-    "confirmations": {
-      "approve": "Are you sure you want to approve this parent?",
-      "reject": "Are you sure you want to reject this parent?",
-      "block": "Are you sure you want to block this parent?",
-      "unblock": "Are you sure you want to unblock this parent?",
-      "assignStudent": "Are you sure you want to assign this student to this parent?"
-    }
-  },
-  "common": {
-    "close": "Close",
-    "cancel": "Cancel",
-    "search": "Search",
-    "loading": "Loading"
-  },
-  "students": {
-    "management": "Students Accounts Management",
-    "allStudents": "All Students",
-    "pending": "Pending",
-    "active": "Active",
-    "rejected": "Rejected",
-    "blocked": "Blocked",
-    "loading": "Loading",
-    "loadingStudents": "Loading students data...",
-    "noStudents": "No registered students",
-    "noStudentsInCategory": "No students in this category",
-    "approve": "Approve",
-    "reject": "Reject",
-    "block": "Block",
-    "unblock": "Unblock",
-    "unknown": "Unknown",
-    "age": "years",
-    "parents": "parents",
-    "notSpecified": "Not specified",
-    "status": {
+    "teachers": {
+      "management": "Teachers Accounts Management",
+      "allTeachers": "All Teachers",
       "pending": "Pending",
       "active": "Active",
       "rejected": "Rejected",
       "blocked": "Blocked",
-      "unknown": "Unknown"
+      "loading": "Loading",
+      "loadingTeachers": "Loading teachers data...",
+      "noTeachers": "No registered teachers",
+      "noTeachersInCategory": "No teachers in this category",
+      "filterByStatus": "Filter by status",
+      "teacherInfo": "Teacher Information",
+      "email": "Email",
+      "phone": "Phone",
+      "subjects": "Subjects",
+      "classes": "Classes",
+      "moreSubjects": "+{{count}} more subjects",
+      "moreClasses": "+{{count}} more classes",
+      "actions": "Actions",
+      "approve": "Approve",
+      "reject": "Reject",
+      "block": "Block",
+      "unblock": "Unblock",
+      "unknown": "Unknown",
+      "status": {
+        "pending": "Pending",
+        "active": "Active",
+        "rejected": "Rejected",
+        "blocked": "Blocked"
+      },
+      "statusDisplay": {
+        "all": "All",
+        "pending": "Pending",
+        "active": "Active",
+        "rejected": "Rejected",
+        "blocked": "Blocked"
+      },
+      "confirmations": {
+        "approve": "Are you sure you want to approve this teacher?",
+        "reject": "Are you sure you want to reject this teacher?",
+        "block": "Are you sure you want to block this teacher?",
+        "unblock": "Are you sure you want to unblock this teacher?"
+      },
+      "messages": {
+        "approved": "Teacher approved successfully",
+        "rejected": "Teacher rejected successfully",
+        "blocked": "Teacher blocked successfully",
+        "unblocked": "Teacher unblocked successfully",
+        "error": "An error occurred while processing the request",
+        "adminNotFound": "Admin ID not found. Please login again.",
+        "enterSubject": "Please enter subject name",
+        "loadError": "Error loading teachers for subject",
+        "approveFailed": "Failed to approve teacher",
+        "rejectFailed": "Failed to reject teacher",
+        "blockFailed": "Failed to block teacher",
+        "unblockFailed": "Failed to unblock teacher"
+      }
     },
-    "statusDisplay": {
-      "all": "All",
+    "parents": {
+      "management": "Parents Accounts Management",
+      "allParents": "All Parents",
       "pending": "Pending",
       "active": "Active",
       "rejected": "Rejected",
-      "blocked": "Blocked"
+      "blocked": "Blocked",
+      "loading": "Loading",
+      "loadingParents": "Loading parents data...",
+      "noParents": "No registered parents",
+      "noParentsInCategory": "No parents in this category",
+      "assignStudent": "Assign Student",
+      "approve": "Approve",
+      "reject": "Reject",
+      "block": "Block",
+      "unblock": "Unblock",
+      "status": {
+        "pending": "Pending",
+        "active": "Active",
+        "rejected": "Rejected",
+        "blocked": "Blocked"
+      },
+      "statusDisplay": {
+        "all": "All",
+        "pending": "Pending",
+        "active": "Active",
+        "rejected": "Rejected",
+        "blocked": "Blocked"
+      },
+      "relations": {
+        "father": "Father",
+        "mother": "Mother",
+        "guardian": "Guardian",
+        "other": "Other"
+      },
+      "modal": {
+        "assignStudent": "Assign Student to Parent",
+        "parentName": "Parent Name",
+        "searchStudent": "Search for a student",
+        "searchPlaceholder": "Type student name, email, ID number or passport...",
+        "searching": "Searching for students...",
+        "searchResults": "Search Results",
+        "noResults": "No matching students found",
+        "selectedStudent": "Selected Student",
+        "name": "Name",
+        "email": "Email",
+        "idNumber": "ID Number",
+        "status": "Status",
+        "action": "Action",
+        "alreadyAssigned": "Already Assigned",
+        "selected": "Selected",
+        "select": "Select",
+        "relation": "Relation",
+        "iqamaNumber": "Iqama Number",
+        "passportNumber": "Passport Number",
+        "assign": "Assign",
+        "assigning": "Assigning...",
+        "minChars": "Type at least 2 characters to search",
+        "accountNotFound": "Account not found"
+      },
+      "messages": {
+        "approved": "Parent approved successfully",
+        "rejected": "Parent rejected successfully",
+        "blocked": "Parent blocked successfully",
+        "unblocked": "Parent unblocked successfully",
+        "error": "An error occurred while processing the request",
+        "adminNotFound": "Admin ID not found. Please login again.",
+        "assignSuccess": "Student assigned successfully",
+        "assignFailed": "Failed to assign student",
+        "alreadyAssigned": "Student is already assigned to this parent",
+        "accountNotFound": "Account not found",
+        "selectStudent": "Please select a student",
+        "loadError": "Error loading accounts"
+      },
+      "confirmations": {
+        "approve": "Are you sure you want to approve this parent?",
+        "reject": "Are you sure you want to reject this parent?",
+        "block": "Are you sure you want to block this parent?",
+        "unblock": "Are you sure you want to unblock this parent?",
+        "assignStudent": "Are you sure you want to assign this student to this parent?"
+      }
     },
-    "messages": {
-      "approved": "Student approved successfully",
-      "rejected": "Student rejected successfully",
-      "blocked": "Student blocked successfully",
-      "unblocked": "Student unblocked successfully",
-      "error": "An error occurred while processing the request",
-      "adminNotFound": "Admin ID not found. Please login again.",
-      "loadError": "Error loading accounts",
-      "approveFailed": "Failed to approve student",
-      "rejectFailed": "Failed to reject student",
-      "blockFailed": "Failed to block student",
-      "unblockFailed": "Failed to unblock student"
+    "common": {
+      "close": "Close",
+      "cancel": "Cancel",
+      "search": "Search",
+      "loading": "Loading"
     },
-    "confirmations": {
-      "approve": "Are you sure you want to approve this student?",
-      "reject": "Are you sure you want to reject this student?",
-      "block": "Are you sure you want to block this student?",
-      "unblock": "Are you sure you want to unblock this student?"
-    }
-  }
-    ,
+    "students": {
+      "management": "Students Accounts Management",
+      "allStudents": "All Students",
+      "pending": "Pending",
+      "active": "Active",
+      "rejected": "Rejected",
+      "blocked": "Blocked",
+      "loading": "Loading",
+      "loadingStudents": "Loading students data...",
+      "noStudents": "No registered students",
+      "noStudentsInCategory": "No students in this category",
+      "approve": "Approve",
+      "reject": "Reject",
+      "block": "Block",
+      "unblock": "Unblock",
+      "unknown": "Unknown",
+      "age": "years",
+      "parents": "parents",
+      "notSpecified": "Not specified",
+      "status": {
+        "pending": "Pending",
+        "active": "Active",
+        "rejected": "Rejected",
+        "blocked": "Blocked",
+        "unknown": "Unknown"
+      },
+      "statusDisplay": {
+        "all": "All",
+        "pending": "Pending",
+        "active": "Active",
+        "rejected": "Rejected",
+        "blocked": "Blocked"
+      },
+      "messages": {
+        "approved": "Student approved successfully",
+        "rejected": "Student rejected successfully",
+        "blocked": "Student blocked successfully",
+        "unblocked": "Student unblocked successfully",
+        "error": "An error occurred while processing the request",
+        "adminNotFound": "Admin ID not found. Please login again.",
+        "loadError": "Error loading accounts",
+        "approveFailed": "Failed to approve student",
+        "rejectFailed": "Failed to reject student",
+        "blockFailed": "Failed to block student",
+        "unblockFailed": "Failed to unblock student"
+      },
+      "confirmations": {
+        "approve": "Are you sure you want to approve this student?",
+        "reject": "Are you sure you want to reject this student?",
+        "block": "Are you sure you want to block this student?",
+        "unblock": "Are you sure you want to unblock this student?"
+      }
+    },
     "NAV": {
       "LOGO": "LOGO",
       "HOME": "Home",
@@ -957,40 +957,40 @@
       "FOLLOW": "Follow Us"
     },
     "EXAM": {
-        "HEADER": {
-            "TITLE": "Subject Name",
-            "TIME": "Time",
-            "FROM": "From",
-            "TO": "To"
-        },
-        "QUESTION_TYPES": {
-            "CHOICES": "Choices",
-            "CONNECTION": "Matching",
-            "COMPLETE": "Complete the sentence",
-            "TRUE_FALSE": "True or False",
-            "COLUMN_A": "Column A",
-            "COLUMN_B": "Column B",
-            "WRITE_ANSWER": "Type your answer here..."
-        },
-        "close": "Close"
-      }
-    },
-    "messages": {
-      "loadingFailed": "Failed to load data",
-      "errorLoadingParents": "Error loading parents:",
-      "errorLoadingParentDetails": "Error loading parent details:",
-      "errorLoadingChildren": "Error loading children for parent",
-      "errorLoadingAvailableStudents": "Error loading available students:",
-      "errorAddingStudent": "Error adding student:",
-      "errorRemovingStudent": "Error removing student:",
-      "addStudentSuccess": "Student added successfully!",
-      "addStudentFailed": "Failed to add student",
-      "removeStudentSuccess": "Student removed successfully!",
-      "removeStudentFailed": "Failed to remove student",
-      "errorOccurred": "An error occurred",
-      "confirmRemove": "Are you sure you want to remove this student from the parent?",
-      "fillAllFields": "Please fill all required fields"
-    },
+      "HEADER": {
+        "TITLE": "Subject Name",
+        "TIME": "Time",
+        "FROM": "From",
+        "TO": "To"
+      },
+      "QUESTION_TYPES": {
+        "CHOICES": "Choices",
+        "CONNECTION": "Matching",
+        "COMPLETE": "Complete the sentence",
+        "TRUE_FALSE": "True or False",
+        "COLUMN_A": "Column A",
+        "COLUMN_B": "Column B",
+        "WRITE_ANSWER": "Type your answer here..."
+      },
+      "close": "Close"
+    }
+  },
+  "messages": {
+    "loadingFailed": "Failed to load data",
+    "errorLoadingParents": "Error loading parents:",
+    "errorLoadingParentDetails": "Error loading parent details:",
+    "errorLoadingChildren": "Error loading children for parent",
+    "errorLoadingAvailableStudents": "Error loading available students:",
+    "errorAddingStudent": "Error adding student:",
+    "errorRemovingStudent": "Error removing student:",
+    "addStudentSuccess": "Student added successfully!",
+    "addStudentFailed": "Failed to add student",
+    "removeStudentSuccess": "Student removed successfully!",
+    "removeStudentFailed": "Failed to remove student",
+    "errorOccurred": "An error occurred",
+    "confirmRemove": "Are you sure you want to remove this student from the parent?",
+    "fillAllFields": "Please fill all required fields"
+  },
   "SUBJECTS": {
     "TITLE": "Subjects Management",
     "CREATE_SUBJECT": "Create Subject",
@@ -1017,23 +1017,22 @@
     "CLOSE": "Close",
     "ASSIGN": "Assign",
     "UNASSIGN": "Unassign",
-        "BUTTONS": {
-            "SUBMIT": "Submit Exam",
-            "SUBMITTING": "Submitting...",
-            "ANSWER_ALL": "Answer all questions"
-        },
-        "MESSAGES": {
-            "SHOULD_ANSWER_ALL": "You must answer all questions before submitting.",
-            "SUCCESS": "Exam submitted successfully!",
-            "ERROR": "Failed to submit exam."
-        },
-        "GENERAL": {
-            "TRUE": "True",
-            "FALSE": "False"
-        }
+    "BUTTONS": {
+      "SUBMIT": "Submit Exam",
+      "SUBMITTING": "Submitting...",
+      "ANSWER_ALL": "Answer all questions"
     },
-    
-    "parentManagement2": {
+    "MESSAGES": {
+      "SHOULD_ANSWER_ALL": "You must answer all questions before submitting.",
+      "SUCCESS": "Exam submitted successfully!",
+      "ERROR": "Failed to submit exam."
+    },
+    "GENERAL": {
+      "TRUE": "True",
+      "FALSE": "False"
+    }
+  },
+  "parentManagement2": {
     "search": {
       "placeholder": "Search parent by name, email or phone...",
       "searchingFor": "Searching for"
@@ -1114,9 +1113,8 @@
     "optimal": "Optimal",
     "good": "Good",
     "needsImprovement": "Needs Improvement"
-        },
-    
-    "parentManagement": {
+  },
+  "parentManagement": {
     "header": {
       "title": "Parent Management",
       "description": "Manage parent accounts and their associated students in the system",
@@ -1232,13 +1230,11 @@
     "subtitle": "Generate, manage, and verify academic certificates with ease",
     "generateClassWide": "Create Certificates For Class",
     "downloadClassWide": "Download Certificates For Class",
-    
     "tabs": {
       "generate": "Generate Certificate",
       "bulk": "Bulk Operations",
       "search": "Search & Verify"
     },
-    
     "filterOptions": "Filter Options",
     "filterDescription": "Filter students by curriculum, grade, and class to generate certificates",
     "filterByCurriculum": "Filter by Curriculum",
@@ -1250,41 +1246,34 @@
     "studentPlaceholder": "Select a student...",
     "noClassesAvailable": "No classes available",
     "noClassesForFilters": "No classes match your filters. Please adjust your selection.",
-    
     "classWideOperations": "Class-wide Operations",
     "classWideDescription": "Apply certificate settings to all students in the selected class",
     "classWideCertificateType": "Certificate Type (All Students)",
     "classWideAcademicYear": "Academic Year (All Students)",
     "students": "students",
     "student": "student",
-    
     "classWideActions": {
       "generate": "Generate All Certificates",
       "download": "Download All as ZIP",
       "generating": "Generating certificates...",
       "downloading": "Downloading ZIP..."
     },
-
     "singleStudentOperations": "Single Student Operations",
     "searchStudent": "Search Student",
     "searchStudentPlaceholder": "Type student name...",
-    
     "generatePdf": "Generate PDF",
     "generateAndSave": "Generate & Save",
     "saveOnly": "Save to Database Only",
     "generating": "Generating...",
     "saving": "Saving...",
-
     "studentsInClass": "Students in Class",
     "studentId": "Student ID",
-    
     "bulkGeneration": "Bulk Certificate Generation",
     "bulkDescription": "Generate certificates for an entire class at once",
     "bulkGenerate": "Generate Bulk Certificates",
     "bulkGenerating": "Generating bulk certificates...",
     "downloadBulk": "Download as ZIP",
     "downloading": "Preparing download...",
-    
     "searchCertificates": "Search Certificates",
     "studentName": "Student Name",
     "studentNamePlaceholder": "Enter student name...",
@@ -1299,7 +1288,6 @@
     "search": "Search",
     "searching": "Searching...",
     "clear": "Clear Filters",
-    
     "searchResults": "Search Results",
     "type": "Type",
     "issuedDate": "Issued Date",
@@ -1308,20 +1296,17 @@
     "view": "View",
     "download": "Download",
     "archive": "Archive",
-    
     "verifyCertificate": "Verify Certificate",
     "certificateId": "Certificate ID",
     "certificateIdPlaceholder": "Enter certificate ID to verify...",
     "verifiedBy": "Verified By",
     "verifierName": "Enter verifier name...",
     "verify": "Verify Certificate",
-    
     "statuses": {
       "verified": "Verified",
       "pending": "Pending",
       "expired": "Expired"
     },
-    
     "messages": {
       "generatingClassWide": "Generating certificates for all students...",
       "downloadingClassWide": "Preparing ZIP download...",
@@ -1335,4 +1320,4 @@
       "error": "An error occurred. Please try again."
     }
   }
-  }
+}

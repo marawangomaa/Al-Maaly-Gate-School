@@ -119,7 +119,22 @@
     "SELECTED_FILES": "الملفات المحددة",
     "IDENTITY_BADGE": "هوية",
     "NO_DOCUMENTS": "لا توجد مستندات محددة",
-    "FILES_COUNT": "الملفات: {{current}}/{{max}}"
+    "FILES_COUNT": "الملفات: {{current}}/{{max}}",
+    "GENDER": "النوع",
+    "GENDER_SELECT": "اختر النوع",
+    "GENDER_MALE": "ذكر",
+    "GENDER_FEMALE": "أنثى",
+    "GENDER_REQUIRED": "هذا الحقل مطلوب",
+    "BIRTHDAY": "تاريخ الميلاد",
+    "BIRTHDAY_REQUIRED": "تاريخ الميلاد مطلوب",
+    "BIRTHDAY_INVALID_AGE": "يجب أن يكون العمر بين 5 و 100 سنة",
+    "BIRTHDAY_FUTURE": "لا يمكن أن يكون تاريخ الميلاد في المستقبل",
+    "MOBILE_NUMBER": "رقم الهاتف المحمول",
+    "COUNTRY_CODE_SELECT": "اختر رمز الدولة",
+    "COUNTRY_CODE_REQUIRED": "رمز الدولة مطلوب عند إدخال رقم الهاتف",
+    "MOBILE_PLACEHOLDER": "أدخل رقم الهاتف المحمول",
+    "MOBILE_INVALID": "تنسيق رقم الهاتف غير صالح للدولة المحددة",
+    "MOBILE_REQUIRED": "رقم الهاتف مطلوب"
   },
   "DASH": {
     "PARENT_MANAGEMENT": "إدارة أولياء الأمور",
@@ -154,7 +169,6 @@
     "ADMIN_SUBJECT_MANAGEMENT": "ادارة المواد",
     "ADMIN_ANALYTICS": "تحليلات",
     "CURRICULUM": "المسارات",
-
     "Admin_Follow_Tests": "متابعة نتائج الاختبارات",
     "Admin_Students_Accounts": "حسابات الطلاب",
     "PARENTS_ACCOUNTS": "حسابات أولياء الأمور",
@@ -245,30 +259,28 @@
     "ALERTS": {
       "DELETE_WARNING": "تحذير! لا يمكن التراجع عن هذا الإجراء."
     }
-  }
-    ,
-    "TEACHER_OVERVIEW": {
-      "TITLE": "لوحة تحكم المعلم",
-      "LOADING": "جاري التحميل...",
-      "NO_NAME": "لا يوجد اسم",
-      "NO_EMAIL": "لا يوجد بريد إلكتروني",
-      "NO_PHONE": "لا يوجد رقم هاتف",
-      "NO_SUBJECTS": "لا توجد مواد مسندة",
-      "NO_CLASSES": "لا توجد فصول مسندة",
-      "NO_TEACHER_DATA": "لم يتم العثور على بيانات المعلم",
-      "NO_DATA_MESSAGE": "تعذر تحميل معلومات المعلم. يرجى المحاولة مرة أخرى لاحقًا.",
-      "EMAIL": "البريد الإلكتروني",
-      "CONTACT": "الاتصال",
-      "USER_ID": "معرف المستخدم",
-      "VIEW_DETAILS": "عرض التفاصيل الكاملة",
-      "CLASSES": "الفصول",
-      "SUBJECTS": "المواد",
-      "STUDENTS": "الطلاب",
-      "SPECIALIZATIONS": "التخصصات",
-      "ASSIGNED_SUBJECTS": "المواد المسندة",
-      "ASSIGNED_CLASSES": "الفصول المسندة"
   },
-  
+  "TEACHER_OVERVIEW": {
+    "TITLE": "لوحة تحكم المعلم",
+    "LOADING": "جاري التحميل...",
+    "NO_NAME": "لا يوجد اسم",
+    "NO_EMAIL": "لا يوجد بريد إلكتروني",
+    "NO_PHONE": "لا يوجد رقم هاتف",
+    "NO_SUBJECTS": "لا توجد مواد مسندة",
+    "NO_CLASSES": "لا توجد فصول مسندة",
+    "NO_TEACHER_DATA": "لم يتم العثور على بيانات المعلم",
+    "NO_DATA_MESSAGE": "تعذر تحميل معلومات المعلم. يرجى المحاولة مرة أخرى لاحقًا.",
+    "EMAIL": "البريد الإلكتروني",
+    "CONTACT": "الاتصال",
+    "USER_ID": "معرف المستخدم",
+    "VIEW_DETAILS": "عرض التفاصيل الكاملة",
+    "CLASSES": "الفصول",
+    "SUBJECTS": "المواد",
+    "STUDENTS": "الطلاب",
+    "SPECIALIZATIONS": "التخصصات",
+    "ASSIGNED_SUBJECTS": "المواد المسندة",
+    "ASSIGNED_CLASSES": "الفصول المسندة"
+  },
   "QUESTIONS": {
     "CREATE_TITLE": "إنشاء سؤال",
     "LABEL_QUESTION": "السؤال",
@@ -423,7 +435,6 @@
     "subtitle": "قم بإنشاء وإدارة والتحقق من الشهادات الأكاديمية بسهولة",
     "generateClassWide": "انشاء شهاداة للفصل",
     "downloadClassWide": "تنزيل شهادات الفصل",
-
     "tabs": {
       "generate": "إنشاء شهادة",
       "bulk": "عمليات جماعية",
@@ -460,7 +471,6 @@
     "saveOnly": "حفظ في قاعدة البيانات فقط",
     "generating": "جاري الإنشاء...",
     "saving": "جاري الحفظ...",
-
     "studentsInClass": "الطلاب في الفصل",
     "studentId": "رقم الطالب",
     "bulkGeneration": "إنشاء شهادات جماعي",
@@ -576,12 +586,10 @@
       "delete": "حذف"
     },
     "loading": "جاري تحميل المناهج...",
-
     "empty": {
       "title": "لم يتم العثور على مناهج",
       "subtitle": "ابدأ بإنشاء أول منهج لك."
     },
-
     "noDescription": "لا يوجد وصف",
     "created": "تم الإنشاء",
     "tabs": {
@@ -863,21 +871,8 @@
       "block": "هل أنت متأكد من حظر هذا الطالب؟",
       "unblock": "هل أنت متأكد من فك حظر هذا الطالب؟"
     }
-  }
-    ,
-    "NAV": {
-        "LOGO": "اللوجو",
-        "HOME": "الرئيسية",
-        "LOGIN": "تسجيل الدخول",
-        "REGISTER": "تسجيل",
-        "DASHBOARD": "لوحة التحكم",
-        "PROFILE": "الملف الشخصي",
-        "SETTINGS": "الاعدادات",
-        "LOGOUT": "تسجيل الخروج",
-        "LANGUAGE": "English",
-        "THEMEDARK": "ليلى",
-        "THEMELIGHT": "نهارى"
-  ,"NAV": {
+  },
+  "NAV": {
     "LOGO": "اللوجو",
     "HOME": "الرئيسية",
     "LOGIN": "تسجيل الدخول",
@@ -888,146 +883,158 @@
     "LOGOUT": "تسجيل الخروج",
     "LANGUAGE": "English",
     "THEMEDARK": "ليلى",
-    "THEMELIGHT": "نهارى"
-  },
-  "FOOTER": {
-    "LOGO": "اللوجو",
-    "DISC": "بناء تطبيقات ويب حديثة باستخدام Angular وBootstrap. © {{year}} MyApp. جميع الحقوق محفوظة.",
-    "LINKS": "لينكات سريعه",
-    "HOME": "الرئيسية",
-    "ABOUT": "عن المدرسة",
-    "CONTACT": "تواصل",
-    "FOLLOW": "تابعنا"
-  },
-  "EXAM": {
-    "HEADER": {
-      "TITLE": "اسم المادة",
-      "TIME": "الوقت",
-      "FROM": "من",
-      "TO": "إلى"
+    "THEMELIGHT": "نهارى",
+    "NAV": {
+      "LOGO": "اللوجو",
+      "HOME": "الرئيسية",
+      "LOGIN": "تسجيل الدخول",
+      "REGISTER": "تسجيل",
+      "DASHBOARD": "لوحة التحكم",
+      "PROFILE": "الملف الشخصي",
+      "SETTINGS": "الاعدادات",
+      "LOGOUT": "تسجيل الخروج",
+      "LANGUAGE": "English",
+      "THEMEDARK": "ليلى",
+      "THEMELIGHT": "نهارى"
     },
-    "QUESTION_TYPES": {
-      "CHOICES": "اختيارات",
-      "CONNECTION": "توصيل",
-      "COMPLETE": "إكمال الجملة",
-      "TRUE_FALSE": "صح أو خطأ",
-      "COLUMN_A": "العمود أ",
-      "COLUMN_B": "العمود ب",
-      "WRITE_ANSWER": "اكتب إجابتك هنا..."
+    "FOOTER": {
+      "LOGO": "اللوجو",
+      "DISC": "بناء تطبيقات ويب حديثة باستخدام Angular وBootstrap. © {{year}} MyApp. جميع الحقوق محفوظة.",
+      "LINKS": "لينكات سريعه",
+      "HOME": "الرئيسية",
+      "ABOUT": "عن المدرسة",
+      "CONTACT": "تواصل",
+      "FOLLOW": "تابعنا"
     },
-    "BUTTONS": {
-      "SUBMIT": "إرسال الامتحان",
-      "SUBMITTING": "جارٍ الإرسال...",
-      "ANSWER_ALL": "أجب على كل الأسئلة"
-    },
-    "parentManagement": {
+    "EXAM": {
+      "HEADER": {
+        "TITLE": "اسم المادة",
+        "TIME": "الوقت",
+        "FROM": "من",
+        "TO": "إلى"
+      },
+      "QUESTION_TYPES": {
+        "CHOICES": "اختيارات",
+        "CONNECTION": "توصيل",
+        "COMPLETE": "إكمال الجملة",
+        "TRUE_FALSE": "صح أو خطأ",
+        "COLUMN_A": "العمود أ",
+        "COLUMN_B": "العمود ب",
+        "WRITE_ANSWER": "اكتب إجابتك هنا..."
+      },
+      "BUTTONS": {
+        "SUBMIT": "إرسال الامتحان",
+        "SUBMITTING": "جارٍ الإرسال...",
+        "ANSWER_ALL": "أجب على كل الأسئلة"
+      },
+      "parentManagement": {
         "header": {
-            "title": "إدارة أولياء الأمور",
-            "description": "إدارة حسابات أولياء الأمور والطلاب المرتبطين بهم في النظام",
-            "parentsCount": "ولي أمر",
-            "parentsCount_plural": "أولياء أمور",
-            "refresh": "تحديث"
+          "title": "إدارة أولياء الأمور",
+          "description": "إدارة حسابات أولياء الأمور والطلاب المرتبطين بهم في النظام",
+          "parentsCount": "ولي أمر",
+          "parentsCount_plural": "أولياء أمور",
+          "refresh": "تحديث"
         },
         "loading": {
-            "title": "جاري تحميل بيانات أولياء الأمور",
-            "message": "يرجى الانتظار أثناء جلب أحدث المعلومات"
+          "title": "جاري تحميل بيانات أولياء الأمور",
+          "message": "يرجى الانتظار أثناء جلب أحدث المعلومات"
         },
         "parentCard": {
-            "noPhone": "لا يوجد هاتف",
-            "associatedStudents": "الطلاب المرتبطين",
-            "noStudents": {
-                "title": "لا يوجد طلاب مرتبطين بعد",
-                "button": "إضافة أول طالب"
+          "noPhone": "لا يوجد هاتف",
+          "associatedStudents": "الطلاب المرتبطين",
+          "noStudents": {
+            "title": "لا يوجد طلاب مرتبطين بعد",
+            "button": "إضافة أول طالب"
+          },
+          "addStudent": "إضافة طالب آخر",
+          "removeStudent": "إزالة",
+          "removeTooltip": "إزالة الطالب",
+          "relations": {
+            "father": "أب",
+            "mother": "أم",
+            "guardian": "وصي",
+            "other": "آخر"
+          }
+        },
+        "emptyState": {
+          "title": "لا توجد حسابات أولياء أمور",
+          "description": "لا توجد حسابات أولياء أمور في النظام حتى الآن.",
+          "button": "دعوة أولياء الأمور"
+        },
+        "addStudentModal": {
+          "header": {
+            "title": "إضافة طالب",
+            "description": "ربط طالب بـ"
+          },
+          "form": {
+            "studentSelection": {
+              "label": "اختر الطالب",
+              "placeholder": "اختر طالبًا...",
+              "alreadyLinked": "✓ مرتبط بالفعل",
+              "validationError": "يرجى اختيار طالب"
             },
-            "addStudent": "إضافة طالب آخر",
-            "removeStudent": "إزالة",
-            "removeTooltip": "إزالة الطالب",
-            "relations": {
+            "relation": {
+              "label": "نوع العلاقة",
+              "options": {
                 "father": "أب",
                 "mother": "أم",
                 "guardian": "وصي",
                 "other": "آخر"
+              },
+              "validationError": "يرجى اختيار العلاقة"
             }
-        },
-        "emptyState": {
-            "title": "لا توجد حسابات أولياء أمور",
-            "description": "لا توجد حسابات أولياء أمور في النظام حتى الآن.",
-            "button": "دعوة أولياء الأمور"
-        },
-        "addStudentModal": {
-            "header": {
-                "title": "إضافة طالب",
-                "description": "ربط طالب بـ"
+          },
+          "buttons": {
+            "cancel": "إلغاء",
+            "submit": {
+              "adding": "جاري الإضافة...",
+              "default": "ربط الطالب"
             },
-            "form": {
-                "studentSelection": {
-                    "label": "اختر الطالب",
-                    "placeholder": "اختر طالبًا...",
-                    "alreadyLinked": "✓ مرتبط بالفعل",
-                    "validationError": "يرجى اختيار طالب"
-                },
-                "relation": {
-                    "label": "نوع العلاقة",
-                    "options": {
-                        "father": "أب",
-                        "mother": "أم",
-                        "guardian": "وصي",
-                        "other": "آخر"
-                    },
-                    "validationError": "يرجى اختيار العلاقة"
-                }
-            },
-            "buttons": {
-                "cancel": "إلغاء",
-                "submit": {
-                    "adding": "جاري الإضافة...",
-                    "default": "ربط الطالب"
-                },
-                "close": "إغلاق"
-            }
+            "close": "إغلاق"
+          }
         },
         "messages": {
-            "loadingFailed": "فشل تحميل البيانات",
-            "errorLoadingParents": "خطأ في تحميل أولياء الأمور:",
-            "errorLoadingParentDetails": "خطأ في تحميل تفاصيل الوالد:",
-            "errorLoadingChildren": "خطأ في تحميل الطلاب للوالد",
-            "errorLoadingAvailableStudents": "خطأ في تحميل الطلاب المتاحين:",
-            "errorAddingStudent": "خطأ في إضافة الطالب:",
-            "errorRemovingStudent": "خطأ في إزالة الطالب:",
-            "addStudentSuccess": "تمت إضافة الطالب بنجاح!",
-            "addStudentFailed": "فشل إضافة الطالب",
-            "removeStudentSuccess": "تمت إزالة الطالب بنجاح!",
-            "removeStudentFailed": "فشل إزالة الطالب",
-            "errorOccurred": "حدث خطأ",
-            "confirmRemove": "هل أنت متأكد أنك تريد إزالة هذا الطالب من الوالد؟",
-            "fillAllFields": "يرجى ملء جميع الحقول المطلوبة"
+          "loadingFailed": "فشل تحميل البيانات",
+          "errorLoadingParents": "خطأ في تحميل أولياء الأمور:",
+          "errorLoadingParentDetails": "خطأ في تحميل تفاصيل الوالد:",
+          "errorLoadingChildren": "خطأ في تحميل الطلاب للوالد",
+          "errorLoadingAvailableStudents": "خطأ في تحميل الطلاب المتاحين:",
+          "errorAddingStudent": "خطأ في إضافة الطالب:",
+          "errorRemovingStudent": "خطأ في إزالة الطالب:",
+          "addStudentSuccess": "تمت إضافة الطالب بنجاح!",
+          "addStudentFailed": "فشل إضافة الطالب",
+          "removeStudentSuccess": "تمت إزالة الطالب بنجاح!",
+          "removeStudentFailed": "فشل إزالة الطالب",
+          "errorOccurred": "حدث خطأ",
+          "confirmRemove": "هل أنت متأكد أنك تريد إزالة هذا الطالب من الوالد؟",
+          "fillAllFields": "يرجى ملء جميع الحقول المطلوبة"
         }
+      },
+      "parentManagement2": {
+        "search": {
+          "placeholder": "ابحث عن ولي الأمر بالاسم، البريد الإلكتروني أو الهاتف...",
+          "searchingFor": "البحث عن"
+        },
+        "filters": {
+          "showWithStudentsOnly": "مع طلاب فقط",
+          "showWithoutStudentsOnly": "بدون طلاب فقط",
+          "withStudents": "مع طلاب",
+          "withoutStudents": "بدون طلاب",
+          "clearAll": "مسح الكل"
+        },
+        "stats": {
+          "totalParents": "إجمالي الأولياء",
+          "withStudents": "مع طلاب",
+          "totalStudents": "إجمالي الطلاب",
+          "avgStudents": "متوسط الطلاب لكل ولي"
+        },
+        "emptyState": {
+          "noResults": "لا توجد نتائج",
+          "noResultsDescription": "لم يتم العثور على أولياء أمور مطابقين للبحث. حاول تغيير معايير البحث."
+        }
+      }
     },
-    "parentManagement2": {
-    "search": {
-      "placeholder": "ابحث عن ولي الأمر بالاسم، البريد الإلكتروني أو الهاتف...",
-      "searchingFor": "البحث عن"
-    },
-    "filters": {
-      "showWithStudentsOnly": "مع طلاب فقط",
-      "showWithoutStudentsOnly": "بدون طلاب فقط",
-      "withStudents": "مع طلاب",
-      "withoutStudents": "بدون طلاب",
-      "clearAll": "مسح الكل"
-    },
-    "stats": {
-      "totalParents": "إجمالي الأولياء",
-      "withStudents": "مع طلاب",
-      "totalStudents": "إجمالي الطلاب",
-      "avgStudents": "متوسط الطلاب لكل ولي"
-    },
-    "emptyState": {
-      "noResults": "لا توجد نتائج",
-      "noResultsDescription": "لم يتم العثور على أولياء أمور مطابقين للبحث. حاول تغيير معايير البحث."
-    }
-  }
-}
-    ,"MESSAGES": {
+    "MESSAGES": {
       "SHOULD_ANSWER_ALL": "يجب الإجابة على جميع الأسئلة قبل الإرسال.",
       "SUCCESS": "تم إرسال الامتحان بنجاح!",
       "ERROR": "فشل في إرسال الامتحان"
@@ -1056,7 +1063,6 @@
     "NO_ASSIGNED": "لا يوجد مدرسون مخصصون.",
     "NO_AVAILABLE": "لا يوجد مدرسون متاحون."
   },
-  
   "analytics": {
     "title": "تحليلات لوحة التحكم",
     "dateRange": "آخر 6 أشهر",
@@ -1228,4 +1234,3 @@
     }
   }
 }
-

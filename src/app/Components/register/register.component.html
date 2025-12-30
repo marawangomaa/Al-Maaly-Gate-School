@@ -1,52 +1,98 @@
 <div class="register-page d-flex min-vh-100">
   <!-- Left: Visual -->
   <div class="register-visual">
-    <img src="assets/images/register.png" alt="Register Visual" class="register-bg" />
+    <img
+      src="assets/images/register.png"
+      alt="Register Visual"
+      class="register-bg"
+    />
   </div>
 
   <!-- Right: Form -->
-  <div class="register-content d-flex align-items-center justify-content-center">
-    <div class="register-form w-100" style="max-width: 450px; position: relative">
+  <div
+    class="register-content d-flex align-items-center justify-content-center"
+  >
+    <div
+      class="register-form w-100"
+      style="max-width: 450px; position: relative"
+    >
       <div class="text-center mb-4">
-        <img src="assets/images/logo.png" alt="Logo" class="register-logo mb-3" />
+        <img
+          src="assets/images/logo.png"
+          alt="Logo"
+          class="register-logo mb-3"
+        />
         <h2 class="fw-bold main-title">{{ "REGISTER.TITLE" | translate }}</h2>
       </div>
 
       <!-- Error -->
-      <div *ngIf="errorMessage" class="alert alert-danger text-center py-2 mb-3">
+      <div
+        *ngIf="errorMessage"
+        class="alert alert-danger text-center py-2 mb-3"
+      >
         <i class="bi bi-exclamation-triangle me-2"></i>
         {{ errorMessage }}
       </div>
 
       <!-- Success -->
-      <div *ngIf="successMessage" class="alert alert-success text-center py-2 mb-3">
+      <div
+        *ngIf="successMessage"
+        class="alert alert-success text-center py-2 mb-3"
+      >
         <i class="bi bi-check-circle me-2"></i>
         {{ successMessage }}
       </div>
 
       <!-- Form -->
       <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
-
         <!-- Full Name -->
         <div class="mb-3">
-          <label class="form-label">{{ "REGISTER.FULLNAME" | translate }} *</label>
-          <input type="text" formControlName="fullName" class="form-control cool-input"
-                 [placeholder]="'REGISTER.FULLNAME_PLACEHOLDER' | translate"
-                 [class.is-invalid]="registerForm.get('fullName')?.invalid && registerForm.get('fullName')?.touched"/>
-          <div *ngIf="registerForm.get('fullName')?.invalid && registerForm.get('fullName')?.touched"
-               class="text-danger small mt-1">
+          <label class="form-label"
+            >{{ "REGISTER.FULLNAME" | translate }} *</label
+          >
+          <input
+            type="text"
+            formControlName="fullName"
+            class="form-control cool-input"
+            [placeholder]="'REGISTER.FULLNAME_PLACEHOLDER' | translate"
+            [class.is-invalid]="
+              registerForm.get('fullName')?.invalid &&
+              registerForm.get('fullName')?.touched
+            "
+          />
+          <div
+            *ngIf="
+              registerForm.get('fullName')?.invalid &&
+              registerForm.get('fullName')?.touched
+            "
+            class="text-danger small mt-1"
+          >
             {{ "REGISTER.FULLNAME_MIN_ERROR" | translate }}
           </div>
         </div>
 
         <!-- Username -->
         <div class="mb-3">
-          <label class="form-label">{{ "REGISTER.USERNAME" | translate }} *</label>
-          <input type="text" formControlName="userName" class="form-control cool-input"
-                 [placeholder]="'REGISTER.USERNAME_PLACEHOLDER' | translate"
-                 [class.is-invalid]="registerForm.get('userName')?.invalid && registerForm.get('userName')?.touched"/>
-          <div *ngIf="registerForm.get('userName')?.invalid && registerForm.get('userName')?.touched"
-               class="text-danger small mt-1">
+          <label class="form-label"
+            >{{ "REGISTER.USERNAME" | translate }} *</label
+          >
+          <input
+            type="text"
+            formControlName="userName"
+            class="form-control cool-input"
+            [placeholder]="'REGISTER.USERNAME_PLACEHOLDER' | translate"
+            [class.is-invalid]="
+              registerForm.get('userName')?.invalid &&
+              registerForm.get('userName')?.touched
+            "
+          />
+          <div
+            *ngIf="
+              registerForm.get('userName')?.invalid &&
+              registerForm.get('userName')?.touched
+            "
+            class="text-danger small mt-1"
+          >
             {{ "REGISTER.USERNAME_MIN_ERROR" | translate }}
           </div>
         </div>
@@ -54,47 +100,233 @@
         <!-- Email -->
         <div class="mb-3">
           <label class="form-label">{{ "REGISTER.EMAIL" | translate }} *</label>
-          <input type="email" formControlName="email" class="form-control cool-input"
-                 [placeholder]="'REGISTER.EMAIL_PLACEHOLDER' | translate"
-                 [class.is-invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"/>
-          <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
-               class="text-danger small mt-1">
+          <input
+            type="email"
+            formControlName="email"
+            class="form-control cool-input"
+            [placeholder]="'REGISTER.EMAIL_PLACEHOLDER' | translate"
+            [class.is-invalid]="
+              registerForm.get('email')?.invalid &&
+              registerForm.get('email')?.touched
+            "
+          />
+          <div
+            *ngIf="
+              registerForm.get('email')?.invalid &&
+              registerForm.get('email')?.touched
+            "
+            class="text-danger small mt-1"
+          >
             {{ "REGISTER.EMAIL_INVALID" | translate }}
           </div>
         </div>
 
-        <!-- Contact Info -->
+        <!-- Gender -->
         <div class="mb-3">
-          <label class="form-label">{{ "REGISTER.CONTACT_INFO" | translate }}</label>
-          <input type="text" formControlName="contactInfo" class="form-control cool-input"
-                 [placeholder]="'REGISTER.CONTACT_PLACEHOLDER' | translate"
-                 [class.is-invalid]="registerForm.get('contactInfo')?.invalid && registerForm.get('contactInfo')?.touched"/>
-          <div *ngIf="registerForm.get('contactInfo')?.invalid && registerForm.get('contactInfo')?.touched"
-               class="text-danger small mt-1">
-            {{ "REGISTER.CONTACT_MIN_ERROR" | translate }}
+          <label class="form-label"
+            >{{ "REGISTER.GENDER" | translate }} *</label
+          >
+          <select
+            formControlName="gender"
+            class="form-select cool-input"
+            [class.is-invalid]="
+              registerForm.get('gender')?.invalid &&
+              registerForm.get('gender')?.touched
+            "
+          >
+            <option value="">{{ "REGISTER.GENDER_SELECT" | translate }}</option>
+            <option value="male">
+              {{ "REGISTER.GENDER_MALE" | translate }}
+            </option>
+            <option value="female">
+              {{ "REGISTER.GENDER_FEMALE" | translate }}
+            </option>
+          </select>
+          <div
+            *ngIf="
+              registerForm.get('gender')?.invalid &&
+              registerForm.get('gender')?.touched
+            "
+            class="text-danger small mt-1"
+          >
+            {{ "REGISTER.GENDER_REQUIRED" | translate }}
+          </div>
+        </div>
+
+        <!-- Birthday -->
+        <div class="mb-3">
+          <label class="form-label"
+            >{{ "REGISTER.BIRTHDAY" | translate }} *</label
+          >
+          <input
+            type="date"
+            formControlName="birthday"
+            class="form-control cool-input"
+            [class.is-invalid]="
+              registerForm.get('birthday')?.invalid &&
+              registerForm.get('birthday')?.touched
+            "
+            [max]="maxBirthDate"
+            [min]="minBirthDate"
+          />
+          <div
+            *ngIf="
+              registerForm.get('birthday')?.invalid &&
+              registerForm.get('birthday')?.touched
+            "
+            class="text-danger small mt-1"
+          >
+            <ng-container
+              *ngIf="registerForm.get('birthday')?.errors?.['required']"
+            >
+              {{ "REGISTER.BIRTHDAY_REQUIRED" | translate }}
+            </ng-container>
+            <ng-container
+              *ngIf="registerForm.get('birthday')?.errors?.['invalidAge']"
+            >
+              {{ "REGISTER.BIRTHDAY_INVALID_AGE" | translate }}
+            </ng-container>
+            <ng-container
+              *ngIf="registerForm.get('birthday')?.errors?.['futureDate']"
+            >
+              {{ "REGISTER.BIRTHDAY_FUTURE" | translate }}
+            </ng-container>
+          </div>
+        </div>
+
+        <!-- Mobile Number with Country Code -->
+        <div class="mb-3">
+          <label class="form-label">{{
+            "REGISTER.MOBILE_NUMBER" | translate
+          }}</label>
+          <div class="row g-2">
+            <div class="col-5">
+              <select
+                formControlName="countryCode"
+                class="form-select cool-input"
+                [class.is-invalid]="
+                  registerForm.get('countryCode')?.invalid &&
+                  registerForm.get('countryCode')?.touched
+                "
+              >
+                <option value="">
+                  {{ "REGISTER.COUNTRY_CODE_SELECT" | translate }}
+                </option>
+                <!-- Arabian Gulf -->
+                <option value="+966">+966 🇸🇦 السعودية</option>
+                <option value="+971">+971 🇦🇪 الإمارات</option>
+                <option value="+973">+973 🇧🇭 البحرين</option>
+                <option value="+974">+974 🇶🇦 قطر</option>
+                <option value="+968">+968 🇴🇲 عُمان</option>
+                <option value="+965">+965 🇰🇼 الكويت</option>
+
+                <!-- Middle East -->
+                <option value="+20">+20 🇪🇬 مصر</option>
+                <option value="+962">+962 🇯🇴 الأردن</option>
+                <option value="+963">+963 🇸🇾 سوريا</option>
+                <option value="+961">+961 🇱🇧 لبنان</option>
+                <option value="+964">+964 🇮🇶 العراق</option>
+                <option value="+967">+967 🇾🇪 اليمن</option>
+                <option value="+970">+970 🇵🇸 فلسطين</option>
+                <option value="+249">+249 🇸🇩 السودان</option>
+                <option value="+213">+213 🇩🇿 الجزائر</option>
+                <option value="+212">+212 🇲🇦 المغرب</option>
+                <option value="+216">+216 🇹🇳 تونس</option>
+                <option value="+218">+218 🇱🇾 ليبيا</option>
+
+                <!-- Other Common -->
+                <option value="+1">+1 🇺🇸 الولايات المتحدة/كندا</option>
+                <option value="+44">+44 🇬🇧 المملكة المتحدة</option>
+                <option value="+33">+33 🇫🇷 فرنسا</option>
+                <option value="+49">+49 🇩🇪 ألمانيا</option>
+              </select>
+            </div>
+            <div class="col-7">
+              <input
+                type="tel"
+                formControlName="mobileNumber"
+                class="form-control cool-input"
+                [placeholder]="'REGISTER.MOBILE_PLACEHOLDER' | translate"
+                (keypress)="onMobileKeyPress($event)"
+                (input)="formatMobileNumber()"
+                [class.is-invalid]="
+                  registerForm.get('mobileNumber')?.invalid &&
+                  registerForm.get('mobileNumber')?.touched
+                "
+              />
+            </div>
+          </div>
+          <div
+            *ngIf="
+              registerForm.get('mobileNumber')?.invalid &&
+              registerForm.get('mobileNumber')?.touched
+            "
+            class="text-danger small mt-1"
+          >
+            <ng-container
+              *ngIf="registerForm.get('mobileNumber')?.errors?.['invalidMobile']"
+            >
+              {{ "REGISTER.MOBILE_INVALID" | translate }}
+            </ng-container>
+            <ng-container
+              *ngIf="registerForm.get('mobileNumber')?.errors?.['required']"
+            >
+              {{ "REGISTER.MOBILE_REQUIRED" | translate }}
+            </ng-container>
+          </div>
+          <div
+            *ngIf="
+              registerForm.get('countryCode')?.invalid &&
+              registerForm.get('countryCode')?.touched
+            "
+            class="text-danger small mt-1"
+          >
+            {{ "REGISTER.COUNTRY_CODE_REQUIRED" | translate }}
           </div>
         </div>
 
         <!-- Password -->
         <div class="mb-3">
-          <label class="form-label">{{ "REGISTER.PASSWORD" | translate }} *</label>
-          <input type="password" formControlName="password" class="form-control cool-input"
-                 [placeholder]="'REGISTER.PASSWORD_PLACEHOLDER' | translate"
-                 [class.is-invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"/>
-          <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
-               class="text-danger small mt-1">
+          <label class="form-label"
+            >{{ "REGISTER.PASSWORD" | translate }} *</label
+          >
+          <input
+            type="password"
+            formControlName="password"
+            class="form-control cool-input"
+            [placeholder]="'REGISTER.PASSWORD_PLACEHOLDER' | translate"
+            [class.is-invalid]="
+              registerForm.get('password')?.invalid &&
+              registerForm.get('password')?.touched
+            "
+          />
+          <div
+            *ngIf="
+              registerForm.get('password')?.invalid &&
+              registerForm.get('password')?.touched
+            "
+            class="text-danger small mt-1"
+          >
             {{ "REGISTER.PASSWORD_MIN_ERROR" | translate }}
           </div>
         </div>
 
         <!-- Confirm Password -->
         <div class="mb-3">
-          <label class="form-label">{{ "REGISTER.CONFIRM_PASSWORD" | translate }} *</label>
-          <input type="password" formControlName="confirmPassword" class="form-control cool-input"
-                 [placeholder]="'REGISTER.CONFIRM_PASSWORD_PLACEHOLDER' | translate"
-                 [class.is-invalid]="registerForm.get('confirmPassword')?.errors?.['mismatch']"/>
-          <div *ngIf="registerForm.get('confirmPassword')?.errors?.['mismatch']"
-               class="text-danger small mt-1">
+          <label class="form-label"
+            >{{ "REGISTER.CONFIRM_PASSWORD" | translate }} *</label
+          >
+          <input
+            type="password"
+            formControlName="confirmPassword"
+            class="form-control cool-input"
+            [placeholder]="'REGISTER.CONFIRM_PASSWORD_PLACEHOLDER' | translate"
+            [class.is-invalid]="registerForm.get('confirmPassword')?.errors?.['mismatch']"
+          />
+          <div
+            *ngIf="registerForm.get('confirmPassword')?.errors?.['mismatch']"
+            class="text-danger small mt-1"
+          >
             {{ "REGISTER.PASSWORD_MISMATCH" | translate }}
           </div>
         </div>
@@ -102,21 +334,41 @@
         <!-- Role -->
         <div class="mb-3">
           <label class="form-label">{{ "REGISTER.ROLE" | translate }} *</label>
-          <select formControlName="role" class="form-select cool-input"
-                  [class.is-invalid]="registerForm.get('role')?.invalid && registerForm.get('role')?.touched">
+          <select
+            formControlName="role"
+            class="form-select cool-input"
+            [class.is-invalid]="
+              registerForm.get('role')?.invalid &&
+              registerForm.get('role')?.touched
+            "
+          >
             <option value="">{{ "REGISTER.ROLE_SELECT" | translate }}</option>
-            <option value="student">{{ "REGISTER.ROLE_STUDENT" | translate }}</option>
-            <option value="teacher">{{ "REGISTER.ROLE_TEACHER" | translate }}</option>
-            <option value="parent">{{ "REGISTER.ROLE_PARENT" | translate }}</option>
+            <option value="student">
+              {{ "REGISTER.ROLE_STUDENT" | translate }}
+            </option>
+            <option value="teacher">
+              {{ "REGISTER.ROLE_TEACHER" | translate }}
+            </option>
+            <option value="parent">
+              {{ "REGISTER.ROLE_PARENT" | translate }}
+            </option>
           </select>
-          <div *ngIf="registerForm.get('role')?.invalid && registerForm.get('role')?.touched"
-               class="text-danger small mt-1">
+          <div
+            *ngIf="
+              registerForm.get('role')?.invalid &&
+              registerForm.get('role')?.touched
+            "
+            class="text-danger small mt-1"
+          >
             {{ "REGISTER.ROLE_REQUIRED" | translate }}
           </div>
         </div>
 
         <!-- Parent-specific fields -->
-        <div *ngIf="registerForm.get('role')?.value === 'parent'" class="parent-section border rounded p-3 bg-light mb-3">
+        <div
+          *ngIf="registerForm.get('role')?.value === 'parent'"
+          class="parent-section border rounded p-3 bg-light mb-3"
+        >
           <h6 class="mb-3 text-primary">
             <i class="bi bi-person-badge me-2"></i>
             {{ "REGISTER.PARENT_INFO" | translate }}
@@ -124,17 +376,40 @@
 
           <!-- Relation -->
           <div class="mb-3">
-            <label class="form-label">{{ "REGISTER.RELATION" | translate }} *</label>
-            <select formControlName="relation" class="form-select cool-input"
-                    [class.is-invalid]="registerForm.get('relation')?.invalid && registerForm.get('relation')?.touched">
-              <option value="">{{ "REGISTER.RELATION_SELECT" | translate }}</option>
-              <option value="father">{{ "REGISTER.RELATION_FATHER" | translate }}</option>
-              <option value="mother">{{ "REGISTER.RELATION_MOTHER" | translate }}</option>
-              <option value="guardian">{{ "REGISTER.RELATION_GUARDIAN" | translate }}</option>
-              <option value="other">{{ "REGISTER.RELATION_OTHER" | translate }}</option>
+            <label class="form-label"
+              >{{ "REGISTER.RELATION" | translate }} *</label
+            >
+            <select
+              formControlName="relation"
+              class="form-select cool-input"
+              [class.is-invalid]="
+                registerForm.get('relation')?.invalid &&
+                registerForm.get('relation')?.touched
+              "
+            >
+              <option value="">
+                {{ "REGISTER.RELATION_SELECT" | translate }}
+              </option>
+              <option value="father">
+                {{ "REGISTER.RELATION_FATHER" | translate }}
+              </option>
+              <option value="mother">
+                {{ "REGISTER.RELATION_MOTHER" | translate }}
+              </option>
+              <option value="guardian">
+                {{ "REGISTER.RELATION_GUARDIAN" | translate }}
+              </option>
+              <option value="other">
+                {{ "REGISTER.RELATION_OTHER" | translate }}
+              </option>
             </select>
-            <div *ngIf="registerForm.get('relation')?.invalid && registerForm.get('relation')?.touched"
-                 class="text-danger small mt-1">
+            <div
+              *ngIf="
+                registerForm.get('relation')?.invalid &&
+                registerForm.get('relation')?.touched
+              "
+              class="text-danger small mt-1"
+            >
               {{ "REGISTER.RELATION_REQUIRED" | translate }}
             </div>
           </div>
@@ -142,9 +417,17 @@
 
         <!-- Submit -->
         <div class="d-grid gap-2">
-          <button class="btn btn-primary btn-lg" type="submit" [disabled]="isLoading || registerForm.invalid">
+          <button
+            class="btn btn-primary btn-lg"
+            type="submit"
+            [disabled]="isLoading || registerForm.invalid"
+          >
             <ng-container *ngIf="isLoading">
-              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              <span
+                class="spinner-border spinner-border-sm me-2"
+                role="status"
+                aria-hidden="true"
+              ></span>
               {{ "REGISTER.LOADING" | translate }}
             </ng-container>
             <ng-container *ngIf="!isLoading">
@@ -153,12 +436,16 @@
             </ng-container>
           </button>
 
-          <button type="button" class="btn btn-outline-secondary" (click)="onCancel()" [disabled]="isLoading">
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            (click)="onCancel()"
+            [disabled]="isLoading"
+          >
             <i class="bi bi-x-circle me-2"></i>
             {{ "REGISTER.CANCEL" | translate }}
           </button>
         </div>
-
       </form>
     </div>
   </div>
