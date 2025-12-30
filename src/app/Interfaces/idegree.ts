@@ -1,18 +1,30 @@
+import { DegreeComponentTypeDto } from "./icomponenttype";
+import { SubjectViewDto } from "./isubject";
+
+export interface DegreeComponentType {
+  id: string;
+  subjectId: string;
+  componentName: string;
+  order: number;
+  maxScore: number;
+  isActive: boolean;
+}
+
+export interface DegreeComponent {
+  id?: string;
+  componentTypeId: string;
+  componentName: string;
+  score: number;
+  maxScore?: number;  // Make optional to match backend
+}
+
+
 export interface DegreeInput {
   subjectId: string;
-  degreeType: string;
-  
-  // Either total scores
+  degreeType: number;  // Change from string to number to match DegreeType enum
   score?: number;
   maxScore?: number;
-  
-  // Or component scores
-  oralScore?: number;
-  oralMaxScore?: number;
-  examScore?: number;
-  examMaxScore?: number;
-  practicalScore?: number;
-  practicalMaxScore?: number;
+  components?: DegreeComponent[];
 }
 
 export interface AddDegreesDto {
@@ -24,22 +36,20 @@ export interface DegreeItemDto {
   degreeId: string;
   subjectId: string;
   subjectName: string;
-  degreeType: string;
-  
-  // Total scores
+  degreeType: number;  // Change to number
+  degreeTypeName?: string; // Add this for display
   score: number;
   maxScore: number;
-  
-  // Component details
-  oralScore?: number;
-  oralMaxScore?: number;
-  examScore?: number;
-  examMaxScore?: number;
-  practicalScore?: number;
-  practicalMaxScore?: number;
-  
-  // Helper property
+  components: DegreeComponentDto[];
   hasComponents: boolean;
+}
+
+export interface DegreeComponentDto {
+  id: string;
+  componentTypeId: string;
+  componentName: string;
+  score: number;
+  maxScore: number;
 }
 
 export interface StudentDegreesDto {
@@ -48,4 +58,24 @@ export interface StudentDegreesDto {
   classId: string;
   className: string;
   degrees: DegreeItemDto[];
+}
+
+export enum DegreeType {
+  MidTerm1 = 1,
+  Final1 = 2,
+  MidTerm2 = 3,
+  Final2 = 4
+}
+
+export interface ExamTypeConfig {
+  name: string;
+  type: number;
+  maxScore: number;
+  weight: number;
+}
+
+export interface SubjectWithComponents extends SubjectViewDto {
+  componentTypes: DegreeComponentTypeDto[]; // Remove optional
+  midtermMaxScore?: number;
+  finalMaxScore?: number;
 }

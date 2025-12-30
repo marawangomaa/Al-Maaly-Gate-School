@@ -163,7 +163,8 @@
     "TESTS": "الاختبارات",
     "GRADES": "الدرجات",
     "PROFILE": "الملف الشخصي",
-    "CREATE_EMPTY_CLASS": "إنشاء فصل جديدة"
+    "CREATE_EMPTY_CLASS": "إنشاء فصل جديدة",
+    "ADMIN_SUBJECT_COMPONENT_TYPES": "أنواع مكونات المادة"
   },
   "GRADE": {
     "MANAGEMENT": "إدارة الصفوف",

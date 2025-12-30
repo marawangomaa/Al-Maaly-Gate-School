@@ -1,509 +1,644 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
-import { ClassService } from '../../../../../Services/class.service';
-import { DegreeService } from '../../../../../Services/degree.service';
-import { TeacherService } from '../../../../../Services/teacher.service';
+import { FormArray, FormBuilder, FormGroup, Validators, AbstractControl, ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { forkJoin } from 'rxjs';
 import { ClassViewDto } from '../../../../../Interfaces/iclass';
 import { SubjectViewDto } from '../../../../../Interfaces/isubject';
-import { ServiceResult } from '../../../../../Interfaces/iteacher';
+import { DegreeComponentTypeDto } from '../../../../../Interfaces/icomponenttype';
+import { DegreeService } from '../../../../../Services/degree.service';
+import { DegreeComponentTypeService } from '../../../../../Services/degrees-component-type.service';
+import { TeacherService } from '../../../../../Services/teacher.service';
+import { AddDegreesDto, DegreeComponent, DegreeInput, ExamTypeConfig, SubjectWithComponents, DegreeType } from '../../../../../Interfaces/idegree';
+import { ToastService } from '../../../../../Services/toast.service';
+import { AuthService } from '../../../../../Services/auth.service';
+import { ClassService } from '../../../../../Services/class.service';
+import { StudentModel } from '../../../../../Interfaces/istudent';
+import { CommonModule } from '@angular/common';
 import { ShortenIdPipe } from '../../../../../Pipes/shorten-id.pipe';
 
 @Component({
   selector: 'app-class-grades',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TranslateModule, ShortenIdPipe], // Add pipe here
+  imports: [ReactiveFormsModule, CommonModule, TranslateModule, ShortenIdPipe],
   templateUrl: './class-grades.component.html',
   styleUrls: ['./class-grades.component.css']
 })
 export class ClassGradesComponent implements OnInit {
+  // Data
   teacherClasses: ClassViewDto[] = [];
-  teacherSubjects: SubjectViewDto[] = [];
-  teacherId: string = '';
+  teacherSubjects: SubjectWithComponents[] = [];
+  allStudents: Map<string, StudentModel[]> = new Map();
+  existingDegrees: Map<string, any[]> = new Map();
+  componentTypes: Map<string, DegreeComponentTypeDto[]> = new Map(); // Added back
   
-  // Forms per class and per student
-  classForms: { [classId: string]: { [studentId: string]: FormGroup } } = {};
+  // Exam type configuration
+  examTypes: ExamTypeConfig[] = [
+    { name: 'MidTerm1', type: 1, maxScore: 20, weight: 0.2 },
+    { name: 'Final1', type: 2, maxScore: 80, weight: 0.8 },
+    { name: 'MidTerm2', type: 3, maxScore: 20, weight: 0.2 },
+    { name: 'Final2', type: 4, maxScore: 80, weight: 0.8 }
+  ];
+  
+  // UI State
+  isLoadingClasses: boolean = true;
+  isLoadingSubjects: boolean = true;
+  isLoadingStudents: boolean = true;
   expandedClassId: string | null = null;
-  expandedStudentId: { [classId: string]: string | null } = {};
-  allExpanded = false;
-  
-  // Active exam type for tabs
-  activeExamType: 'midterm1' | 'final1' | 'midterm2' | 'final2' = 'midterm1';
-  
-  // Existing grades for students
-  existingGrades: { [studentId: string]: any[] } = {};
-  studentDrafts: { [studentId: string]: any } = {};
-  
-  // Loading states
-  isLoadingClasses = false;
-  isLoadingSubjects = false;
+  expandedStudentId: { [key: string]: string } = {};
+  allExpanded: boolean = false;
+  activeExamType: ExamTypeConfig = this.examTypes[0];
   savingStudentId: string | null = null;
+  
+  // Current Teacher ID
+  currentTeacherId: string = '7984e590-b026-427f-845f-c5d141af0552';
+  
+  // Forms
+  studentForms: Map<string, FormGroup> = new Map();
 
   constructor(
     private fb: FormBuilder,
-    private teacherService: TeacherService,
+    private translate: TranslateService,
     private degreeService: DegreeService,
+    private componentTypeService: DegreeComponentTypeService,
+    private teacherService: TeacherService,
+    private toastService: ToastService,
+    private authService: AuthService,
     private classService: ClassService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.getTeacherIdFromLocalStorage();
-    if (this.teacherId) {
-      this.loadTeacherData();
-    }
-    
-    // Check for saved drafts
-    this.loadDrafts();
+    this.loadInitialData();
   }
 
-  getTeacherIdFromLocalStorage(): void {
-    if (typeof window !== 'undefined' && window.localStorage) {
-      this.teacherId = localStorage.getItem('teacherId') || '';
-    }
-    
-    if (!this.teacherId && typeof window !== 'undefined' && window.sessionStorage) {
-      this.teacherId = sessionStorage.getItem('teacherId') || '';
-    }
-  }
-
-  loadDrafts(): void {
-    if (typeof window !== 'undefined' && window.localStorage) {
-      const drafts = localStorage.getItem('gradeDrafts');
-      if (drafts) {
-        this.studentDrafts = JSON.parse(drafts);
-      }
-    }
-  }
-
-  saveDraft(classId: string, studentId: string): void {
-    const formData = this.classForms[classId][studentId].getRawValue();
-    this.studentDrafts[studentId] = formData;
-    
-    if (typeof window !== 'undefined' && window.localStorage) {
-      localStorage.setItem('gradeDrafts', JSON.stringify(this.studentDrafts));
-    }
-  }
-
-  loadTeacherData(): void {
-    if (!this.teacherId) {
-      console.error('Teacher ID is required');
-      return;
-    }
-
-    // Load teacher's classes
+  loadInitialData(): void {
     this.isLoadingClasses = true;
-    this.teacherService.getTeacherClasses(this.teacherId).subscribe({
-      next: (res: ServiceResult<ClassViewDto[]>) => {
-        if (res.success) {
-          this.teacherClasses = res.data || [];
-          if (this.teacherClasses.length > 0) {
-            this.loadClassesDetails();
+    this.isLoadingSubjects = true;
+    this.isLoadingStudents = true;
+
+    this.teacherService.getTeacherClasses(this.currentTeacherId).subscribe({
+      next: (response) => {
+        if (response.success && response.data) {
+          this.teacherClasses = response.data;
+          
+          this.teacherService.getTeacherSubjects(this.currentTeacherId).subscribe({
+            next: (subjectsResponse) => {
+              if (subjectsResponse.success && subjectsResponse.data) {
+                // Initialize with empty componentTypes array
+                this.teacherSubjects = subjectsResponse.data.map(subject => ({
+                  ...subject,
+                  componentTypes: []
+                }));
+                
+                this.loadComponentTypes();
+                this.loadStudentsForClasses();
+              } else {
+                this.toastService.showError('Failed to load subjects');
+              }
+              this.isLoadingSubjects = false;
+            },
+            error: (error) => {
+              this.toastService.showError('Failed to load subjects');
+              console.error('Subjects error:', error);
+              this.isLoadingSubjects = false;
+            }
+          });
+        } else {
+          this.toastService.showError('Failed to load classes');
+        }
+        this.isLoadingClasses = false;
+      },
+      error: (error) => {
+        this.toastService.showError('Failed to load classes');
+        console.error('Classes error:', error);
+        this.isLoadingClasses = false;
+      }
+    });
+  }
+
+  loadComponentTypes(): void {
+    if (this.teacherSubjects.length === 0) return;
+
+    const requests = this.teacherSubjects.map(subject =>
+      this.componentTypeService.getComponentTypesBySubject(subject.id)
+    );
+
+    forkJoin(requests).subscribe({
+      next: (responses) => {
+        responses.forEach((response, index) => {
+          if (response.success && response.data) {
+            const subjectId = this.teacherSubjects[index].id;
+            const componentTypes = response.data.sort((a, b) => a.order - b.order);
+            
+            // Store in map
+            this.componentTypes.set(subjectId, componentTypes);
+            
+            // Update subject with component types
+            this.teacherSubjects[index].componentTypes = componentTypes;
+            
+            // Adjust max scores
+            this.adjustComponentMaxScores(subjectId, componentTypes);
+          }
+        });
+      },
+      error: (error) => {
+        this.toastService.showError('Failed to load component types');
+        console.error('Component types error:', error);
+      }
+    });
+  }
+
+  adjustComponentMaxScores(subjectId: string, componentTypes: DegreeComponentTypeDto[]): void {
+    if (componentTypes.length === 0) return;
+    
+    const totalComponentMax = componentTypes.reduce((sum, comp) => sum + comp.maxScore, 0);
+    
+    const midtermRatio = 20 / totalComponentMax;
+    const finalRatio = 80 / totalComponentMax;
+    
+    componentTypes.forEach(component => {
+      (component as any).midtermMaxScore = Math.round(component.maxScore * midtermRatio * 100) / 100;
+      (component as any).finalMaxScore = Math.round(component.maxScore * finalRatio * 100) / 100;
+    });
+  }
+
+  loadStudentsForClasses(): void {
+    const studentRequests = this.teacherClasses.map(cls =>
+      this.classService.getStudentsByClass(cls.id)
+    );
+
+    forkJoin(studentRequests).subscribe({
+      next: (responses) => {
+        responses.forEach((response, index) => {
+          const classId = this.teacherClasses[index].id;
+          if (response.success && response.data) {
+            this.allStudents.set(classId, response.data);
+            this.loadExistingDegreesForClass(classId, response.data);
+          }
+        });
+        this.isLoadingStudents = false;
+      },
+      error: (error) => {
+        this.toastService.showError('Failed to load students');
+        console.error('Students error:', error);
+        this.isLoadingStudents = false;
+      }
+    });
+  }
+
+  loadExistingDegreesForClass(classId: string, students: StudentModel[]): void {
+    students.forEach(student => {
+      this.degreeService.getStudentDegrees(student.id).subscribe({
+        next: (response) => {
+          if (response.success && response.data) {
+            this.existingDegrees.set(student.id, response.data.degrees);
+            
+            if (!this.studentForms.has(student.id)) {
+              this.initializeStudentForm(classId, student.id);
+            }
+          }
+        },
+        error: (error) => {
+          console.error(`Error loading degrees for student ${student.id}:`, error);
+          if (!this.studentForms.has(student.id)) {
+            this.initializeStudentForm(classId, student.id);
           }
         }
-        this.isLoadingClasses = false;
-      },
-      error: (err: any) => {
-        console.error('Error loading classes:', err);
-        this.isLoadingClasses = false;
-      }
-    });
-
-    // Load teacher's subjects
-    this.isLoadingSubjects = true;
-    this.teacherService.getTeacherSubjects(this.teacherId).subscribe({
-      next: (res: ServiceResult<SubjectViewDto[]>) => {
-        if (res.success) {
-          this.teacherSubjects = res.data || [];
-        }
-        this.isLoadingSubjects = false;
-      },
-      error: (err: any) => {
-        console.error('Error loading subjects:', err);
-        this.isLoadingSubjects = false;
-      }
-    });
-  }
-
-  loadClassesDetails(): void {
-    this.teacherClasses.forEach(cls => {
-      this.classForms[cls.id] = {};
-      this.expandedStudentId[cls.id] = null;
-      
-      this.classService.getStudentsByClass(cls.id).subscribe({
-        next: (res: any) => {
-          const students = res.data || [];
-          students.forEach((student: any) => {
-            this.loadExistingGrades(student.id);
-            this.initializeStudentForm(cls.id, student);
-          });
-        },
-        error: (err: any) => {
-          console.error(`Error loading students for class ${cls.id}:`, err);
-        }
       });
     });
   }
 
-  loadExistingGrades(studentId: string): void {
-    this.degreeService.getStudentDegrees(studentId).subscribe({
-      next: (res: any) => {
-        if (res.success && res.data) {
-          this.existingGrades[studentId] = res.data.degrees || [];
-        }
-      },
-      error: (err: any) => {
-        console.error(`Error loading grades for student ${studentId}:`, err);
-      }
-    });
-  }
+  initializeStudentForm(classId: string, studentId: string): void {
+    const student = this.getStudentById(classId, studentId);
+    if (!student) return;
 
-  initializeStudentForm(classId: string, student: any): void {
-    const existingDegrees = this.existingGrades[student.id] || [];
-    const draftData = this.studentDrafts[student.id];
-    
-    this.classForms[classId][student.id] = this.fb.group({
-      studentId: [student.id],
+    const form = this.fb.group({
+      studentId: [studentId],
       studentName: [student.fullName],
-      classId: [classId],
       useComponents: [false],
-      
-      midterm1: this.createExamSubjects(this.teacherSubjects, 20, existingDegrees, 'Midterm1', draftData?.midterm1),
-      final1: this.createExamSubjects(this.teacherSubjects, 80, existingDegrees, 'Final1', draftData?.final1),
-      midterm2: this.createExamSubjects(this.teacherSubjects, 20, existingDegrees, 'Midterm2', draftData?.midterm2),
-      final2: this.createExamSubjects(this.teacherSubjects, 80, existingDegrees, 'Final2', draftData?.final2)
+      degrees: this.fb.array([])
     });
+
+    this.initializeDegreesArray(form, studentId);
+    
+    this.studentForms.set(studentId, form);
   }
 
-  createExamSubjects(
-    subjects: SubjectViewDto[], 
-    maxScore: number, 
-    existingDegrees: any[], 
-    examType: string,
-    draftData?: any[]
-  ): FormArray {
-    const formArray = this.fb.array<FormGroup>([]);
-    
-    subjects.forEach((subject, index) => {
-      const existingGrade = existingDegrees.find(
-        (d: any) => d.subjectId === subject.id && d.degreeType === examType
-      );
+  initializeDegreesArray(form: FormGroup, studentId: string): void {
+    const degreesArray = form.get('degrees') as FormArray;
+    degreesArray.clear();
+
+    this.teacherSubjects.forEach(subject => {
+      const existingDegree = this.getExistingGrade(studentId, subject.id, this.activeExamType.type);
+      const componentTypes = this.componentTypes.get(subject.id) || [];
       
-      const draftSubject = draftData?.[index];
-      const hasComponents = draftSubject?.useComponents || false;
+      const maxScore = this.activeExamType.maxScore;
       
-      const subjectGroup = this.fb.group({
+      const degreeForm = this.fb.group({
         subjectId: [subject.id],
         subjectName: [subject.subjectName],
-        useComponents: [hasComponents],
-        
-        // Simple score
-        score: [
-          draftSubject?.score || existingGrade?.score || 0,
-          [Validators.min(0), Validators.max(maxScore)]
-        ],
-        maxScore: [maxScore],
-        
-        // Component scores
-        oralScore: [draftSubject?.oralScore || existingGrade?.oralScore || 0, [Validators.min(0)]],
-        oralMaxScore: [draftSubject?.oralMaxScore || existingGrade?.oralMaxScore || 0, [Validators.min(0)]],
-        examScore: [draftSubject?.examScore || existingGrade?.examScore || 0, [Validators.min(0)]],
-        examMaxScore: [draftSubject?.examMaxScore || existingGrade?.examMaxScore || 0, [Validators.min(0)]],
-        practicalScore: [draftSubject?.practicalScore || existingGrade?.practicalScore || 0, [Validators.min(0)]],
-        practicalMaxScore: [draftSubject?.practicalMaxScore || existingGrade?.practicalMaxScore || 0, [Validators.min(0)]]
+        degreeType: [this.activeExamType.type],
+        useComponents: [componentTypes.length > 0],
+        score: [existingDegree?.score || null, [
+          Validators.min(0), 
+          Validators.max(maxScore)
+        ]],
+        maxScore: [maxScore, [Validators.required, Validators.min(0)]],
+        components: this.fb.array([])
       });
-      
-      // Disable component fields if not using components
-      if (!hasComponents) {
-        ['oralScore', 'oralMaxScore', 'examScore', 'examMaxScore', 'practicalScore', 'practicalMaxScore'].forEach(field => {
-          subjectGroup.get(field)?.disable();
-        });
+
+      if (existingDegree?.hasComponents && existingDegree.components?.length > 0) {
+        degreeForm.get('useComponents')?.setValue(true);
+        this.initializeComponents(degreeForm, existingDegree.components, componentTypes);
+      } else if (componentTypes.length > 0) {
+        this.initializeComponents(degreeForm, [], componentTypes);
+      } else {
+        degreeForm.get('useComponents')?.setValue(false);
       }
-      
-      formArray.push(subjectGroup);
+
+      degreesArray.push(degreeForm);
     });
-    
-    return formArray;
   }
 
-  // Get active exam array based on selected tab
-  getActiveExamArray(classId: string, studentId: string): FormArray {
-    return this.classForms[classId][studentId].get(this.activeExamType) as FormArray;
+  initializeComponents(degreeForm: FormGroup, existingComponents: any[], componentTypes: DegreeComponentTypeDto[]): void {
+    const componentsArray = degreeForm.get('components') as FormArray;
+    componentsArray.clear();
+
+    const isMidterm = this.activeExamType.type === 1 || this.activeExamType.type === 3;
+
+    componentTypes.forEach(componentType => {
+      const existingComponent = existingComponents?.find(c => c.componentTypeId === componentType.id);
+      
+      const componentMaxScore = isMidterm ? 
+        ((componentType as any).midtermMaxScore || componentType.maxScore) : 
+        ((componentType as any).finalMaxScore || componentType.maxScore);
+      
+      const componentForm = this.fb.group({
+        componentTypeId: [componentType.id],
+        componentName: [componentType.componentName],
+        score: [existingComponent?.score || 0, [Validators.required, Validators.min(0)]],
+        maxScore: [componentMaxScore, [Validators.required, Validators.min(0)]],
+        order: [componentType.order]
+      });
+
+      if (existingComponent?.score && existingComponent?.maxScore) {
+        const ratio = existingComponent.score / existingComponent.maxScore;
+        const newScore = Math.round(ratio * componentMaxScore * 100) / 100;
+        componentForm.get('score')?.setValue(newScore);
+      }
+
+      componentsArray.push(componentForm);
+    });
   }
 
-  getActiveDegreeType(): string {
-    const map: { [key: string]: string } = {
-      'midterm1': 'Midterm1',
-      'final1': 'Final1',
-      'midterm2': 'Midterm2',
-      'final2': 'Final2'
-    };
-    return map[this.activeExamType] || this.activeExamType;
-  }
-
-  getStudentForm(classId: string, studentId: string): FormGroup {
-    return this.classForms[classId][studentId];
-  }
-
-  getStudentsForClass(classId: string): string[] {
-    return Object.keys(this.classForms[classId] || {});
-  }
-
-  toggleExpandClass(classId: string): void {
-    this.expandedClassId = this.expandedClassId === classId ? null : classId;
-  }
-
-  toggleExpandStudent(classId: string, studentId: string): void {
-    this.expandedStudentId[classId] = 
-      this.expandedStudentId[classId] === studentId ? null : studentId;
-  }
-
+  // UI Helper Methods
   toggleAllStudents(): void {
     this.allExpanded = !this.allExpanded;
     if (this.allExpanded) {
       this.teacherClasses.forEach(cls => {
         this.expandedClassId = cls.id;
-        this.getStudentsForClass(cls.id).forEach(studentId => {
+        const students = this.getStudentsForClass(cls.id);
+        students.forEach(studentId => {
           this.expandedStudentId[cls.id] = studentId;
         });
       });
     } else {
+      this.expandedStudentId = {};
       this.expandedClassId = null;
-      this.teacherClasses.forEach(cls => {
-        this.expandedStudentId[cls.id] = null;
-      });
     }
   }
 
-  setActiveExamType(examType: 'midterm1' | 'final1' | 'midterm2' | 'final2'): void {
-    this.activeExamType = examType;
+  toggleExpandClass(classId: string): void {
+    if (this.expandedClassId === classId) {
+      this.expandedClassId = null;
+      delete this.expandedStudentId[classId];
+    } else {
+      this.expandedClassId = classId;
+    }
   }
 
-  toggleComponents(classId: string, studentId: string, event: any): void {
-    const useComponents = event.target.checked;
-    const form = this.classForms[classId][studentId];
-    form.get('useComponents')?.setValue(useComponents);
+  toggleExpandStudent(classId: string, studentId: string): void {
+    if (this.expandedStudentId[classId] === studentId) {
+      delete this.expandedStudentId[classId];
+    } else {
+      this.expandedStudentId[classId] = studentId;
+      
+      const form = this.getStudentForm(classId, studentId);
+      if (form) {
+        this.initializeDegreesArray(form, studentId);
+      }
+    }
+  }
+
+  setActiveExamType(examType: ExamTypeConfig): void {
+    this.activeExamType = examType;
     
-    // Update all subjects in all exam types
-    ['midterm1', 'final1', 'midterm2', 'final2'].forEach(examType => {
-      const examArray = form.get(examType) as FormArray;
-      examArray.controls.forEach(control => {
-        const subjectFormGroup = control as FormGroup; // Cast to FormGroup
-        subjectFormGroup.get('useComponents')?.setValue(useComponents);
-        this.toggleSubjectComponents(subjectFormGroup, useComponents);
-      });
+    Object.keys(this.expandedStudentId).forEach(classId => {
+      const studentId = this.expandedStudentId[classId];
+      const form = this.getStudentForm(classId, studentId);
+      if (form) {
+        this.initializeDegreesArray(form, studentId);
+      }
     });
   }
 
-  toggleSubjectComponents(subjectGroup: FormGroup, enabled: boolean): void {
-    const componentFields = ['oralScore', 'oralMaxScore', 'examScore', 'examMaxScore', 'practicalScore', 'practicalMaxScore'];
-    
-    if (enabled) {
-      componentFields.forEach(field => subjectGroup.get(field)?.enable());
-      subjectGroup.get('score')?.disable();
-    } else {
-      componentFields.forEach(field => subjectGroup.get(field)?.disable());
-      subjectGroup.get('score')?.enable();
-    }
+  // Helper to get degree type for template (keep this for backward compatibility)
+  getActiveDegreeType(): number {
+    return this.activeExamType.type;
   }
 
-  calculateComponentTotal(subjectGroup: FormGroup): number {
-    const oral = subjectGroup.get('oralScore')?.value || 0;
-    const exam = subjectGroup.get('examScore')?.value || 0;
-    const practical = subjectGroup.get('practicalScore')?.value || 0;
-    return oral + exam + practical;
+  // Form Getters
+  getStudentForm(classId: string, studentId: string): FormGroup | null {
+    return this.studentForms.get(studentId) || null;
   }
 
-  calculateComponentMaxTotal(subjectGroup: FormGroup): number {
-    const oral = subjectGroup.get('oralMaxScore')?.value || 0;
-    const exam = subjectGroup.get('examMaxScore')?.value || 0;
-    const practical = subjectGroup.get('practicalMaxScore')?.value || 0;
-    return oral + exam + practical;
+  getActiveExamArray(classId: string, studentId: string): FormArray {
+    const form = this.getStudentForm(classId, studentId);
+    return form?.get('degrees') as FormArray;
   }
 
+  getComponentsArray(degreeControl: AbstractControl): FormArray {
+    const degreeForm = degreeControl as FormGroup;
+    return degreeForm.get('components') as FormArray;
+  }
+
+  // Student Data Helpers
+  getStudentsForClass(classId: string): string[] {
+    const students = this.allStudents.get(classId) || [];
+    return students.map(s => s.id);
+  }
+
+  getStudentById(classId: string, studentId: string): StudentModel | undefined {
+    const students = this.allStudents.get(classId) || [];
+    return students.find(s => s.id === studentId);
+  }
+
+  getStudentName(classId: string, studentId: string): string {
+    const student = this.getStudentById(classId, studentId);
+    return student?.fullName || 'Unknown Student';
+  }
+
+  // Grade Calculations
   hasExistingGrades(studentId: string): boolean {
-    return this.existingGrades[studentId] && this.existingGrades[studentId].length > 0;
+    const degrees = this.existingDegrees.get(studentId);
+    return !!(degrees && degrees.length > 0);
   }
 
-  getExistingGrade(studentId: string, subjectId: string, examType: string): any {
-    if (!this.existingGrades[studentId]) return null;
-    return this.existingGrades[studentId].find(
-      (grade: any) => grade.subjectId === subjectId && grade.degreeType === examType
+  getExistingGrade(studentId: string, subjectId: string, degreeType: number): any {
+    const degrees = this.existingDegrees.get(studentId) || [];
+    return degrees.find(d => 
+      d.subjectId === subjectId && 
+      d.degreeType === degreeType.toString()
     );
   }
 
   calculateStudentTotal(studentId: string): number {
-    if (!this.existingGrades[studentId]) return 0;
-    return this.existingGrades[studentId].reduce((total: number, grade: any) => 
-      total + (grade.score || 0), 0);
+    const degrees = this.existingDegrees.get(studentId) || [];
+    let total = 0;
+    
+    degrees.forEach(degree => {
+      const examType = this.examTypes.find(et => et.type === parseInt(degree.degreeType));
+      const weight = examType?.weight || 1;
+      
+      if (degree.hasComponents && degree.components?.length > 0) {
+        const componentTotal = degree.components.reduce((sum: number, comp: any) => sum + (comp.score || 0), 0);
+        const componentMaxTotal = degree.components.reduce((sum: number, comp: any) => sum + (comp.maxScore || 0), 0);
+        
+        if (componentMaxTotal > 0) {
+          const percentage = (componentTotal / componentMaxTotal) * 100;
+          total += (percentage * weight) / 100;
+        }
+      } else {
+        total += (degree.score || 0) * weight;
+      }
+    });
+    
+    return Math.round(total * 100) / 100;
   }
 
   calculateStudentTotalPossible(studentId: string): number {
-    if (!this.existingGrades[studentId]) return 0;
-    return this.existingGrades[studentId].reduce((total: number, grade: any) => 
-      total + (grade.maxScore || 0), 0);
+    return 200; // 20+80+20+80
   }
 
   calculateStudentAverage(studentId: string): number {
     const total = this.calculateStudentTotal(studentId);
-    const possible = this.calculateStudentTotalPossible(studentId);
-    return possible > 0 ? Math.round((total / possible) * 100) : 0;
+    const totalPossible = this.calculateStudentTotalPossible(studentId);
+    if (totalPossible === 0) return 0;
+    const percentage = (total / totalPossible) * 100;
+    return Math.round(percentage * 100) / 100;
   }
 
   calculateClassAverage(classId: string): number {
-    const students = this.getStudentsForClass(classId);
-    if (students.length === 0) return 0;
+    const studentIds = this.getStudentsForClass(classId);
+    if (studentIds.length === 0) return 0;
     
-    const totalAverage = students.reduce((sum, studentId) => 
-      sum + this.calculateStudentAverage(studentId), 0);
-    return Math.round(totalAverage / students.length);
+    const totalAverage = studentIds.reduce((sum, studentId) => {
+      return sum + this.calculateStudentAverage(studentId);
+    }, 0);
+    
+    return Math.round(totalAverage / studentIds.length);
   }
 
-  getProgressBarClass(average: number): string {
-    if (average >= 85) return 'bg-success';
-    if (average >= 70) return 'bg-primary';
-    if (average >= 50) return 'bg-warning';
+  calculateComponentTotalControl(degreeControl: AbstractControl): number {
+    const degreeForm = degreeControl as FormGroup;
+    const componentsArray = degreeForm.get('components') as FormArray;
+    const total = componentsArray.controls.reduce((sum, control: AbstractControl) => {
+      const score = (control as FormGroup).get('score')?.value || 0;
+      return sum + (parseFloat(score) || 0);
+    }, 0);
+    
+    return Math.round(total * 100) / 100;
+  }
+
+  calculateComponentMaxTotalControl(degreeControl: AbstractControl): number {
+    const degreeForm = degreeControl as FormGroup;
+    const componentsArray = degreeForm.get('components') as FormArray;
+    const total = componentsArray.controls.reduce((sum, control: AbstractControl) => {
+      const maxScore = (control as FormGroup).get('maxScore')?.value || 0;
+      return sum + (parseFloat(maxScore) || 0);
+    }, 0);
+    
+    return Math.round(total * 100) / 100;
+  }
+
+  getProgressBarClass(percentage: number): string {
+    if (percentage >= 85) return 'bg-success';
+    if (percentage >= 70) return 'bg-primary';
+    if (percentage >= 60) return 'bg-info';
+    if (percentage >= 50) return 'bg-warning';
     return 'bg-danger';
   }
 
-  resetForm(classId: string, studentId: string): void {
-    const form = this.classForms[classId][studentId];
-    const existingDegrees = this.existingGrades[studentId] || [];
+  // Form Actions
+  toggleComponents(classId: string, studentId: string, event: any): void {
+    const form = this.getStudentForm(classId, studentId);
+    if (!form) return;
+
+    const useComponents = event.target.checked;
+    form.get('useComponents')?.setValue(useComponents);
     
-    ['midterm1', 'final1', 'midterm2', 'final2'].forEach(examType => {
-      const examArray = form.get(examType) as FormArray;
-      examArray.controls.forEach((control, index) => {
-        const subjectGroup = control as FormGroup; // Cast to FormGroup
-        const degreeType = this.mapExamTypeToDegreeType(examType);
-        const existingGrade = existingDegrees.find(
-          (d: any) => d.subjectId === subjectGroup.get('subjectId')?.value && 
-                      d.degreeType === degreeType
-        );
-        
-        subjectGroup.patchValue({
-          score: existingGrade?.score || 0,
-          oralScore: existingGrade?.oralScore || 0,
-          oralMaxScore: existingGrade?.oralMaxScore || 0,
-          examScore: existingGrade?.examScore || 0,
-          examMaxScore: existingGrade?.examMaxScore || 0,
-          practicalScore: existingGrade?.practicalScore || 0,
-          practicalMaxScore: existingGrade?.practicalMaxScore || 0,
-          useComponents: false
-        });
-        
-        this.toggleSubjectComponents(subjectGroup, false);
-      });
+    const degreesArray = form.get('degrees') as FormArray;
+    degreesArray.controls.forEach((degreeControl: AbstractControl) => {
+      const degreeForm = degreeControl as FormGroup;
+      const subjectId = degreeForm.get('subjectId')?.value;
+      const componentTypes = this.componentTypes.get(subjectId) || [];
+      
+      if (useComponents && componentTypes.length > 0) {
+        degreeForm.get('useComponents')?.setValue(true);
+        this.initializeComponents(degreeForm, [], componentTypes);
+      } else {
+        degreeForm.get('useComponents')?.setValue(false);
+        const componentsArray = degreeForm.get('components') as FormArray;
+        componentsArray.clear();
+      }
     });
+  }
+
+  toggleSubjectComponents(degreeControl: AbstractControl): void {
+    const degreeForm = degreeControl as FormGroup;
+    const useComponents = degreeForm.get('useComponents')?.value;
+    const subjectId = degreeForm.get('subjectId')?.value;
+    const componentTypes = this.componentTypes.get(subjectId) || [];
     
-    form.get('useComponents')?.setValue(false);
+    if (useComponents && componentTypes.length > 0) {
+      this.initializeComponents(degreeForm, [], componentTypes);
+    } else {
+      const componentsArray = degreeForm.get('components') as FormArray;
+      componentsArray.clear();
+    }
+  }
+
+  resetForm(classId: string, studentId: string): void {
+    const form = this.getStudentForm(classId, studentId);
+    if (form) {
+      this.initializeDegreesArray(form, studentId);
+      this.toastService.showInfo('Form reset to original values');
+    }
   }
 
   saveAsDraft(classId: string, studentId: string): void {
-    this.saveDraft(classId, studentId);
-    alert('Draft saved successfully!');
+    const form = this.getStudentForm(classId, studentId);
+    if (!form || form.invalid) {
+      this.toastService.showError('Form has invalid data');
+      return;
+    }
+    
+    this.toastService.showSuccess('Draft saved successfully');
   }
 
   saveStudentGrades(classId: string, studentId: string): void {
-    const studentForm = this.classForms[classId][studentId];
-    
-    if (studentForm.invalid) {
-      alert('Please fill all fields correctly before saving.');
+    const form = this.getStudentForm(classId, studentId);
+    if (!form || form.invalid) {
+      this.toastService.showError('Please fill all required fields correctly');
+      this.markFormGroupTouched(form!);
       return;
     }
 
     this.savingStudentId = studentId;
-    const formValue = studentForm.getRawValue();
-    const degrees: any[] = [];
-
-    ['midterm1', 'final1', 'midterm2', 'final2'].forEach(examType => {
-      const examArray = formValue[examType];
-      if (examArray) {
-        examArray.forEach((subjectGrade: any) => {
-          const degree: any = {
-            subjectId: subjectGrade.subjectId,
-            degreeType: this.mapExamTypeToDegreeType(examType)
-          };
-
-          if (subjectGrade.useComponents) {
-            // Use component scores
-            degree.oralScore = subjectGrade.oralScore || 0;
-            degree.oralMaxScore = subjectGrade.oralMaxScore || 0;
-            degree.examScore = subjectGrade.examScore || 0;
-            degree.examMaxScore = subjectGrade.examMaxScore || 0;
-            degree.practicalScore = subjectGrade.practicalScore || 0;
-            degree.practicalMaxScore = subjectGrade.practicalMaxScore || 0;
-          } else {
-            // Use simple score
-            degree.score = subjectGrade.score || 0;
-            degree.maxScore = subjectGrade.maxScore || 0;
-          }
-
-          // Only add if there's some data
-          if (degree.score > 0 || degree.oralScore > 0 || degree.examScore > 0 || degree.practicalScore > 0) {
-            degrees.push(degree);
-          }
+    
+    const formValue = form.value;
+    const degreesInput: DegreeInput[] = [];
+    
+    formValue.degrees.forEach((degree: any) => {
+      if (degree.useComponents && degree.components && degree.components.length > 0) {
+        const components: DegreeComponent[] = degree.components.map((comp: any) => ({
+          componentTypeId: comp.componentTypeId,
+          componentName: comp.componentName,
+          score: parseFloat(comp.score) || 0,
+          maxScore: parseFloat(comp.maxScore) || 0
+        }));
+        
+        degreesInput.push({
+          subjectId: degree.subjectId,
+          degreeType: degree.degreeType,
+          components: components
+        });
+      } else if (degree.score !== null && degree.score !== undefined) {
+        const maxScore = degree.maxScore || this.activeExamType.maxScore;
+        
+        degreesInput.push({
+          subjectId: degree.subjectId,
+          degreeType: degree.degreeType,
+          score: parseFloat(degree.score) || 0,
+          maxScore: parseFloat(maxScore) || this.activeExamType.maxScore
         });
       }
     });
 
-    if (degrees.length === 0) {
-      alert('Please enter at least one score before saving.');
+    const validDegrees = degreesInput.filter(d => 
+      (d.components && d.components.length > 0) || 
+      (d.score !== null && d.score !== undefined)
+    );
+
+    if (validDegrees.length === 0) {
+      this.toastService.showError('No valid grades to save');
       this.savingStudentId = null;
       return;
     }
 
-    const dto = {
+    const dto: AddDegreesDto = {
       studentId: studentId,
-      degrees: degrees
+      degrees: validDegrees
     };
 
     this.degreeService.addDegrees(dto).subscribe({
-      next: (res: any) => {
-        if (res.success) {
-          // Clear draft
-          delete this.studentDrafts[studentId];
-          if (typeof window !== 'undefined' && window.localStorage) {
-            localStorage.setItem('gradeDrafts', JSON.stringify(this.studentDrafts));
-          }
-          
-          // Reload existing grades
-          this.loadExistingGrades(studentId);
-          alert('Grades saved successfully!');
+      next: (response) => {
+        if (response.success) {
+          this.toastService.showSuccess(response.message || 'Grades saved successfully');
+          this.degreeService.getStudentDegrees(studentId).subscribe({
+            next: (degreesResponse) => {
+              if (degreesResponse.success && degreesResponse.data) {
+                this.existingDegrees.set(studentId, degreesResponse.data.degrees);
+              }
+            },
+            error: (error) => {
+              console.error('Error reloading degrees:', error);
+            }
+          });
         } else {
-          alert(`Failed to save grades: ${res.message}`);
+          this.toastService.showError(response.message || 'Failed to save grades');
         }
         this.savingStudentId = null;
       },
-      error: (err: any) => {
-        console.error('Error saving grades:', err);
-        alert('Error saving grades. Please try again.');
+      error: (error) => {
+        this.toastService.showError('Failed to save grades: ' + (error.error?.message || error.message));
+        console.error('Save error:', error);
         this.savingStudentId = null;
       }
     });
   }
 
-  private mapExamTypeToDegreeType(examType: string): string {
-    const map: { [key: string]: string } = {
-      'midterm1': 'MidTerm1',
-      'final1': 'Final1',
-      'midterm2': 'MidTerm2',
-      'final2': 'Final2'
-    };
-    return map[examType] || examType;
+  // Helper methods
+  shortenId(id: string): string {
+    return id.length > 8 ? id.substring(0, 8) + '...' : id;
   }
 
-  // Add these methods to your ClassGradesComponent
-getSubjectFormGroup(control: any): FormGroup {
-  return control as FormGroup;
-}
+  private markFormGroupTouched(formGroup: FormGroup): void {
+    Object.values(formGroup.controls).forEach(control => {
+      control.markAsTouched();
+      if (control instanceof FormGroup) {
+        this.markFormGroupTouched(control);
+      } else if (control instanceof FormArray) {
+        control.controls.forEach((ctrl: AbstractControl) => {
+          if (ctrl instanceof FormGroup) {
+            this.markFormGroupTouched(ctrl);
+          }
+        });
+      }
+    });
+  }
 
-calculateComponentTotalControl(control: any): number {
-  const subjectGroup = control as FormGroup;
-  return this.calculateComponentTotal(subjectGroup);
-}
+  // Helper to cast AbstractControl to FormGroup
+  asFormGroup(control: AbstractControl): FormGroup {
+    return control as FormGroup;
+  }
 
-calculateComponentMaxTotalControl(control: any): number {
-  const subjectGroup = control as FormGroup;
-  return this.calculateComponentMaxTotal(subjectGroup);
-}
+  // Helper to get component types for template
+  getComponentTypesForSubject(subjectId: string): DegreeComponentTypeDto[] {
+    return this.componentTypes.get(subjectId) || [];
+  }
+
+  // Helper to check if subject has components
+  subjectHasComponents(subjectId: string): boolean {
+    const components = this.componentTypes.get(subjectId);
+    return !!(components && components.length > 0);
+  }
 }

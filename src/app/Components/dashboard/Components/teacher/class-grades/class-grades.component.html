@@ -118,7 +118,7 @@
                           <i class="bi bi-person-circle fs-3 text-primary"></i>
                         </div>
                         <div class="text-start">
-                          <h6 class="mb-1 fw-bold">{{ getStudentForm(cls.id, studentId).get('studentName')?.value }}</h6>
+                          <h6 class="mb-1 fw-bold">{{ getStudentName(cls.id, studentId) }}</h6>
                           <div class="text-muted small">
                             <span class="me-3"><i class="bi bi-person-badge me-1"></i> ID: {{ studentId | shortenId }}</span>
                             <span *ngIf="hasExistingGrades(studentId)">
@@ -149,7 +149,7 @@
                 </h2>
 
                 <!-- Student Grades Form -->
-                <div *ngIf="expandedStudentId[cls.id] === studentId" 
+                <div *ngIf="expandedStudentId[cls.id] === studentId && getStudentForm(cls.id, studentId)" 
                      class="accordion-collapse show">
                   <div class="accordion-body pt-4">
                     
@@ -162,52 +162,61 @@
                       </div>
                     </div>
 
-                    <form [formGroup]="getStudentForm(cls.id, studentId)" class="grades-form">
+                    <form [formGroup]="getStudentForm(cls.id, studentId)!" class="grades-form">
                       
-                      <!-- Exam Types Navigation -->
+                      <!-- Exam Types Navigation - UPDATED SECTION -->
                       <div class="exam-type-nav mb-4">
                         <nav>
                           <div class="nav nav-pills" id="nav-tab" role="tablist">
-                            <button class="nav-link active" 
+                            <button class="nav-link" 
                                     type="button"
-                                    (click)="setActiveExamType('midterm1')"
-                                    [class.active]="activeExamType === 'midterm1'">
+                                    (click)="setActiveExamType(examTypes[0])"
+                                    [class.active]="activeExamType.type === examTypes[0].type">
                               <i class="bi bi-file-earmark-text me-2"></i>
-                              Midterm 1 (20)
+                              Midterm 1 ({{ examTypes[0].maxScore }})
                             </button>
                             <button class="nav-link" 
                                     type="button"
-                                    (click)="setActiveExamType('final1')"
-                                    [class.active]="activeExamType === 'final1'">
+                                    (click)="setActiveExamType(examTypes[1])"
+                                    [class.active]="activeExamType.type === examTypes[1].type">
                               <i class="bi bi-file-earmark-medical me-2"></i>
-                              Final 1 (80)
+                              Final 1 ({{ examTypes[1].maxScore }})
                             </button>
                             <button class="nav-link" 
                                     type="button"
-                                    (click)="setActiveExamType('midterm2')"
-                                    [class.active]="activeExamType === 'midterm2'">
+                                    (click)="setActiveExamType(examTypes[2])"
+                                    [class.active]="activeExamType.type === examTypes[2].type">
                               <i class="bi bi-file-earmark-text me-2"></i>
-                              Midterm 2 (20)
+                              Midterm 2 ({{ examTypes[2].maxScore }})
                             </button>
                             <button class="nav-link" 
                                     type="button"
-                                    (click)="setActiveExamType('final2')"
-                                    [class.active]="activeExamType === 'final2'">
+                                    (click)="setActiveExamType(examTypes[3])"
+                                    [class.active]="activeExamType.type === examTypes[3].type">
                               <i class="bi bi-file-earmark-medical me-2"></i>
-                              Final 2 (80)
+                              Final 2 ({{ examTypes[3].maxScore }})
                             </button>
                           </div>
                         </nav>
+                        
+                        <!-- Total Score Info -->
+                        <div class="mt-2 text-center">
+                          <small class="text-muted">
+                            Total for both terms: {{ examTypes[0].maxScore + examTypes[1].maxScore + examTypes[2].maxScore + examTypes[3].maxScore }} marks
+                            (Midterms: {{ examTypes[0].maxScore + examTypes[2].maxScore }} + Finals: {{ examTypes[1].maxScore + examTypes[3].maxScore }})
+                          </small>
+                        </div>
                       </div>
 
-                      <!-- Component Scores Toggle -->
+                      
+                      <!-- Global Component Scores Toggle -->
                       <div class="mb-4">
                         <div class="form-check form-switch">
                           <input class="form-check-input" 
                                  type="checkbox" 
                                  role="switch" 
                                  id="useComponents{{studentId}}"
-                                 [checked]="getStudentForm(cls.id, studentId).get('useComponents')?.value"
+                                 [checked]="getStudentForm(cls.id, studentId)?.get('useComponents')?.value"
                                  (change)="toggleComponents(cls.id, studentId, $event)">
                           <label class="form-check-label fw-bold" for="useComponents{{studentId}}">
                             <i class="bi bi-pie-chart-fill me-2"></i>
@@ -221,157 +230,156 @@
 
                       <!-- Subjects Grid -->
                       <div class="row g-3">
-                        <div *ngFor="let sub of getActiveExamArray(cls.id, studentId).controls; let i = index" 
-                             [formGroupName]="i" 
-                             class="col-12 col-md-6 col-lg-4 col-xl-3">
-                          
-                          <div class="subject-card card h-100" 
-                               [class.has-components]="sub.get('useComponents')?.value">
-                            <div class="card-body">
-                              
-                              <!-- Subject Header -->
-                              <div class="subject-header mb-3">
-                                <h6 class="subject-name fw-bold mb-1">
-                                  {{ sub.get('subjectName')?.value }}
-                                </h6>
-                                <div class="d-flex justify-content-between align-items-center">
-                                  <small class="text-muted">
-                                    Max: {{ sub.get('maxScore')?.value }} marks
-                                  </small>
-                                  <span *ngIf="getExistingGrade(studentId, sub.get('subjectId')?.value, getActiveDegreeType())" 
-                                        class="badge bg-info">
-                                    <i class="bi bi-check-circle me-1"></i>
-                                    Graded
-                                  </span>
-                                </div>
-                              </div>
-
-                              <!-- Component Toggle for Individual Subject -->
-                              <div *ngIf="getStudentForm(cls.id, studentId).get('useComponents')?.value" 
-                                   class="mb-3">
-                                <div class="form-check">
-                                  <input class="form-check-input" 
-                                         type="checkbox" 
-                                         id="useComponents{{studentId}}{{i}}"
-                                         formControlName="useComponents">
-                                  <label class="form-check-label small" for="useComponents{{studentId}}{{i}}">
-                                    Use components for this subject
-                                  </label>
-                                </div>
-                              </div>
-
-                              <!-- Component Scores (Collapsible) -->
-                              <div *ngIf="sub.get('useComponents')?.value" 
-                                   class="components-section mb-3">
+                        <ng-container formArrayName="degrees">
+                          <div *ngFor="let degreeControl of getActiveExamArray(cls.id, studentId).controls; let i = index" 
+                              [formGroupName]="i" 
+                              class="col-12 col-md-6 col-lg-4 col-xl-3">
+                            
+                            <div class="subject-card card h-100" 
+                                [class.has-components]="asFormGroup(degreeControl).get('useComponents')?.value">
+                              <div class="card-body">
                                 
-                                <!-- Oral Component -->
-                                <div class="mb-2">
-                                  <label class="small fw-semibold text-primary mb-1">
-                                    <i class="bi bi-mic-fill me-1"></i>Oral
-                                  </label>
-                                  <div class="input-group input-group-sm">
-                                    <input type="number" 
-                                           class="form-control"
-                                           formControlName="oralScore"
-                                           placeholder="Score"
-                                           min="0"
-                                           [max]="sub.get('oralMaxScore')?.value">
-                                    <span class="input-group-text">/</span>
-                                    <input type="number" 
-                                           class="form-control"
-                                           formControlName="oralMaxScore"
-                                           placeholder="Max"
-                                           min="0">
+                                <!-- Subject Header -->
+                                <div class="subject-header mb-3">
+                                  <h6 class="subject-name fw-bold mb-1">
+                                    {{ asFormGroup(degreeControl).get('subjectName')?.value }}
+                                  </h6>
+                                  <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">
+                                      Max: {{ asFormGroup(degreeControl).get('maxScore')?.value }} marks
+                                      <span *ngIf="asFormGroup(degreeControl).get('useComponents')?.value" class="ms-2">
+                                        (Components: {{ calculateComponentMaxTotalControl(degreeControl) | number:'1.0-2' }})
+                                      </span>
+                                    </small>
+                                    <span *ngIf="getExistingGrade(studentId, asFormGroup(degreeControl).get('subjectId')?.value, getActiveDegreeType())" 
+                                          class="badge bg-info">
+                                      <i class="bi bi-check-circle me-1"></i>
+                                      Graded
+                                    </span>
                                   </div>
                                 </div>
 
-                                <!-- Exam Component -->
-                                <div class="mb-2">
-                                  <label class="small fw-semibold text-primary mb-1">
-                                    <i class="bi bi-pencil-fill me-1"></i>Exam
-                                  </label>
-                                  <div class="input-group input-group-sm">
-                                    <input type="number" 
-                                           class="form-control"
-                                           formControlName="examScore"
-                                           placeholder="Score"
-                                           min="0"
-                                           [max]="sub.get('examMaxScore')?.value">
-                                    <span class="input-group-text">/</span>
-                                    <input type="number" 
-                                           class="form-control"
-                                           formControlName="examMaxScore"
-                                           placeholder="Max"
-                                           min="0">
+                                <!-- Component Toggle for Individual Subject -->
+                                <div *ngIf="getStudentForm(cls.id, studentId)?.get('useComponents')?.value && subjectHasComponents(asFormGroup(degreeControl).get('subjectId')?.value)" 
+                                    class="mb-3">
+                                  <div class="form-check">
+                                    <input class="form-check-input" 
+                                          type="checkbox" 
+                                          [id]="'subjectComponents' + studentId + i"
+                                          formControlName="useComponents"
+                                          (change)="toggleSubjectComponents(degreeControl)">
+                                    <label class="form-check-label small" [for]="'subjectComponents' + studentId + i">
+                                      Use components for this subject
+                                    </label>
                                   </div>
                                 </div>
 
-                                <!-- Practical Component -->
-                                <div class="mb-2">
-                                  <label class="small fw-semibold text-primary mb-1">
-                                    <i class="bi bi-tools me-1"></i>Practical
-                                  </label>
-                                  <div class="input-group input-group-sm">
-                                    <input type="number" 
-                                           class="form-control"
-                                           formControlName="practicalScore"
-                                           placeholder="Score"
-                                           min="0"
-                                           [max]="sub.get('practicalMaxScore')?.value">
-                                    <span class="input-group-text">/</span>
-                                    <input type="number" 
-                                           class="form-control"
-                                           formControlName="practicalMaxScore"
-                                           placeholder="Max"
-                                           min="0">
+                                <!-- Component Scores -->
+                                <div *ngIf="asFormGroup(degreeControl).get('useComponents')?.value" 
+                                    class="components-section mb-3">
+                                  
+                                  <div class="mb-2 text-center">
+                                    <small class="text-muted">
+                                      Total components weight: {{ activeExamType.maxScore }} marks
+                                    </small>
+                                  </div>
+                                  
+                                  <div formArrayName="components">
+                                    <div *ngFor="let componentControl of getComponentsArray(degreeControl).controls; let j = index" 
+                                        [formGroupName]="j"
+                                        class="mb-2">
+                                      <label class="small fw-semibold text-primary mb-1 d-flex align-items-center">
+                                        <i class="bi bi-circle-fill me-1" style="font-size: 6px;"></i>
+                                        {{ asFormGroup(componentControl).get('componentName')?.value }}
+                                        <span class="ms-auto badge bg-light text-dark">
+                                          {{ asFormGroup(componentControl).get('maxScore')?.value | number:'1.0-2' }} marks
+                                        </span>
+                                      </label>
+                                      <div class="input-group input-group-sm">
+                                        <input type="number" 
+                                              class="form-control"
+                                              formControlName="score"
+                                              placeholder="Score"
+                                              min="0"
+                                              [max]="asFormGroup(componentControl).get('maxScore')?.value"
+                                              step="0.5">
+                                        <span class="input-group-text">/</span>
+                                        <input type="number" 
+                                              class="form-control"
+                                              formControlName="maxScore"
+                                              placeholder="Max"
+                                              min="0"
+                                              step="0.5"
+                                              [readonly]="true"
+                                              [style.background]="'#f8f9fa'">
+                                      </div>
+                                      <div *ngIf="asFormGroup(componentControl).get('score')?.invalid && asFormGroup(componentControl).get('score')?.touched" 
+                                          class="invalid-feedback d-block small mt-1">
+                                        Invalid score
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <!-- Calculated Total -->
+                                  <div class="calculated-total bg-light p-2 rounded text-center mt-3">
+                                    <small class="text-muted d-block">Calculated Total ({{ activeExamType.maxScore }} marks)</small>
+                                    <strong class="text-success">
+                                      {{ calculateComponentTotalControl(degreeControl) | number:'1.0-2' }} / {{ calculateComponentMaxTotalControl(degreeControl) | number:'1.0-2' }}
+                                    </strong>
+                                    <div class="progress mt-2" style="height: 5px;">
+                                      <div class="progress-bar" 
+                                          [ngClass]="getProgressBarClass((calculateComponentTotalControl(degreeControl) / calculateComponentMaxTotalControl(degreeControl)) * 100)"
+                                          [style.width.%]="(calculateComponentTotalControl(degreeControl) / (calculateComponentMaxTotalControl(degreeControl) || 1)) * 100">
+                                      </div>
+                                    </div>
                                   </div>
                                 </div>
 
-                                <!-- Calculated Total -->
-                                <div class="calculated-total bg-light p-2 rounded text-center">
-                                  <small class="text-muted d-block">Calculated Total</small>
-                                  <strong class="text-success">
-                                    {{ calculateComponentTotalControl(sub) }} / {{ calculateComponentMaxTotalControl(sub) }}
-                                  </strong>
+                                <!-- Simple Score Input -->
+                                <div *ngIf="!asFormGroup(degreeControl).get('useComponents')?.value">
+                                  <div class="simple-score-input">
+                                    <label class="small fw-semibold mb-2">
+                                      <i class="bi bi-input-cursor-text me-1"></i>Total Score ({{ activeExamType.maxScore }} marks)
+                                    </label>
+                                    <div class="input-group">
+                                      <input type="number" 
+                                            class="form-control"
+                                            formControlName="score"
+                                            placeholder="Enter score"
+                                            min="0"
+                                            [max]="asFormGroup(degreeControl).get('maxScore')?.value"
+                                            step="0.5">
+                                      <span class="input-group-text">/ {{ asFormGroup(degreeControl).get('maxScore')?.value }}</span>
+                                    </div>
+                                    <div *ngIf="asFormGroup(degreeControl).get('score')?.invalid && asFormGroup(degreeControl).get('score')?.touched" 
+                                        class="invalid-feedback d-block small mt-1">
+                                      Score must be between 0 and {{ asFormGroup(degreeControl).get('maxScore')?.value }}
+                                    </div>
+                                  </div>
+
+                                  <!-- Score Progress Bar -->
+                                  <div class="progress mt-2" style="height: 5px;" 
+                                      *ngIf="asFormGroup(degreeControl).get('score')?.value">
+                                    <div class="progress-bar" 
+                                        [ngClass]="getProgressBarClass((asFormGroup(degreeControl).get('score')?.value / asFormGroup(degreeControl).get('maxScore')?.value) * 100)"
+                                        [style.width.%]="(asFormGroup(degreeControl).get('score')?.value / asFormGroup(degreeControl).get('maxScore')?.value) * 100">
+                                    </div>
+                                  </div>
+
+                                  <!-- Existing Grade Display -->
+                                  <div *ngIf="getExistingGrade(studentId, asFormGroup(degreeControl).get('subjectId')?.value, getActiveDegreeType())" 
+                                      class="existing-grade mt-2">
+                                    <small class="text-muted">Current:</small>
+                                    <div class="badge bg-info-subtle text-info border">
+                                      {{ getExistingGrade(studentId, asFormGroup(degreeControl).get('subjectId')?.value, getActiveDegreeType())?.score }} / {{ asFormGroup(degreeControl).get('maxScore')?.value }}
+                                    </div>
+                                  </div>
                                 </div>
 
                               </div>
-
-                              <!-- Simple Score Input -->
-                              <div *ngIf="!sub.get('useComponents')?.value">
-                                <div class="simple-score-input">
-                                  <label class="small fw-semibold mb-2">
-                                    <i class="bi bi-input-cursor-text me-1"></i>Total Score
-                                  </label>
-                                  <div class="input-group">
-                                    <input type="number" 
-                                           class="form-control"
-                                           formControlName="score"
-                                           placeholder="Enter score"
-                                           min="0"
-                                           [max]="sub.get('maxScore')?.value"
-                                           step="0.5">
-                                    <span class="input-group-text">/ {{ sub.get('maxScore')?.value }}</span>
-                                  </div>
-                                  <div *ngIf="sub.get('score')?.invalid && sub.get('score')?.touched" 
-                                       class="invalid-feedback d-block small mt-1">
-                                    Score must be between 0 and {{ sub.get('maxScore')?.value }}
-                                  </div>
-                                </div>
-
-                                <!-- Existing Grade Display -->
-                                <div *ngIf="getExistingGrade(studentId, sub.get('subjectId')?.value, getActiveDegreeType())" 
-                                     class="existing-grade mt-2">
-                                  <small class="text-muted">Current:</small>
-                                  <div class="badge bg-info-subtle text-info border">
-                                    {{ getExistingGrade(studentId, sub.get('subjectId')?.value, getActiveDegreeType())?.score }} / {{ sub.get('maxScore')?.value }}
-                                  </div>
-                                </div>
-                              </div>
-
                             </div>
                           </div>
-                        </div>
+                        </ng-container>
                       </div>
 
                       <!-- Action Buttons -->
@@ -387,14 +395,14 @@
                             <button type="button" 
                                     class="btn btn-outline-primary"
                                     (click)="saveAsDraft(cls.id, studentId)"
-                                    [disabled]="getStudentForm(cls.id, studentId).invalid || savingStudentId === studentId">
+                                    [disabled]="getStudentForm(cls.id, studentId)?.invalid || savingStudentId === studentId">
                               <i class="bi bi-save me-2"></i>
                               Save Draft
                             </button>
                             <button type="button" 
                                     class="btn btn-success"
                                     (click)="saveStudentGrades(cls.id, studentId)"
-                                    [disabled]="getStudentForm(cls.id, studentId).invalid || savingStudentId === studentId">
+                                    [disabled]="getStudentForm(cls.id, studentId)?.invalid || savingStudentId === studentId">
                               
                               <span *ngIf="savingStudentId === studentId">
                                 <span class="spinner-border spinner-border-sm me-2" role="status"></span>

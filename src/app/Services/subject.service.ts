@@ -8,8 +8,8 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class SubjectService {
-
   private readonly apiUrl = `${environment.apiUrl}/subject`;
+  
   constructor(private http: HttpClient) { }
 
   // Subject CRUD Operations
@@ -19,6 +19,18 @@ export class SubjectService {
 
   getById(id: string): Observable<ApiResponse<SubjectViewDto>> {
     return this.http.get<ApiResponse<SubjectViewDto>>(`${this.apiUrl}/${id}`);
+  }
+
+  getWithComponents(id: string): Observable<ApiResponse<SubjectViewDto>> {
+    return this.http.get<ApiResponse<SubjectViewDto>>(`${this.apiUrl}/${id}/with-components`);
+  }
+
+  getSubjectsWithComponentTypes(): Observable<ApiResponse<SubjectViewDto[]>> {
+    return this.http.get<ApiResponse<SubjectViewDto[]>>(`${this.apiUrl}/with-components`);
+  }
+
+  hasComponentTypes(id: string): Observable<ApiResponse<boolean>> {
+    return this.http.get<ApiResponse<boolean>>(`${this.apiUrl}/${id}/has-components`);
   }
 
   create(subject: SubjectCreateDto): Observable<ApiResponse<SubjectViewDto>> {

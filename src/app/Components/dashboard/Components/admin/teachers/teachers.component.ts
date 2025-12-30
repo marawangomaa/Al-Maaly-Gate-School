@@ -68,58 +68,58 @@ export class TeachersComponent implements OnInit, OnDestroy {
     );
   }
 
-  //Approve Teacher
-  ApproveTeacherAction(teacherId: string): void {
-    if (!confirm('Are you sure you want to approve this teacher?')) return;
+  // //Approve Teacher
+  // ApproveTeacherAction(teacherId: string): void {
+  //   if (!confirm('Are you sure you want to approve this teacher?')) return;
 
-    const adminUserId = this.authService.userId;
-    if (!adminUserId) {
-      alert('Admin user ID not found. Please log in again.');
-      return;
-    }
+  //   const adminUserId = this.authService.userId;
+  //   if (!adminUserId) {
+  //     alert('Admin user ID not found. Please log in again.');
+  //     return;
+  //   }
 
-    this.subscription.add(
-      this.adminService.ApproveTeacher(teacherId, adminUserId).subscribe({
-        next: result => {
-          if (result) {
-            alert('Teacher approved successfully');
-            // Update UI locally instead of reloading all data
-            const teacher = this.allTeachers.find(t => t.id === teacherId);
-            if (teacher) teacher.profileStatus = 'Approved';
-          } else {
-            alert('Failed to approve teacher');
-          }
-        },
-        error: err => alert(`Error approving teacher: ${err.message}`)
-      })
-    );
-  }
-  //reject-teacher
-  RejectTeacherAction(teacherId: string): void {
-    if (!confirm('Are you sure you want to reject this teacher?')) return;
-    const adminUserId = this.authService.userId;
-    if (!adminUserId) {
-      alert('Admin user ID not found. Please log in again.');
-      return;
-    }
-    this.subscription.add(
-      this.adminService.RejectTeacher(teacherId, adminUserId).subscribe({
-        next: result => {
-          if (result) {
-            alert('Teacher rejected successfully');
-            // Update UI locally instead of reloading all data
-            const teacher = this.allTeachers.find(t => t.id === teacherId);
-            if (teacher) teacher.profileStatus = 'Rejected';
-          }
-          else {
-            alert('Failed to reject teacher');
-          }
-        },
-        error: err => alert(`Error rejecting teacher: ${err.message}`)
-      })
-    );
+  //   this.subscription.add(
+  //     this.adminService.ApproveTeacher(teacherId, adminUserId).subscribe({
+  //       next: result => {
+  //         if (result) {
+  //           alert('Teacher approved successfully');
+  //           // Update UI locally instead of reloading all data
+  //           const teacher = this.allTeachers.find(t => t.id === teacherId);
+  //           if (teacher) teacher.profileStatus = 'Approved';
+  //         } else {
+  //           alert('Failed to approve teacher');
+  //         }
+  //       },
+  //       error: err => alert(`Error approving teacher: ${err.message}`)
+  //     })
+  //   );
+  // }
+  // //reject-teacher
+  // RejectTeacherAction(teacherId: string): void {
+  //   if (!confirm('Are you sure you want to reject this teacher?')) return;
+  //   const adminUserId = this.authService.userId;
+  //   if (!adminUserId) {
+  //     alert('Admin user ID not found. Please log in again.');
+  //     return;
+  //   }
+  //   this.subscription.add(
+  //     this.adminService.RejectTeacher(teacherId, adminUserId).subscribe({
+  //       next: result => {
+  //         if (result) {
+  //           alert('Teacher rejected successfully');
+  //           // Update UI locally instead of reloading all data
+  //           const teacher = this.allTeachers.find(t => t.id === teacherId);
+  //           if (teacher) teacher.profileStatus = 'Rejected';
+  //         }
+  //         else {
+  //           alert('Failed to reject teacher');
+  //         }
+  //       },
+  //       error: err => alert(`Error rejecting teacher: ${err.message}`)
+  //     })
+  //   );
 
-  }
+  // }
 
   //Load total teacher count
   private LoadTeacherCount(): void {

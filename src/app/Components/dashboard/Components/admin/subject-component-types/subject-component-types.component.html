@@ -1,0 +1,257 @@
+<div class="container-fluid py-4">
+  <!-- Header -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <h3 class="main-title mb-0">Subject Component Types Management</h3>
+        <p class="text-muted mb-0">Manage grading components for each subject</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="row">
+    <div class="col-12">
+      <div class="text-center py-5">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-3 fs-5 text-muted">Loading subjects and component types...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Subjects List -->
+  <div *ngIf="!isLoading && subjects.length > 0" class="row">
+    <div class="col-12">
+      <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Subjects</h5>
+          <small class="opacity-75">Click on a subject to manage its component types</small>
+        </div>
+        
+        <div class="list-group list-group-flush">
+          <div *ngFor="let subject of subjects" class="list-group-item">
+            <!-- Subject Header -->
+            <div class="d-flex justify-content-between align-items-center" (click)="toggleExpandSubject(subject.id)" style="cursor: pointer;">
+              <div class="d-flex align-items-center">
+                <div class="subject-icon me-3">
+                  <i class="bi bi-journal-text fs-3 text-primary"></i>
+                </div>
+                <div>
+                  <h6 class="mb-1 fw-bold">{{ subject.subjectName }}</h6>
+                  <div class="text-muted small">
+                    <span class="me-3"><i class="bi bi-mortarboard me-1"></i>{{ subject.gradeName }}</span>
+                    <span class="me-3"><i class="bi bi-clock me-1"></i>{{ subject.creditHours }} hours</span>
+                    <span><i class="bi bi-pie-chart me-1"></i>{{ getComponentTypes(subject.id).length }} components</span>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex align-items-center">
+                <span class="badge bg-success me-2">
+                  Total: {{ getTotalMaxScore(subject.id) }} points
+                </span>
+                <i class="bi" [class.bi-chevron-down]="expandedSubjectId !== subject.id" [class.bi-chevron-up]="expandedSubjectId === subject.id"></i>
+              </div>
+            </div>
+
+            <!-- Expanded Content -->
+            <div *ngIf="expandedSubjectId === subject.id" class="mt-4">
+              
+              <!-- Component Types List -->
+              <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h6 class="mb-0">Component Types</h6>
+                  <div>
+                    <button class="btn btn-sm btn-outline-primary me-2" (click)="startReorder(subject.id)">
+                      <i class="bi bi-arrow-down-up me-1"></i> Reorder
+                    </button>
+                    <button class="btn btn-sm btn-success" (click)="startAddComponentType(subject.id)">
+                      <i class="bi bi-plus-circle me-1"></i> Add Component
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Reordering Mode -->
+                <div *ngIf="reorderingSubjectId === subject.id" class="card border-warning mb-3">
+                  <div class="card-header bg-warning text-dark">
+                    <h6 class="mb-0">Reorder Components</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="list-group" [formGroup]="reorderForm">
+                        <div formArrayName="componentTypeIds">
+                        <!-- Solution 1: Use a method in the component -->
+                        <div *ngFor="let control of getReorderControls(); let i = index" 
+                            class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                            <i class="bi bi-grip-vertical text-muted me-2"></i>
+                            {{ getComponentTypes(subject.id)[i]?.componentName }}
+                            <small class="text-muted ms-2">(Max: {{ getComponentTypes(subject.id)[i]?.maxScore }} points)</small>
+                            </div>
+                            <div class="d-flex">
+                            <button type="button" class="btn btn-sm btn-outline-secondary me-1" 
+                                    (click)="moveUp(subject.id, i)" [disabled]="i === 0">
+                                <i class="bi bi-arrow-up"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" 
+                                    (click)="moveDown(subject.id, i)" [disabled]="i === getComponentTypes(subject.id).length - 1">
+                                <i class="bi bi-arrow-down"></i>
+                            </button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <button class="btn btn-warning me-2" (click)="saveReorder()">
+                        <i class="bi bi-check-circle me-1"></i> Save Order
+                        </button>
+                        <button class="btn btn-outline-secondary" (click)="cancelReorder()">
+                        Cancel
+                        </button>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- Normal View -->
+                <div *ngIf="reorderingSubjectId !== subject.id">
+                  <div *ngIf="getComponentTypes(subject.id).length === 0" class="alert alert-info">
+                    <i class="bi bi-info-circle me-2"></i>
+                    No component types defined for this subject. Add components to enable detailed grading.
+                  </div>
+
+                  <div *ngIf="getComponentTypes(subject.id).length > 0" class="table-responsive">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>Order</th>
+                          <th>Component Name</th>
+                          <th>Max Score</th>
+                          <th>Status</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let component of getComponentTypes(subject.id)">
+                          <td>
+                            <span class="badge bg-secondary">{{ component.order }}</span>
+                          </td>
+                          <td>
+                            <strong>{{ component.componentName }}</strong>
+                          </td>
+                          <td>
+                            <span class="badge bg-info">{{ component.maxScore }} points</span>
+                          </td>
+                          <td>
+                            <span class="badge" [ngClass]="component.isActive ? 'bg-success' : 'bg-danger'">
+                              {{ component.isActive ? 'Active' : 'Inactive' }}
+                            </span>
+                          </td>
+                          <td>
+                            <button class="btn btn-sm btn-outline-primary me-1" 
+                                    (click)="startEditComponentType(component)">
+                              <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" 
+                                    (click)="deleteComponentType(component.id)">
+                              <i class="bi bi-trash"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <tr class="table-active">
+                          <td colspan="2"><strong>Total</strong></td>
+                          <td><strong>{{ getTotalMaxScore(subject.id) }} points</strong></td>
+                          <td colspan="2"></td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Add/Edit Form -->
+              <div class="card border-primary">
+                <div class="card-header bg-primary text-white">
+                  <h6 class="mb-0">
+                    <i class="bi" [class.bi-plus-circle]="!editingComponentTypeId" [class.bi-pencil]="editingComponentTypeId"></i>
+                    {{ editingComponentTypeId ? 'Edit Component Type' : 'Add New Component Type' }}
+                  </h6>
+                </div>
+                <div class="card-body">
+                  <form [formGroup]="componentTypeForm" (ngSubmit)="onSubmitComponentType()">
+                    <input type="hidden" formControlName="subjectId">
+                    
+                    <div class="row g-3">
+                      <div class="col-md-6">
+                        <label class="form-label">Component Name *</label>
+                        <input type="text" class="form-control" formControlName="componentName" 
+                               placeholder="e.g., Oral Exam, Written Test, Practical">
+                        <div *ngIf="componentTypeForm.get('componentName')?.invalid && componentTypeForm.get('componentName')?.touched" 
+                             class="invalid-feedback d-block">
+                          Component name is required (min 2 characters)
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-3">
+                        <label class="form-label">Order *</label>
+                        <input type="number" class="form-control" formControlName="order" min="1">
+                        <div *ngIf="componentTypeForm.get('order')?.invalid && componentTypeForm.get('order')?.touched" 
+                             class="invalid-feedback d-block">
+                          Order must be at least 1
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-3">
+                        <label class="form-label">Max Score *</label>
+                        <input type="number" class="form-control" formControlName="maxScore" min="0" step="0.5">
+                        <div *ngIf="componentTypeForm.get('maxScore')?.invalid && componentTypeForm.get('maxScore')?.touched" 
+                             class="invalid-feedback d-block">
+                          Max score must be 0 or greater
+                        </div>
+                      </div>
+                      
+                      <div class="col-12">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" formControlName="isActive" id="isActive">
+                          <label class="form-check-label" for="isActive">
+                            Active (available for grading)
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                      <button type="submit" class="btn btn-primary" [disabled]="componentTypeForm.invalid">
+                        <i class="bi" [class.bi-check-circle]="!editingComponentTypeId" [class.bi-save]="editingComponentTypeId"></i>
+                        {{ editingComponentTypeId ? 'Update Component' : 'Add Component' }}
+                      </button>
+                      <button type="button" class="btn btn-outline-secondary ms-2" 
+                              (click)="cancelEdit()" *ngIf="editingComponentTypeId">
+                        Cancel
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && subjects.length === 0" class="row">
+    <div class="col-12 col-md-8 mx-auto">
+      <div class="alert alert-info d-flex align-items-center">
+        <i class="bi bi-info-circle-fill fs-4 me-3"></i>
+        <div>
+          <h5 class="alert-heading mb-2">No Subjects Found</h5>
+          <p class="mb-0">There are no subjects in the system yet. Please add subjects first.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
