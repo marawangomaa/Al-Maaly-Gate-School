@@ -793,94 +793,6 @@
         "unblockFailed": "Failed to unblock teacher"
       }
     },
-    "parents": {
-      "management": "Parents Accounts Management",
-      "allParents": "All Parents",
-      "pending": "Pending",
-      "active": "Active",
-      "rejected": "Rejected",
-      "blocked": "Blocked",
-      "loading": "Loading",
-      "loadingParents": "Loading parents data...",
-      "noParents": "No registered parents",
-      "noParentsInCategory": "No parents in this category",
-      "assignStudent": "Assign Student",
-      "approve": "Approve",
-      "reject": "Reject",
-      "block": "Block",
-      "unblock": "Unblock",
-      "status": {
-        "pending": "Pending",
-        "active": "Active",
-        "rejected": "Rejected",
-        "blocked": "Blocked"
-      },
-      "statusDisplay": {
-        "all": "All",
-        "pending": "Pending",
-        "active": "Active",
-        "rejected": "Rejected",
-        "blocked": "Blocked"
-      },
-      "relations": {
-        "father": "Father",
-        "mother": "Mother",
-        "guardian": "Guardian",
-        "other": "Other"
-      },
-      "modal": {
-        "assignStudent": "Assign Student to Parent",
-        "parentName": "Parent Name",
-        "searchStudent": "Search for a student",
-        "searchPlaceholder": "Type student name, email, ID number or passport...",
-        "searching": "Searching for students...",
-        "searchResults": "Search Results",
-        "noResults": "No matching students found",
-        "selectedStudent": "Selected Student",
-        "name": "Name",
-        "email": "Email",
-        "idNumber": "ID Number",
-        "status": "Status",
-        "action": "Action",
-        "alreadyAssigned": "Already Assigned",
-        "selected": "Selected",
-        "select": "Select",
-        "relation": "Relation",
-        "iqamaNumber": "Iqama Number",
-        "passportNumber": "Passport Number",
-        "assign": "Assign",
-        "assigning": "Assigning...",
-        "minChars": "Type at least 2 characters to search",
-        "accountNotFound": "Account not found"
-      },
-      "messages": {
-        "approved": "Parent approved successfully",
-        "rejected": "Parent rejected successfully",
-        "blocked": "Parent blocked successfully",
-        "unblocked": "Parent unblocked successfully",
-        "error": "An error occurred while processing the request",
-        "adminNotFound": "Admin ID not found. Please login again.",
-        "assignSuccess": "Student assigned successfully",
-        "assignFailed": "Failed to assign student",
-        "alreadyAssigned": "Student is already assigned to this parent",
-        "accountNotFound": "Account not found",
-        "selectStudent": "Please select a student",
-        "loadError": "Error loading accounts"
-      },
-      "confirmations": {
-        "approve": "Are you sure you want to approve this parent?",
-        "reject": "Are you sure you want to reject this parent?",
-        "block": "Are you sure you want to block this parent?",
-        "unblock": "Are you sure you want to unblock this parent?",
-        "assignStudent": "Are you sure you want to assign this student to this parent?"
-      }
-    },
-    "common": {
-      "close": "Close",
-      "cancel": "Cancel",
-      "search": "Search",
-      "loading": "Loading"
-    },
     "students": {
       "management": "Students Accounts Management",
       "allStudents": "All Students",
@@ -1325,5 +1237,116 @@
   "DASHBOARD": {
     "WELCOME_TITLE": "Welcome to Dashboard",
     "WELCOME_SUBTITLE": "Manage your system easily and efficiently"
+  }
+  ,
+  "parents": {
+    "management": "Parents Management",
+    "allParents": "All Parents",
+    "pending": "Pending",
+    "active": "Active",
+    "rejected": "Rejected",
+    "blocked": "Blocked",
+    "loading": "Loading...",
+    "loadingParents": "Loading parents list",
+    "noParents": "No Parents",
+    "noParentsInCategory": "No parents in this category",
+    "approve": "Approve",
+    "viewDocs": "View Documents",
+    "reject": "Reject",
+    "block": "Block",
+    "unblock": "Unblock",
+    "assignStudent": "Assign Student",
+    "statusDisplay": {
+      "all": "All",
+      "pending": "Pending",
+      "active": "Active",
+      "rejected": "Rejected",
+      "blocked": "Blocked"
+    },
+    "status": {
+      "pending": "Pending",
+      "active": "Active",
+      "blocked": "Blocked",
+      "rejected": "Rejected"
+    },
+    "modal": {
+      "assignStudent": "Assign Student to Parent",
+      "parentName": "Parent Name",
+      "searchStudent": "Search for Student",
+      "searchPlaceholder": "Search by name, email, national ID...",
+      "minChars": "Minimum 2 characters required",
+      "searching": "Searching...",
+      "searchResults": "Search Results",
+      "name": "Name",
+      "email": "Email",
+      "idNumber": "ID Number",
+      "PassportNumber": "Passport Number",
+      "status": "Status",
+      "action": "Action",
+      "alreadyAssigned": "Already Assigned",
+      "selected": "Selected",
+      "select": "Select",
+      "noResults": "No results found",
+      "selectedStudent": "Selected Student",
+      "iqamaNumber": "Iqama Number",
+      "passportNumber": "Passport Number",
+      "relation": "Relation",
+      "assign": "Assign",
+      "assigning": "Assigning...",
+      "documentsReview": "Documents Review",
+      "documents": "document(s)",
+      "loadingDocs": "Loading documents...",
+      "documentsList": "Documents List",
+      "previous": "Previous",
+      "next": "Next",
+      "download": "Download",
+      "closeViewer": "Close Viewer",
+      "currentDocument": "Current Document",
+      "browserNotSupport": "Your browser doesn't support PDF viewing",
+      "downloadToView": "Click to download and view",
+      "openInNewTab": "Open in New Tab",
+      "selectDocument": "Select a Document",
+      "selectFromList": "Select a document from the list to view",
+      "viewFirstDoc": "View First Document",
+      "reviewInstructions": "Please review all documents before approving the parent account"
+    },
+    "relations": {
+      "father": "Father",
+      "mother": "Mother",
+      "guardian": "Guardian",
+      "other": "Other"
+    },
+    "messages": {
+      "noDocs": "No documents uploaded",
+      "error": "An error occurred",
+      "noUserId": "Parent user ID is not available",
+      "adminNotFound": "Admin not found",
+      "accountNotFound": "Parent account not found",
+      "approved": "Parent account approved successfully",
+      "approveFailed": "Failed to approve parent account",
+      "assignSuccess": "Student assigned successfully",
+      "assignFailed": "Failed to assign student",
+      "selectStudent": "Please select a student",
+      "alreadyAssigned": "This student is already assigned to another parent",
+      "rejected": "Parent account rejected successfully",
+      "rejectFailed": "Failed to reject parent account",
+      "blocked": "Parent account blocked successfully",
+      "blockFailed": "Failed to block parent account",
+      "unblocked": "Parent account unblocked successfully",
+      "unblockFailed": "Failed to unblock parent account",
+      "loadError": "Error loading parents"
+    },
+    "confirmations": {
+      "assignStudent": "Are you sure you want to assign this student to the parent?",
+      "reject": "Are you sure you want to reject this parent account?",
+      "block": "Are you sure you want to block this parent account?",
+      "unblock": "Are you sure you want to unblock this parent account?"
+    }
+  },
+  "common": {
+    "close": "Close",
+    "search": "Search",
+    "loading": "Loading...",
+    "cancel": "Cancel"
   }
 }
