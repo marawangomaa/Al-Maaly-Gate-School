@@ -1,0 +1,415 @@
+/* Student Overview */
+.student-overview {
+  min-height: calc(100vh - 120px);
+  background-color: var(--color-bg);
+}
+
+.student-overview .card {
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-light-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+}
+
+.student-overview .card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+}
+
+/* Header */
+.student-overview .overview-header {
+  border-bottom: 2px solid var(--color-border);
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+
+.student-overview .overview-header .main-title {
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: var(--color-primary);
+  margin: 0;
+}
+
+.student-overview .last-updated {
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+/* Profile Section */
+.student-overview .profile-wrapper {
+  position: relative;
+}
+
+.student-overview .profile-img-container {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--color-primary);
+  background-color: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.student-overview .profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.student-overview .profile-placeholder {
+  width: 100%;
+  height: 100%;
+  color: var(--color-primary);
+  font-size: 2.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.student-overview .profile-name {
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 0.5rem;
+}
+
+.student-overview .image-actions {
+  transform: translate(25%, 25%);
+}
+
+.student-overview .image-actions .btn {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  transition: all 0.2s ease;
+}
+
+.student-overview .image-actions .btn:hover {
+  transform: scale(1.1);
+}
+
+/* Student Info */
+.student-overview .student-info {
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  padding: 1.5rem 0;
+}
+
+.student-overview .info-item {
+  padding: 0.5rem 0;
+}
+
+.student-overview .info-item:not(:last-child) {
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.student-overview .info-item label {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  color: var(--color-text-muted);
+}
+
+.student-overview .info-item .bi {
+  min-width: 20px;
+  opacity: 0.8;
+}
+
+/* Stats Cards */
+.student-overview .stat-card {
+  background: linear-gradient(135deg, var(--color-bg), var(--color-bg-secondary));
+  border: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.student-overview .stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.student-overview .stat-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.9;
+}
+
+.student-overview .stat-number {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 0.25rem;
+}
+
+.student-overview .stat-label {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.student-overview .stat-subtext {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-top: 0.5rem;
+}
+
+/* Exam Items */
+.student-overview .exam-item {
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.student-overview .exam-item:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.1);
+  cursor: pointer;
+}
+
+.student-overview .clickable {
+  cursor: pointer;
+}
+
+.student-overview .clickable:hover {
+  transform: translateY(-2px);
+}
+
+.student-overview .exam-item h6 {
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 0.5rem;
+}
+
+/* Academic Info Items */
+.student-overview .academic-info-item {
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.student-overview .academic-info-item:hover {
+  border-color: var(--color-primary);
+}
+
+.student-overview .academic-info-item h6 {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* Progress Bar */
+.student-overview .progress {
+  background-color: var(--color-border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.student-overview .progress-bar {
+  transition: width 0.3s ease;
+}
+
+/* Toast Notifications */
+.student-overview .toast-container {
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.student-overview .toast {
+  min-width: 300px;
+  border: none;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.student-overview .toast-header {
+  border-radius: 0.375rem 0.375rem 0 0;
+  font-weight: 600;
+}
+
+.student-overview .toast-body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Badges */
+.student-overview .badge {
+  padding: 0.35em 0.65em;
+  font-weight: 500;
+  border-radius: 0.375rem;
+}
+
+/* Buttons */
+.student-overview .btn {
+  font-weight: 500;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  border-width: 2px;
+}
+
+.student-overview .btn-outline-primary:hover {
+  background-color: var(--color-primary);
+  color: white;
+  transform: translateY(-1px);
+}
+
+.student-overview .btn-outline-secondary:hover {
+  background-color: var(--color-secondary);
+  color: white;
+  transform: translateY(-1px);
+}
+
+/* Loading States */
+.student-overview .loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  border-radius: inherit;
+}
+
+/* Color classes for scores */
+.student-overview .text-success { color: var(--bs-success) !important; }
+.student-overview .text-primary { color: var(--bs-primary) !important; }
+.student-overview .text-warning { color: var(--bs-warning) !important; }
+.student-overview .text-danger { color: var(--bs-danger) !important; }
+
+.student-overview .bg-success { background-color: var(--bs-success) !important; }
+.student-overview .bg-primary { background-color: var(--bs-primary) !important; }
+.student-overview .bg-warning { background-color: var(--bs-warning) !important; }
+.student-overview .bg-danger { background-color: var(--bs-danger) !important; }
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .student-overview .profile-img-container {
+    width: 90px;
+    height: 90px;
+  }
+  
+  .student-overview .profile-placeholder {
+    font-size: 2.2rem;
+  }
+  
+  .student-overview .image-actions .btn {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .student-overview .overview-header {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 1rem;
+  }
+  
+  .student-overview .overview-header .main-title {
+    font-size: 1.5rem;
+  }
+  
+  .student-overview .profile-img-container {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .student-overview .stat-number {
+    font-size: 1.5rem;
+  }
+  
+  .student-overview .stat-icon {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .student-overview .card {
+    padding: 1.5rem !important;
+  }
+  
+  .student-overview .row.g-4 {
+    gap: 1rem !important;
+  }
+  
+  .student-overview .profile-img-container {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .student-overview .profile-placeholder {
+    font-size: 1.8rem;
+  }
+  
+  .student-overview .image-actions .btn {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+  }
+}
+
+/* Animation for image upload */
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+.student-overview .uploading {
+  animation: pulse 1.5s infinite;
+}
+
+/* Custom scrollbar */
+.student-overview ::-webkit-scrollbar {
+  width: 6px;
+}
+
+.student-overview ::-webkit-scrollbar-track {
+  background: var(--color-bg);
+  border-radius: 3px;
+}
+
+.student-overview ::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+.student-overview ::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+
+/* Status colors */
+.status-active { color: var(--bs-success); }
+.status-pending { color: var(--bs-warning); }
+.status-suspended { color: var(--bs-danger); }
+.status-inactive { color: var(--bs-secondary); }
+
+/* Score grade colors */
+.grade-a { color: var(--bs-success); }
+.grade-b { color: var(--bs-primary); }
+.grade-c { color: var(--bs-info); }
+.grade-d { color: var(--bs-warning); }
+.grade-f { color: var(--bs-danger); }

@@ -1,1 +1,428 @@
-<p>overview works!</p>
+<section class="student-overview standard-section-layout">
+  <div class="container">
+    <!-- Header -->
+    <div class="overview-header d-flex flex-wrap align-items-center justify-content-between mb-4">
+      <h2 class="main-title">
+        {{ 'STUDENT_OVERVIEW.TITLE' | translate }}
+      </h2>
+      <div class="last-updated text-muted small">
+        <span *ngIf="!loading">
+          {{ 'STUDENT_OVERVIEW.YOUR_PROFILE' | translate }}
+        </span>
+        <span *ngIf="loading">
+          {{ 'STUDENT_OVERVIEW.LOADING' | translate }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-2">{{ 'STUDENT_OVERVIEW.LOADING' | translate }}</p>
+    </div>
+
+    <!-- Main Content -->
+    <div *ngIf="!loading && studentProfile" class="row g-4">
+      <!-- Student Info Card -->
+      <div class="col-12 col-lg-4">
+        <div class="card p-4">
+          <!-- Profile Image Section -->
+          <div class="d-flex align-items-center mb-4">
+            <div class="profile-wrapper me-3 position-relative">
+              <!-- Profile Image with fallback -->
+              <div *ngIf="getProfileImageUrl(); else noImage" class="profile-img-container">
+                <img 
+                    [src]="getProfileImageUrl()" 
+                    alt="Profile Image" 
+                    class="profile-img"
+                    (load)="handleImageLoad($event)"
+                    (error)="handleImageError($event)"
+                    loading="lazy"
+                >
+                <div class="image-actions position-absolute bottom-0 end-0">
+                  <button 
+                    type="button" 
+                    class="btn btn-sm btn-light rounded-circle shadow-sm"
+                    (click)="triggerFileInput()"
+                    [title]="'STUDENT_OVERVIEW.CHANGE_PHOTO' | translate"
+                  >
+                    <i class="bi bi-camera text-primary"></i>
+                  </button>
+                </div>
+              </div>
+              <ng-template #noImage>
+                <div class="profile-img-container">
+                  <div class="profile-placeholder d-flex align-items-center justify-content-center">
+                    <i class="bi bi-person-circle"></i>
+                  </div>
+                  <div class="image-actions position-absolute bottom-0 end-0">
+                    <button 
+                      type="button" 
+                      class="btn btn-sm btn-primary rounded-circle shadow-sm"
+                      (click)="triggerFileInput()"
+                      [title]="'STUDENT_OVERVIEW.UPLOAD_PHOTO' | translate"
+                    >
+                      <i class="bi bi-plus"></i>
+                    </button>
+                  </div>
+                </div>
+              </ng-template>
+              
+              <!-- Hidden file input -->
+              <input 
+                type="file" 
+                id="profileImageInput"
+                accept="image/*"
+                (change)="onProfileImageSelected($event)"
+                hidden
+              >
+            </div>
+            <div>
+              <h3 class="h5 mb-1 profile-name">{{ studentProfile.fullName || ('STUDENT_OVERVIEW.NO_NAME' | translate) }}</h3>
+              <div class="d-flex align-items-center">
+                <span class="badge bg-primary me-2">
+                  {{ 'STUDENT_OVERVIEW.STUDENT' | translate }}
+                </span>
+                <small class="text-muted">{{ studentProfile.className || 'No Class' }}</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Student Info Details -->
+          <div class="student-info mb-4">
+            <!-- Email -->
+            <div class="info-item mb-3">
+              <label class="small text-muted d-block">{{ 'STUDENT_OVERVIEW.EMAIL' | translate }}</label>
+              <div class="d-flex align-items-center">
+                <i class="bi bi-envelope me-2 text-primary"></i>
+                <span>{{ studentProfile.email || ('STUDENT_OVERVIEW.NO_EMAIL' | translate) }}</span>
+              </div>
+            </div>
+
+            <!-- Contact -->
+            <div class="info-item mb-3">
+              <label class="small text-muted d-block">{{ 'STUDENT_OVERVIEW.CONTACT' | translate }}</label>
+              <div class="d-flex align-items-center">
+                <i class="bi bi-telephone me-2 text-primary"></i>
+                <span>{{ studentProfile.contactInfo || ('STUDENT_OVERVIEW.NO_PHONE' | translate) }}</span>
+              </div>
+            </div>
+
+            <!-- Class & Grade -->
+            <div class="info-item mb-3">
+              <label class="small text-muted d-block">{{ 'STUDENT_OVERVIEW.CLASS_GRADE' | translate }}</label>
+              <div class="d-flex align-items-center">
+                <i class="bi bi-building me-2 text-primary"></i>
+                <span>{{ studentProfile.className }} - {{ studentProfile.gradeName || 'N/A' }}</span>
+              </div>
+            </div>
+
+            <!-- Parents -->
+            <div class="info-item mb-3" *ngIf="studentProfile.parents.length">
+              <label class="small text-muted d-block">{{ 'STUDENT_OVERVIEW.PARENTS' | translate }}</label>
+              <div class="d-flex align-items-center">
+                <i class="bi bi-people me-2 text-primary"></i>
+                <span class="small">{{ formattedParentNames }}</span>
+              </div>
+            </div>
+
+            <!-- Age -->
+            <div class="info-item mb-3" *ngIf="studentProfile.age">
+              <label class="small text-muted d-block">{{ 'STUDENT_OVERVIEW.AGE' | translate }}</label>
+              <div class="d-flex align-items-center">
+                <i class="bi bi-calendar3 me-2 text-primary"></i>
+                <span>{{ studentProfile.age }} {{ 'STUDENT_OVERVIEW.YEARS' | translate }}</span>
+              </div>
+            </div>
+
+            <!-- Nationality -->
+            <div class="info-item mb-3" *ngIf="studentProfile.nationality">
+              <label class="small text-muted d-block">{{ 'STUDENT_OVERVIEW.NATIONALITY' | translate }}</label>
+              <div class="d-flex align-items-center">
+                <i class="bi bi-globe me-2 text-primary"></i>
+                <span>{{ studentProfile.nationality }}</span>
+              </div>
+            </div>
+
+            <!-- Account Status -->
+            <div class="info-item mb-3">
+              <label class="small text-muted d-block">{{ 'STUDENT_OVERVIEW.STATUS' | translate }}</label>
+              <div class="d-flex align-items-center">
+                <i class="bi bi-circle-fill me-2" [ngClass]="'text-' + accountStatusColor"></i>
+                <span>{{ accountStatusText }}</span>
+              </div>
+            </div>
+
+            <!-- Upload Progress -->
+            <div class="info-item mb-3" *ngIf="isUploading">
+              <div class="progress" style="height: 6px;">
+                <div 
+                  class="progress-bar progress-bar-striped progress-bar-animated" 
+                  role="progressbar" 
+                  [style.width.%]="uploadProgress"
+                  aria-valuenow="uploadProgress" 
+                  aria-valuemin="0" 
+                  aria-valuemax="100"
+                ></div>
+              </div>
+              <small class="text-muted d-block text-center mt-1">
+                {{ 'STUDENT_OVERVIEW.UPLOADING' | translate }} {{ uploadProgress }}%
+              </small>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="d-grid gap-2">
+            <button class="btn btn-outline-primary" (click)="openProfileSettings()">
+              <i class="bi bi-gear me-1"></i>
+              {{ 'STUDENT_OVERVIEW.PROFILE_SETTINGS' | translate }}
+            </button>
+            <button class="btn btn-outline-secondary" (click)="refreshProfile()" [disabled]="loading">
+              <i class="bi bi-arrow-clockwise me-1"></i>
+              {{ 'STUDENT_OVERVIEW.REFRESH' | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats & Exams Section -->
+      <div class="col-12 col-lg-8">
+        <!-- Performance Stats -->
+        <div class="row g-3 mb-4">
+          <!-- Total Exams -->
+          <div class="col-6 col-md-3">
+            <div class="stat-card card text-center p-3 h-100">
+              <div class="stat-icon text-primary mb-2">
+                <i class="bi bi-file-earmark-text fs-2"></i>
+              </div>
+              <div class="stat-number h4 mb-1">{{ totalExams }}</div>
+              <div class="stat-label small text-muted">{{ 'STUDENT_OVERVIEW.TOTAL_EXAMS' | translate }}</div>
+            </div>
+          </div>
+
+          <!-- Average Score -->
+          <div class="col-6 col-md-3">
+            <div class="stat-card card text-center p-3 h-100">
+              <div class="stat-icon text-success mb-2">
+                <i class="bi bi-graph-up fs-2"></i>
+              </div>
+              <div class="stat-number h4 mb-1">{{ formatScore(averageScore) }}</div>
+              <div class="stat-label small text-muted">{{ 'STUDENT_OVERVIEW.AVERAGE_SCORE' | translate }}</div>
+              <div class="stat-subtext mt-2">
+                <small class="text-muted">{{ getGradeText(averageScore) }} {{ 'STUDENT_OVERVIEW.GRADE' | translate }}</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Highest Score -->
+          <div class="col-6 col-md-3">
+            <div class="stat-card card text-center p-3 h-100">
+              <div class="stat-icon text-warning mb-2">
+                <i class="bi bi-trophy fs-2"></i>
+              </div>
+              <div class="stat-number h4 mb-1">{{ formatScore(highestScore) }}</div>
+              <div class="stat-label small text-muted">{{ 'STUDENT_OVERVIEW.HIGHEST_SCORE' | translate }}</div>
+            </div>
+          </div>
+
+          <!-- Subjects Count -->
+          <div class="col-6 col-md-3">
+            <div class="stat-card card text-center p-3 h-100">
+              <div class="stat-icon text-info mb-2">
+                <i class="bi bi-book fs-2"></i>
+              </div>
+              <div class="stat-number h4 mb-1">{{ uniqueSubjects.length }}</div>
+              <div class="stat-label small text-muted">{{ 'STUDENT_OVERVIEW.SUBJECTS' | translate }}</div>
+              <div *ngIf="uniqueSubjects.length" class="stat-subtext mt-2">
+                <small class="text-truncate d-block">{{ uniqueSubjects.slice(0, 3).join(', ') }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Exams -->
+        <div class="card p-4 mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="sub-title d-flex align-items-center mb-0">
+              <i class="bi bi-clock-history me-2 text-primary"></i>
+              {{ 'STUDENT_OVERVIEW.RECENT_EXAMS' | translate }}
+              <span class="badge bg-primary ms-2">{{ totalExams }}</span>
+            </h4>
+            <button class="btn btn-sm btn-outline-primary" (click)="viewAllExams()" [disabled]="!totalExams">
+              <i class="bi bi-arrow-right me-1"></i>
+              {{ 'STUDENT_OVERVIEW.VIEW_ALL' | translate }}
+            </button>
+          </div>
+          
+          <!-- Exams Loading -->
+          <div *ngIf="loadingExams" class="text-center py-3">
+            <div class="spinner-border spinner-border-sm text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <small class="text-muted ms-2">{{ 'STUDENT_OVERVIEW.LOADING_EXAMS' | translate }}</small>
+          </div>
+          
+          <!-- Exams List -->
+          <div *ngIf="!loadingExams && recentExams.length > 0" class="row g-3">
+            <div *ngFor="let exam of recentExams" class="col-12 col-md-6">
+              <div class="exam-item card border p-3 clickable" (click)="viewExamDetails(exam.examId)">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div class="flex-grow-1">
+                    <h6 class="mb-1">{{ exam.examName || 'Unnamed Exam' }}</h6>
+                    <div class="small text-muted">
+                      <i class="bi bi-book me-1"></i>{{ exam.subjectName || 'No Subject' }}
+                    </div>
+                    <div class="small text-muted">
+                      <i class="bi bi-calendar3 me-1"></i>{{ formatDate(exam.date) }}
+                    </div>
+                  </div>
+                  <div class="text-end">
+                    <div class="h5 mb-0" [ngClass]="'text-' + getGradeColor(exam.percentage)">
+                      {{ formatScore(exam.percentage) }}
+                    </div>
+                    <small class="text-muted d-block">{{ getGradeText(exam.percentage) }}</small>
+                  </div>
+                </div>
+                <div class="mt-2">
+                  <div class="progress" style="height: 5px;">
+                    <div 
+                      class="progress-bar" 
+                      [ngClass]="'bg-' + getGradeColor(exam.percentage)"
+                      role="progressbar" 
+                      [style.width.%]="exam.percentage"
+                      [attr.aria-valuenow]="exam.percentage"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- No Exams Message -->
+          <div *ngIf="!loadingExams && recentExams.length === 0" class="text-center py-4">
+            <i class="bi bi-file-earmark-text text-muted fs-1 mb-3"></i>
+            <p class="text-muted">{{ 'STUDENT_OVERVIEW.NO_EXAMS' | translate }}</p>
+            <small class="text-muted d-block">{{ 'STUDENT_OVERVIEW.NO_EXAMS_DESC' | translate }}</small>
+          </div>
+
+          <!-- Show More Button -->
+          <div *ngIf="!loadingExams && examResults.length > 4" class="text-center mt-3">
+            <button class="btn btn-link text-decoration-none" (click)="viewAllExams()">
+              {{ 'STUDENT_OVERVIEW.SHOW_MORE' | translate }} ({{ examResults.length - 4 }})
+              <i class="bi bi-chevron-down ms-1"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Academic Information -->
+        <div class="card p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="sub-title d-flex align-items-center mb-0">
+              <i class="bi bi-mortarboard me-2 text-success"></i>
+              {{ 'STUDENT_OVERVIEW.ACADEMIC_INFO' | translate }}
+            </h4>
+          </div>
+          
+          <div class="row">
+            <!-- Class Info -->
+            <div class="col-12 col-md-6 mb-3">
+              <div class="academic-info-item p-3 border rounded">
+                <div class="d-flex align-items-center mb-2">
+                  <i class="bi bi-building text-primary fs-5 me-2"></i>
+                  <h6 class="mb-0">{{ 'STUDENT_OVERVIEW.CLASS_DETAILS' | translate }}</h6>
+                </div>
+                <div class="small">
+                  <div class="mb-1">
+                    <strong>{{ 'STUDENT_OVERVIEW.CLASS' | translate }}:</strong> {{ studentProfile.className }}
+                  </div>
+                  <div class="mb-1">
+                    <strong>{{ 'STUDENT_OVERVIEW.GRADE' | translate }}:</strong> {{ studentProfile.gradeName || 'N/A' }}
+                  </div>
+                  <div>
+                    <strong>{{ 'STUDENT_OVERVIEW.YEAR' | translate }}:</strong> {{ studentProfile.classYear }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Curriculum Info -->
+            <div class="col-12 col-md-6 mb-3" *ngIf="studentProfile.curriculumName">
+              <div class="academic-info-item p-3 border rounded">
+                <div class="d-flex align-items-center mb-2">
+                  <i class="bi bi-journal-text text-success fs-5 me-2"></i>
+                  <h6 class="mb-0">{{ 'STUDENT_OVERVIEW.CURRICULUM' | translate }}</h6>
+                </div>
+                <div class="small">
+                  <div class="mb-1">
+                    <strong>{{ 'STUDENT_OVERVIEW.CURRICULUM_NAME' | translate }}:</strong> {{ studentProfile.curriculumName }}
+                  </div>
+                  <div *ngIf="studentProfile.curriculumId">
+                    <strong>{{ 'STUDENT_OVERVIEW.CURRICULUM_ID' | translate }}:</strong> 
+                    <span class="font-monospace small">{{ studentProfile.curriculumId.substring(0, 8) }}...</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Additional Info -->
+            <div class="col-12">
+              <div class="academic-info-item p-3 border rounded">
+                <div class="d-flex align-items-center mb-2">
+                  <i class="bi bi-info-circle text-info fs-5 me-2"></i>
+                  <h6 class="mb-0">{{ 'STUDENT_OVERVIEW.ADDITIONAL_INFO' | translate }}</h6>
+                </div>
+                <div class="small">
+                  <div class="row">
+                    <div class="col-6 col-md-4 mb-2">
+                      <strong>{{ 'STUDENT_OVERVIEW.STUDENT_ID' | translate }}:</strong><br>
+                      <span class="font-monospace">{{ studentProfile.id.substring(0, 8) }}...</span>
+                    </div>
+                    <div class="col-6 col-md-4 mb-2" *ngIf="studentProfile.iqamaNumber">
+                      <strong>{{ 'STUDENT_OVERVIEW.IQAMA_NUMBER' | translate }}:</strong><br>
+                      {{ studentProfile.iqamaNumber }}
+                    </div>
+                    <div class="col-6 col-md-4 mb-2" *ngIf="studentProfile.passportNumber">
+                      <strong>{{ 'STUDENT_OVERVIEW.PASSPORT_NUMBER' | translate }}:</strong><br>
+                      {{ studentProfile.passportNumber }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Data Message -->
+    <div *ngIf="!loading && !studentProfile" class="text-center py-5">
+      <i class="bi bi-person-x text-muted fs-1 mb-3"></i>
+      <h4>{{ 'STUDENT_OVERVIEW.NO_STUDENT_DATA' | translate }}</h4>
+      <p class="text-muted">{{ 'STUDENT_OVERVIEW.NO_DATA_MESSAGE' | translate }}</p>
+      <button class="btn btn-primary mt-3" (click)="refreshProfile()">
+        <i class="bi bi-arrow-clockwise me-1"></i>
+        {{ 'STUDENT_OVERVIEW.RETRY' | translate }}
+      </button>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+      <div *ngIf="showToast" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header" [ngClass]="toastType === 'success' ? 'bg-success text-white' : toastType === 'error' ? 'bg-danger text-white' : 'bg-info text-white'">
+          <strong class="me-auto">
+            <i [class]="toastType === 'success' ? 'bi bi-check-circle' : toastType === 'error' ? 'bi bi-exclamation-circle' : 'bi bi-info-circle'"></i>
+            {{ toastTitle }}
+          </strong>
+          <button type="button" class="btn-close btn-close-white" (click)="hideToast()"></button>
+        </div>
+        <div class="toast-body">
+          {{ toastMessage }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
