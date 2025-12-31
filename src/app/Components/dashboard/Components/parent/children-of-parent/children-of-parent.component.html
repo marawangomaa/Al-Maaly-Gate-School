@@ -1,1 +1,428 @@
-<p>children-of-parent works! parent</p>
+<div class="parent-view-container">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2">Loading parent information...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!isLoading && error" class="alert alert-danger" role="alert">
+    {{ error }}
+    <button
+      class="btn btn-sm btn-outline-danger ms-3"
+      (click)="loadParentWithChildren()"
+    >
+      Retry
+    </button>
+  </div>
+
+  <!-- Parent Information -->
+  <div *ngIf="!isLoading && parent" class="parent-card">
+    <div class="card">
+      <div class="card-header bg-primary text-white">
+        <h2 class="mb-0">
+          <i class="bi bi-person-badge me-2"></i>
+          Parent Information
+        </h2>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="info-item">
+              <strong><i class="bi bi-person me-2"></i>Full Name:</strong>
+              <span>{{ parent.fullName }}</span>
+            </div>
+            <div class="info-item">
+              <strong><i class="bi bi-envelope me-2"></i>Email:</strong>
+              <span>{{ parent.email }}</span>
+            </div>
+            <div class="info-item">
+              <strong><i class="bi bi-telephone me-2"></i>Contact Info:</strong>
+              <span>{{ parent.contactInfo }}</span>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="info-item">
+              <strong><i class="bi bi-link me-2"></i>Relation:</strong>
+              <span>{{ parent.relation || "Not specified" }}</span>
+            </div>
+            <div class="info-item">
+              <strong
+                ><i class="bi bi-people me-2"></i>Number of Students:</strong
+              >
+              <span class="badge bg-secondary">{{
+                parent.students.length || 0
+              }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Students Section -->
+    <div class="students-section mt-4">
+      <div class="card">
+        <div class="card-header bg-success text-white">
+          <h3 class="mb-0">
+            <i class="bi bi-people-fill me-2"></i>
+            Associated Students
+          </h3>
+        </div>
+        <div class="card-body">
+          <div
+            *ngIf="!parent.students || parent.students.length === 0"
+            class="alert alert-info"
+          >
+            No students associated with this parent.
+          </div>
+
+          <div
+            *ngIf="parent.students && parent.students.length > 0"
+            class="students-list"
+          >
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead class="table-light">
+                  <tr>
+                    <th>#</th>
+                    <th>Full Name</th>
+                    <th>Relation</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let student of parent.students; let i = index"
+                    [ngClass]="{
+                      'table-active': selectedStudent?.id === student.id
+                    }"
+                    class="student-row"
+                  >
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ student.fullName }}</td>
+                    <td>
+                      <span
+                        class="badge"
+                        [ngClass]="{
+                          'bg-warning': student.relation === 'Father',
+                          'bg-info': student.relation === 'Mother',
+                          'bg-secondary':
+                            !student.relation || student.relation === 'Other'
+                        }"
+                      >
+                        {{ student.relation || "Not specified" }}
+                      </span>
+                    </td>
+                    <td>
+                      <div class="btn-group btn-group-sm" role="group">
+                        <button
+                          class="btn btn-outline-primary"
+                          (click)="viewStudentCertificates(student)"
+                          title="View Certificates"
+                        >
+                          <i class="bi bi-award"></i> Certificates
+                        </button>
+                        <button
+                          class="btn btn-outline-success"
+                          (click)="downloadAllCertificates(student)"
+                          title="Download All Certificates"
+                          *ngIf="
+                            studentCertificates &&
+                            studentCertificates.length > 0
+                          "
+                        >
+                          <i class="bi bi-download"></i> Download All
+                        </button>
+                        <button
+                          class="btn btn-outline-info"
+                          (click)="onStudentSelect(student)"
+                          title="View Student Details"
+                        >
+                          <i class="bi bi-eye"></i> View
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Certificate Display Area -->
+    <div class="certificates-section mt-4" *ngIf="selectedStudent">
+      <div class="card">
+        <div class="card-header bg-warning text-dark">
+          <div class="d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">
+              <i class="bi bi-award me-2"></i>
+              Certificates for {{ selectedStudent.fullName }}
+            </h3>
+            <button
+              class="btn btn-sm btn-outline-dark"
+              (click)="clearCertificateView()"
+              title="Close certificates view"
+            >
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <!-- Loading certificates -->
+          <div *ngIf="loadingCertificates" class="text-center py-3">
+            <div class="spinner-border text-warning" role="status">
+              <span class="visually-hidden">Loading certificates...</span>
+            </div>
+            <p class="mt-2 text-muted">Loading certificates...</p>
+          </div>
+
+          <!-- Certificate Statistics -->
+          <div
+            *ngIf="!loadingCertificates && studentCertificates"
+            class="certificate-stats mb-4"
+          >
+            <div class="row">
+              <div class="col-md-3">
+                <div class="stat-card text-center p-3 bg-light rounded">
+                  <h4 class="text-primary">{{ studentCertificates.length }}</h4>
+                  <p class="mb-0 text-muted">Total Certificates</p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="stat-card text-center p-3 bg-light rounded">
+                  <h4 class="text-success">{{ verifiedCertificatesCount }}</h4>
+                  <p class="mb-0 text-muted">Verified</p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="stat-card text-center p-3 bg-light rounded">
+                  <h4 class="text-danger">{{ archivedCertificatesCount }}</h4>
+                  <p class="mb-0 text-muted">Archived</p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="stat-card text-center p-3 bg-light rounded">
+                  <h4 class="text-info">{{ degreeTypes.length }}</h4>
+                  <p class="mb-0 text-muted">Degree Types</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- No certificates -->
+          <div
+            *ngIf="
+              !loadingCertificates &&
+              studentCertificates &&
+              studentCertificates.length === 0
+            "
+            class="alert alert-info"
+          >
+            <i class="bi bi-info-circle me-2"></i>
+            No certificates found for this student.
+          </div>
+
+          <!-- Certificate Filters -->
+          <div
+            *ngIf="
+              !loadingCertificates &&
+              studentCertificates &&
+              studentCertificates.length > 0
+            "
+          >
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="bi bi-funnel"></i>
+                  </span>
+                  <select
+                    class="form-select"
+                    [(ngModel)]="selectedDegreeType"
+                    (change)="filterCertificates()"
+                  >
+                    <option value="all">All Degree Types</option>
+                    <option *ngFor="let type of degreeTypes" [value]="type">
+                      {{ type }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-check form-switch">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="showVerifiedOnly"
+                    [(ngModel)]="showVerifiedOnly"
+                    (change)="filterCertificates()"
+                  />
+                  <label class="form-check-label" for="showVerifiedOnly">
+                    Show Verified Only
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Display certificates -->
+            <div class="row">
+              <div
+                class="col-md-6 col-lg-4"
+                *ngFor="let certificate of filteredCertificates; let i = index"
+              >
+                <div
+                  class="card mb-3 certificate-card h-100"
+                  [ngClass]="{
+                    'border-success': certificate.verified,
+                    'border-danger': certificate.archived
+                  }"
+                >
+                  <div
+                    class="card-header d-flex justify-content-between align-items-center"
+                    [ngClass]="{
+                      'bg-success text-white': certificate.verified,
+                      'bg-danger text-white': certificate.archived,
+                      'bg-warning':
+                        !certificate.verified && !certificate.archived
+                    }"
+                  >
+                    <strong>Certificate #{{ i + 1 }}</strong>
+                    <span
+                      class="badge"
+                      [ngClass]="{
+                        'bg-light text-dark':
+                          certificate.verified || certificate.archived,
+                        'bg-dark':
+                          !certificate.verified && !certificate.archived
+                      }"
+                    >
+                      {{ certificate.degreeType }}
+                    </span>
+                  </div>
+                  <div class="card-body">
+                    <div class="certificate-info">
+                      <p>
+                        <strong>Certificate No:</strong>
+                        {{ certificate.certificateNumber }}
+                      </p>
+                      <p>
+                        <strong>Issued Date:</strong>
+                        {{ certificate.issuedDate | date : "mediumDate" }}
+                      </p>
+                      <p>
+                        <strong>Academic Year:</strong>
+                        {{ certificate.academicYear || "N/A" }}
+                      </p>
+                      <p><strong>File:</strong> {{ certificate.fileName }}</p>
+
+                      <div class="status-badges mt-3">
+                        <span
+                          class="badge me-2"
+                          [ngClass]="{
+                            'bg-success': certificate.verified,
+                            'bg-secondary': !certificate.verified
+                          }"
+                        >
+                          {{
+                            certificate.verified ? "Verified" : "Not Verified"
+                          }}
+                        </span>
+                        <span
+                          class="badge"
+                          [ngClass]="{
+                            'bg-danger': certificate.archived,
+                            'bg-secondary': !certificate.archived
+                          }"
+                        >
+                          {{ certificate.archived ? "Archived" : "Active" }}
+                        </span>
+                      </div>
+
+                      <!-- Verification Info -->
+                      <div
+                        *ngIf="certificate.verified"
+                        class="verification-info mt-3 p-2 bg-light rounded"
+                      >
+                        <p class="mb-1">
+                          <small
+                            ><strong>Verified By:</strong>
+                            {{ certificate.verifiedBy || "N/A" }}</small
+                          >
+                        </p>
+                        <p class="mb-0">
+                          <small
+                            ><strong>Verified Date:</strong>
+                            {{
+                              certificate.verifiedDate | date : "mediumDate"
+                            }}</small
+                          >
+                        </p>
+                      </div>
+
+                      <!-- Archive Info -->
+                      <div
+                        *ngIf="certificate.archived"
+                        class="archive-info mt-3 p-2 bg-light rounded"
+                      >
+                        <p class="mb-0">
+                          <small
+                            ><strong>Archived Date:</strong>
+                            {{
+                              certificate.archivedDate | date : "mediumDate"
+                            }}</small
+                          >
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-footer bg-transparent">
+                    <div class="d-flex justify-content-between">
+                      <button
+                        class="btn btn-sm btn-outline-primary"
+                        (click)="viewCertificateDetails(certificate)"
+                        title="View Details"
+                      >
+                        <i class="bi bi-eye"></i>
+                      </button>
+                      <button
+                        class="btn btn-sm btn-outline-success"
+                        (click)="downloadCertificate(certificate)"
+                        title="Download Certificate"
+                        *ngIf="certificate.pdfData"
+                      >
+                        <i class="bi bi-download"></i>
+                      </button>
+                      <button
+                        class="btn btn-sm btn-outline-info"
+                        (click)="previewCertificate(certificate)"
+                        title="Preview Certificate"
+                      >
+                        <i class="bi bi-file-earmark-pdf"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Certificate Details Modal Trigger -->
+            <div *ngIf="selectedCertificate" class="mt-4">
+              <div class="card">
+                <div class="card-header bg-info text-white">
+                  <h5 class="mb-0">Certificate Details</h5>
+                </div>
+                <div class="card-body">
+                  <pre>{{ selectedCertificate | json }}</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

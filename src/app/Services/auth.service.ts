@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { ApiResponse, AuthResponse, LoginRequest, RefreshTokenRequest, RegisterRequest } from '../Interfaces/auth';
 import { Observable, tap } from 'rxjs';
 import { StorageUtil } from '../utils/storage.util';
@@ -108,7 +108,6 @@ export class AuthService {
     return roles.length ? roles[0] : null;
   }
 
-  // ✅ Extract teacherId if exists inside token
   getTeacherId(): string | null {
     const decoded = this.decodeToken();
     if (!decoded) return null;
@@ -144,7 +143,10 @@ export class AuthService {
       email: auth.email,
       fullName: auth.fullName,
       userName: auth.userName,
-      roleEntityIds: auth.roleEntityIds.studentId
+      roleEntityIds: auth.roleEntityIds.studentId,
+      parentId: auth.roleEntityIds.parentId,
+      teacherId: auth.roleEntityIds.teacherId,
+      studentId: auth.roleEntityIds.studentId
     }));
   }
 
@@ -156,4 +158,5 @@ export class AuthService {
     }
     return null;
   }
+
 }

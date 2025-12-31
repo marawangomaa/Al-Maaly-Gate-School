@@ -1,0 +1,125 @@
+.parent-view-container {
+    padding: 20px;
+}
+
+.loading-container {
+    text-align: center;
+    padding: 40px;
+}
+
+.parent-card {
+    margin-bottom: 20px;
+}
+
+.info-item {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.info-item strong {
+    color: #495057;
+    min-width: 150px;
+    display: inline-block;
+}
+
+.student-row {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.student-row:hover {
+    background-color: #f8f9fa;
+}
+
+.student-row.table-active {
+    background-color: #e7f1ff;
+}
+
+.certificate-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 2px solid transparent;
+}
+
+.certificate-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.certificate-stats .stat-card {
+    transition: all 0.3s ease;
+}
+
+.certificate-stats .stat-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.status-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.verification-info,
+.archive-info {
+    font-size: 0.85rem;
+}
+
+.certificate-info p {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.certificate-info strong {
+    color: #495057;
+    min-width: 120px;
+    display: inline-block;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .parent-view-container {
+        padding: 10px;
+    }
+
+    .students-list .table-responsive {
+        font-size: 0.9rem;
+    }
+
+    .btn-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+
+    .certificate-stats .row {
+        margin-bottom: 10px;
+    }
+
+    .certificate-stats .col-md-3 {
+        margin-bottom: 10px;
+    }
+
+    .certificate-card {
+        margin-bottom: 15px;
+    }
+}
+
+/* Animation for certificate cards */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.certificate-card {
+    animation: fadeIn 0.5s ease-out;
+}

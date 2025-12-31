@@ -1,9 +1,7 @@
-// auth.service.ts
 import { Injectable, inject } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { Observable, of } from 'rxjs';
 import { AccountStatus } from '../Interfaces/AccountStatus';
 
 @Injectable({ providedIn: 'root' })
