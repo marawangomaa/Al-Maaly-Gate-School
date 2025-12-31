@@ -1,3 +1,5 @@
+import { DegreeComponentTypeDto } from "./icomponenttype";
+
 export interface SubjectViewDto {
   id: string;
   subjectName: string;
@@ -8,6 +10,11 @@ export interface SubjectViewDto {
   examCount: number;
   createdAt: string;
   updatedAt?: string;
+  
+  // NEW: Component types information
+  componentTypes: DegreeComponentTypeDto[];
+  hasComponentTypes: boolean;
+  componentTypeCount: number;
 }
 
 export interface SubjectCreateDto {

@@ -161,6 +161,13 @@ export const routes: Routes = [
               import('./Components/dashboard/Components/admin/curriculum/curriculum.component')
                 .then(m => m.CurriculumComponent)
           },
+          {
+            path: 'subject-component-types',
+            canActivate: [AdminGuard],
+            loadComponent: () =>
+              import('./Components/dashboard/Components/admin/subject-component-types/subject-component-types.component')
+                .then(m => m.SubjectComponentTypesComponent)
+          },
 
           // Teacher
           {

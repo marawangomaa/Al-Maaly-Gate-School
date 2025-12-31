@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ClassViewDto } from '../../../../../Interfaces/iclass';
 import { StudentModel } from '../../../../../Interfaces/istudent';
-import { DegreeItemDto, StudentDegreesDto } from '../../../../../Interfaces/idegree';
+import { DegreeItemDto, StudentDegreesDto, DegreeType } from '../../../../../Interfaces/idegree';
 import { ClassService } from '../../../../../Services/class.service';
 import { DegreeService } from '../../../../../Services/degree.service';
 
@@ -20,10 +20,20 @@ export class AdminAllStudentTestsResultComponent implements OnInit {
   selectedType: string = 'الكل';
   selectedClassId: string = '';
 
+  // Exam types filter options
+  examTypeOptions = [
+    { value: 'الكل', label: 'الكل', type: undefined },
+    { value: 'MidTerm1', label: 'منتصف الفصل الأول', type: DegreeType.MidTerm1 },
+    { value: 'Final1', label: 'نهاية الفصل الأول', type: DegreeType.Final1 },
+    { value: 'MidTerm2', label: 'منتصف الفصل الثاني', type: DegreeType.MidTerm2 },
+    { value: 'Final2', label: 'نهاية الفصل الثاني', type: DegreeType.Final2 }
+  ];
+
   // Data properties
   classes: ClassViewDto[] = [];
   students: StudentModel[] = [];
-  studentDegreesMap: Map<string, DegreeItemDto[]> = new Map(); // studentId -> degrees[]
+  studentDegreesMap: Map<string, DegreeItemDto[]> = new Map();
+  studentFullDegreesMap: Map<string, StudentDegreesDto> = new Map();
 
   // Loading states
   loadingClasses: boolean = false;
@@ -37,6 +47,7 @@ export class AdminAllStudentTestsResultComponent implements OnInit {
   selectedStudentDegrees: DegreeItemDto[] = [];
   selectedStudentName: string = '';
   selectedClassName: string = '';
+  selectedStudentId: string = '';
 
   constructor(
     private classService: ClassService,
@@ -53,7 +64,7 @@ export class AdminAllStudentTestsResultComponent implements OnInit {
     this.classService.getAll().subscribe({
       next: (response) => {
         if (response.success) {
-          this.classes = response.data;
+          this.classes = response.data || [];
         }
         this.loadingClasses = false;
       },
@@ -71,11 +82,12 @@ export class AdminAllStudentTestsResultComponent implements OnInit {
     this.students = [];
     this.expandedStudentId = null;
     this.studentDegreesMap.clear();
+    this.studentFullDegreesMap.clear();
     
     this.classService.getStudentsByClass(classId).subscribe({
       next: (response) => {
         if (response.success) {
-          this.students = response.data;
+          this.students = response.data || [];
         }
         this.loadingStudents = false;
       },
@@ -86,10 +98,49 @@ export class AdminAllStudentTestsResultComponent implements OnInit {
     });
   }
 
+  // Get exam type display name
+  getExamTypeDisplayName(degreeType: number): string {
+    switch(degreeType) {
+      case DegreeType.MidTerm1: return 'منتصف الفصل الأول';
+      case DegreeType.Final1: return 'نهاية الفصل الأول';
+      case DegreeType.MidTerm2: return 'منتصف الفصل الثاني';
+      case DegreeType.Final2: return 'نهاية الفصل الثاني';
+      default: return 'غير محدد';
+    }
+  }
+
+  // Get max score for exam type
+  getExamTypeMaxScore(degreeType: number): number {
+    switch(degreeType) {
+      case DegreeType.MidTerm1:
+      case DegreeType.MidTerm2:
+        return 20;
+      case DegreeType.Final1:
+      case DegreeType.Final2:
+        return 80;
+      default:
+        return 100;
+    }
+  }
+
+  // Get percentage for specific exam type
+  getExamTypePercentage(studentId: string, examType: number): number {
+    const studentData = this.studentFullDegreesMap.get(studentId);
+    if (!studentData || !studentData.degrees) return 0;
+    
+    const examDegrees = studentData.degrees.filter(d => d.degreeType === examType);
+    if (examDegrees.length === 0) return 0;
+    
+    const totalScore = examDegrees.reduce((sum, d) => sum + d.score, 0);
+    const totalMaxScore = examDegrees.reduce((sum, d) => sum + d.maxScore, 0);
+    
+    if (totalMaxScore === 0) return 0;
+    return (totalScore / totalMaxScore) * 100;
+  }
+
   // Load degrees for a specific student
   loadStudentDegrees(studentId: string, studentName: string): void {
     if (this.studentDegreesMap.has(studentId)) {
-      // Already loaded, just toggle expansion
       this.expandedStudentId = this.expandedStudentId === studentId ? null : studentId;
       return;
     }
@@ -98,20 +149,24 @@ export class AdminAllStudentTestsResultComponent implements OnInit {
     this.degreeService.getStudentDegrees(studentId).subscribe({
       next: (response) => {
         if (response.success && response.data) {
-          const degrees = response.data.degrees || [];
+          const studentDegreesData = response.data;
+          this.studentFullDegreesMap.set(studentId, studentDegreesData);
+          
+          let degrees = studentDegreesData.degrees || [];
           
           // Filter by selected type if needed
-          let filteredDegrees = degrees;
           if (this.selectedType !== 'الكل') {
-            filteredDegrees = degrees.filter(degree => 
-              degree && degree.degreeType === this.selectedType
-            );
+            const selectedOption = this.examTypeOptions.find(opt => opt.value === this.selectedType);
+            if (selectedOption?.type !== undefined) {
+              degrees = degrees.filter(degree => 
+                degree && degree.degreeType === selectedOption.type
+              );
+            }
           }
           
-          this.studentDegreesMap.set(studentId, filteredDegrees);
+          this.studentDegreesMap.set(studentId, degrees);
           this.expandedStudentId = studentId;
         } else {
-          // If no degrees found, set empty array
           this.studentDegreesMap.set(studentId, []);
           this.expandedStudentId = studentId;
         }
@@ -119,7 +174,6 @@ export class AdminAllStudentTestsResultComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading student degrees:', error);
-        // Set empty array on error
         this.studentDegreesMap.set(studentId, []);
         this.loadingDegrees = false;
       }
@@ -128,54 +182,54 @@ export class AdminAllStudentTestsResultComponent implements OnInit {
 
   // Open student details modal
   openStudentDetailsModal(studentId: string, studentName: string): void {
-    console.log("openStudentDetailsModal called with:", { studentId, studentName });
+    this.selectedStudentId = studentId;
+    this.selectedStudentName = studentName || 'طالب';
     
-    // Check if degrees are already loaded
-    if (this.studentDegreesMap.has(studentId)) {
-      const degrees = this.studentDegreesMap.get(studentId);
-      console.log("Degrees already loaded:", degrees?.length);
-      
-      if (degrees && degrees.length > 0) {
-        this.showStudentDetails(studentId, studentName, degrees);
-      } else {
-        console.log("No degrees found in cache, loading...");
-        this.loadStudentDegreesForModal(studentId, studentName);
+    if (this.studentFullDegreesMap.has(studentId)) {
+      const studentData = this.studentFullDegreesMap.get(studentId);
+      if (studentData) {
+        this.loadStudentDegreesForModal(studentData);
       }
     } else {
-      console.log("Degrees not loaded yet, loading...");
-      this.loadStudentDegreesForModal(studentId, studentName);
+      this.loadStudentDegreesForModalFromService(studentId);
     }
   }
 
-  // Load degrees specifically for modal
-  loadStudentDegreesForModal(studentId: string, studentName: string): void {
+  // Load degrees for modal from cached data
+  loadStudentDegreesForModal(studentData: StudentDegreesDto): void {
+    this.loadingStudentDetails = false;
+    
+    let degrees = studentData.degrees || [];
+    
+    // Filter by selected type if needed
+    if (this.selectedType !== 'الكل') {
+      const selectedOption = this.examTypeOptions.find(opt => opt.value === this.selectedType);
+      if (selectedOption?.type !== undefined) {
+        degrees = degrees.filter(degree => 
+          degree && degree.degreeType === selectedOption.type
+        );
+      }
+    }
+    
+    this.selectedStudentDegrees = degrees;
+    this.selectedClassName = studentData.className || this.getClassName(this.selectedClassId);
+    this.showStudentDetailsModal = true;
+  }
+
+  // Load degrees for modal from service
+  loadStudentDegreesForModalFromService(studentId: string): void {
     this.loadingStudentDetails = true;
     
     this.degreeService.getStudentDegrees(studentId).subscribe({
       next: (response) => {
         if (response.success && response.data) {
-          const degrees = response.data.degrees || [];
-          
-          // Filter by selected type if needed
-          let filteredDegrees = degrees;
-          if (this.selectedType !== 'الكل') {
-            filteredDegrees = degrees.filter(degree => 
-              degree && degree.degreeType === this.selectedType
-            );
-          }
-          
-          // Update the cache
-          this.studentDegreesMap.set(studentId, filteredDegrees);
-          
-          if (filteredDegrees.length > 0) {
-            this.showStudentDetails(studentId, studentName, filteredDegrees);
-          } else {
-            alert('لا توجد نتائج لهذا الطالب');
-          }
+          const studentData = response.data;
+          this.studentFullDegreesMap.set(studentId, studentData);
+          this.loadStudentDegreesForModal(studentData);
         } else {
           alert('لا توجد نتائج لهذا الطالب');
+          this.loadingStudentDetails = false;
         }
-        this.loadingStudentDetails = false;
       },
       error: (error) => {
         console.error('Error loading student degrees for modal:', error);
@@ -185,21 +239,14 @@ export class AdminAllStudentTestsResultComponent implements OnInit {
     });
   }
 
-  // Show student details in modal
-  showStudentDetails(studentId: string, studentName: string, degrees: DegreeItemDto[]): void {
-    console.log("Showing student details with", degrees.length, "degrees");
-    this.selectedStudentDegrees = degrees;
-    this.selectedStudentName = studentName;
-    this.selectedClassName = this.getClassName(this.selectedClassId);
-    this.showStudentDetailsModal = true;
-  }
-
   // Close student details modal
   closeStudentDetailsModal(): void {
     this.showStudentDetailsModal = false;
     this.selectedStudentDegrees = [];
     this.selectedStudentName = '';
     this.selectedClassName = '';
+    this.selectedStudentId = '';
+    this.loadingStudentDetails = false;
   }
 
   // Get class name by ID
@@ -234,6 +281,38 @@ export class AdminAllStudentTestsResultComponent implements OnInit {
     return (totalPercentage / degrees.length) * 100;
   }
 
+  // Calculate overall student average from all exams
+  calculateStudentOverallAverage(studentId: string): number {
+    const studentData = this.studentFullDegreesMap.get(studentId);
+    if (!studentData || !studentData.degrees || studentData.degrees.length === 0) return 0;
+    
+    let totalWeightedScore = 0;
+    let totalMaxWeightedScore = 0;
+    
+    studentData.degrees.forEach(degree => {
+      const weight = this.getExamWeight(degree.degreeType);
+      totalWeightedScore += degree.score * weight;
+      totalMaxWeightedScore += degree.maxScore * weight;
+    });
+    
+    if (totalMaxWeightedScore === 0) return 0;
+    return (totalWeightedScore / totalMaxWeightedScore) * 100;
+  }
+
+  // Get weight for exam type
+  private getExamWeight(degreeType: number): number {
+    switch(degreeType) {
+      case DegreeType.MidTerm1:
+      case DegreeType.MidTerm2:
+        return 0.2; // 20%
+      case DegreeType.Final1:
+      case DegreeType.Final2:
+        return 0.8; // 80%
+      default:
+        return 1;
+    }
+  }
+
   // Calculate degree percentage
   calculateDegreePercentage(score: number, maxScore: number): number {
     if (maxScore === 0) return 0;
@@ -248,21 +327,35 @@ export class AdminAllStudentTestsResultComponent implements OnInit {
       this.students = [];
       this.expandedStudentId = null;
       this.studentDegreesMap.clear();
+      this.studentFullDegreesMap.clear();
     }
   }
 
   // Handle type change
   onTypeChange(): void {
-    // Clear all loaded degrees so they get reloaded with new filter
     this.studentDegreesMap.clear();
     this.expandedStudentId = null;
     
-    // Reload degrees for expanded student if any
-    if (this.expandedStudentId) {
-      const student = this.students.find(s => s.id === this.expandedStudentId);
-      if (student) {
-        this.loadStudentDegrees(student.id, student.fullName || student.fullName);
-      }
+    if (this.selectedClassId && this.students.length > 0) {
+      this.students.forEach(student => {
+        if (this.studentFullDegreesMap.has(student.id)) {
+          const studentData = this.studentFullDegreesMap.get(student.id);
+          if (studentData) {
+            let degrees = studentData.degrees || [];
+            
+            if (this.selectedType !== 'الكل') {
+              const selectedOption = this.examTypeOptions.find(opt => opt.value === this.selectedType);
+              if (selectedOption?.type !== undefined) {
+                degrees = degrees.filter(degree => 
+                  degree && degree.degreeType === selectedOption.type
+                );
+              }
+            }
+            
+            this.studentDegreesMap.set(student.id, degrees);
+          }
+        }
+      });
     }
   }
 
@@ -270,5 +363,45 @@ export class AdminAllStudentTestsResultComponent implements OnInit {
   hasDegrees(studentId: string): boolean {
     const degrees = this.studentDegreesMap.get(studentId);
     return degrees !== undefined && degrees !== null && degrees.length > 0;
+  }
+
+  // Calculate total marks for a student
+  calculateStudentTotalMarks(studentId: string): { total: number, maxTotal: number } {
+    const studentData = this.studentFullDegreesMap.get(studentId);
+    if (!studentData || !studentData.degrees || studentData.degrees.length === 0) {
+      return { total: 0, maxTotal: 0 };
+    }
+    
+    const total = studentData.degrees.reduce((sum, degree) => sum + degree.score, 0);
+    const maxTotal = studentData.degrees.reduce((sum, degree) => sum + degree.maxScore, 0);
+    
+    return { total, maxTotal };
+  }
+
+  // Get total possible marks for all exam types
+  getTotalPossibleMarks(): number {
+    return 200; // 20 + 80 + 20 + 80
+  }
+
+  // Format score with precision
+  formatScore(score: number): string {
+    return score?.toFixed(1) || '0.0';
+  }
+
+  // Check if student has components in degrees
+  studentHasComponents(studentId: string): boolean {
+    const degrees = this.studentDegreesMap.get(studentId);
+    if (!degrees) return false;
+    
+    return degrees.some(degree => 
+      degree.components && degree.components.length > 0
+    );
+  }
+
+  // Check if selected student has components
+  selectedStudentHasComponents(): boolean {
+    return this.selectedStudentDegrees.some(degree => 
+      degree.components && degree.components.length > 0
+    );
   }
 }

@@ -98,6 +98,14 @@
   background: #e9ecef;
 }
 
+.progress-bar {
+  &.bg-success { background-color: #198754 !important; }
+  &.bg-primary { background-color: #0d6efd !important; }
+  &.bg-info { background-color: #0dcaf0 !important; }
+  &.bg-warning { background-color: #ffc107 !important; }
+  &.bg-danger { background-color: #dc3545 !important; }
+}
+
 /* Exam Type Navigation */
 .exam-type-nav .nav-pills {
   background: #f8f9fa;
@@ -142,6 +150,8 @@
 
 .subject-card.has-components .subject-header {
   border-bottom: 2px solid #20c997;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .subject-name {
@@ -161,17 +171,25 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
+.components-section .input-group-sm .form-control {
+  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
+}
+
 .components-section .input-group-text {
   background: #e9ecef;
   border-color: #dee2e6;
   font-weight: 500;
   width: 40px;
   justify-content: center;
+  font-size: 0.875rem;
+  padding: 0.25rem;
 }
 
 .calculated-total {
   background: linear-gradient(135deg, #e3f2fd, #bbdefb);
   border: 1px solid #90caf9;
+  border-radius: 6px;
 }
 
 /* Form Controls */
@@ -183,6 +201,11 @@
 .form-check-input:checked {
   background-color: #0d6efd;
   border-color: #0d6efd;
+}
+
+.form-switch .form-check-input {
+  width: 3em;
+  height: 1.5em;
 }
 
 /* Action Buttons */
@@ -198,16 +221,29 @@
   padding: 0.75rem 2rem;
   font-weight: 500;
   border-radius: 8px;
+  transition: all 0.3s ease;
 }
 
 .btn-success:hover {
   background: linear-gradient(135deg, #218838, #1ea181);
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+.btn-success:disabled {
+  opacity: 0.65;
+  transform: none;
+  box-shadow: none;
 }
 
 .btn-outline-primary {
   border-radius: 8px;
   padding: 0.75rem 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+  transform: translateY(-2px);
 }
 
 /* Accordion Customization */
@@ -216,6 +252,7 @@
   background: white !important;
   border: 2px solid #e9ecef !important;
   padding: 1.25rem !important;
+  transition: all 0.3s ease;
 }
 
 .accordion-button:not(.collapsed) {
@@ -226,6 +263,7 @@
 
 .accordion-button:focus {
   box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+  border-color: #0d6efd !important;
 }
 
 .accordion-body {
@@ -256,6 +294,15 @@
   
   .action-buttons .btn {
     width: 100%;
+  }
+  
+  .student-avatar {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .total-score {
+    font-size: 1.25rem;
   }
 }
 
@@ -299,10 +346,135 @@
 }
 
 /* Input Validation States */
-.ng-invalid.ng-touched .form-control {
+.form-control.ng-invalid.ng-touched {
   border-color: #dc3545;
 }
 
-.ng-valid.ng-touched .form-control {
+.form-control.ng-valid.ng-touched {
   border-color: #198754;
+}
+
+.invalid-feedback {
+  display: none;
+}
+
+.form-control.ng-invalid.ng-touched ~ .invalid-feedback {
+  display: block;
+}
+
+/* Tooltips */
+.tooltip {
+  font-size: 0.875rem;
+}
+
+/* Card Header Animation */
+.card-header {
+  transition: all 0.3s ease;
+}
+
+.card-header:hover {
+  background: linear-gradient(135deg, #667eea 0%, #5a6fd8 100%) !important;
+}
+
+/* Alert Styling */
+.alert {
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.alert-info {
+  background: linear-gradient(135deg, #d1ecf1, #bee5eb);
+  color: #0c5460;
+}
+
+.alert-success {
+  background: linear-gradient(135deg, #d4edda, #c3e6cb);
+  color: #155724;
+}
+
+.alert-warning {
+  background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+  color: #856404;
+}
+
+/* Form Switch Enhancement */
+.form-switch .form-check-input {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+  background-position: left center;
+  background-size: contain;
+}
+
+.form-switch .form-check-input:checked {
+  background-position: right center;
+}
+
+/* Animation for form transitions */
+.accordion-collapse {
+  transition: height 0.35s ease;
+}
+
+/* Print Styles */
+@media print {
+  .teacher-grades {
+    background: white !important;
+  }
+  
+  .btn, .nav, .alert {
+    display: none !important;
+  }
+  
+  .card {
+    box-shadow: none !important;
+    border: 1px solid #dee2e6 !important;
+  }
+  
+  .card-header {
+    background: white !important;
+    color: black !important;
+  }
+}
+
+/* Add to your CSS file */
+.components-section .input-group-text[readonly] {
+  background-color: #f8f9fa !important;
+  cursor: not-allowed;
+}
+
+.badge.bg-light {
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border: 1px solid #dee2e6;
+}
+
+.progress[style*="height: 5px"] {
+  background-color: #e9ecef;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.calculated-total .progress {
+  margin-top: 8px;
+}
+
+/* Weight indicator */
+.weight-indicator {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  border: 1px solid #90caf9;
+  color: #1565c0;
+}
+
+/* Highlight for midterms */
+.midterm-card {
+  border-left: 4px solid #ffc107 !important;
+  background: linear-gradient(to bottom right, #ffffff, #fff8e1);
+}
+
+/* Highlight for finals */
+.final-card {
+  border-left: 4px solid #28a745 !important;
+  background: linear-gradient(to bottom right, #ffffff, #f0fff4);
 }

@@ -33,17 +33,6 @@
       </a>
     </li>
 
-    <!-- Class Management -->
-    <li>
-      <a
-        routerLink="/app/dashboard/admin-all-classes"
-        routerLinkActive="active"
-        class="nav-link custom-link"
-      >
-        <i class="bi bi-people-fill"></i> {{ "DASH.ALL_CLASSES" | translate }}
-      </a>
-    </li>
-
     <!-- Grade/Year Management -->
     <li>
       <a
@@ -52,6 +41,17 @@
         class="nav-link custom-link"
       >
         <i class="bi bi-layers"></i> {{ "DASH.YEAR_GRADE" | translate }}
+      </a>
+    </li>
+
+    <!-- Class Management -->
+    <li>
+      <a
+        routerLink="/app/dashboard/admin-all-classes"
+        routerLinkActive="active"
+        class="nav-link custom-link"
+      >
+        <i class="bi bi-people-fill"></i> {{ "DASH.ALL_CLASSES" | translate }}
       </a>
     </li>
 
@@ -121,6 +121,17 @@
       >
         <i class="bi bi-book"></i>
         {{ "DASH.ADMIN_SUBJECT_MANAGEMENT" | translate }}
+      </a>
+    </li>
+    <!-- Subject Component Types Management -->
+    <li>
+      <a
+        routerLink="/app/dashboard/subject-component-types"
+        routerLinkActive="active"
+        class="nav-link custom-link"
+      >
+        <i class="bi bi-tags"></i>
+        {{ "DASH.ADMIN_SUBJECT_COMPONENT_TYPES" | translate }}
       </a>
     </li>
 

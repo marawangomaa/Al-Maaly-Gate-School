@@ -360,4 +360,48 @@ html[dir="rtl"] .modal-header .btn-close {
 
 .badge.bg-blocked:hover {
   background-color: rgba(107, 114, 128, 0.2) !important;
+} 
+
+/* PDF Viewer Styles */
+.pdf-viewer-container {
+  height: 100%;
+}
+
+.pdf-frame-container {
+  background-color: #f8f9fa;
+  overflow: hidden;
+}
+
+.pdf-frame {
+  border: none;
+  display: block;
+}
+
+/* Document List Styles */
+.list-group-item.active {
+  background-color: #e3f2fd;
+  border-color: #b3e0ff;
+  color: #0a58ca;
+}
+
+/* Modal Styles */
+.modal-xl {
+  max-width: 1200px;
+}
+
+/* Document icon colors */
+.fa-file-pdf {
+  color: #f40f02;
+}
+
+.fa-file-image {
+  color: #28a745;
+}
+
+.fa-file-word {
+  color: #2b579a;
+}
+
+.fa-file {
+  color: #6c757d;
 }

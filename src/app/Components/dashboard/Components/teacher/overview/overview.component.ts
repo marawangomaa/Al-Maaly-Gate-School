@@ -1,4 +1,4 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { TeacherService } from '../../../../../Services/teacher.service';
