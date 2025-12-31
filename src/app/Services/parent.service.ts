@@ -23,6 +23,8 @@ export class ParentService {
     return this.http.get<ApiResponse<iparentViewDto[]>>(`${this.apiUrl}/all`, { headers });
   }
 
+  
+
   getParentWithChildren(parentId: string): Observable<ApiResponse<iparentViewWithChildrenDto>> {
     const token = this._Auth?.getToken();
     const headers = new HttpHeaders({
