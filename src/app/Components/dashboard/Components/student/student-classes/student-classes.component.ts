@@ -3,19 +3,24 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ClassAppointmentsService } from '../../../../../Services/class-appointments.service';
 import { iclassAppointments } from '../../../../../Interfaces/iclassAppointments';
 import { ApiResponse } from '../../../../../Interfaces/auth';
+import { AuthService } from '../../../../../Services/auth.service';
 
 @Component({
   selector: 'app-student-classes',
   imports: [CommonModule, DatePipe],
-  templateUrl: './student-classes.component.html',
+templateUrl: './student-classes.component.html',
   styleUrl: './student-classes.component.css'
 })
 export class StudentClassesComponent implements OnInit {
   classes?: iclassAppointments[];
   _ClassAppointments = inject(ClassAppointmentsService);
 
+  constructor(
+    private AuthService: AuthService
+  ) { }
 
   ngOnInit(): void {
+    
     this.getClassAppointments();
   }
 

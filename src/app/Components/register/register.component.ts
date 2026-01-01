@@ -83,13 +83,12 @@ export class RegisterComponent implements OnInit {
         userName: ['', [Validators.required, Validators.minLength(3)]],
         email: ['', [Validators.required, Validators.email]],
         gender: ['', Validators.required],
-        birthday: ['', [Validators.required, this.ageValidator(5, 100)]],
+        birthday: ['', [Validators.required, this.ageValidator(2, 100)]],
         countryCode: [''],
         mobileNumber: ['', [this.mobileNumberFormatValidator.bind(this)]],
         password: ['', [Validators.required, Validators.minLength(6)]],
         confirmPassword: ['', Validators.required],
         role: ['', Validators.required],
-        relation: [''],
       },
       {
         validators: [
@@ -99,15 +98,6 @@ export class RegisterComponent implements OnInit {
       }
     );
 
-    // Watch role changes
-    this.registerForm.get('role')?.valueChanges.subscribe(role => {
-      if (role === 'parent') {
-        this.registerForm.get('relation')?.setValidators([Validators.required]);
-      } else {
-        this.registerForm.get('relation')?.clearValidators();
-      }
-      this.registerForm.get('relation')?.updateValueAndValidity();
-    });
 
     // Watch country code changes for mobile number validation
     this.registerForm.get('countryCode')?.valueChanges.subscribe((countryCode) => {
@@ -271,7 +261,6 @@ export class RegisterComponent implements OnInit {
   onRegister() {
     if (this.registerForm.invalid) {
       this.errorMessage = this.translate.instant('REGISTER.FORM_ERRORS');
-      // Mark all fields as touched to show validation errors
       Object.keys(this.registerForm.controls).forEach(key => {
         const control = this.registerForm.get(key);
         control?.markAsTouched();
@@ -283,13 +272,12 @@ export class RegisterComponent implements OnInit {
     this.successMessage = '';
     this.isLoading = true;
 
-    const role = this.registerForm.get('role')?.value;
 
-    if (role === 'parent') {
-      this.registerParent();
-    } else {
-      this.registerNormal();
-    }
+    // if (role === 'parent') {
+    //   this.registerParent();
+    // } else {
+    this.registerNormal();
+    // }
   }
 
   // ✅ Register normal user (teacher, admin, etc.)
@@ -337,45 +325,45 @@ export class RegisterComponent implements OnInit {
   }
 
   // ✅ Register parent (no files at registration)
-  private registerParent() {
-    const formValues = this.registerForm.value;
+  // private registerParent() {
+  //   const formValues = this.registerForm.value;
 
-    // Combine country code and mobile number
-    const contactInfo = formValues.countryCode && formValues.mobileNumber
-      ? `${formValues.countryCode}${formValues.mobileNumber}`
-      : '';
+  //   // Combine country code and mobile number
+  //   const contactInfo = formValues.countryCode && formValues.mobileNumber
+  //     ? `${formValues.countryCode}${formValues.mobileNumber}`
+  //     : '';
 
-    const parentRequest: ParentRegisterRequest = {
-      fullName: formValues.fullName,
-      userName: formValues.userName,
-      email: formValues.email,
-      gender: formValues.gender,
-      birthday: formValues.birthday,
-      contactInfo: contactInfo,
-      password: formValues.password,
-      confirmPassword: formValues.confirmPassword,
-      role: formValues.role,
-      relation: formValues.relation
-    };
+  //   const parentRequest: ParentRegisterRequest = {
+  //     fullName: formValues.fullName,
+  //     userName: formValues.userName,
+  //     email: formValues.email,
+  //     gender: formValues.gender,
+  //     birthday: formValues.birthday,
+  //     contactInfo: contactInfo,
+  //     password: formValues.password,
+  //     confirmPassword: formValues.confirmPassword,
+  //     role: formValues.role,
+  //     relation: formValues.relation
+  //   };
 
-    this.authService.registerParent(parentRequest).subscribe({
-      next: (response: ApiResponse<ParentRegistrationResponse>) => {
-        this.isLoading = false;
-        if (response.success) {
-          this.successMessage = this.translate.instant('REGISTER.PARENT_SUCCESS');
-          setTimeout(() => this.router.navigate(['/login']), 1500);
-          this.registerForm.reset();
-        } else {
-          this.errorMessage = response.message || this.translate.instant('REGISTER.PARENT_FAILED');
-        }
-      },
-      error: err => {
-        this.isLoading = false;
-        this.errorMessage = err.error?.message || this.translate.instant('REGISTER.SOMETHING_WRONG');
-        console.error(err);
-      }
-    });
-  }
+  //   this.authService.registerParent(parentRequest).subscribe({
+  //     next: (response: ApiResponse<ParentRegistrationResponse>) => {
+  //       this.isLoading = false;
+  //       if (response.success) {
+  //         this.successMessage = this.translate.instant('REGISTER.PARENT_SUCCESS');
+  //         setTimeout(() => this.router.navigate(['/login']), 1500);
+  //         this.registerForm.reset();
+  //       } else {
+  //         this.errorMessage = response.message || this.translate.instant('REGISTER.PARENT_FAILED');
+  //       }
+  //     },
+  //     error: err => {
+  //       this.isLoading = false;
+  //       this.errorMessage = err.error?.message || this.translate.instant('REGISTER.SOMETHING_WRONG');
+  //       console.error(err);
+  //     }
+  //   });
+  // }
 
   onCancel() {
     this.router.navigate(['/login']);
