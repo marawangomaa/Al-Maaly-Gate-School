@@ -66,7 +66,7 @@ export class StudentService {
 
     return this.http.get<ApiResponse<istudentExamResults[]>>(`${this.apiUrl}/StudentExamResult/student/results/${StudentId}`, { headers });
   }
-
+  // /api/Student/all
   GetAllStudents(): Observable<ApiResponse<istudentProfile[]>> {
 
     const token = this._Auth?.getToken();
@@ -74,7 +74,7 @@ export class StudentService {
       'Authorization': `Bearer ${token}`
     });
 
-    return this.http.get<ApiResponse<istudentProfile[]>>(`${this.apiUrl}/Student`, { headers });
+    return this.http.get<ApiResponse<istudentProfile[]>>(`${this.apiUrl}/Student/all`, { headers });
   }
 
   searchStudents(term: string, parentId: string): Observable<ApiResponse<istudentSearchResult[]>> {

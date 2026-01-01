@@ -27,26 +27,26 @@ export class OverviewComponent implements OnInit {
 
   // User Profile Data from getCurrentUser()
   userProfile: AuthResponse | null = null;
-  
+
   // Student Specific Data
   studentProfile: istudentProfile | null = null;
   examResults: istudentExamResults[] = [];
-  
+
   // UI states
   loading = true;
   loadingExams = false;
   isUploading = false;
   uploadProgress = 0;
-  
+
   // Selected file for upload
   private selectedFile: File | null = null;
-  
+
   // Toast notifications
   showToast = false;
   toastTitle = '';
   toastMessage = '';
   toastType: 'success' | 'error' = 'success';
-  
+
   // Stats
   totalExams = 0;
   averageScore = 0;
@@ -76,7 +76,7 @@ export class OverviewComponent implements OnInit {
 
   get formattedParentNames(): string {
     if (!this.studentProfile?.parents?.length) return 'No parents assigned';
-    
+
     return this.studentProfile.parents
       .map((parent: any) => parent.fullName || parent.name)
       .join(', ');
@@ -85,7 +85,7 @@ export class OverviewComponent implements OnInit {
   // Main loading methods
   loadUserProfile(): void {
     this.loading = true;
-    
+
     this.afterAuthService.getCurrentUser().subscribe({
       next: (response) => {
         if (response.success && response.data) {
@@ -124,6 +124,7 @@ export class OverviewComponent implements OnInit {
       next: (response) => {
         if (response.data) {
           this.studentProfile = response.data;
+          localStorage.setItem('studentClassId', this.studentProfile?.classId || '');
           this.loadExamResults();
         } else {
           this.showError(response.message || 'Failed to load student details');
@@ -143,7 +144,7 @@ export class OverviewComponent implements OnInit {
       this.loading = false;
       return;
     }
-    
+
     this.loadingExams = true;
     this.studentService.GetStudentExamsResults(this.studentId).subscribe({
       next: (response) => {
@@ -164,15 +165,15 @@ export class OverviewComponent implements OnInit {
 
   calculateStats(): void {
     if (!this.examResults.length) return;
-    
+
     this.totalExams = this.examResults.length;
-    
+
     // Calculate average, highest, and lowest scores
     const scores = this.examResults.map(exam => exam.percentage);
     this.averageScore = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
     this.highestScore = Math.max(...scores);
     this.lowestScore = Math.min(...scores);
-    
+
     // Collect unique subjects
     this.examResults.forEach(exam => {
       if (exam.subjectName) {
@@ -184,10 +185,10 @@ export class OverviewComponent implements OnInit {
   // Image handling methods (CRITICAL - copied from working teacher component)
   getProfileImageUrl(): string {
     if (!this.userProfile?.profileImageUrl) {
-      console.log('No profile image URL, using default');
+      // console.log('No profile image URL, using default');
       return this.imageService.getDefaultAvatarUrl();
     }
-    
+
     // Get the URL from image service
     const url = this.imageService.getImageUrl(this.userProfile.profileImageUrl);
     console.log('Profile image URL:', url);
@@ -196,11 +197,11 @@ export class OverviewComponent implements OnInit {
 
   handleImageError(event: any): void {
     console.log('Image load error, switching to fallback');
-    
+
     // Only change if not already the fallback
     const currentSrc = event.target.src;
     const fallbackUrl = this.imageService.getDefaultAvatarUrl();
-    
+
     if (!currentSrc.includes('default-avatar')) {
       event.target.src = fallbackUrl;
       // Prevent further errors
@@ -221,7 +222,7 @@ export class OverviewComponent implements OnInit {
 
   onProfileImageSelected(event: any): void {
     const file = event.target.files[0];
-    
+
     if (!file) {
       return;
     }
@@ -265,7 +266,7 @@ export class OverviewComponent implements OnInit {
         if (response.success && response.data) {
           this.userProfile = response.data;
           this.showSuccess('Profile photo updated successfully');
-          
+
           // Force refresh after successful upload
           setTimeout(() => {
             this.refreshProfile();
@@ -285,7 +286,7 @@ export class OverviewComponent implements OnInit {
           error: error.error,
           headers: error.headers
         });
-        
+
         // Get the actual error message from the response
         let errorMessage = 'Failed to upload profile photo';
         if (error.error && typeof error.error === 'string') {
@@ -293,7 +294,7 @@ export class OverviewComponent implements OnInit {
         } else if (error.error && error.error.message) {
           errorMessage = error.error.message;
         }
-        
+
         this.showError(errorMessage);
         this.isUploading = false;
         this.selectedFile = null;
@@ -325,11 +326,11 @@ export class OverviewComponent implements OnInit {
   // Helper methods
   formatDate(dateInput: string | Date): string {
     const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
-    
+
     if (isNaN(date.getTime())) {
       return 'Invalid date';
     }
-    
+
     return date.toLocaleDateString();
   }
 
@@ -404,7 +405,7 @@ export class OverviewComponent implements OnInit {
     this.toastMessage = message;
     this.toastType = type;
     this.showToast = true;
-    
+
     setTimeout(() => {
       this.hideToast();
     }, 5000);

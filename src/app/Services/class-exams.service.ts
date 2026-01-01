@@ -17,14 +17,15 @@ export class ClassExamsService {
   _Auth = inject(AuthService);
   constructor(private http: HttpClient) { }
 
-  GetClassExamsForStudent(ClassId: string): Observable<ApiResponse<iclassExams[]>> {
+  ///api/StudentExamAnswer/studentExams/{classId}
+  GetClassExamsForStudent(classId: string): Observable<ApiResponse<iclassExams[]>> {
 
     const token = this._Auth?.getToken();
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
 
-    return this.http.get<ApiResponse<iclassExams[]>>(`${this.apiUrl}/StudentExamAnswer/studentExams/${ClassId}`, { headers });
+    return this.http.get<ApiResponse<iclassExams[]>>(`${this.apiUrl}/StudentExamAnswer/studentExams/${classId}`, { headers });
   }
 
   GetExamById(ExamId: string): Observable<ApiResponse<iexamWithQuestions>> {
