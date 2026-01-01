@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators, AbstractControl, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { forkJoin } from 'rxjs';
 import { ClassViewDto } from '../../../../../Interfaces/iclass';
-import { SubjectViewDto } from '../../../../../Interfaces/isubject';
 import { DegreeComponentTypeDto } from '../../../../../Interfaces/icomponenttype';
 import { DegreeService } from '../../../../../Services/degree.service';
 import { DegreeComponentTypeService } from '../../../../../Services/degrees-component-type.service';
@@ -13,7 +12,7 @@ import { ToastService } from '../../../../../Services/toast.service';
 import { AuthService } from '../../../../../Services/auth.service';
 import { ClassService } from '../../../../../Services/class.service';
 import { StudentModel } from '../../../../../Interfaces/istudent';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ShortenIdPipe } from '../../../../../Pipes/shorten-id.pipe';
 
 @Component({
@@ -49,7 +48,8 @@ export class ClassGradesComponent implements OnInit {
   savingStudentId: string | null = null;
   
   // Current Teacher ID
-  currentTeacherId: string = '5860456c-c767-4fd5-881d-3a240b8bc2e4';
+  currentTeacherId: string | null = '';
+  isBrowser: boolean;
   
   // Forms
   studentForms: Map<string, FormGroup> = new Map();
@@ -62,8 +62,11 @@ export class ClassGradesComponent implements OnInit {
     private teacherService: TeacherService,
     private toastService: ToastService,
     private authService: AuthService,
-    private classService: ClassService
-  ) {}
+    private classService: ClassService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit(): void {
     this.loadInitialData();
@@ -73,6 +76,9 @@ export class ClassGradesComponent implements OnInit {
     this.isLoadingClasses = true;
     this.isLoadingSubjects = true;
     this.isLoadingStudents = true;
+    if(isPlatformBrowser(this.platformId)) {
+      this.currentTeacherId = localStorage.getItem('teacherId');
+    }
 
     this.teacherService.getTeacherClasses(this.currentTeacherId).subscribe({
       next: (response) => {

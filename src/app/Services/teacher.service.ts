@@ -113,12 +113,12 @@ export class TeacherService {
     );
   }
 
-  getTeacherSubjects(teacherId: string): Observable<ServiceResult<SubjectViewDto[]>> {
+  getTeacherSubjects(teacherId: string | null): Observable<ServiceResult<SubjectViewDto[]>> {
     return this.http.get<ServiceResult<SubjectViewDto[]>>(
       `${this.apiUrl}/${teacherId}/subjects`
     );
   }
-  getTeacherClasses(teacherId: string): Observable<ServiceResult<ClassViewDto[]>> {
+  getTeacherClasses(teacherId: string | null): Observable<ServiceResult<ClassViewDto[]>> {
     return this.http.get<ServiceResult<ClassViewDto[]>>(
       `${this.apiUrl}/${teacherId}/classes`
       );

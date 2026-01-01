@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { isBrowser } from './../../../../../utils/storage.util';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { iparentViewWithChildrenDto } from '../../../../../Interfaces/iparentViewWithChildrenDto';
 import { ParentService } from '../../../../../Services/parent.service';
@@ -25,6 +26,7 @@ export class ChildrenOfParentComponent implements OnInit {
   loadingCertificates = false;
   error = '';
   parentId = '';
+  isBrowser: boolean = false;
 
   // Filter properties
   selectedDegreeType: string = 'all';
@@ -33,16 +35,21 @@ export class ChildrenOfParentComponent implements OnInit {
 
   constructor(
     private parentService: ParentService,
-    private certificateService: CertificateService
-  ) { }
+    private certificateService: CertificateService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+   }
 
   ngOnInit(): void {
     try {
-      const userString = localStorage.getItem('user');
-      if (userString) {
-        const userData = JSON.parse(userString);
-        this.parentId = userData.parentId;
-        this.loadParentWithChildren();
+      if (isPlatformBrowser(this.platformId)) {
+        const userString = localStorage.getItem('user');
+        if (userString) {
+          const userData = JSON.parse(userString);
+          this.parentId = userData.parentId;
+          this.loadParentWithChildren();
+       }
       }
     } catch (error) {
       console.error('Error parsing user data:', error);
@@ -143,7 +150,8 @@ export class ChildrenOfParentComponent implements OnInit {
   downloadCertificate(certificate: Certificate): void {
     if (certificate.pdfData) {
       // Convert Uint8Array to Blob
-      const blob = new Blob([certificate.pdfData], { type: 'application/pdf' });
+      const pdfArray = new Uint8Array(certificate.pdfData);
+      const blob = new Blob([pdfArray], { type: 'application/pdf' });
       const url = window.URL.createObjectURL(blob);
 
       // Create download link
@@ -180,7 +188,8 @@ export class ChildrenOfParentComponent implements OnInit {
 
   previewCertificate(certificate: Certificate): void {
     if (certificate.pdfData) {
-      const blob = new Blob([certificate.pdfData], { type: 'application/pdf' });
+      const pdfArray = new Uint8Array(certificate.pdfData);
+      const blob = new Blob([pdfArray], { type: 'application/pdf' });
       const url = window.URL.createObjectURL(blob);
       window.open(url, '_blank');
     } else {
