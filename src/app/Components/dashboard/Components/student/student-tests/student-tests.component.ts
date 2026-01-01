@@ -53,7 +53,7 @@ export class StudentTestsComponent implements OnInit {
       next: (response: ApiResponse<any>) => {
         this.ClassId = response.data.classId;
         if (this.ClassId) {
-          // console.log('Student classId:', this.ClassId);
+          console.log('Student classId:', this.ClassId);
           this.GetClassExams(this.ClassId);
         } else {
           console.warn('Student classId not found');

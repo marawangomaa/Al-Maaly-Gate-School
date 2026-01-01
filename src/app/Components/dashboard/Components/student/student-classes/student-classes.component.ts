@@ -1,30 +1,54 @@
-import { CommonModule, DatePipe } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule, DatePipe, isPlatformBrowser } from '@angular/common';
+import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { ClassAppointmentsService } from '../../../../../Services/class-appointments.service';
 import { iclassAppointments } from '../../../../../Interfaces/iclassAppointments';
 import { ApiResponse } from '../../../../../Interfaces/auth';
 import { AuthService } from '../../../../../Services/auth.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-student-classes',
   imports: [CommonModule, DatePipe],
-templateUrl: './student-classes.component.html',
+  templateUrl: './student-classes.component.html',
   styleUrl: './student-classes.component.css'
 })
 export class StudentClassesComponent implements OnInit {
   classes?: iclassAppointments[];
   _ClassAppointments = inject(ClassAppointmentsService);
+  private platformId = inject(PLATFORM_ID);
+  private isBrowser: boolean;
 
   constructor(
-    private AuthService: AuthService
-  ) { }
-
-  ngOnInit(): void {
-    
-    this.getClassAppointments();
+    private AuthService: AuthService,
+    private route: ActivatedRoute
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
+  ngOnInit(): void {
+    // Try to get classId from route parameters first
+    this.route.paramMap.subscribe(params => {
+      this.classId = params.get('classId') || '';
+      if (this.classId) {
+        this.getClassAppointments();
+      }
+    });
+
+    // If no route parameter, try localStorage (only in browser)
+    if (!this.classId && this.isBrowser) {
+      const storedClassId = localStorage.getItem('studentClassId');
+      if (storedClassId) {
+        this.classId = storedClassId;
+        this.getClassAppointments();
+      } else {
+        console.warn('No class ID found in route parameters or localStorage');
+      }
+    }
+  }
+
+  classId: string = '';
   filter: 'all' | 'Running' | 'Finished' | 'Upcoming' = 'all';
+
   get filteredLectures() {
     switch (this.filter) {
       case 'Running':
@@ -46,15 +70,26 @@ export class StudentClassesComponent implements OnInit {
   }
 
   getClassAppointments() {
-    this._ClassAppointments.GetClassAppointmentsForStudent("55ff504e-b5c6-4cbe-a435-6117255b27cb").subscribe({
+    if (!this.classId) {
+      console.error('Cannot get appointments: classId is empty');
+      return;
+    }
+
+    this._ClassAppointments.GetClassAppointmentsForStudent(this.classId).subscribe({
       next: (response: ApiResponse<iclassAppointments[]>) => {
-        this.classes = response.data;
-        console.log(response.data, response.success);
+        if (response.success && response.data) {
+          this.classes = response.data;
+          console.log('Appointments loaded:', response.data);
+          console.log('Total appointments:', response.data.length);
+        } else {
+          console.log('No appointments found:', response.message);
+          this.classes = [];
+        }
       },
       error: (error: ApiResponse<iclassAppointments>) => {
-        console.log(error.message || error);
+        console.error('Error loading appointments:', error.message || error);
+        this.classes = [];
       }
-    })
+    });
   }
-
 }

@@ -500,6 +500,7 @@ export class AdminParentsAccountsComponent {
       this._parentService.GetAllParents().subscribe({
         next: (response: ApiResponse<iparentViewDtoWithDocs[]>) => {
           this.allparents = response.data || [];
+          console.log('Loaded parents:', this.allparents);
           // Optionally calculate docCount for each parent if your backend doesn't provide it
           // this.allparents.forEach(parent => {
           //   parent.docCount = Math.floor(Math.random() * 5); // For demo only, remove in production
