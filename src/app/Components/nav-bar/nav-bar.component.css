@@ -316,6 +316,15 @@
   color: var(--primary-color-dark, #63b3ed);
 }
 
+
+
+@media (max-width: 992px) {
+  .custom-navbar {
+    height: auto;
+  }
+
+}
+
 /* Make sure dropdown works on mobile */
 @media (max-width: 768px) {
   .lang-current-btn {
