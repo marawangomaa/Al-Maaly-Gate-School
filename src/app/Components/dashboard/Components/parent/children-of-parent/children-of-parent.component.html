@@ -44,10 +44,10 @@
             </div>
           </div>
           <div class="col-md-6">
-            <div class="info-item">
+            <!-- <div class="info-item">
               <strong><i class="bi bi-link me-2"></i>Relation:</strong>
               <span>{{ parent.relation || "Not specified" }}</span>
-            </div>
+            </div> -->
             <div class="info-item">
               <strong
                 ><i class="bi bi-people me-2"></i>Number of Students:</strong
@@ -104,7 +104,7 @@
                     <td>{{ student.fullName }}</td>
                     <td>
                       <span
-                        class="badge"
+                        class="paragraph-badge"
                         [ngClass]="{
                           'bg-warning': student.relation === 'Father',
                           'bg-info': student.relation === 'Mother',
@@ -135,13 +135,13 @@
                         >
                           <i class="bi bi-download"></i> Download All
                         </button>
-                        <button
+                        <!-- <button
                           class="btn btn-outline-info"
                           (click)="onStudentSelect(student)"
                           title="View Student Details"
                         >
                           <i class="bi bi-eye"></i> View
-                        </button>
+                        </button> -->
                       </div>
                     </td>
                   </tr>
@@ -181,7 +181,7 @@
           </div>
 
           <!-- Certificate Statistics -->
-          <div
+          <!-- <div
             *ngIf="!loadingCertificates && studentCertificates"
             class="certificate-stats mb-4"
           >
@@ -211,7 +211,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
 
           <!-- No certificates -->
           <div
