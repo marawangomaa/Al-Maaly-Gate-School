@@ -56,7 +56,8 @@
     "TITLE": "Login to your account",
     "USERNAME": "Username",
     "PASSWORD": "Password",
-    "SUBMIT": "Login"
+    "SUBMIT": "Login",
+    "FORGOT_PASSWORD": "Forgot your password?"
   },
   "REGISTER": {
     "TITLE": "Create a new account",

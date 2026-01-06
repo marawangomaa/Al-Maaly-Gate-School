@@ -17,6 +17,7 @@ import { ConfirmEmailComponent } from './Components/confirm-email/confirm-email.
 import { GuestGuard } from './Guards/guest.guard';
 import { ConfirmationStatusComponent } from './Components/confirmation-status/confirmation-status.component';
 
+
 export const routes: Routes = [
 
   // Visitor layout
@@ -32,6 +33,19 @@ export const routes: Routes = [
       {
         path: 'login', component: LoginComponent,
         canActivate: [GuestGuard]
+      },
+      {
+        path: 'forgot-password',
+        loadComponent: () =>
+          import('./Components/login/Components/forgot-password.component/forgot-password.component.component')
+            .then(m => m.ForgotPasswordComponentComponent),
+        canActivate: [GuestGuard]
+      },
+      {
+        path: 'reset-password',
+  loadComponent: () =>
+    import('./Components/login/Components/reset-password-component/reset-password-component.component')
+      .then(m => m.ResetPasswordComponentComponent)
       },
       {
         path: 'register', component: RegisterComponent,
