@@ -9,7 +9,7 @@ import { ParentUploadDocsComponent } from '../dashboard/Components/parent/parent
 @Component({
   selector: 'app-account-status-displayer',
   standalone: true,
-  imports: [CommonModule,ParentUploadDocsComponent],
+  imports: [CommonModule, ParentUploadDocsComponent],
   templateUrl: './account-status-displayer.component.html',
   styleUrls: ['./account-status-displayer.component.css']
 })
@@ -19,7 +19,7 @@ export class AccountStatusDisplayerComponent implements OnInit, OnDestroy {
   statusIcon = '';
   statusColorClass = '';
   additionalInfo = '';
-  isParent:boolean  = false;
+  isParent: boolean = false;
 
   private routeData: any;
   private statusSubscription: Subscription | undefined;
@@ -39,11 +39,15 @@ export class AccountStatusDisplayerComponent implements OnInit, OnDestroy {
 
       if (statusParam) {
         this.setStatusByParam(statusParam);
-      } else if (this.hasRouteData()) {
-        this.initializeFromRouteData();
-      } else {
-        this.setUnknownStatus();
+        return;
       }
+
+      if (this.hasRouteData()) {
+        this.initializeFromRouteData();
+        return;
+      }
+
+      this.setUnknownStatus();
     });
   }
 

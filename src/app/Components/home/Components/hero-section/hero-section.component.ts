@@ -12,6 +12,6 @@ export class HeroSectionComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.translate.use('HOME');
+    this.translate.use('en');
   }
 }
