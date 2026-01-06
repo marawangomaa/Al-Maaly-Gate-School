@@ -59,19 +59,20 @@
         </div>
         <div class="text-center mt-3">
           <p>
-            <a [routerLink]="['/confirm-email']">confirmed your email</a>
+            <a [routerLink]="['/confirm-email']"> {{ 'LOGIN.CONFIRM_EMAIL' | translate }}</a>
           </p>
+        </div>
+        <div class="text-center mt-2">
+          <a class="text-decoration-none" [routerLink]="['/forgot-password']">
+            {{ 'LOGIN.FORGOT_PASSWORD' | translate }}
+          </a>
         </div>
         <!-- Button -->
         <button class="cool-btn w-100 mt-3" type="submit" [disabled]="loading || loginForm.invalid">
           {{ loading ? "..." : ("LOGIN.SUBMIT" | translate) }}
         </button>
       </form>
-      <div class="text-end mt-2">
-        <a class="text-decoration-none" [routerLink]="['/forgot-password']">
-          {{ 'LOGIN.FORGOT_PASSWORD' | translate }}
-        </a>
-      </div>
+   
 
     </div>
   </div>

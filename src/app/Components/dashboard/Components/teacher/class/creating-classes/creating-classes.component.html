@@ -1,29 +1,33 @@
 <section class="standard-section-layout create-class">
   <div class="container">
-    <h3 class="main-title mb-4">{{ 'CLASSES.CREATE_TITLE' | translate }}</h3>
+    <h3 class="main-title mb-4">{{ "CLASSES.CREATE_TITLE" | translate }}</h3>
 
     <div class="card create-card">
       <form [formGroup]="classForm" (ngSubmit)="createClass()">
         <div class="row g-4">
-
           <!-- Class -->
           <div class="col-md-4">
             <div class="div-input">
-              <label for="classId">{{ 'CLASSES.TABLE.CLASS' | translate }}</label>
+              <label for="classId">{{
+                "CLASSES.TABLE.CLASS" | translate
+              }}</label>
               <select
                 id="classId"
                 formControlName="classId"
                 [class.invalid]="f.classId.touched && f.classId.invalid"
               >
                 <option value="" disabled selected>
-                  {{ 'CLASSES.FORM.PLACEHOLDERS.CLASS' | translate }}
+                  {{ "CLASSES.FORM.PLACEHOLDERS.CLASS" | translate }}
                 </option>
                 <option *ngFor="let c of classes" [value]="c.id">
                   {{ c.className }} - {{ c.classYear }}
                 </option>
               </select>
-              <small *ngIf="f.classId.touched && f.classId.invalid" class="error-text">
-                {{ 'CLASSES.FORM.ERRORS.CLASS_REQUIRED' | translate }}
+              <small
+                *ngIf="f.classId.touched && f.classId.invalid"
+                class="error-text"
+              >
+                {{ "CLASSES.FORM.ERRORS.CLASS_REQUIRED" | translate }}
               </small>
             </div>
           </div>
@@ -31,21 +35,26 @@
           <!-- Subject -->
           <div class="col-md-4">
             <div class="div-input">
-              <label for="subjectId">{{ 'CLASSES.FORM.SUBJECT' | translate }}</label>
+              <label for="subjectId">{{
+                "CLASSES.FORM.SUBJECT" | translate
+              }}</label>
               <select
                 id="subjectId"
                 formControlName="subjectId"
                 [class.invalid]="f.subjectId.touched && f.subjectId.invalid"
               >
                 <option value="" disabled selected>
-                  {{ 'CLASSES.FORM.PLACEHOLDERS.SUBJECT' | translate }}
+                  {{ "CLASSES.FORM.PLACEHOLDERS.SUBJECT" | translate }}
                 </option>
                 <option *ngFor="let s of subjects" [value]="s.id">
                   {{ s.subjectName }}
                 </option>
               </select>
-              <small *ngIf="f.subjectId.touched && f.subjectId.invalid" class="error-text">
-                {{ 'CLASSES.FORM.ERRORS.SUBJECT_REQUIRED' | translate }}
+              <small
+                *ngIf="f.subjectId.touched && f.subjectId.invalid"
+                class="error-text"
+              >
+                {{ "CLASSES.FORM.ERRORS.SUBJECT_REQUIRED" | translate }}
               </small>
             </div>
           </div>
@@ -53,7 +62,9 @@
           <!-- Meeting Link -->
           <div class="col-md-4">
             <div class="div-input">
-              <label for="link">{{ 'CLASSES.FORM.MEETING_LINK' | translate }}</label>
+              <label for="link">{{
+                "CLASSES.FORM.MEETING_LINK" | translate
+              }}</label>
               <input
                 id="link"
                 type="url"
@@ -61,8 +72,11 @@
                 [class.invalid]="f.link.touched && f.link.invalid"
                 placeholder="https://..."
               />
-              <small *ngIf="f.link.touched && f.link.invalid" class="error-text">
-                Meeting link invalid
+              <small
+                *ngIf="f.link.touched && f.link.invalid"
+                class="error-text"
+              >
+                {{ "CLASSES.FORM.ERRORS.MEETING_LINK_INVALID" | translate }}
               </small>
             </div>
           </div>
@@ -70,7 +84,9 @@
           <!-- Start Time -->
           <div class="col-md-4">
             <div class="div-input">
-              <label for="startTime">{{ 'CLASSES.FORM.START_TIME' | translate }}</label>
+              <label for="startTime">{{
+                "CLASSES.FORM.START_TIME" | translate
+              }}</label>
               <input
                 id="startTime"
                 type="datetime-local"
@@ -82,7 +98,9 @@
           <!-- Duration -->
           <div class="col-md-4">
             <div class="div-input">
-              <label for="duration">{{ 'CLASSES.FORM.DURATION' | translate }}</label>
+              <label for="duration">{{
+                "CLASSES.FORM.DURATION" | translate
+              }}</label>
               <input
                 id="duration"
                 type="number"
@@ -91,12 +109,15 @@
               />
             </div>
           </div>
-
         </div>
 
         <div class="form-actions text-end mt-4">
-          <button type="submit" class="primary-btn" [disabled]="classForm.invalid">
-            {{ 'CLASSES.FORM.BUTTON.CREATE' | translate }}
+          <button
+            type="submit"
+            class="primary-btn"
+            [disabled]="classForm.invalid"
+          >
+            {{ "CLASSES.FORM.BUTTON.CREATE" | translate }}
           </button>
         </div>
       </form>

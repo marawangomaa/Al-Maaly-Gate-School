@@ -6,10 +6,11 @@ import { AuthService } from '../../../../../Services/auth.service';
 import { StudentAnswerWithQuestionDto } from '../../../../../Interfaces/StudentAnswerWithQuestionDto';
 import { QuestionTypes } from '../../../../../Interfaces/QuestionTypes';
 import { StudentService } from '../../../../../Services/student.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-student-grades',
-  imports: [CommonModule, DatePipe],
+  imports: [CommonModule, DatePipe, TranslateModule],
   templateUrl: './student-grades.component.html',
   styleUrl: './student-grades.component.css'
 })
@@ -24,6 +25,7 @@ export class StudentGradesComponent implements OnInit {
 
   _StudentService = inject(StudentService);
   _Auth = inject(AuthService);
+  private translate = inject(TranslateService);
 
   ngOnInit() {
     this.studentId = this._Auth.getStudentId()!;
@@ -33,62 +35,62 @@ export class StudentGradesComponent implements OnInit {
   Stgrades: any[] = [
     {
       "id": "gr-001",
-      "subject": "الرياضيات",
-      "teacher": "أ. خالد عبد الله",
+      "subject": this.translate.instant('STUDENT_GRADES.SUBJECT') === 'المادة' ? "الرياضيات" : "Mathematics",
+      "teacher": this.translate.instant('STUDENT_GRADES.TEACHER') === 'المعلم' ? "أ. خالد عبد الله" : "Mr. Khalid Abdullah",
       "type": "assignment",
-      "title": "حل واجب الوحدة الأولى",
+      "title": this.translate.instant('STUDENT_GRADES.TITLE_HEADER') === 'العنوان' ? "حل واجب الوحدة الأولى" : "Unit 1 Homework Solution",
       "date": "2025-09-15",
       "score": 18,
       "total": 20,
-      "grade": "ممتاز",
+      "grade": this.translate.instant('STUDENT_GRADES.TITLE') === 'درجات الطالب' ? "ممتاز" : "Excellent",
       "status": "graded",
       "method": "online"
     },
     {
       "id": "gr-002",
-      "subject": "اللغة العربية",
-      "teacher": "أ. منى محمود",
+      "subject": this.translate.instant('STUDENT_GRADES.SUBJECT') === 'المادة' ? "اللغة العربية" : "Arabic Language",
+      "teacher": this.translate.instant('STUDENT_GRADES.TEACHER') === 'المعلم' ? "أ. منى محمود" : "Ms. Mona Mahmoud",
       "type": "online_test",
-      "title": "اختبار القواعد الأسبوعي",
+      "title": this.translate.instant('STUDENT_GRADES.TITLE_HEADER') === 'العنوان' ? "اختبار القواعد الأسبوعي" : "Weekly Grammar Test",
       "date": "2025-09-20",
       "score": 42,
       "total": 50,
-      "grade": "جيد جدًا",
+      "grade": this.translate.instant('STUDENT_GRADES.TITLE') === 'درجات الطالب' ? "جيد جدًا" : "Very Good",
       "status": "graded",
       "method": "online"
     },
     {
       "id": "gr-003",
-      "subject": "العلوم",
-      "teacher": "أ. سامي نجيب",
+      "subject": this.translate.instant('STUDENT_GRADES.SUBJECT') === 'المادة' ? "العلوم" : "Science",
+      "teacher": this.translate.instant('STUDENT_GRADES.TEACHER') === 'المعلم' ? "أ. سامي نجيب" : "Mr. Sami Naguib",
       "type": "offline_exam",
-      "title": "اختبار العملي - الفصل الأول",
+      "title": this.translate.instant('STUDENT_GRADES.TITLE_HEADER') === 'العنوان' ? "اختبار العملي - الفصل الأول" : "Practical Exam - Chapter 1",
       "date": "2025-09-25",
       "score": 45,
       "total": 50,
-      "grade": "ممتاز",
+      "grade": this.translate.instant('STUDENT_GRADES.TITLE') === 'درجات الطالب' ? "ممتاز" : "Excellent",
       "status": "graded",
       "method": "offline"
     },
     {
       "id": "gr-004",
-      "subject": "اللغة الإنجليزية",
-      "teacher": "أ. مها عبد السلام",
+      "subject": this.translate.instant('STUDENT_GRADES.SUBJECT') === 'المادة' ? "اللغة الإنجليزية" : "English Language",
+      "teacher": this.translate.instant('STUDENT_GRADES.TEACHER') === 'المعلم' ? "أ. مها عبد السلام" : "Ms. Maha Abdul Salam",
       "type": "final",
-      "title": "الاختبار النهائي - الترم الأول",
+      "title": this.translate.instant('STUDENT_GRADES.TITLE_HEADER') === 'العنوان' ? "الاختبار النهائي - الترم الأول" : "Final Exam - First Term",
       "date": "2025-10-01",
       "score": 82,
       "total": 100,
-      "grade": "جيد جدًا",
+      "grade": this.translate.instant('STUDENT_GRADES.TITLE') === 'درجات الطالب' ? "جيد جدًا" : "Very Good",
       "status": "graded",
       "method": "offline"
     },
     {
       "id": "gr-005",
-      "subject": "التاريخ",
-      "teacher": "أ. أحمد السعدي",
+      "subject": this.translate.instant('STUDENT_GRADES.SUBJECT') === 'المادة' ? "التاريخ" : "History",
+      "teacher": this.translate.instant('STUDENT_GRADES.TEACHER') === 'المعلم' ? "أ. أحمد السعدي" : "Mr. Ahmed Al-Saadi",
       "type": "online_test",
-      "title": "اختبار قصير - الوحدة الثانية",
+      "title": this.translate.instant('STUDENT_GRADES.TITLE_HEADER') === 'العنوان' ? "اختبار قصير - الوحدة الثانية" : "Short Test - Unit 2",
       "date": "2025-10-05",
       "score": null,
       "total": 30,
@@ -120,10 +122,8 @@ export class StudentGradesComponent implements OnInit {
   StudentExamsResults(studentId: string) {
     this._StudentService.GetStudentExamsResults(studentId).subscribe({
       next: (response: ApiResponse<istudentExamResults[]>) => {
-
         this.ExamsResults = response.data || [];
         console.log(response.data, response.success);
-        // console.log(response.data, response.message);
       },
       error: (error: ApiResponse<istudentExamResults[]>) => {
         console.log(error.message);
@@ -135,7 +135,6 @@ export class StudentGradesComponent implements OnInit {
     this.loadingCorrection = true;
     this.showCorrectionModal = true;
 
-    // تحتاج لاستدعاء service لجلب بيانات التصحيح
     this._StudentService.StudentResultWithQuestions(studentId, examId).subscribe({
       next: (response: ApiResponse<StudentAnswerWithQuestionDto[]>) => {
         if (response.success && response.data) {
@@ -145,7 +144,7 @@ export class StudentGradesComponent implements OnInit {
         this.loadingCorrection = false;
       },
       error: (error) => {
-        console.error('Error loading correction:', error);
+        console.error(this.translate.instant('STUDENT_GRADES_TS.ERRORS.LOADING_CORRECTION'), error);
         this.loadingCorrection = false;
       }
     });
@@ -156,25 +155,24 @@ export class StudentGradesComponent implements OnInit {
     this.selectedCorrectionData = [];
   }
 
-  // دوال مساعدة للعرض في المودال
   getStudentAnswerText(answer: StudentAnswerWithQuestionDto): string {
     switch (answer.questionType) {
       case 'TrueOrFalse':
         return answer.studentTrueFalseAnswer !== null && answer.studentTrueFalseAnswer !== undefined
-          ? (answer.studentTrueFalseAnswer ? 'صح' : 'خطأ')
-          : 'No Answer';
+          ? (answer.studentTrueFalseAnswer ? this.translate.instant('STUDENT_GRADES.YES') : this.translate.instant('STUDENT_GRADES.NO'))
+          : this.translate.instant('STUDENT_GRADES.NO_ANSWER');
 
       case 'Choices':
-        return answer.studentChoiceText || 'No Answer';
+        return answer.studentChoiceText || this.translate.instant('STUDENT_GRADES.NO_ANSWER');
 
       case 'Complete':
-        return answer.studentTextAnswer || 'No Answer';
+        return answer.studentTextAnswer || this.translate.instant('STUDENT_GRADES.NO_ANSWER');
 
       case 'Connection':
-        return answer.studentConnectionTexts || 'No Answer';
+        return answer.studentConnectionTexts || this.translate.instant('STUDENT_GRADES.NO_ANSWER');
 
       default:
-        return 'No Answer';
+        return this.translate.instant('STUDENT_GRADES.NO_ANSWER');
     }
   }
 
@@ -182,23 +180,22 @@ export class StudentGradesComponent implements OnInit {
     switch (answer.questionType) {
       case 'TrueOrFalse':
         return answer.correctTrueFalseAnswer !== null && answer.correctTrueFalseAnswer !== undefined
-          ? (answer.correctTrueFalseAnswer ? 'صح' : 'خطأ')
-          : 'No Answer';
+          ? (answer.correctTrueFalseAnswer ? this.translate.instant('STUDENT_GRADES.YES') : this.translate.instant('STUDENT_GRADES.NO'))
+          : this.translate.instant('STUDENT_GRADES.NO_ANSWER');
 
       case 'Choices':
-        return answer.correctChoiceText || 'No Answer';
+        return answer.correctChoiceText || this.translate.instant('STUDENT_GRADES.NO_ANSWER');
 
       case 'Complete':
-        return answer.correctTextAnswer || 'No Answer';
+        return answer.correctTextAnswer || this.translate.instant('STUDENT_GRADES.NO_ANSWER');
 
       case 'Connection':
-        return answer.correctConnectionTexts || 'No Answer';
+        return answer.correctConnectionTexts || this.translate.instant('STUDENT_GRADES.NO_ANSWER');
 
       default:
         return '';
     }
   }
-
 
   getAnswerStatusClass(answer: StudentAnswerWithQuestionDto): string {
     return answer.isCorrect ? 'correct-answer' : 'wrong-answer';
@@ -223,23 +220,31 @@ export class StudentGradesComponent implements OnInit {
   getStatusClass(status: string): string {
     switch (status.toLowerCase()) {
       case 'مكتمل':
+      case 'completed':
         return 'status-completed';
       case 'قيد الانتظار':
+      case 'pending':
         return 'status-pending';
       case 'ملغى':
+      case 'cancelled':
         return 'status-failed';
       default:
         return '';
     }
   }
-  // دوال إضافية للـ HTML
+
   getExamTypeBadge(examName: string): string {
     const examTypes: { [key: string]: string } = {
       'اختبار نهائي': 'bg-danger',
+      'final exam': 'bg-danger',
       'اختبار منتصف الفصل': 'bg-warning',
+      'midterm exam': 'bg-warning',
       'اختبار أسبوعي': 'bg-info',
+      'weekly test': 'bg-info',
       'عمل السنة': 'bg-success',
-      'اختبار تجريبي': 'bg-secondary'
+      'coursework': 'bg-success',
+      'اختبار تجريبي': 'bg-secondary',
+      'practice test': 'bg-secondary'
     };
 
     return examTypes[examName] || 'bg-primary';
@@ -260,5 +265,4 @@ export class StudentGradesComponent implements OnInit {
 
     return Math.round((totalMarks / totalDegree) * 100);
   }
-
 }

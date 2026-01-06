@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { Component, inject } from '@angular/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-about',
@@ -8,5 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrl: './about.component.css'
 })
 export class AboutComponent {
+
+  constructor() { }
 
 }

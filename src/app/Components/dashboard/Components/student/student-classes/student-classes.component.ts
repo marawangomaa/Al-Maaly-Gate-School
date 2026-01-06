@@ -5,10 +5,11 @@ import { iclassAppointments } from '../../../../../Interfaces/iclassAppointments
 import { ApiResponse } from '../../../../../Interfaces/auth';
 import { AuthService } from '../../../../../Services/auth.service';
 import { ActivatedRoute } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-student-classes',
-  imports: [CommonModule, DatePipe],
+  imports: [CommonModule, DatePipe, TranslateModule],
   templateUrl: './student-classes.component.html',
   styleUrl: './student-classes.component.css'
 })
@@ -17,6 +18,7 @@ export class StudentClassesComponent implements OnInit {
   _ClassAppointments = inject(ClassAppointmentsService);
   private platformId = inject(PLATFORM_ID);
   private isBrowser: boolean;
+  private translate = inject(TranslateService);
 
   constructor(
     private AuthService: AuthService,
@@ -41,7 +43,7 @@ export class StudentClassesComponent implements OnInit {
         this.classId = storedClassId;
         this.getClassAppointments();
       } else {
-        console.warn('No class ID found in route parameters or localStorage');
+        console.warn(this.translate.instant('STUDENT_CLASSES_TS.WARNINGS.NO_CLASS_ID_FOUND'));
       }
     }
   }
@@ -62,16 +64,22 @@ export class StudentClassesComponent implements OnInit {
     }
   }
 
-  attendLecture(lecture: any) {
-    if (lecture.canAttend) {
-      lecture.attended = true;
-      alert(`تم تسجيل حضورك في محاضرة ${lecture.subject}`);
+  attendLecture(lecture: iclassAppointments) {
+    window.open(lecture.link, '_blank');
+  }
+
+  openLectureLink(lecture: iclassAppointments) {
+    if (lecture.link && (lecture.status === 'Running' || lecture.status === 'Upcoming')) {
+      // Open link in new tab
+      window.open(lecture.link, '_blank');
+    } else {
+      alert(this.translate.instant('STUDENT_CLASSES.NO_LINK_AVAILABLE'));
     }
   }
 
   getClassAppointments() {
     if (!this.classId) {
-      console.error('Cannot get appointments: classId is empty');
+      console.error(this.translate.instant('STUDENT_CLASSES_TS.ERRORS.NO_CLASS_ID'));
       return;
     }
 
@@ -79,15 +87,15 @@ export class StudentClassesComponent implements OnInit {
       next: (response: ApiResponse<iclassAppointments[]>) => {
         if (response.success && response.data) {
           this.classes = response.data;
-          console.log('Appointments loaded:', response.data);
-          console.log('Total appointments:', response.data.length);
+          console.log(this.translate.instant('STUDENT_CLASSES_TS.INFO.APPOINTMENTS_LOADED'), response.data);
+          console.log(this.translate.instant('STUDENT_CLASSES_TS.INFO.TOTAL_APPOINTMENTS'), response.data.length);
         } else {
-          console.log('No appointments found:', response.message);
+          console.log(this.translate.instant('STUDENT_CLASSES_TS.ERRORS.NO_APPOINTMENTS'), response.message);
           this.classes = [];
         }
       },
       error: (error: ApiResponse<iclassAppointments>) => {
-        console.error('Error loading appointments:', error.message || error);
+        console.error(this.translate.instant('STUDENT_CLASSES_TS.ERRORS.LOADING_ERROR'), error.message || error);
         this.classes = [];
       }
     });

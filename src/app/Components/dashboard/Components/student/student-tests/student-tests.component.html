@@ -1,5 +1,5 @@
 <div class="container mt-4">
-  <h3 class="main-title">قائمة الاختبارات</h3>
+  <h3 class="main-title">{{ "STUDENT_TESTS.TITLE" | translate }}</h3>
 
   <div class="mb-3 d-flex gap-2">
     <button
@@ -7,28 +7,28 @@
       [class.primary-btn]="filter === 'all'"
       (click)="filter = 'all'"
     >
-      الكل
+      {{ "STUDENT_TESTS.FILTER_ALL" | translate }}
     </button>
     <button
       class="outline-btn"
       [class.primary-btn]="filter === 'Upcoming'"
       (click)="filter = 'Upcoming'"
     >
-      المتاحة
+      {{ "STUDENT_TESTS.FILTER_UPCOMING" | translate }}
     </button>
     <button
       class="outline-btn"
       [class.primary-btn]="filter === 'Running'"
       (click)="filter = 'Running'"
     >
-      الجارية
+      {{ "STUDENT_TESTS.FILTER_RUNNING" | translate }}
     </button>
     <button
       class="outline-btn"
       [class.primary-btn]="filter === 'Finished'"
       (click)="filter = 'Finished'"
     >
-      المنتهية
+      {{ "STUDENT_TESTS.FILTER_FINISHED" | translate }}
     </button>
   </div>
 
@@ -36,9 +36,13 @@
     <div *ngFor="let test of filteredExams" class="col-md-6">
       <div class="card p-3">
         <h5 class="sub-title mb-1">{{ test.subjectName }}</h5>
-        <p class="text-muted mb-1">المعلم: {{ test.teacherName }}</p>
         <p class="text-muted mb-1">
-          من: {{ test.start | date : "shortTime" }} إلى:
+          {{ "STUDENT_TESTS.TEACHER" | translate }}: {{ test.teacherName }}
+        </p>
+        <p class="text-muted mb-1">
+          {{ "STUDENT_TESTS.FROM" | translate }}:
+          {{ test.start | date : "shortTime" }}
+          {{ "STUDENT_TESTS.TO" | translate }}:
           {{ test.end | date : "shortTime" }}
         </p>
 
@@ -54,12 +58,13 @@
             "
             (click)="startExam(test.examId)"
           >
-            بدء الحل
+            {{ "STUDENT_TESTS.START_EXAM" | translate }}
           </button>
         </div>
 
         <div class="mt-2">
-          <strong>الدرجة:</strong> {{ test.minMark }} / {{ test.fullMark }}
+          <strong>{{ "STUDENT_TESTS.SCORE" | translate }}:</strong>
+          {{ test.minMark }} / {{ test.fullMark }}
         </div>
       </div>
     </div>

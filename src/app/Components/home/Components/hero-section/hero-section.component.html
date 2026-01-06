@@ -2,12 +2,9 @@
   <div class="hero-overlay"></div>
 
   <div class="hero-content">
-    <h1 class="hero-title">
-      مرحبا بكم في <span class="accent-text">"مدرسة بوابة المعالي" </span>
-      استكشف اسلوبنا الجديد والفريد في التعلم
-    </h1>
-    <p class="hero-subtitle">افضل منصة للتعلم عن بعد في الوطن العربي</p>
-    <!-- <button class="primary-btn hero-cta">خد الخطوة الان</button> -->
+    <h1 class="hero-title" [innerHTML]="'HERO.TITLE' | translate"></h1>
+    <p class="hero-subtitle">{{ "HERO.SUBTITLE" | translate }}</p>
+    <!-- <button class="primary-btn hero-cta">{{ 'HERO.CTA' | translate }}</button> -->
   </div>
 </section>
 
@@ -20,14 +17,13 @@
           <i class="bi bi-mortarboard"></i>
         </div>
         <div class="card-content">
-          <h3 class="main-title">منهج بريطاني مميز</h3>
+          <h3 class="main-title">
+            {{ "FEATURES.CURRICULUM.TITLE" | translate }}
+          </h3>
           <p class="paragraph">
-            منهج بريطاني مميّز بمعايير تعليمية عالمية، يركز على الفهم، التفكير
-            النقدي، وبناء مهارات المستقبل.
+            {{ "FEATURES.CURRICULUM.DESCRIPTION" | translate }}
           </p>
-          <!-- <a href="#" class="custom-link"
-            >عرض المزيد <i class="bi bi-arrow-left"></i
-          ></a> -->
+          <!-- <a href="#" class="custom-link">{{ 'FEATURES.CURRICULUM.LINK' | translate }} <i class="bi bi-arrow-left"></i></a> -->
         </div>
       </div>
 
@@ -39,14 +35,13 @@
           <i class="bi bi-book"></i>
         </div>
         <div class="card-content">
-          <h3 class="main-title">اسلوب تعليمي جديد</h3>
+          <h3 class="main-title">
+            {{ "FEATURES.EDUCATION_STYLE.TITLE" | translate }}
+          </h3>
           <p class="paragraph">
-            أسلوب تعليمي جديد يواكب احتياجات المتعلمين، ويقدّم طرقًا مبتكرة تعزز
-            الفهم وتحقق فرقًا حقيقيًا في تجربة التعلم.
+            {{ "FEATURES.EDUCATION_STYLE.DESCRIPTION" | translate }}
           </p>
-          <!-- <a href="#" class="custom-link"
-            >عرض المزيد <i class="bi bi-arrow-left"></i
-          ></a> -->
+          <!-- <a href="#" class="custom-link">{{ 'FEATURES.EDUCATION_STYLE.LINK' | translate }} <i class="bi bi-arrow-left"></i></a> -->
         </div>
       </div>
 
@@ -58,14 +53,13 @@
           <i class="bi bi-display"></i>
         </div>
         <div class="card-content">
-          <h3 class="main-title">تعليم رقمي مواكب وحديث</h3>
+          <h3 class="main-title">
+            {{ "FEATURES.DIGITAL_EDUCATION.TITLE" | translate }}
+          </h3>
           <p class="paragraph">
-            تعليم رقمي حديث يواكب التطور، ويوفر تجربة تعلم ذكية تدمج التقنيات
-            الحديثة لتعزيز الفهم وتسهيل اكتساب المهارات بشكل فعّال.
+            {{ "FEATURES.DIGITAL_EDUCATION.DESCRIPTION" | translate }}
           </p>
-          <!-- <a href="#" class="custom-link"
-            >عرض المزيد <i class="bi bi-arrow-left"></i
-          ></a> -->
+          <!-- <a href="#" class="custom-link">{{ 'FEATURES.DIGITAL_EDUCATION.LINK' | translate }} <i class="bi bi-arrow-left"></i></a> -->
         </div>
       </div>
     </div>

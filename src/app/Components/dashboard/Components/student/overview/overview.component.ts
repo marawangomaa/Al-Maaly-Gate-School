@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { StudentService } from '../../../../../Services/student.service';
 import { istudentProfile } from '../../../../../Interfaces/istudentProfile';
@@ -24,6 +24,7 @@ export class OverviewComponent implements OnInit {
   private imageService = inject(ImageService);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private translate = inject(TranslateService);
 
   // User Profile Data from getCurrentUser()
   userProfile: AuthResponse | null = null;
@@ -75,7 +76,7 @@ export class OverviewComponent implements OnInit {
   }
 
   get formattedParentNames(): string {
-    if (!this.studentProfile?.parents?.length) return 'No parents assigned';
+    if (!this.studentProfile?.parents?.length) return this.translate.instant('STUDENT_OVERVIEW.NO_PARENTS');
 
     return this.studentProfile.parents
       .map((parent: any) => parent.fullName || parent.name)
@@ -96,17 +97,17 @@ export class OverviewComponent implements OnInit {
           if (this.userProfile.roles.includes('student') || this.userProfile.roles.includes('Student')) {
             this.loadStudentData();
           } else {
-            this.showError('You are not registered as a student');
+            this.showError(this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.ERRORS.NOT_REGISTERED_AS_STUDENT'));
             this.loading = false;
           }
         } else {
-          this.showError(response.message || 'Failed to load profile');
+          this.showError(response.message || this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.ERRORS.FAILED_TO_LOAD_PROFILE'));
           this.loading = false;
         }
       },
       error: (error) => {
         console.error('Error loading user profile:', error);
-        this.showError('Failed to load user profile. Please try again.');
+        this.showError(this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.ERRORS.GENERIC_ERROR'));
         this.loading = false;
       }
     });
@@ -114,7 +115,7 @@ export class OverviewComponent implements OnInit {
 
   loadStudentData(): void {
     if (!this.studentId) {
-      this.showError('Student ID not found');
+      this.showError(this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.ERRORS.STUDENT_ID_NOT_FOUND'));
       this.loading = false;
       return;
     }
@@ -127,13 +128,13 @@ export class OverviewComponent implements OnInit {
           localStorage.setItem('studentClassId', this.studentProfile?.classId || '');
           this.loadExamResults();
         } else {
-          this.showError(response.message || 'Failed to load student details');
+          this.showError(response.message || this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.ERRORS.FAILED_TO_LOAD_STUDENT_DETAILS'));
           this.loading = false;
         }
       },
       error: (error) => {
         console.error('Failed to load student details:', error);
-        this.showError('Failed to load student details');
+        this.showError(this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.ERRORS.FAILED_TO_LOAD_STUDENT_DETAILS'));
         this.loading = false;
       }
     });
@@ -157,6 +158,7 @@ export class OverviewComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading exam results:', error);
+        this.showError(this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.ERRORS.FAILED_TO_LOAD_EXAM_RESULTS'));
         this.loading = false;
         this.loadingExams = false;
       }
@@ -182,16 +184,14 @@ export class OverviewComponent implements OnInit {
     });
   }
 
-  // Image handling methods (CRITICAL - copied from working teacher component)
+  // Image handling methods
   getProfileImageUrl(): string {
     if (!this.userProfile?.profileImageUrl) {
-      // console.log('No profile image URL, using default');
       return this.imageService.getDefaultAvatarUrl();
     }
 
     // Get the URL from image service
     const url = this.imageService.getImageUrl(this.userProfile.profileImageUrl);
-    console.log('Profile image URL:', url);
     return url;
   }
 
@@ -230,14 +230,14 @@ export class OverviewComponent implements OnInit {
     // Validate file type
     const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp'];
     if (!allowedTypes.includes(file.type)) {
-      this.showError('Only image files (JPEG, PNG, GIF, WebP) are allowed');
+      this.showError(this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.VALIDATION.FILE_TYPE_RESTRICTION'));
       return;
     }
 
     // Validate file size (max 5MB)
     const maxSize = 5 * 1024 * 1024; // 5MB
     if (file.size > maxSize) {
-      this.showError('File size must be less than 5MB');
+      this.showError(this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.VALIDATION.FILE_SIZE_RESTRICTION'));
       return;
     }
 
@@ -265,14 +265,14 @@ export class OverviewComponent implements OnInit {
         console.log('Response received:', response);
         if (response.success && response.data) {
           this.userProfile = response.data;
-          this.showSuccess('Profile photo updated successfully');
+          this.showSuccess(this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.SUCCESS.PROFILE_PHOTO_UPDATED'));
 
           // Force refresh after successful upload
           setTimeout(() => {
             this.refreshProfile();
           }, 1000);
         } else {
-          this.showError(response.message || 'Failed to upload profile photo');
+          this.showError(response.message || this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.ERRORS.FAILED_TO_UPLOAD_PROFILE_PHOTO'));
         }
         this.isUploading = false;
         this.selectedFile = null;
@@ -288,7 +288,7 @@ export class OverviewComponent implements OnInit {
         });
 
         // Get the actual error message from the response
-        let errorMessage = 'Failed to upload profile photo';
+        let errorMessage = this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.ERRORS.FAILED_TO_UPLOAD_PROFILE_PHOTO');
         if (error.error && typeof error.error === 'string') {
           errorMessage = error.error;
         } else if (error.error && error.error.message) {
@@ -328,7 +328,7 @@ export class OverviewComponent implements OnInit {
     const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
 
     if (isNaN(date.getTime())) {
-      return 'Invalid date';
+      return this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.VALIDATION.INVALID_DATE');
     }
 
     return date.toLocaleDateString();
@@ -346,11 +346,11 @@ export class OverviewComponent implements OnInit {
   }
 
   getGradeText(score: number): string {
-    if (score >= 90) return 'A';
-    if (score >= 80) return 'B';
-    if (score >= 70) return 'C';
-    if (score >= 60) return 'D';
-    return 'F';
+    if (score >= 90) return this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.GRADES.A');
+    if (score >= 80) return this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.GRADES.B');
+    if (score >= 70) return this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.GRADES.C');
+    if (score >= 60) return this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.GRADES.D');
+    return this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.GRADES.F');
   }
 
   get accountStatusColor(): string {
@@ -364,8 +364,16 @@ export class OverviewComponent implements OnInit {
   }
 
   get accountStatusText(): string {
-    if (!this.userProfile?.accountStatus) return 'Unknown';
-    return this.userProfile.accountStatus;
+    if (!this.userProfile?.accountStatus) return this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.STATUS.UNKNOWN');
+    
+    const statusMap: { [key: string]: string } = {
+      'Active': this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.STATUS.ACTIVE'),
+      'Pending': this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.STATUS.PENDING'),
+      'Rejected': this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.STATUS.REJECTED'),
+      'Blocked': this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.STATUS.BLOCKED')
+    };
+    
+    return statusMap[this.userProfile.accountStatus] || this.userProfile.accountStatus;
   }
 
   // Navigation methods
@@ -389,15 +397,27 @@ export class OverviewComponent implements OnInit {
 
   // Toast notification methods
   private showSuccess(message: string): void {
-    this.showToastMessage('Success', message, 'success');
+    this.showToastMessage(
+      this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.TOAST.SUCCESS_TITLE'),
+      message,
+      'success'
+    );
   }
 
   private showError(message: string): void {
-    this.showToastMessage('Error', message, 'error');
+    this.showToastMessage(
+      this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.TOAST.ERROR_TITLE'),
+      message,
+      'error'
+    );
   }
 
   private showInfo(message: string): void {
-    this.showToastMessage('Info', message, 'success');
+    this.showToastMessage(
+      this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.TOAST.INFO_TITLE'),
+      message,
+      'success'
+    );
   }
 
   private showToastMessage(title: string, message: string, type: 'success' | 'error'): void {

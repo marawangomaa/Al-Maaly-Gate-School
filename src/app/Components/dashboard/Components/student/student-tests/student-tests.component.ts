@@ -6,10 +6,11 @@ import { ApiResponse } from '../../../../../Interfaces/auth';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../../Services/auth.service';
 import { StudentService } from '../../../../../Services/student.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-student-tests',
-  imports: [CommonModule, DatePipe],
+  imports: [CommonModule, DatePipe, TranslateModule],
   templateUrl: './student-tests.component.html',
   styleUrl: './student-tests.component.css'
 })
@@ -20,6 +21,7 @@ export class StudentTestsComponent implements OnInit {
   _ClassExams = inject(ClassExamsService);
   _StudentProfile = inject(StudentService);
   _Auth = inject(AuthService);
+  private translate = inject(TranslateService);
 
   ngOnInit() {
     this.StudentEntityId = this._Auth.getStudentId()!;
@@ -56,7 +58,7 @@ export class StudentTestsComponent implements OnInit {
           console.log('Student classId:', this.ClassId);
           this.GetClassExams(this.ClassId);
         } else {
-          console.warn('Student classId not found');
+          console.warn(this.translate.instant('STUDENT_TESTS_TS.WARNINGS.CLASS_ID_NOT_FOUND'));
         }
       },
       error: (error: ApiResponse<any>) => {
@@ -76,5 +78,4 @@ export class StudentTestsComponent implements OnInit {
       }
     });
   }
-
 }

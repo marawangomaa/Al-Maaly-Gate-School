@@ -8,10 +8,11 @@ import { istudentMinimalDto } from '../../../../../Interfaces/istudentMinimalDto
 import { ApiResponse } from '../../../../../Interfaces/auth';
 import { CertificateService } from '../../../../../Services/certificate.service';
 import { Certificate } from '../../../../../Interfaces/icertificate';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-children-of-parent',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   templateUrl: './children-of-parent.component.html',
   styleUrls: ['./children-of-parent.component.css']
 })
@@ -36,10 +37,11 @@ export class ChildrenOfParentComponent implements OnInit {
   constructor(
     private parentService: ParentService,
     private certificateService: CertificateService,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private translate: TranslateService
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
-   }
+  }
 
   ngOnInit(): void {
     try {
@@ -49,18 +51,18 @@ export class ChildrenOfParentComponent implements OnInit {
           const userData = JSON.parse(userString);
           this.parentId = userData.parentId;
           this.loadParentWithChildren();
-       }
+        }
       }
     } catch (error) {
       console.error('Error parsing user data:', error);
-      this.error = 'Failed to load user data';
+      this.error = this.translate.instant('PARENT_CHILDREN_TS.ERRORS.PARSING_ERROR');
       this.isLoading = false;
     }
   }
 
   loadParentWithChildren(): void {
     if (!this.parentId) {
-      this.error = 'Parent ID is required';
+      this.error = this.translate.instant('PARENT_CHILDREN_TS.ERRORS.PARENT_ID_REQUIRED');
       this.isLoading = false;
       return;
     }
@@ -71,12 +73,12 @@ export class ChildrenOfParentComponent implements OnInit {
         if (response.success && response.data) {
           this.parent = response.data;
         } else {
-          this.error = response.message || 'Failed to load parent information';
+          this.error = response.message || this.translate.instant('PARENT_CHILDREN_TS.ERRORS.LOAD_PARENT_FAILED');
         }
         this.isLoading = false;
       },
       error: (err) => {
-        this.error = 'An error occurred while loading parent information';
+        this.error = this.translate.instant('PARENT_CHILDREN_TS.ERRORS.GENERIC_ERROR');
         this.isLoading = false;
         console.error(err);
       }
@@ -98,17 +100,17 @@ export class ChildrenOfParentComponent implements OnInit {
           // Extract unique degree types
           this.degreeTypes = [...new Set(this.studentCertificates.map(c => c.degreeType))];
 
-          console.log(`Found ${this.studentCertificates.length} certificates`);
-          console.log(`Degree types: ${this.degreeTypes.join(', ')}`);
+          console.log(this.translate.instant('PARENT_CHILDREN_TS.SUCCESS.CERTIFICATES_LOADED', { count: this.studentCertificates.length }));
+          console.log(this.translate.instant('PARENT_CHILDREN_TS.SUCCESS.DEGREE_TYPES') + ': ' + this.degreeTypes.join(', '));
         } else {
-          console.error('Failed to load student certificates:', response.message);
+          console.error(this.translate.instant('PARENT_CHILDREN_TS.ERRORS.LOAD_CERTIFICATES_FAILED') + ':', response.message);
           this.studentCertificates = [];
           this.filteredCertificates = [];
         }
         this.loadingCertificates = false;
       },
       error: (err) => {
-        console.error('An error occurred while loading student certificates:', err);
+        console.error(this.translate.instant('PARENT_CHILDREN_TS.ERRORS.GENERIC_CERTIFICATES_ERROR') + ':', err);
         this.loadingCertificates = false;
         this.studentCertificates = [];
         this.filteredCertificates = [];
@@ -166,13 +168,13 @@ export class ChildrenOfParentComponent implements OnInit {
       window.URL.revokeObjectURL(url);
     } else {
       console.warn('No PDF data available for this certificate');
-      alert('PDF data is not available for this certificate');
+      alert(this.translate.instant('PARENT_CHILDREN_TS.ERRORS.NO_PDF_DATA'));
     }
   }
 
   downloadAllCertificates(student: istudentMinimalDto): void {
     if (!this.studentCertificates || this.studentCertificates.length === 0) {
-      alert('No certificates to download');
+      alert(this.translate.instant('PARENT_CHILDREN_TS.ERRORS.NO_CERTIFICATES_DOWNLOAD'));
       return;
     }
 
@@ -182,7 +184,7 @@ export class ChildrenOfParentComponent implements OnInit {
     if (firstCertificate) {
       this.downloadCertificate(firstCertificate);
     } else {
-      alert('No certificates with PDF data available for download');
+      alert(this.translate.instant('PARENT_CHILDREN_TS.ERRORS.NO_PDF_DATA_AVAILABLE'));
     }
   }
 
@@ -193,7 +195,7 @@ export class ChildrenOfParentComponent implements OnInit {
       const url = window.URL.createObjectURL(blob);
       window.open(url, '_blank');
     } else {
-      alert('PDF preview is not available for this certificate');
+      alert(this.translate.instant('PARENT_CHILDREN_TS.ERRORS.PDF_PREVIEW_UNAVAILABLE'));
     }
   }
 

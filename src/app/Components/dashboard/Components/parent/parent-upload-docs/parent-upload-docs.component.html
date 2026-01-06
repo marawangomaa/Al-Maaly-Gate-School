@@ -1,6 +1,6 @@
 <div class="parent-upload-container">
   <div class="alert alert-info">
-    <strong>Note:</strong> Only PDF files are allowed.
+    <strong>{{ "PARENT_UPLOAD_DOCS.NOTE" | translate }}</strong> {{ "PARENT_UPLOAD_DOCS.ONLY_PDF_ALLOWED" | translate }}
   </div>
 
   <!-- Dynamic File Inputs -->
@@ -47,6 +47,6 @@
     (click)="upload()"
     [disabled]="isUploading || !hasSelectedFiles"
   >
-    {{ isUploading ? "Uploading..." : "Upload Files" }}
+    {{ isUploading ? ( "PARENT_UPLOAD_DOCS.UPLOADING" | translate ) : ( "PARENT_UPLOAD_DOCS.UPLOAD_FILES" | translate ) }}
   </button>
 </div>
