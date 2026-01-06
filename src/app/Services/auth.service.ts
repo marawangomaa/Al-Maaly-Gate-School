@@ -7,6 +7,8 @@ import { jwtDecode } from 'jwt-decode';
 import { ParentRegistrationResponse } from '../Interfaces/ParentRegistrationResponse';
 import { ParentRegisterRequest } from '../Interfaces/ParentRegisterRequest';
 import { environment } from '../../environments/environment';
+import { ForgotPasswordRequest } from '../Interfaces/forgot-password-request';
+import { ResetPasswordRequest } from '../Interfaces/reset-password-request';
 
 @Injectable({
   providedIn: 'root'
@@ -157,6 +159,36 @@ export class AuthService {
       return user.roleEntityIds
     }
     return null;
+  }
+
+  // -----------------------------------------
+  //           PASSWORD MANAGEMENT
+  // -----------------------------------------
+
+  forgotPassword(email: string): Observable<ApiResponse<string>> {
+    const payload: ForgotPasswordRequest = { email };
+
+    return this.http.post<ApiResponse<string>>(
+      `${this.baseUrl}/forgot-password`,
+      payload
+    );
+  }
+
+  resetPassword(request: ResetPasswordRequest): Observable<ApiResponse<string>> {
+    return this.http.post<ApiResponse<string>>(
+      `${this.baseUrl}/reset-password`,
+      request
+    );
+  }
+  //should be used in the profile page as it depend on logged in user token
+  changePassword(request: {
+    oldPassword: string;
+    newPassword: string;
+  }): Observable<ApiResponse<string>> {
+    return this.http.post<ApiResponse<string>>(
+      `${this.baseUrl}/change-password`,
+      request
+    );
   }
 
 }
