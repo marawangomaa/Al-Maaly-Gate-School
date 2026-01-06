@@ -7,10 +7,11 @@ import { forkJoin } from 'rxjs';
 import { SubjectService } from '../../../../../Services/subject.service';
 import { DegreeComponentTypeService } from '../../../../../Services/degrees-component-type.service';
 import { ToastService } from '../../../../../Services/toast.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-subject-component-types',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './subject-component-types.component.html',
   styleUrls: ['./subject-component-types.component.css']
 })

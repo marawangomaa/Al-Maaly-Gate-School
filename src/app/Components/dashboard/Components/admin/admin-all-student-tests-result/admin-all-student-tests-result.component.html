@@ -1,6 +1,6 @@
 <!-- admin-all-student-tests-result.component.html -->
 <div class="container mt-4" dir="rtl">
-  <h3 class="main-title mb-4">نتائج الطلاب في الاختبارات</h3>
+  <h3 class="main-title mb-4">{{ "studentResults.title" | translate }}</h3>
 
   <!-- Filters -->
   <div class="card mb-4">
@@ -8,7 +8,7 @@
       <div class="row">
         <!-- Class Filter -->
         <div class="col-md-6 mb-3">
-          <label for="classFilter" class="form-label">اختر الفصل</label>
+          <label for="classFilter" class="form-label">{{ "studentResults.selectClass" | translate }}</label>
           <select 
             id="classFilter" 
             class="form-control"
@@ -16,20 +16,20 @@
             (change)="onClassChange()"
             [disabled]="loadingClasses"
           >
-            <option value="">اختر الفصل</option>
+            <option value="">{{ "studentResults.selectClass" | translate }}</option>
             <option *ngFor="let classItem of classes" [value]="classItem.id">
-              {{ classItem.className }} ({{ classItem.gradeName || 'غير محدد' }})
+              {{ classItem.className }} ({{ classItem.gradeName || ('COMMON.notSpecified' | translate) }})
             </option>
           </select>
           <div *ngIf="loadingClasses" class="mt-2">
             <div class="spinner-border spinner-border-sm" role="status"></div>
-            <span class="ms-2">جاري تحميل الفصول...</span>
+            <span class="ms-2">{{ "COMMON.loadingClasses" | translate }}</span>
           </div>
         </div>
 
         <!-- Exam Type Filter -->
         <div class="col-md-6 mb-3">
-          <label class="form-label d-block">نوع الاختبار</label>
+          <label class="form-label d-block">{{ "studentResults.examType" | translate }}</label>
           <div class="d-flex gap-2 flex-wrap">
             <button
               *ngFor="let option of examTypeOptions"
@@ -37,11 +37,11 @@
               [class.btn-primary]="selectedType === option.value"
               (click)="selectedType = option.value; onTypeChange()"
             >
-              {{ option.label }}
+              {{ "examTypes." + option.value | translate }}
             </button>
           </div>
           <small class="text-muted mt-1 d-block">
-            * منتصف الفصل: 20 درجة | نهاية الفصل: 80 درجة | الإجمالي: 200 درجة
+            {{ "studentResults.examNotes" | translate }}
           </small>
         </div>
       </div>
@@ -53,9 +53,9 @@
     <!-- Loading Students -->
     <div *ngIf="loadingStudents" class="text-center py-5">
       <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
+        <span class="visually-hidden">{{ "COMMON.loading" | translate }}</span>
       </div>
-      <p class="mt-2">جاري تحميل الطلاب...</p>
+      <p class="mt-2">{{ "studentResults.loadingStudents" | translate }}</p>
     </div>
 
     <!-- Students List -->
@@ -64,9 +64,9 @@
         <div class="card-header d-flex justify-content-between align-items-center">
           <h5 class="mb-0">
             <i class="fas fa-users me-2"></i>
-            طلاب الفصل: {{ getClassName(selectedClassId) }}
+            {{ "studentResults.classStudents" | translate }}: {{ getClassName(selectedClassId) }}
           </h5>
-          <span class="badge bg-primary">{{ students.length }} طالب</span>
+          <span class="badge bg-primary">{{ students.length }} {{ "studentResults.student" | translate }}</span>
         </div>
         <div class="card-body p-0">
           <div class="list-group list-group-flush">
@@ -84,12 +84,12 @@
                        [class.fa-chevron-up]="expandedStudentId === student.id"></i>
                   </button>
                   <div>
-                    <h6 class="mb-1">{{ student.fullName || 'طالب' }}</h6>
-                    <small class="text-muted">رقم الطالب: {{ student.id }}</small>
+                    <h6 class="mb-1">{{ student.fullName || ('studentResults.student' | translate) }}</h6>
+                    <small class="text-muted">{{ "studentResults.studentId" | translate }}: {{ student.id }}</small>
                     <div class="mt-1" *ngIf="studentFullDegreesMap.has(student.id)">
                       <small class="text-success">
                         <i class="fas fa-chart-line me-1"></i>
-                        المعدل العام: {{ calculateStudentOverallAverage(student.id).toFixed(1) }}%
+                        {{ "studentResults.overallAverage" | translate }}: {{ calculateStudentOverallAverage(student.id).toFixed(1) }}%
                       </small>
                     </div>
                   </div>
@@ -99,9 +99,9 @@
                     class="btn btn-sm btn-primary"
                     (click)="$event.stopPropagation(); openStudentDetailsModal(student.id, student.fullName)"
                     [disabled]="loadingStudentDetails"
-                    [title]="'عرض جميع النتائج'"
+                    [title]="'studentResults.viewAllResults' | translate"
                   >
-                    <i class="fas fa-external-link-alt me-1"></i> تفاصيل النتائج
+                    <i class="fas fa-external-link-alt me-1"></i> {{ "studentResults.resultDetails" | translate }}
                   </button>
                 </div>
               </div>
@@ -110,7 +110,7 @@
               <div *ngIf="expandedStudentId === student.id" class="mt-3">
                 <div *ngIf="loadingDegrees" class="text-center py-3">
                   <div class="spinner-border spinner-border-sm" role="status"></div>
-                  <span class="ms-2">جاري تحميل النتائج...</span>
+                  <span class="ms-2">{{ "studentResults.loadingResults" | translate }}</span>
                 </div>
 
                 <div *ngIf="!loadingDegrees">
@@ -119,18 +119,18 @@
                       <table class="table table-sm table-bordered">
                         <thead class="table-light">
                           <tr>
-                            <th>المادة</th>
-                            <th>نوع الاختبار</th>
-                            <th>الدرجة</th>
-                            <th>الدرجة الكاملة</th>
-                            <th>النسبة</th>
-                            <th>الحالة</th>
+                            <th>{{ "studentResults.subject" | translate }}</th>
+                            <th>{{ "studentResults.examType" | translate }}</th>
+                            <th>{{ "studentResults.score" | translate }}</th>
+                            <th>{{ "studentResults.fullScore" | translate }}</th>
+                            <th>{{ "studentResults.percentage" | translate }}</th>
+                            <th>{{ "studentResults.status" | translate }}</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr *ngFor="let degree of (studentDegreesMap.get(student.id) || [])">
                             <td>{{ degree.subjectName }}</td>
-                            <td>{{ getExamTypeDisplayName(degree.degreeType) }}</td>
+                            <td>{{ getExamTypeDisplayName(degree.degreeType) | translate }}</td>
                             <td>{{ formatScore(degree.score) }}</td>
                             <td>{{ formatScore(degree.maxScore) }}</td>
                             <td>
@@ -143,13 +143,13 @@
                               <span class="badge" 
                                     [class.bg-success]="getPassStatus(degree.score, degree.maxScore).isPass"
                                     [class.bg-danger]="!getPassStatus(degree.score, degree.maxScore).isPass">
-                                {{ getPassStatus(degree.score, degree.maxScore).status }}
+                                {{ getPassStatus(degree.score, degree.maxScore).status | translate }}
                               </span>
                             </td>
                           </tr>
                           <!-- Total Marks Row -->
                           <tr *ngIf="selectedType === 'الكل'" class="table-info">
-                            <td colspan="2" class="text-end"><strong>المجموع الكلي:</strong></td>
+                            <td colspan="2" class="text-end"><strong>{{ "studentResults.totalScore" | translate }}:</strong></td>
                             <td>
                               <strong>{{ formatScore(calculateStudentTotalMarks(student.id).total) }}</strong>
                             </td>
@@ -164,7 +164,7 @@
                           </tr>
                           <!-- Average Row for filtered results -->
                           <tr *ngIf="selectedType !== 'الكل'" class="table-info">
-                            <td colspan="4" class="text-end"><strong>المعدل:</strong></td>
+                            <td colspan="4" class="text-end"><strong>{{ "studentResults.average" | translate }}:</strong></td>
                             <td colspan="2">
                               <strong>
                                 {{ calculateStudentAverage(studentDegreesMap.get(student.id) || []).toFixed(1) }}%
@@ -177,11 +177,11 @@
                     
                     <!-- Component Details -->
                     <div *ngIf="studentHasComponents(student.id)" class="mt-3">
-                      <h6 class="mb-2"><i class="fas fa-list-alt me-2"></i>تفاصيل المكونات:</h6>
+                      <h6 class="mb-2"><i class="fas fa-list-alt me-2"></i>{{ "studentResults.componentDetails" | translate }}:</h6>
                       <div *ngFor="let degree of studentDegreesMap.get(student.id) || []">
                         <div *ngIf="degree.components && degree.components.length > 0" class="card mb-2">
                           <div class="card-header py-2">
-                            <strong>{{ degree.subjectName }} - {{ getExamTypeDisplayName(degree.degreeType) }}</strong>
+                            <strong>{{ degree.subjectName }} - {{ getExamTypeDisplayName(degree.degreeType) | translate }}</strong>
                           </div>
                           <div class="card-body p-2">
                             <div class="row g-2">
@@ -201,7 +201,7 @@
                   <ng-template #noDegrees>
                     <div class="alert alert-info mb-0">
                       <i class="fas fa-info-circle me-2"></i>
-                      لا توجد نتائج لهذا الطالب {{ selectedType !== 'الكل' ? 'من نوع ' + selectedType : '' }}
+                      {{ "studentResults.noResultsForStudent" | translate }} {{ selectedType !== 'الكل' ? ('studentResults.ofType' | translate) + ' ' + ('examTypes.' + selectedType | translate) : '' }}
                     </div>
                   </ng-template>
                 </div>
@@ -215,16 +215,16 @@
     <!-- No Students Message -->
     <div *ngIf="!loadingStudents && students.length === 0" class="text-center py-5">
       <i class="fas fa-user-graduate fa-3x text-muted mb-3"></i>
-      <h4>لا يوجد طلاب</h4>
-      <p class="text-muted">لا يوجد طلاب مسجلين في هذا الفصل.</p>
+      <h4>{{ "studentResults.noStudents" | translate }}</h4>
+      <p class="text-muted">{{ "studentResults.noStudentsInClass" | translate }}</p>
     </div>
   </div>
 
   <!-- No Class Selected Message -->
   <div *ngIf="!selectedClassId && !loadingClasses" class="text-center py-5">
     <i class="fas fa-school fa-3x text-muted mb-3"></i>
-    <h4>اختر الفصل</h4>
-    <p class="text-muted">الرجاء اختيار فصل لعرض نتائج الطلاب.</p>
+    <h4>{{ "studentResults.selectClass" | translate }}</h4>
+    <p class="text-muted">{{ "studentResults.selectClassMessage" | translate }}</p>
   </div>
 
   <!-- Student Details Modal -->
@@ -235,7 +235,7 @@
         <div class="modal-header bg-primary text-white">
           <h5 class="modal-title">
             <i class="fas fa-graduation-cap me-2"></i>
-            تفاصيل نتائج الطالب: {{ selectedStudentName }}
+            {{ "studentResults.studentResultDetails" | translate }}: {{ selectedStudentName }}
           </h5>
           <button type="button" class="btn-close btn-close-white" (click)="closeStudentDetailsModal()"></button>
         </div>
@@ -243,9 +243,9 @@
           <!-- Loading state for modal -->
           <div *ngIf="loadingStudentDetails" class="text-center py-5">
             <div class="spinner-border text-primary" role="status">
-              <span class="visually-hidden">Loading...</span>
+              <span class="visually-hidden">{{ "COMMON.loading" | translate }}</span>
             </div>
-            <p class="mt-2">جاري تحميل النتائج...</p>
+            <p class="mt-2">{{ "studentResults.loadingResults" | translate }}</p>
           </div>
 
           <!-- Student Info -->
@@ -255,27 +255,27 @@
               <div class="col-md-4">
                 <div class="card h-100">
                   <div class="card-header bg-light">
-                    <h6 class="mb-0"><i class="fas fa-user me-2"></i>معلومات الطالب</h6>
+                    <h6 class="mb-0"><i class="fas fa-user me-2"></i>{{ "studentResults.studentInfo" | translate }}</h6>
                   </div>
                   <div class="card-body">
-                    <p><strong>الاسم:</strong> {{ selectedStudentName }}</p>
-                    <p><strong>الفصل:</strong> {{ selectedClassName }}</p>
-                    <p><strong>عدد الاختبارات:</strong> {{ selectedStudentDegrees.length }}</p>
+                    <p><strong>{{ "COMMON.name" | translate }}:</strong> {{ selectedStudentName }}</p>
+                    <p><strong>{{ "studentResults.class" | translate }}:</strong> {{ selectedClassName }}</p>
+                    <p><strong>{{ "studentResults.examCount" | translate }}:</strong> {{ selectedStudentDegrees.length }}</p>
                   </div>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="card h-100">
                   <div class="card-header bg-light">
-                    <h6 class="mb-0"><i class="fas fa-chart-bar me-2"></i>الإحصائيات</h6>
+                    <h6 class="mb-0"><i class="fas fa-chart-bar me-2"></i>{{ "studentResults.statistics" | translate }}</h6>
                   </div>
                   <div class="card-body">
-                    <p><strong>المعدل:</strong> 
+                    <p><strong>{{ "studentResults.average" | translate }}:</strong> 
                       <span class="badge bg-primary fs-6">
                         {{ calculateStudentAverage(selectedStudentDegrees).toFixed(1) }}%
                       </span>
                     </p>
-                    <p><strong>الإجمالي:</strong> 
+                    <p><strong>{{ "studentResults.total" | translate }}:</strong> 
                       {{ calculateStudentTotalMarks(selectedStudentId).total.toFixed(1) }}/{{ calculateStudentTotalMarks(selectedStudentId).maxTotal.toFixed(1) }}
                     </p>
                   </div>
@@ -284,7 +284,7 @@
               <div class="col-md-4">
                 <div class="card h-100">
                   <div class="card-header bg-light">
-                    <h6 class="mb-0"><i class="fas fa-award me-2"></i>التقدير</h6>
+                    <h6 class="mb-0"><i class="fas fa-award me-2"></i>{{ "studentResults.rating" | translate }}</h6>
                   </div>
                   <div class="card-body text-center">
                     <div class="display-4 text-primary mb-2">
@@ -308,15 +308,15 @@
               <div class="col-12">
                 <div class="card">
                   <div class="card-header bg-light">
-                    <h6 class="mb-0"><i class="fas fa-tasks me-2"></i>ملخص حسب نوع الاختبار</h6>
+                    <h6 class="mb-0"><i class="fas fa-tasks me-2"></i>{{ "studentResults.examTypeSummary" | translate }}</h6>
                   </div>
                   <div class="card-body">
                     <div class="row text-center">
                       <div *ngFor="let examType of examTypeOptions" class="col-md-3 col-6 mb-3">
                         <div *ngIf="examType.type !== undefined" class="border rounded p-3">
-                          <h6>{{ examType.label }}</h6>
+                          <h6>{{ "examTypes." + examType.value | translate }}</h6>
                           <div class="mt-2">
-                            <small class="text-muted d-block">الحد الأقصى: {{ getExamTypeMaxScore(examType.type) }}</small>
+                            <small class="text-muted d-block">{{ "studentResults.maxScore" | translate }}: {{ getExamTypeMaxScore(examType.type) }}</small>
                             <div class="progress mt-2">
                               <div class="progress-bar" 
                                    [style.width.%]="getExamTypePercentage(selectedStudentId, examType.type)">
@@ -340,19 +340,19 @@
                 <thead class="table-dark">
                   <tr>
                     <th>#</th>
-                    <th>المادة</th>
-                    <th>نوع الاختبار</th>
-                    <th>الدرجة</th>
-                    <th>الدرجة الكاملة</th>
-                    <th>النسبة</th>
-                    <th>الحالة</th>
+                    <th>{{ "studentResults.subject" | translate }}</th>
+                    <th>{{ "studentResults.examType" | translate }}</th>
+                    <th>{{ "studentResults.score" | translate }}</th>
+                    <th>{{ "studentResults.fullScore" | translate }}</th>
+                    <th>{{ "studentResults.percentage" | translate }}</th>
+                    <th>{{ "studentResults.status" | translate }}</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let degree of selectedStudentDegrees; let i = index">
                     <td>{{ i + 1 }}</td>
                     <td>{{ degree.subjectName }}</td>
-                    <td>{{ getExamTypeDisplayName(degree.degreeType) }}</td>
+                    <td>{{ getExamTypeDisplayName(degree.degreeType) | translate }}</td>
                     <td>{{ formatScore(degree.score) }}</td>
                     <td>{{ formatScore(degree.maxScore) }}</td>
                     <td>
@@ -365,14 +365,14 @@
                       <span class="badge" 
                             [class.bg-success]="getPassStatus(degree.score, degree.maxScore).isPass"
                             [class.bg-danger]="!getPassStatus(degree.score, degree.maxScore).isPass">
-                        {{ getPassStatus(degree.score, degree.maxScore).status }}
+                        {{ getPassStatus(degree.score, degree.maxScore).status | translate }}
                       </span>
                     </td>
                   </tr>
                 </tbody>
                 <tfoot class="table-info">
                   <tr>
-                    <td colspan="3" class="text-end"><strong>المجموع:</strong></td>
+                    <td colspan="3" class="text-end"><strong>{{ "studentResults.total" | translate }}:</strong></td>
                     <td><strong>{{ formatScore(calculateStudentTotalMarks(selectedStudentId).total) }}</strong></td>
                     <td><strong>{{ formatScore(calculateStudentTotalMarks(selectedStudentId).maxTotal) }}</strong></td>
                     <td colspan="2">
@@ -387,12 +387,12 @@
 
             <!-- Component Details -->
             <div *ngIf="selectedStudentHasComponents()" class="mb-4">
-              <h5><i class="fas fa-list-alt me-2"></i>تفاصيل المكونات:</h5>
+              <h5><i class="fas fa-list-alt me-2"></i>{{ "studentResults.componentDetails" | translate }}:</h5>
               <div class="row">
                 <div *ngFor="let degree of selectedStudentDegrees" class="col-12 mb-3">
                   <div *ngIf="degree.components && degree.components.length > 0" class="card">
                     <div class="card-header">
-                      <strong>{{ degree.subjectName }} - {{ getExamTypeDisplayName(degree.degreeType) }}</strong>
+                      <strong>{{ degree.subjectName }} - {{ getExamTypeDisplayName(degree.degreeType) | translate }}</strong>
                       <span class="badge bg-info float-start">{{ degree.score.toFixed(1) }}/{{ degree.maxScore.toFixed(1) }}</span>
                     </div>
                     <div class="card-body">
@@ -401,7 +401,7 @@
                           <div class="border rounded p-3 text-center">
                             <h6 class="text-primary mb-2">{{ component.componentName }}</h6>
                             <div class="display-6">{{ component.score.toFixed(1) || '0.0' }}</div>
-                            <small class="text-muted">من {{ component.maxScore.toFixed(1) || '0.0' }}</small>
+                            <small class="text-muted">{{ "studentResults.outOf" | translate }} {{ component.maxScore.toFixed(1) || '0.0' }}</small>
                             <div class="progress mt-2" style="height: 5px;">
                               <div class="progress-bar" 
                                    [style.width.%]="((component.score || 0) / (component.maxScore || 1)) * 100">
@@ -419,18 +419,18 @@
             <!-- No Degrees Message -->
             <div *ngIf="selectedStudentDegrees.length === 0" class="text-center py-5">
               <i class="fas fa-clipboard-check fa-3x text-muted mb-3"></i>
-              <h4>لا توجد نتائج</h4>
-              <p class="text-muted">لا توجد نتائج لهذا الطالب {{ selectedType !== 'الكل' ? 'من نوع ' + selectedType : '' }}</p>
+              <h4>{{ "studentResults.noResults" | translate }}</h4>
+              <p class="text-muted">{{ "studentResults.noResultsForStudent" | translate }} {{ selectedType !== 'الكل' ? ('studentResults.ofType' | translate) + ' ' + ('examTypes.' + selectedType | translate) : '' }}</p>
             </div>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" (click)="closeStudentDetailsModal()">
-            <i class="fas fa-times me-1"></i> إغلاق
+            <i class="fas fa-times me-1"></i> {{ "COMMON.close" | translate }}
           </button>
           <button type="button" class="btn btn-success" onclick="window.print()" 
                   [disabled]="selectedStudentDegrees.length === 0">
-            <i class="fas fa-print me-1"></i> طباعة
+            <i class="fas fa-print me-1"></i> {{ "COMMON.print" | translate }}
           </button>
         </div>
       </div>

@@ -13,14 +13,14 @@
           <i class="fas fa-chalkboard-teacher"></i>
         </div>
         <div>
-          <h1 class="h4 mb-0">All Classes</h1>
-          <small class="text-muted">Manage grades, teachers & class data</small>
+          <h1 class="h4 mb-0">{{ "classes.title" | translate }}</h1>
+          <small class="text-muted">{{ "classes.subtitle" | translate }}</small>
         </div>
       </div>
 
       <div class="d-flex gap-2 align-items-center">
         <button class="btn btn-primary btn-create" data-bs-toggle="modal" data-bs-target="#createClassModal">
-          <i class="fas fa-plus me-2"></i> {{"DASH.CREATE_EMPTY_CLASS" | translate}}
+          <i class="fas fa-plus me-2"></i> {{ "classes.createClass" | translate }}
         </button>
       </div>
     </div>
@@ -30,69 +30,72 @@
       {{ successMessage }}
     </div>
 
-    <!-- Updated Filter and Search Section -->
-<div class="filters-card glass-card mb-3 p-3">
-  <div class="row gy-3">
-    <!-- Curriculum Filter - NEW -->
-    <div class="col-md-3">
-      <label class="form-label small text-muted">Filter by Curriculum</label>
-      <select class="form-control form-control-sm" [(ngModel)]="selectedCurriculumFilter" 
-              (change)="onCurriculumFilterChange()">
-        <option value="">All Curricula</option>
-        <option *ngFor="let curriculum of allCurricula" [value]="curriculum.id">
-          {{ curriculum.name }} ({{ curriculum.code }})
-        </option>
-      </select>
-    </div>
+    <!-- Filter and Search Section -->
+    <div class="filters-card glass-card mb-3 p-3">
+      <div class="row gy-3">
+        <!-- Curriculum Filter -->
+        <div class="col-md-3">
+          <label class="form-label small text-muted">{{ "classes.filter.curriculum" | translate }}</label>
+          <select class="form-control form-control-sm" [(ngModel)]="selectedCurriculumFilter" 
+                  (change)="onCurriculumFilterChange()">
+            <option value="">{{ "classes.filter.allCurricula" | translate }}</option>
+            <option *ngFor="let curriculum of allCurricula" [value]="curriculum.id">
+              {{ curriculum.name }} ({{ curriculum.code }})
+            </option>
+          </select>
+        </div>
 
-    <div class="col-md-3">
-      <label class="form-label small text-muted">Filter by Grade</label>
-      <select class="form-control form-control-sm" [(ngModel)]="selectedGradeFilter" 
-              (change)="onGradeFilterChange()">
-        <option value="">All Grades</option>
-        <option *ngFor="let grade of allGrades" 
-                [value]="grade.id"
-                [disabled]="selectedCurriculumFilter && grade.curriculumId !== selectedCurriculumFilter">
-          {{ grade.gradeName }} 
-          <span *ngIf="selectedCurriculumFilter && grade.curriculumId !== selectedCurriculumFilter" class="text-muted">
-            (not in selected curriculum)
-          </span>
-        </option>
-      </select>
-    </div>
+        <!-- Grade Filter -->
+        <div class="col-md-3">
+          <label class="form-label small text-muted">{{ "classes.filter.grade" | translate }}</label>
+          <select class="form-control form-control-sm" [(ngModel)]="selectedGradeFilter" 
+                  (change)="onGradeFilterChange()">
+            <option value="">{{ "classes.filter.allGrades" | translate }}</option>
+            <option *ngFor="let grade of allGrades" 
+                    [value]="grade.id"
+                    [disabled]="selectedCurriculumFilter && grade.curriculumId !== selectedCurriculumFilter">
+              {{ grade.gradeName }} 
+              <span *ngIf="selectedCurriculumFilter && grade.curriculumId !== selectedCurriculumFilter" class="text-muted">
+                {{ "classes.notInSelectedCurriculum" | translate }}
+              </span>
+            </option>
+          </select>
+        </div>
 
-    <div class="col-md-3">
-      <label class="form-label small text-muted">Search Classes</label>
-      <input type="text" class="form-control form-control-sm" [(ngModel)]="searchTerm" 
-             (input)="filterClasses()" placeholder="Search by class name, grade, or curriculum...">
-    </div>
+        <!-- Search -->
+        <div class="col-md-3">
+          <label class="form-label small text-muted">{{ "classes.search" | translate }}</label>
+          <input type="text" class="form-control form-control-sm" [(ngModel)]="searchTerm" 
+                 (input)="filterClasses()" placeholder="{{ 'classes.searchPlaceholder' | translate }}">
+        </div>
 
-    <div class="col-md-3">
-      <label class="form-label small text-muted">Sort By</label>
-      <select class="form-control form-control-sm" [(ngModel)]="sortBy" (change)="sortClasses()">
-        <option value="className">Class Name</option>
-        <option value="studentCount">Student Count</option>
-        <option value="teacherCount">Teacher Count</option>
-        <option value="gradeName">Grade</option>
-        <option value="curriculumName">Curriculum</option> <!-- NEW -->
-      </select>
+        <!-- Sort -->
+        <div class="col-md-3">
+          <label class="form-label small text-muted">{{ "classes.sortBy" | translate }}</label>
+          <select class="form-control form-control-sm" [(ngModel)]="sortBy" (change)="sortClasses()">
+            <option value="className">{{ "classes.sort.className" | translate }}</option>
+            <option value="studentCount">{{ "classes.sort.studentCount" | translate }}</option>
+            <option value="teacherCount">{{ "classes.sort.teacherCount" | translate }}</option>
+            <option value="gradeName">{{ "classes.sort.grade" | translate }}</option>
+            <option value="curriculumName">{{ "classes.sort.curriculum" | translate }}</option>
+          </select>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
     <hr class="divider" />
 
     <!-- Loading State -->
     <div *ngIf="loading" class="text-center py-4">
       <div class="spinner-border" role="status">
-        <span class="visually-hidden">Loading classes...</span>
+        <span class="visually-hidden">{{ "COMMON.loading" | translate }}</span>
       </div>
-      <p class="mt-2 text-muted">Loading classes...</p>
+      <p class="mt-2 text-muted">{{ "classes.loading" | translate }}</p>
     </div>
 
     <!-- If no classes -->
     <div *ngIf="!loading && allClasses.length === 0" class="alert alert-info text-center glass-alert">
-      No classes available.
+      {{ "classes.noClasses" | translate }}
     </div>
 
     <!-- Classes Table -->
@@ -101,85 +104,86 @@
         <thead>
           <tr>
             <th class="th-narrow">#</th>
-            <th>Class Name</th>
-            <th>Grade</th>
-            <th>Students</th>
-            <th>Teachers</th>
-            <th>Status</th>
-            <th class="th-actions">Actions</th>
+            <th>{{ "classes.columns.className" | translate }}</th>
+            <th>{{ "classes.columns.grade" | translate }}</th>
+            <th>{{ "classes.columns.students" | translate }}</th>
+            <th>{{ "classes.columns.teachers" | translate }}</th>
+            <th>{{ "classes.columns.status" | translate }}</th>
+            <th class="th-actions">{{ "classes.columns.actions" | translate }}</th>
           </tr>
         </thead>
 
         <tbody>
-          <!-- Updated Classes Table Row -->
-<tr *ngFor="let c of filteredClasses | slice:(currentPage-1)*pageSize:currentPage*pageSize; let i = index">
-  <td class="text-muted">{{ (currentPage-1)*pageSize + i + 1 }}</td>
-  <td>
-    <strong>{{ c.className }}</strong>
-    <br>
-    <small class="muted-id">ID: {{ c.id }}</small>
-  </td>
-  <td>
-    <span class="badge badge-pill grade-badge">{{ c.gradeName }}</span>
-    <br>
-    <!-- NEW: Curriculum Information -->
-    <small class="text-muted" *ngIf="hasClassCurriculum(c)">
-    <i class="fas fa-book me-1"></i>{{ getClassCurriculumName(c) }}
-  </small>
-  </td>
-  <td>
-    <span class="fw-bold">{{ c.studentCount || 0 }}</span>
-    <span class="text-muted"> students</span>
-  </td>
-  <td>
-    <span class="fw-bold">{{ c.teacherCount || 0 }}</span>
-    <span class="text-muted"> teachers</span>
-  </td>
-  <td>
-    <span [class]="getStatusBadgeClass(c) + ' status-badge'">
-      {{ getStatusText(c) }}
-    </span>
-  </td>
-  <td>
-    <div class="btn-actions d-flex flex-column flex-sm-row gap-2">
-      <!-- Existing buttons -->
-      <button class="btn btn-ghost btn-sm" (click)="viewClassDetails(c.id)" title="View Details">
-        <i class="fas fa-eye"></i>
-      </button>
-      <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#assignTeacherModal"
-              (click)="openAssignTeacherModal(c.id)" title="Assign Teacher">
-        <i class="fas fa-user-plus"></i>
-      </button>
-      <button class="btn btn-success btn-sm" (click)="exportClassData(c.id, c.className)" title="Export Data">
-        <i class="fas fa-download"></i>
-      </button>
-      <!-- <button class="btn btn-warning btn-sm" (click)="moveClassToGrade(c.id, c.className)" title="Move to Another Grade">
-        <i class="fas fa-exchange-alt"></i>
-      </button> -->
-      <button class="btn btn-danger btn-sm" (click)="deleteClass(c.id, c.className)" title="Delete Class">
-        <i class="fas fa-trash"></i>
-      </button>
-    </div>
-  </td>
-</tr>
+          <tr *ngFor="let c of filteredClasses | slice:(currentPage-1)*pageSize:currentPage*pageSize; let i = index">
+            <td class="text-muted">{{ (currentPage-1)*pageSize + i + 1 }}</td>
+            <td>
+              <strong>{{ c.className }}</strong>
+              <br>
+              <small class="muted-id">{{ "COMMON.id" | translate }}: {{ c.id }}</small>
+            </td>
+            <td>
+              <span class="badge badge-pill grade-badge">{{ c.gradeName }}</span>
+              <br>
+              <small class="text-muted" *ngIf="hasClassCurriculum(c)">
+                <i class="fas fa-book me-1"></i>{{ getClassCurriculumName(c) }}
+              </small>
+            </td>
+            <td>
+              <span class="fw-bold">{{ c.studentCount || 0 }}</span>
+              <span class="text-muted"> {{ "COMMON.students" | translate }}</span>
+            </td>
+            <td>
+              <span class="fw-bold">{{ c.teacherCount || 0 }}</span>
+              <span class="text-muted"> {{ "COMMON.teachers" | translate }}</span>
+            </td>
+            <td>
+              <span [class]="getStatusBadgeClass(c) + ' status-badge'">
+                {{ getStatusText(c) | translate }}
+              </span>
+            </td>
+            <td>
+              <div class="btn-actions d-flex flex-column flex-sm-row gap-2">
+                <button class="btn btn-ghost btn-sm" (click)="viewClassDetails(c.id)" 
+                        [title]="'COMMON.view' | translate">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#assignTeacherModal"
+                        (click)="openAssignTeacherModal(c.id)" [title]="'classes.assignTeacher' | translate">
+                  <i class="fas fa-user-plus"></i>
+                </button>
+                <button class="btn btn-success btn-sm" (click)="exportClassData(c.id, c.className)" 
+                        [title]="'COMMON.export' | translate">
+                  <i class="fas fa-download"></i>
+                </button>
+                <button class="btn btn-danger btn-sm" (click)="deleteClass(c.id, c.className)" 
+                        [title]="'COMMON.delete' | translate">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
         </tbody>
       </table>
 
       <!-- Pagination -->
       <div class="d-flex justify-content-between align-items-center p-3">
         <div class="text-muted small">
-          Showing {{ getDisplayRange() }} of {{ filteredClasses.length }} classes
+          {{ "COMMON.showing" | translate }} {{ getDisplayRange() }} {{ "COMMON.of" | translate }} {{ filteredClasses.length }} {{ "COMMON.classes" | translate }}
         </div>
         <nav>
           <ul class="pagination pagination-sm mb-0">
             <li class="page-item" [class.disabled]="currentPage === 1">
-              <a class="page-link" href="#" (click)="previousPage(); $event.preventDefault()">Previous</a>
+              <a class="page-link" href="#" (click)="previousPage(); $event.preventDefault()">
+                {{ "COMMON.previous" | translate }}
+              </a>
             </li>
             <li class="page-item" [class.active]="currentPage === page" *ngFor="let page of getPages()">
               <a class="page-link" href="#" (click)="goToPage(page); $event.preventDefault()">{{ page }}</a>
             </li>
             <li class="page-item" [class.disabled]="currentPage === totalPages">
-              <a class="page-link" href="#" (click)="nextPage(); $event.preventDefault()">Next</a>
+              <a class="page-link" href="#" (click)="nextPage(); $event.preventDefault()">
+                {{ "COMMON.next" | translate }}
+              </a>
             </li>
           </ul>
         </nav>
@@ -189,49 +193,51 @@
 </div>
 
 <!-- ========================= -->
-<!-- Modals (unchanged logic inside) -->
+<!-- Modals -->
 <!-- ========================= -->
 <!-- Create Class Modal -->
 <div class="modal fade" id="createClassModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content glass-modal">
       <div class="modal-header">
-        <h5 class="modal-title">Create New Class</h5>
+        <h5 class="modal-title">{{ "classes.modals.create.title" | translate }}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
       <div class="modal-body">
         <form #classForm="ngForm">
           <div class="mb-3">
-            <label class="form-label">Class Name *</label>
+            <label class="form-label">{{ "classes.modals.create.className" | translate }} *</label>
             <input type="text" class="form-control" [(ngModel)]="newClass.className" name="className" required 
-                   placeholder="Enter class name (e.g., Class 5A)" />
+                   placeholder="{{ 'classes.modals.create.classNamePlaceholder' | translate }}" />
           </div>
 
-          <!-- Update the grade dropdown to show curriculum context -->
-<div class="mb-3">
-  <label class="form-label">Grade *</label>
-  <select class="form-control" [(ngModel)]="newClass.gradeId" name="gradeId" required>
-    <option value="">Select a grade</option>
-    <option *ngFor="let grade of allGrades" [value]="grade.id">
-      {{ grade.gradeName }} 
-      <span *ngIf="grade.curriculumName">({{ grade.curriculumName }})</span>
-    </option>
-  </select>
-  <small class="text-muted" *ngIf="newClass.gradeId">
-    Selected grade belongs to: 
-    <span class="badge bg-info">
-      {{ getGradeCurriculumName(newClass.gradeId) }}
-    </span>
-  </small>
-</div>
+          <div class="mb-3">
+            <label class="form-label">{{ "classes.modals.create.grade" | translate }} *</label>
+            <select class="form-control" [(ngModel)]="newClass.gradeId" name="gradeId" required>
+              <option value="">{{ "classes.modals.create.selectGrade" | translate }}</option>
+              <option *ngFor="let grade of allGrades" [value]="grade.id">
+                {{ grade.gradeName }} 
+                <span *ngIf="grade.curriculumName">({{ grade.curriculumName }})</span>
+              </option>
+            </select>
+            <small class="text-muted" *ngIf="newClass.gradeId">
+              {{ "classes.modals.create.selectedGradeBelongsTo" | translate }}: 
+              <span class="badge bg-info">
+                {{ getGradeCurriculumName(newClass.gradeId) }}
+              </span>
+            </small>
+          </div>
         </form>
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-success" (click)="createClass()" [disabled]="!newClass.className || !newClass.gradeId">
-          Create Class
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          {{ "COMMON.cancel" | translate }}
+        </button>
+        <button type="button" class="btn btn-success" (click)="createClass()" 
+                [disabled]="!newClass.className || !newClass.gradeId">
+          {{ "COMMON.create" | translate }}
         </button>
       </div>
     </div>
@@ -245,7 +251,7 @@
       <div class="modal-header">
         <h5 class="modal-title">
           <i class="fas fa-info-circle me-2"></i>
-          Class Details - {{ selectedClass?.className }}
+          {{ "classes.modals.details.title" | translate }} - {{ selectedClass?.className }}
         </h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -253,65 +259,68 @@
       <div class="modal-body">
         <div *ngIf="isLoadingDetails" class="text-center py-4">
           <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading class details...</span>
+            <span class="visually-hidden">{{ "COMMON.loading" | translate }}</span>
           </div>
-          <p class="mt-2 text-muted">Loading class details...</p>
+          <p class="mt-2 text-muted">{{ "classes.loadingDetails" | translate }}</p>
         </div>
 
         <div *ngIf="!isLoadingDetails && selectedClass" class="row">
           <div class="col-md-6">
-            <!-- Add curriculum information to class details -->
-<div class="card small-card">
-  <div class="card-header">
-    <h6 class="card-title mb-0"><i class="fas fa-info-circle me-2"></i>Basic Information</h6>
-  </div>
-  <div class="card-body">
-    <table class="table table-sm table-borderless">
-      <tr>
-        <th class="w-40">Class Name:</th>
-        <td>{{ selectedClass.className }}</td>
-      </tr>
-      <tr>
-        <th>Grade:</th>
-        <td><span class="badge grade-badge">{{ selectedClass.gradeName }}</span></td>
-      </tr>
-      <!-- NEW: Curriculum Information -->
-      <tr>
-        <th>Curriculum:</th>
-        <td>
-  <!-- Use helper methods -->
-  <span class="badge curriculum-badge bg-info" *ngIf="hasClassCurriculum(selectedClass)">
-    {{ getClassCurriculumName(selectedClass) }}
-  </span>
-  <span *ngIf="!hasClassCurriculum(selectedClass)" class="text-muted">Not assigned</span>
-</td>
-      </tr>
-      <tr>
-        <th>Class ID:</th>
-        <td><code>{{ selectedClass.id }}</code></td>
-      </tr>
-      <tr>
-        <th>Student Count:</th>
-        <td>{{ selectedClass.studentCount || 0 }}</td>
-      </tr>
-      <tr>
-        <th>Teacher Count:</th>
-        <td>{{ selectedClass.teacherCount || 0 }}</td>
-      </tr>
-    </table>
-  </div>
-</div>
+            <div class="card small-card">
+              <div class="card-header">
+                <h6 class="card-title mb-0"><i class="fas fa-info-circle me-2"></i>
+                  {{ "classes.modals.details.basicInfo" | translate }}
+                </h6>
+              </div>
+              <div class="card-body">
+                <table class="table table-sm table-borderless">
+                  <tr>
+                    <th class="w-40">{{ "classes.modals.details.className" | translate }}:</th>
+                    <td>{{ selectedClass.className }}</td>
+                  </tr>
+                  <tr>
+                    <th>{{ "classes.modals.details.grade" | translate }}:</th>
+                    <td><span class="badge grade-badge">{{ selectedClass.gradeName }}</span></td>
+                  </tr>
+                  <tr>
+                    <th>{{ "classes.modals.details.curriculum" | translate }}:</th>
+                    <td>
+                      <span class="badge curriculum-badge bg-info" *ngIf="hasClassCurriculum(selectedClass)">
+                        {{ getClassCurriculumName(selectedClass) }}
+                      </span>
+                      <span *ngIf="!hasClassCurriculum(selectedClass)" class="text-muted">
+                        {{ "COMMON.notAssigned" | translate }}
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>{{ "COMMON.id" | translate }}:</th>
+                    <td><code>{{ selectedClass.id }}</code></td>
+                  </tr>
+                  <tr>
+                    <th>{{ "classes.modals.details.studentCount" | translate }}:</th>
+                    <td>{{ selectedClass.studentCount || 0 }}</td>
+                  </tr>
+                  <tr>
+                    <th>{{ "classes.modals.details.teacherCount" | translate }}:</th>
+                    <td>{{ selectedClass.teacherCount || 0 }}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
           </div>
 
           <div class="col-md-6">
             <div class="card small-card">
               <div class="card-header">
-                <h6 class="card-title mb-0"><i class="fas fa-chart-bar me-2"></i>Statistics</h6>
+                <h6 class="card-title mb-0"><i class="fas fa-chart-bar me-2"></i>
+                  {{ "classes.modals.details.statistics" | translate }}
+                </h6>
               </div>
               <div class="card-body">
                 <table class="table table-sm table-borderless">
                   <tr *ngIf="classStats">
-                    <th class="w-40">Average GPA:</th>
+                    <th class="w-40">{{ "classes.modals.details.averageGpa" | translate }}:</th>
                     <td>
                       <span class="fw-bold"
                             [class.text-success]="classStats.averageGpa >= 3.0"
@@ -322,7 +331,7 @@
                     </td>
                   </tr>
                   <tr *ngIf="classStats">
-                    <th>Attendance Rate:</th>
+                    <th>{{ "classes.modals.details.attendanceRate" | translate }}:</th>
                     <td>
                       <span class="fw-bold"
                             [class.text-success]="classStats.attendanceRate >= 90"
@@ -333,11 +342,11 @@
                     </td>
                   </tr>
                   <tr *ngIf="classStats">
-                    <th>Completed Exams:</th>
+                    <th>{{ "classes.modals.details.completedExams" | translate }}:</th>
                     <td>{{ classStats.completedExams || 0 }}</td>
                   </tr>
                   <tr *ngIf="classStats">
-                    <th>Pending Assignments:</th>
+                    <th>{{ "classes.modals.details.pendingAssignments" | translate }}:</th>
                     <td>{{ classStats.pendingAssignments || 0 }}</td>
                   </tr>
                 </table>
@@ -347,126 +356,133 @@
 
           <!-- Assigned Teachers -->
           <div class="col-12 mt-3">
-  <div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-      <h6 class="card-title mb-0"><i class="fas fa-chalkboard-teacher me-2"></i>Assigned Teachers</h6>
-      <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#assignTeacherModal"
-              (click)="openAssignTeacherModal(selectedClass!.id)">
-        <i class="fas fa-plus"></i> Assign Teacher
-      </button>
-    </div>
-    <div class="card-body">
-      <div *ngIf="classTeachers.length > 0" class="table-responsive">
-        <table class="table table-sm table-striped">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Contact Info</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let teacher of classTeachers">
-              <td>{{ teacher.fullName }}</td>
-              <td>{{ teacher.email }}</td>
-              <td>
-                <span *ngIf="teacher.contactInfo; else noContact" class="text-muted">
-                  {{ teacher.contactInfo }}
-                </span>
-                <ng-template #noContact>
-                  <span class="text-muted">No contact info</span>
-                </ng-template>
-              </td>
-              <td>
-                <span [class]="getTeacherStatusClass(teacher) + ' status-badge badge'">
-                  {{ teacher.profileStatus || 'Unknown' }}
-                </span>
-              </td>
-              <td>
-                <button class="btn btn-sm btn-outline-danger" 
-                        (click)="unassignTeacher(teacher.id, selectedClass!.id)" 
-                        title="Unassign Teacher">
-                  <i class="fas fa-times"></i>
+            <div class="card">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <h6 class="card-title mb-0"><i class="fas fa-chalkboard-teacher me-2"></i>
+                  {{ "classes.modals.details.assignedTeachers" | translate }}
+                </h6>
+                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#assignTeacherModal"
+                        (click)="openAssignTeacherModal(selectedClass!.id)">
+                  <i class="fas fa-plus"></i> {{ "classes.assignTeacher" | translate }}
                 </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div *ngIf="classTeachers.length === 0" class="alert alert-warning text-center glass-alert">
-        <i class="fas fa-exclamation-triangle me-2"></i>
-        No teachers assigned to this class.
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Students Section -->
-<div class="col-12 mt-3">
-  <div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-      <h6 class="card-title mb-0"><i class="fas fa-user-graduate me-2"></i>Enrolled Students</h6>
-      <span class="badge bg-primary">{{ selectedClass.studentCount || 0 }} students</span>
-    </div>
-    <div class="card-body">
-      <div *ngIf="classStudents.length > 0" class="table-responsive">
-        <table class="table table-sm table-striped">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Contact Info</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let student of classStudents">
-              <td>{{ student.fullName }}</td>
-              <td>{{ student.email }}</td>
-              <td>
-                <span *ngIf="student.contactInfo; else noContact" class="text-muted">
-                  {{ student.contactInfo }}
-                </span>
-                <ng-template #noContact>
-                  <span class="text-muted">No contact info</span>
-                </ng-template>
-              </td>
-              <td>
-                <span [class]="getStudentStatusClass(student) + ' status-badge badge'">
-                  {{ student.profileStatus || 'Unknown' }}
-                </span>
-              </td>
-              <td>
-                <button class="btn btn-sm btn-outline-warning" 
-                        (click)="moveStudentToAnotherClass(student.id, selectedClass!.id)" 
-                        title="Move to Another Class">
-                  <i class="fas fa-exchange-alt"></i>
-                </button>
-                <button class="btn btn-sm btn-outline-danger ms-1" 
-                        (click)="removeStudentFromClass(student.id, selectedClass!.id)" 
-                        title="Remove from Class">
-                  <i class="fas fa-times"></i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div *ngIf="classStudents.length === 0" class="alert alert-info text-center glass-alert">
-        <i class="fas fa-info-circle me-2"></i>
-        No students enrolled in this class.
-      </div>
-    </div>
-  </div>
-</div>
+              </div>
+              <div class="card-body">
+                <div *ngIf="classTeachers.length > 0" class="table-responsive">
+                  <table class="table table-sm table-striped">
+                    <thead>
+                      <tr>
+                        <th>{{ "COMMON.name" | translate }}</th>
+                        <th>{{ "COMMON.email" | translate }}</th>
+                        <th>{{ "classes.modals.details.contactInfo" | translate }}</th>
+                        <th>{{ "COMMON.status" | translate }}</th>
+                        <th>{{ "COMMON.actions" | translate }}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let teacher of classTeachers">
+                        <td>{{ teacher.fullName }}</td>
+                        <td>{{ teacher.email }}</td>
+                        <td>
+                          <span *ngIf="teacher.contactInfo; else noContact" class="text-muted">
+                            {{ teacher.contactInfo }}
+                          </span>
+                          <ng-template #noContact>
+                            <span class="text-muted">{{ "classes.modals.details.noContactInfo" | translate }}</span>
+                          </ng-template>
+                        </td>
+                        <td>
+                          <span [class]="getTeacherStatusClass(teacher) + ' status-badge badge'">
+                            {{ teacher.profileStatus || ('COMMON.unknown' | translate) }}
+                          </span>
+                        </td>
+                        <td>
+                          <button class="btn btn-sm btn-outline-danger" 
+                                  (click)="unassignTeacher(teacher.id, selectedClass!.id)" 
+                                  [title]="'classes.modals.details.unassignTeacher' | translate">
+                            <i class="fas fa-times"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div *ngIf="classTeachers.length === 0" class="alert alert-warning text-center glass-alert">
+                  <i class="fas fa-exclamation-triangle me-2"></i>
+                  {{ "classes.modals.details.noTeachersAssigned" | translate }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Students Section -->
+          <div class="col-12 mt-3">
+            <div class="card">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <h6 class="card-title mb-0"><i class="fas fa-user-graduate me-2"></i>
+                  {{ "classes.modals.details.enrolledStudents" | translate }}
+                </h6>
+                <span class="badge bg-primary">{{ selectedClass.studentCount || 0 }} {{ "COMMON.students" | translate }}</span>
+              </div>
+              <div class="card-body">
+                <div *ngIf="classStudents.length > 0" class="table-responsive">
+                  <table class="table table-sm table-striped">
+                    <thead>
+                      <tr>
+                        <th>{{ "COMMON.name" | translate }}</th>
+                        <th>{{ "COMMON.email" | translate }}</th>
+                        <th>{{ "classes.modals.details.contactInfo" | translate }}</th>
+                        <th>{{ "COMMON.status" | translate }}</th>
+                        <th>{{ "COMMON.actions" | translate }}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let student of classStudents">
+                        <td>{{ student.fullName }}</td>
+                        <td>{{ student.email }}</td>
+                        <td>
+                          <span *ngIf="student.contactInfo; else noContact" class="text-muted">
+                            {{ student.contactInfo }}
+                          </span>
+                          <ng-template #noContact>
+                            <span class="text-muted">{{ "classes.modals.details.noContactInfo" | translate }}</span>
+                          </ng-template>
+                        </td>
+                        <td>
+                          <span [class]="getStudentStatusClass(student) + ' status-badge badge'">
+                            {{ student.profileStatus || ('COMMON.unknown' | translate) }}
+                          </span>
+                        </td>
+                        <td>
+                          <button class="btn btn-sm btn-outline-warning" 
+                                  (click)="moveStudentToAnotherClass(student.id, selectedClass!.id)" 
+                                  [title]="'classes.modals.details.moveStudent' | translate">
+                            <i class="fas fa-exchange-alt"></i>
+                          </button>
+                          <button class="btn btn-sm btn-outline-danger ms-1" 
+                                  (click)="removeStudentFromClass(student.id, selectedClass!.id)" 
+                                  [title]="'classes.modals.details.removeStudent' | translate">
+                            <i class="fas fa-times"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div *ngIf="classStudents.length === 0" class="alert alert-info text-center glass-alert">
+                  <i class="fas fa-info-circle me-2"></i>
+                  {{ "classes.modals.details.noStudentsEnrolled" | translate }}
+                </div>
+              </div>
+            </div>
+          </div>
 
           <!-- Class Subjects -->
           <div class="col-12 mt-3">
             <div class="card">
               <div class="card-header">
-                <h6 class="card-title mb-0"><i class="fas fa-book me-2"></i>Available Subjects</h6>
+                <h6 class="card-title mb-0"><i class="fas fa-book me-2"></i>
+                  {{ "classes.modals.details.availableSubjects" | translate }}
+                </h6>
               </div>
               <div class="card-body">
                 <div *ngIf="classSubjects.length > 0" class="row">
@@ -475,7 +491,7 @@
                       <div class="card-body p-3">
                         <h6 class="card-title">{{ subject.subjectName }}</h6>
                         <p class="card-text mb-1">
-                          <small class="text-muted">Credit Hours: {{ subject.creditHours }}</small>
+                          <small class="text-muted">{{ "classes.modals.details.creditHours" | translate }}: {{ subject.creditHours }}</small>
                         </p>
                       </div>
                     </div>
@@ -483,25 +499,23 @@
                 </div>
                 <div *ngIf="classSubjects.length === 0" class="alert alert-info text-center glass-alert">
                   <i class="fas fa-info-circle me-2"></i>
-                  No subjects available for this grade.
+                  {{ "classes.modals.details.noSubjectsAvailable" | translate }}
                 </div>
               </div>
             </div>
           </div>
-
         </div>
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-        <!-- <button type="button" class="btn btn-warning" (click)="moveClassToGrade(selectedClass!.id, selectedClass!.className)">
-          <i class="fas fa-exchange-alt me-1"></i> Move Class
-        </button> -->
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          {{ "COMMON.close" | translate }}
+        </button>
         <button type="button" class="btn btn-success" (click)="exportClassData(selectedClass!.id, selectedClass!.className)">
-          <i class="fas fa-download me-1"></i> Export Data
+          <i class="fas fa-download me-1"></i> {{ "COMMON.export" | translate }}
         </button>
         <button type="button" class="btn btn-primary" (click)="editClass(selectedClass!.id)">
-          <i class="fas fa-edit me-1"></i> Edit Class
+          <i class="fas fa-edit me-1"></i> {{ "COMMON.edit" | translate }}
         </button>
       </div>
     </div>
@@ -513,23 +527,25 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content glass-modal">
       <div class="modal-header">
-        <h5 class="modal-title">Assign Teacher to Class</h5>
+        <h5 class="modal-title">{{ "classes.modals.assignTeacher.title" | translate }}</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
       <div class="modal-body">
         <div *ngIf="selectedClassId" class="alert alert-info glass-alert">
           <i class="fas fa-info-circle me-2"></i>
-          Assigning teacher to: <strong>{{ getClassName(selectedClassId) }}</strong>
+          {{ "classes.modals.assignTeacher.assigningTo" | translate }}: <strong>{{ getClassName(selectedClassId) }}</strong>
         </div>
 
         <div class="row mb-3">
           <div class="col-md-6">
-            <input type="text" class="form-control" [(ngModel)]="teacherSearchTerm" placeholder="Search teachers by name..." (input)="filterTeachers()">
+            <input type="text" class="form-control" [(ngModel)]="teacherSearchTerm" 
+                   placeholder="{{ 'classes.modals.assignTeacher.searchPlaceholder' | translate }}" 
+                   (input)="filterTeachers()">
           </div>
           <div class="col-md-6">
             <select class="form-control" [(ngModel)]="teacherSubjectFilter" (change)="filterTeachers()">
-              <option value="">All Subjects</option>
+              <option value="">{{ "classes.modals.assignTeacher.allSubjects" | translate }}</option>
               <option *ngFor="let subject of availableSubjects" [value]="subject">{{ subject }}</option>
             </select>
           </div>
@@ -537,7 +553,7 @@
 
         <div *ngIf="filteredTeachers.length === 0" class="alert alert-warning text-center glass-alert">
           <i class="fas fa-exclamation-triangle me-2"></i>
-          No available teachers found matching your criteria.
+          {{ "classes.modals.assignTeacher.noTeachersFound" | translate }}
         </div>
 
         <div *ngIf="filteredTeachers.length > 0" class="table-responsive">
@@ -545,12 +561,12 @@
             <thead>
               <tr>
                 <th>#</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Assigned Classes</th>
-                <th>Subjects</th>
-                <th>Status</th>
-                <th>Action</th>
+                <th>{{ "COMMON.name" | translate }}</th>
+                <th>{{ "COMMON.email" | translate }}</th>
+                <th>{{ "classes.modals.assignTeacher.assignedClasses" | translate }}</th>
+                <th>{{ "classes.modals.assignTeacher.subjects" | translate }}</th>
+                <th>{{ "COMMON.status" | translate }}</th>
+                <th>{{ "COMMON.action" | translate }}</th>
               </tr>
             </thead>
             <tbody>
@@ -559,29 +575,39 @@
                 <td>
                   <strong>{{ teacher.fullName }}</strong>
                   <br>
-                  <small class="muted-id">ID: {{ teacher.id }}</small>
+                  <small class="muted-id">{{ "COMMON.id" | translate }}: {{ teacher.id }}</small>
                 </td>
                 <td>{{ teacher.email }}</td>
                 <td>
                   <span *ngIf="teacher.classNames && teacher.classNames.length > 0">
                     <span class="badge class-badge" *ngFor="let className of teacher.classNames.slice(0, 2)">{{ className }}</span>
-                    <span *ngIf="teacher.classNames.length > 2" class="text-muted">+{{ teacher.classNames.length - 2 }} more</span>
+                    <span *ngIf="teacher.classNames.length > 2" class="text-muted">
+                      +{{ teacher.classNames.length - 2 }} {{ "COMMON.more" | translate }}
+                    </span>
                   </span>
-                  <span *ngIf="!teacher.classNames || teacher.classNames.length === 0" class="text-muted">No classes</span>
+                  <span *ngIf="!teacher.classNames || teacher.classNames.length === 0" class="text-muted">
+                    {{ "classes.modals.assignTeacher.noClasses" | translate }}
+                  </span>
                 </td>
                 <td>
                   <span *ngIf="teacher.subjects && teacher.subjects.length > 0">
                     <span class="badge subject-badge" *ngFor="let subject of teacher.subjects.slice(0, 3)">{{ subject }}</span>
-                    <span *ngIf="teacher.subjects.length > 3" class="text-muted">+{{ teacher.subjects.length - 3 }} more</span>
+                    <span *ngIf="teacher.subjects.length > 3" class="text-muted">
+                      +{{ teacher.subjects.length - 3 }} {{ "COMMON.more" | translate }}
+                    </span>
                   </span>
-                  <span *ngIf="!teacher.subjects || teacher.subjects.length === 0" class="text-muted">No subjects</span>
+                  <span *ngIf="!teacher.subjects || teacher.subjects.length === 0" class="text-muted">
+                    {{ "classes.modals.assignTeacher.noSubjects" | translate }}
+                  </span>
                 </td>
                 <td>
                   <span [class]="getTeacherStatusClass(teacher) + ' status-badge'">{{ teacher.accountStatus }}</span>
                 </td>
                 <td>
-                  <button class="btn btn-success btn-sm" (click)="selectTeacher(teacher.id)" title="Assign to Class" [disabled]="isTeacherAssigned(teacher)">
-                    <i class="fas fa-check"></i> {{ isTeacherAssigned(teacher) ? 'Assigned' : 'Assign' }}
+                  <button class="btn btn-success btn-sm" (click)="selectTeacher(teacher.id)" 
+                          [title]="'classes.modals.assignTeacher.assignToClass' | translate" 
+                          [disabled]="isTeacherAssigned(teacher)">
+                    <i class="fas fa-check"></i> {{ isTeacherAssigned(teacher) ? ('COMMON.assigned' | translate) : ('COMMON.assign' | translate) }}
                   </button>
                 </td>
               </tr>
@@ -591,7 +617,9 @@
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          {{ "COMMON.close" | translate }}
+        </button>
       </div>
     </div>
   </div>
@@ -602,7 +630,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content glass-modal">
       <div class="modal-header">
-        <h5 class="modal-title">{{ bulkOperationTitle }}</h5>
+        <h5 class="modal-title">{{ bulkOperationTitle | translate }}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
@@ -613,20 +641,20 @@
           <div *ngSwitchCase="'assignTeachers'">
             <div class="alert alert-info glass-alert mb-3">
               <i class="fas fa-info-circle me-2"></i>
-              Select classes and teachers to assign in bulk
+              {{ "classes.modals.bulk.assignTeachers.info" | translate }}
             </div>
             
             <!-- Class Selection -->
             <div class="mb-4">
-              <h6 class="mb-3">Select Classes:</h6>
+              <h6 class="mb-3">{{ "classes.modals.bulk.selectClasses" | translate }}:</h6>
               <div class="table-responsive" style="max-height: 200px;">
                 <table class="table table-sm">
                   <thead>
                     <tr>
                       <th><input type="checkbox" (change)="selectAllClasses($event)"></th>
-                      <th>Class Name</th>
-                      <th>Grade</th>
-                      <th>Current Teachers</th>
+                      <th>{{ "classes.modals.bulk.className" | translate }}</th>
+                      <th>{{ "classes.modals.bulk.grade" | translate }}</th>
+                      <th>{{ "classes.modals.bulk.currentTeachers" | translate }}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -643,53 +671,53 @@
                   </tbody>
                 </table>
               </div>
-              <small class="text-muted">{{ selectedClasses.length }} classes selected</small>
+              <small class="text-muted">{{ selectedClasses.length }} {{ "COMMON.classesSelected" | translate }}</small>
             </div>
 
             <!-- Teacher Selection -->
             <div class="mb-3">
-              <h6 class="mb-3">Select Teachers:</h6>
+              <h6 class="mb-3">{{ "classes.modals.bulk.selectTeachers" | translate }}:</h6>
               <div *ngIf="bulkTeachers.length === 0" class="alert alert-warning">
-  <i class="fas fa-exclamation-triangle me-2"></i>
-  No teachers available. Please make sure teachers are loaded.
-</div>
-<div *ngIf="bulkTeachers.length > 0" class="table-responsive" style="max-height: 200px;">
-  <table class="table table-sm">
-    <thead>
-      <tr>
-        <th><input type="checkbox" (change)="selectAllTeachers($event)"></th>
-        <th>Teacher Name</th>
-        <th>Email</th>
-        <th>Subjects</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let teacher of bulkTeachers"> <!-- Changed from allTeachers to bulkTeachers -->
-        <td>
-          <input type="checkbox" 
-                 [checked]="isTeacherSelected(teacher.id)" 
-                 (change)="toggleTeacherSelection(teacher.id)">
-        </td>
-        <td>{{ teacher.fullName }}</td>
-        <td>{{ teacher.email }}</td>
-        <td>
-          <span *ngIf="teacher.subjects && teacher.subjects.length > 0">
-            <span class="badge subject-badge" *ngFor="let subject of teacher.subjects.slice(0, 2)">
-              {{ subject }}
-            </span>
-            <span *ngIf="teacher.subjects.length > 2" class="text-muted">
-              +{{ teacher.subjects.length - 2 }} more
-            </span>
-          </span>
-          <span *ngIf="!teacher.subjects || teacher.subjects.length === 0" class="text-muted">
-            No subjects
-          </span>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-              <small class="text-muted">{{ selectedTeacherIds.length }} teachers selected</small>
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                {{ "classes.modals.bulk.noTeachersAvailable" | translate }}
+              </div>
+              <div *ngIf="bulkTeachers.length > 0" class="table-responsive" style="max-height: 200px;">
+                <table class="table table-sm">
+                  <thead>
+                    <tr>
+                      <th><input type="checkbox" (change)="selectAllTeachers($event)"></th>
+                      <th>{{ "classes.modals.bulk.teacherName" | translate }}</th>
+                      <th>{{ "classes.modals.bulk.email" | translate }}</th>
+                      <th>{{ "classes.modals.bulk.subjects" | translate }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let teacher of bulkTeachers">
+                      <td>
+                        <input type="checkbox" 
+                               [checked]="isTeacherSelected(teacher.id)" 
+                               (change)="toggleTeacherSelection(teacher.id)">
+                      </td>
+                      <td>{{ teacher.fullName }}</td>
+                      <td>{{ teacher.email }}</td>
+                      <td>
+                        <span *ngIf="teacher.subjects && teacher.subjects.length > 0">
+                          <span class="badge subject-badge" *ngFor="let subject of teacher.subjects.slice(0, 2)">
+                            {{ subject }}
+                          </span>
+                          <span *ngIf="teacher.subjects.length > 2" class="text-muted">
+                            +{{ teacher.subjects.length - 2 }} {{ "COMMON.more" | translate }}
+                          </span>
+                        </span>
+                        <span *ngIf="!teacher.subjects || teacher.subjects.length === 0" class="text-muted">
+                          {{ "classes.modals.bulk.noSubjects" | translate }}
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <small class="text-muted">{{ selectedTeacherIds.length }} {{ "COMMON.teachersSelected" | translate }}</small>
             </div>
           </div>
 
@@ -697,13 +725,13 @@
           <div *ngSwitchCase="'moveClasses'">
             <div class="alert alert-info glass-alert mb-3">
               <i class="fas fa-info-circle me-2"></i>
-              Select classes to move to a different grade
+              {{ "classes.modals.bulk.moveClasses.info" | translate }}
             </div>
             
             <div class="mb-3">
-              <label class="form-label">New Grade</label>
+              <label class="form-label">{{ "classes.modals.bulk.newGrade" | translate }}</label>
               <select class="form-control" [(ngModel)]="bulkMoveGradeId">
-                <option value="">Select target grade</option>
+                <option value="">{{ "classes.modals.bulk.selectTargetGrade" | translate }}</option>
                 <option *ngFor="let grade of allGrades" [value]="grade.id">
                   {{ grade.gradeName }}
                 </option>
@@ -715,8 +743,8 @@
                 <thead>
                   <tr>
                     <th><input type="checkbox" (change)="selectAllClasses($event)"></th>
-                    <th>Class Name</th>
-                    <th>Current Grade</th>
+                    <th>{{ "classes.modals.bulk.className" | translate }}</th>
+                    <th>{{ "classes.modals.bulk.currentGrade" | translate }}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -732,19 +760,20 @@
                 </tbody>
               </table>
             </div>
-            <small class="text-muted">{{ selectedClasses.length }} classes selected</small>
+            <small class="text-muted">{{ selectedClasses.length }} {{ "COMMON.classesSelected" | translate }}</small>
           </div>
-
         </div>
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          {{ "COMMON.cancel" | translate }}
+        </button>
         <button type="button" class="btn btn-primary" (click)="executeBulkOperation()"
                 [disabled]="selectedClasses.length === 0 || 
                            (currentBulkOperation === 'assignTeachers' && selectedTeacherIds.length === 0) ||
                            (currentBulkOperation === 'moveClasses' && !bulkMoveGradeId)">
-          Execute {{ bulkOperationTitle }}
+          {{ "COMMON.execute" | translate }} {{ bulkOperationTitle | translate }}
         </button>
       </div>
     </div>

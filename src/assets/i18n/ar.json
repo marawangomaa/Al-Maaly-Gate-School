@@ -198,6 +198,12 @@
     "CLASSES": "{{count}} فصل",
     "SUBJECTS": "{{count}} مادة",
     "CREATED": "تم الإنشاء: {{date}}",
+    "THIS_GRADE_BELONGS_TO": "هذا الصف ينتمي إلى المنهج:",
+    "CURRICULUM": "المنهج",
+    "CURRICULUM_DETAILS": "تفاصيل المنهج",
+    "GRADES": "صفوف",
+    "STUDENTS": "طلاب",
+    "TEACHERS": "معلمين",
     "CLASSES_SECTION": {
       "TITLE": "الفصول ({{count}})",
       "ADD_CLASS": "إضافة فصل",
@@ -218,6 +224,10 @@
       "EXAM_COUNT": "الامتحانات: {{count}}"
     },
     "MODALS": {
+      "CURRICULUM_LABEL": "المنهج",
+      "SELECT_CURRICULUM": "اختر المنهج",
+      "LOADING_CURRICULA": "جارٍ تحميل المناهج...",
+      "CURRICULUM_REQUIRED": "المنهج مطلوب",
       "ADD_GRADE": "إنشاء صف جديد",
       "EDIT_GRADE": "تعديل الصف",
       "GRADE_NAME_LABEL": "اسم الصف *",
@@ -250,12 +260,12 @@
       "MOVE_CLASSES": "نقل الفصول",
       "DELETE_CONFIRM": "تأكيد الحذف",
       "DELETE_WARNING": "تحذير! لا يمكن التراجع عن هذا الإجراء.",
-      "DELETE_CONFIRM_MESSAGE": "هل أنت متأكد أنك تريد حذف الصف \"{{gradeName}}\"؟",
+      "DELETE_CONFIRM_MESSAGE": "هل أنت متأكد أنك تريد حذف الصف \"{{gradeName}}\"?",
       "DELETE_BTN": "حذف الصف"
     },
     "PAGINATION": {
-      "PREVIOUS": "السابق",
-      "NEXT": "التالي"
+      "previous": "السابق",
+      "next": "التالي"
     },
     "ALERTS": {
       "DELETE_WARNING": "تحذير! لا يمكن التراجع عن هذا الإجراء."
@@ -326,7 +336,41 @@
     "CANCEL": "إلغاء",
     "CLOSE": "إغلاق",
     "ASSIGN": "تعيين",
-    "UNASSIGN": "إلغاء التعيين"
+    "UNASSIGN": "إلغاء التعيين",
+    "print": "طباعة",
+    "name": "الاسم",
+    "notSpecified": "غير محدد",
+    "loadingClasses": "جاري تحميل الفصول...",
+    "loading": "جارٍ التحميل...",
+    "view": "عرض",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "export": "تصدير",
+    "create": "إنشاء",
+    "cancel": "إلغاء",
+    "close": "إغلاق",
+    "save": "حفظ",
+    "update": "تحديث",
+    "email": "البريد الإلكتروني",
+    "status": "الحالة",
+    "actions": "الإجراءات",
+    "action": "إجراء",
+    "id": "المعرف",
+    "students": "طلاب",
+    "teachers": "معلمون",
+    "classes": "فصول",
+    "previous": "السابق",
+    "next": "التالي",
+    "showing": "عرض",
+    "of": "من",
+    "more": "المزيد",
+    "assigned": "مُعين",
+    "assign": "تعيين",
+    "unknown": "غير معروف",
+    "notAssigned": "غير معين",
+    "classesSelected": "فصول محددة",
+    "teachersSelected": "معلمون محددون",
+    "execute": "تنفيذ"
   },
   "TEACHER_CLASSES": {
     "TITLE": "صفوفي وطلابي",
@@ -365,70 +409,111 @@
     "NO_TEXT": "لا توجد أسئلة نصية متاحة.",
     "VIEW": "عرض"
   },
-  "CLASSES": {
-    "CREATE_TITLE": "إنشاء حصة جديدة",
-    "SCHEDULED_TITLE": "الحصص المجدولة",
-    "FORM": {
-      "GRADE": "الصف",
-      "SECTION": "القسم",
-      "SUBJECT": "المادة",
-      "MEETING_LINK": "رابط الاجتماع",
-      "START_TIME": "وقت البدء",
-      "DURATION": "المدة (بالدقائق)",
-      "PLACEHOLDERS": {
-        "GRADE": "أدخل الصف",
-        "SECTION": "أدخل القسم",
-        "CLASS": "أدخل الفصل",
-        "SUBJECT": "أدخل المادة",
-        "MEETING_LINK": "https://...",
-        "DURATION": "مثال: 45"
+  "classes": {
+    "title": "جميع الفصول",
+    "subtitle": "إدارة الدرجات، المعلمين وبيانات الفصول",
+    "createClass": "إنشاء فصل فارغ",
+    "assignTeacher": "تعيين معلم",
+    "loading": "جارٍ تحميل الفصول...",
+    "loadingDetails": "جارٍ تحميل تفاصيل الفصل...",
+    "noClasses": "لا توجد فصول متاحة.",
+    "search": "بحث الفصول",
+    "searchPlaceholder": "البحث باسم الفصل، الصف، أو المنهج...",
+    "sortBy": "ترتيب حسب",
+    "sort": {
+      "className": "اسم الفصل",
+      "studentCount": "عدد الطلاب",
+      "teacherCount": "عدد المعلمين",
+      "grade": "الصف",
+      "curriculum": "المنهج"
+    },
+    "filter": {
+      "curriculum": "تصفية حسب المنهج",
+      "grade": "تصفية حسب الصف",
+      "allCurricula": "جميع المناهج",
+      "allGrades": "جميع الصفوف"
+    },
+    "notInSelectedCurriculum": "(ليس في المنهج المحدد)",
+    "columns": {
+      "className": "اسم الفصل",
+      "grade": "الصف",
+      "students": "الطلاب",
+      "teachers": "المعلمون",
+      "status": "الحالة",
+      "actions": "الإجراءات"
+    },
+    "modals": {
+      "create": {
+        "title": "إنشاء فصل جديد",
+        "className": "اسم الفصل",
+        "classNamePlaceholder": "أدخل اسم الفصل (مثال: فصل 5أ)",
+        "grade": "الصف",
+        "selectGrade": "اختر صف",
+        "selectedGradeBelongsTo": "الصف المختار ينتمي إلى:"
       },
-      "ERRORS": {
-        "GRADE_REQUIRED": "الصف مطلوب.",
-        "SECTION_REQUIRED": "القسم مطلوب.",
-        "CLASS_REQUIRED": "الفصل مطلوب.",
-        "SUBJECT_REQUIRED": "الفصل مطلوب.",
-        "MEETING_LINK_INVALID": "يرجى إدخال رابط صالح.",
-        "START_TIME_REQUIRED": "وقت البدء مطلوب.",
-        "DURATION_INVALID": "يرجى إدخال مدة صحيحة (لا تقل عن 10 دقائق)."
+      "details": {
+        "title": "تفاصيل الفصل",
+        "basicInfo": "المعلومات الأساسية",
+        "statistics": "الإحصائيات",
+        "assignedTeachers": "المعلمون المعينون",
+        "enrolledStudents": "الطلاب المسجلون",
+        "availableSubjects": "المواد المتاحة",
+        "className": "اسم الفصل",
+        "grade": "الصف",
+        "curriculum": "المنهج",
+        "studentCount": "عدد الطلاب",
+        "teacherCount": "عدد المعلمين",
+        "averageGpa": "المعدل التراكمي المتوسط",
+        "attendanceRate": "نسبة الحضور",
+        "completedExams": "الاختبارات المكتملة",
+        "pendingAssignments": "الواجبات المعلقة",
+        "contactInfo": "معلومات الاتصال",
+        "noContactInfo": "لا توجد معلومات اتصال",
+        "noTeachersAssigned": "لا يوجد معلمون معينون لهذا الفصل",
+        "noStudentsEnrolled": "لا يوجد طلاب مسجلون في هذا الفصل",
+        "noSubjectsAvailable": "لا توجد مواد متاحة لهذا الصف",
+        "creditHours": "ساعات المعتمدة",
+        "unassignTeacher": "إلغاء تعيين المعلم",
+        "moveStudent": "نقل الطالب",
+        "removeStudent": "إزالة الطالب"
       },
-      "BUTTON": {
-        "CREATE": "إنشاء الحصة"
+      "assignTeacher": {
+        "title": "تعيين معلم للفصل",
+        "assigningTo": "تعيين معلم إلى",
+        "searchPlaceholder": "بحث المعلمين بالاسم...",
+        "allSubjects": "جميع المواد",
+        "assignedClasses": "الفصول المعينة",
+        "subjects": "المواد",
+        "noTeachersFound": "لم يتم العثور على معلمين مطابقين لبحثك",
+        "noClasses": "لا توجد فصول",
+        "noSubjects": "لا توجد مواد",
+        "assignToClass": "تعيين للفصل"
+      },
+      "bulk": {
+        "assignTeachers": "التعيين الجماعي للمعلمين",
+        "info": "اختر الفصول والمعلمين للتعيين الجماعي",
+        "selectClasses": "اختر الفصول",
+        "selectTeachers": "اختر المعلمين",
+        "className": "اسم الفصل",
+        "grade": "الصف",
+        "currentTeachers": "المعلمون الحاليون",
+        "teacherName": "اسم المعلم",
+        "email": "البريد الإلكتروني",
+        "subjects": "المواد",
+        "noTeachersAvailable": "لا توجد معلمين متاحين. يرجى التأكد من تحميل المعلمين.",
+        "noSubjects": "لا توجد مواد",
+        "moveClasses": {
+          "info": "اختر الفصول لنقلها إلى صف مختلف",
+          "newGrade": "الصف الجديد",
+          "selectTargetGrade": "اختر الصف المستهدف",
+          "currentGrade": "الصف الحالي"
+        }
       }
     },
-    "CLASSAPPOINTMENT": {
-      "SCHEDULED_TITLE": "المواعيد المجدولة للصفوف",
-      "TABLE": {
-        "GRADE": "الصف",
-        "SECTION": "الشعبة",
-        "SUBJECT": "المادة",
-        "MEETING": "الاجتماع",
-        "START_TIME": "وقت البدء",
-        "DURATION": "المدة",
-        "STATUS": "الحالة",
-        "ACTION": "الإجراء",
-        "JOIN": "انضم",
-        "ENDED": "انتهى",
-        "ONGOING": "جاري",
-        "END": "إنهاء",
-        "NO_CLASSES": "لا توجد مواعيد للصفوف"
-      }
-    },
-    "TABLE": {
-      "GRADE": "الصف",
-      "SECTION": "القسم",
-      "SUBJECT": "المادة",
-      "CLASS": "الفصول",
-      "MEETING": "الاجتماع",
-      "START_TIME": "وقت البدء",
-      "DURATION": "المدة",
-      "STATUS": "الحالة",
-      "ACTION": "إجراء",
-      "JOIN": "انضمام",
-      "END": "إنهاء",
-      "ONGOING": "قيد التنفيذ",
-      "ENDED": "انتهت",
-      "NO_CLASSES": "لا توجد حصص مجدولة حالياً."
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "archived": "مؤرشف"
     }
   },
   "certificate2": {
@@ -749,6 +834,10 @@
     "block": "حظر",
     "unblock": "إلغاء الحظر",
     "assignStudent": "ربط طالب",
+    "instructions": " ملحوظة: يرجى مراجعة الوثائق المرفوعة من قبل وليّ الأمر للتحقق من صحة بيانات الطالب والعلاقة القانونية بينهما.",
+    "instructions2": " ملحوظة: ابحث عن اسم الطالب في الوثائق المرفوعة مع حساب وليّ الأمر.",
+    "instructions3": " ملحوظة: يمكن البحث عن الطالب بالاسم أو البريد الإلكتروني أو الرقم القومي أو رقم الإقامة أو رقم جواز السفر.",
+    "instructions4": " ملحوظة: لإتمام قبول وليّ الأمر لأول مرة، يشترط ربطه بطالب واحد على الأقل قبل إضافته إلى النظام.",
     "statusDisplay": {
       "all": "الكل",
       "pending": "معلق",
@@ -843,56 +932,48 @@
     "cancel": "إلغاء"
   },
   "students": {
-    "management": "إدارة حسابات الطلاب",
+    "management": "إدارة الطلاب",
     "allStudents": "جميع الطلاب",
-    "pending": "قيد الانتظار",
+    "pending": "قيد المراجعة",
     "active": "نشط",
     "rejected": "مرفوض",
     "blocked": "محظور",
-    "loading": "جاري التحميل",
-    "loadingStudents": "جاري تحميل بيانات الطلاب...",
-    "noStudents": "لا يوجد طلاب مسجلين",
-    "noStudentsInCategory": "لا يوجد طلاب في هذه الفئة",
-    "approve": "قبول",
+
+    "passport": "رقم الجواز",
+    "nationality": "الجنسية",
+    "iqama": "رقم الإقامة",
+    "class": "الفصل",
+
+    "approveAndAssign": "موافقة وإضافة للفصل",
     "reject": "رفض",
     "block": "حظر",
-    "unblock": "فك الحظر",
-    "unknown": "غير معروف",
-    "age": "سنة",
-    "parents": "أولياء أمور",
-    "notSpecified": "غير محدد",
+    "unblock": "إلغاء الحظر",
+    "update": "تحديث",
+
+    "noStudents": "لا يوجد طلاب",
+    "noStudentsInCategory": "لا يوجد طلاب في هذا التصنيف",
+
+    "assignStudent": "إضافة الطالب للفصل",
+    "updateStudent": "تحديث بيانات الطالب",
+    "student": "الطالب",
+
+    "enterPassport": "أدخل رقم الجواز",
+    "enterNationality": "أدخل الجنسية",
+    "enterIqama": "أدخل رقم الإقامة",
+
+    "passportRequired": "رقم الجواز مطلوب للموافقة",
+    "nationalityRequired": "الجنسية مطلوبة للموافقة",
+    "iqamaRequired": "رقم الإقامة مطلوب للموافقة",
+
+    "selectClass": "اختر الفصل",
+    "chooseClass": "-- اختر الفصل --",
+    "fillAllFields": "يجب تعبئة جميع الحقول المطلوبة قبل المتابعة",
     "status": {
       "pending": "قيد الانتظار",
       "active": "نشط",
-      "rejected": "مرفوض",
       "blocked": "محظور",
-      "unknown": "غير معروف"
-    },
-    "statusDisplay": {
-      "all": "جميع",
-      "pending": "قيد الانتظار",
-      "active": "نشط",
       "rejected": "مرفوض",
-      "blocked": "محظور"
-    },
-    "messages": {
-      "approved": "تم قبول الطالب بنجاح",
-      "rejected": "تم رفض الطالب بنجاح",
-      "blocked": "تم حظر الطالب بنجاح",
-      "unblocked": "تم فك حظر الطالب بنجاح",
-      "error": "حدث خطأ أثناء تنفيذ العملية",
-      "adminNotFound": "لم يتم العثور على معرف مسؤول. يرجى تسجيل الدخول مرة أخرى.",
-      "loadError": "خطأ في تحميل الحسابات",
-      "approveFailed": "فشل في الموافقة على الطالب",
-      "rejectFailed": "فشل في رفض الطالب",
-      "blockFailed": "فشل في حظر الطالب",
-      "unblockFailed": "فشل في فك حظر الطالب"
-    },
-    "confirmations": {
-      "approve": "هل أنت متأكد من قبول هذا الطالب؟",
-      "reject": "هل أنت متأكد من رفض هذا الطالب؟",
-      "block": "هل أنت متأكد من حظر هذا الطالب؟",
-      "unblock": "هل أنت متأكد من فك حظر هذا الطالب؟"
+      "unknown": "غير معروف"
     }
   },
   "NAV": {
@@ -1032,7 +1113,18 @@
           "confirmRemove": "هل أنت متأكد أنك تريد إزالة هذا الطالب من الوالد؟",
           "fillAllFields": "يرجى ملء جميع الحقول المطلوبة"
         }
-      },
+      }
+    },
+    "MESSAGES": {
+      "SHOULD_ANSWER_ALL": "يجب الإجابة على جميع الأسئلة قبل الإرسال.",
+      "SUCCESS": "تم إرسال الامتحان بنجاح!",
+      "ERROR": "فشل في إرسال الامتحان"
+    },
+    "GENERAL": {
+      "TRUE": "صح",
+      "FALSE": "خطأ"
+    }
+  },
       "parentManagement2": {
         "search": {
           "placeholder": "ابحث عن ولي الأمر بالاسم، البريد الإلكتروني أو الهاتف...",
@@ -1055,18 +1147,7 @@
           "noResults": "لا توجد نتائج",
           "noResultsDescription": "لم يتم العثور على أولياء أمور مطابقين للبحث. حاول تغيير معايير البحث."
         }
-      }
-    },
-    "MESSAGES": {
-      "SHOULD_ANSWER_ALL": "يجب الإجابة على جميع الأسئلة قبل الإرسال.",
-      "SUCCESS": "تم إرسال الامتحان بنجاح!",
-      "ERROR": "فشل في إرسال الامتحان"
-    },
-    "GENERAL": {
-      "TRUE": "صح",
-      "FALSE": "خطأ"
-    }
-  },
+      },
   "SUBJECTS": {
     "TITLE": "إدارة المواد",
     "CREATE_SUBJECT": "إضافة مادة",
@@ -1259,5 +1340,94 @@
   "DASHBOARD": {
     "WELCOME_TITLE": "مرحباً بك في لوحة التحكم",
     "WELCOME_SUBTITLE": "قم بإدارة النظام بسهولة وكفاءة"
+  },
+  "studentResults": {
+    "title": "نتائج الطلاب في الاختبارات",
+    "selectClass": "اختر الفصل",
+    "selectClassMessage": "الرجاء اختيار فصل لعرض نتائج الطلاب.",
+    "examType": "نوع الاختبار",
+    "examNotes": "* منتصف الفصل: 20 درجة | نهاية الفصل: 80 درجة | الإجمالي: 200 درجة",
+    "loadingStudents": "جاري تحميل الطلاب...",
+    "classStudents": "طلاب الفصل",
+    "student": "طالب",
+    "studentId": "رقم الطالب",
+    "overallAverage": "المعدل العام",
+    "viewAllResults": "عرض جميع النتائج",
+    "resultDetails": "تفاصيل النتائج",
+    "loadingResults": "جاري تحميل النتائج...",
+    "subject": "المادة",
+    "score": "الدرجة",
+    "fullScore": "الدرجة الكاملة",
+    "percentage": "النسبة",
+    "status": "الحالة",
+    "totalScore": "المجموع الكلي",
+    "average": "المعدل",
+    "componentDetails": "تفاصيل المكونات",
+    "noResultsForStudent": "لا توجد نتائج لهذا الطالب",
+    "ofType": "من نوع",
+    "noStudents": "لا يوجد طلاب",
+    "noStudentsInClass": "لا يوجد طلاب مسجلين في هذا الفصل.",
+    "studentResultDetails": "تفاصيل نتائج الطالب",
+    "studentInfo": "معلومات الطالب",
+    "class": "الفصل",
+    "examCount": "عدد الاختبارات",
+    "statistics": "الإحصائيات",
+    "total": "الإجمالي",
+    "rating": "التقدير",
+    "examTypeSummary": "ملخص حسب نوع الاختبار",
+    "maxScore": "الحد الأقصى",
+    "noResults": "لا توجد نتائج",
+    "outOf": "من",
+    "passed": "ناجح",
+    "failed": "راسب",
+    "firstMidterm": "منتصف الفصل الأول",
+    "secondMidterm": "منتصف الفصل الثاني",
+    "final": "نهاية الفصل",
+    "all": "الكل"
+  },
+  "examTypes": {
+    "الكل": "All",
+    "MidTerm1": "منتصف الفصل الأول",
+    "Final1": "النهاية الأولى",
+    "MidTerm2": "منتصف الفصل الثاني",
+    "Final2": "النهاية الثانية",
+    "unknown": "غير معروف"
+  },
+  "SUBJECT_COMPONENTS": {
+    "TITLE": "إدارة أنواع مكونات المواد",
+    "SUBTITLE": "إدارة مكونات التقييم لكل مادة",
+    "LOADING": "جارٍ تحميل المواد وأنواع المكونات...",
+    "SUBJECTS_LIST": "المواد",
+    "CLICK_TO_MANAGE": "انقر على المادة لإدارة مكوناتها",
+    "HOURS": "ساعات",
+    "COMPONENTS": "مكونات",
+    "TOTAL": "الإجمالي",
+    "POINTS": "نقاط",
+    "COMPONENT_TYPES": "أنواع المكونات",
+    "REORDER": "إعادة الترتيب",
+    "ADD_COMPONENT": "إضافة مكون",
+    "REORDERING": "إعادة ترتيب المكونات",
+    "MAX": "الحد الأقصى",
+    "SAVE_ORDER": "حفظ الترتيب",
+    "NO_COMPONENTS": "لم يتم تعريف أنواع المكونات لهذه المادة. أضف مكونات لتمكين التقييم التفصيلي.",
+    "ORDER": "الترتيب",
+    "COMPONENT_NAME": "اسم المكون",
+    "MAX_SCORE": "الدرجة العظمى",
+    "ACTIVE": "نشط",
+    "INACTIVE": "غير نشط",
+    "EDIT_COMPONENT": "تعديل نوع المكون",
+    "ADD_NEW_COMPONENT": "إضافة نوع مكون جديد",
+    "COMPONENT_NAME_LABEL": "اسم المكون *",
+    "COMPONENT_NAME_PLACEHOLDER": "مثال: اختبار شفهي، اختبار تحريري، عملي",
+    "COMPONENT_NAME_ERROR": "اسم المكون مطلوب (على الأقل حرفين)",
+    "ORDER_LABEL": "الترتيب *",
+    "ORDER_ERROR": "يجب أن يكون الترتيب 1 على الأقل",
+    "MAX_SCORE_LABEL": "الدرجة العظمى *",
+    "MAX_SCORE_ERROR": "يجب أن تكون الدرجة العظمى 0 أو أكثر",
+    "ACTIVE_LABEL": "نشط (متاح للتقييم)",
+    "UPDATE_COMPONENT": "تحديث المكون",
+    "ADD_COMPONENT_BTN": "إضافة مكون",
+    "NO_SUBJECTS_TITLE": "لم يتم العثور على مواد",
+    "NO_SUBJECTS_MESSAGE": "لا توجد مواد في النظام بعد. يرجى إضافة مواد أولاً."
   }
 }

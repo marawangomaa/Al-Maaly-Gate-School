@@ -36,7 +36,7 @@ export interface DegreeItemDto {
   degreeId: string;
   subjectId: string;
   subjectName: string;
-  degreeType: number;  // Change to number
+  degreeType: number | string;
   degreeTypeName?: string; // Add this for display
   score: number;
   maxScore: number;

@@ -7,11 +7,12 @@ import { StudentModel } from '../../../../../Interfaces/istudent';
 import { DegreeItemDto, StudentDegreesDto, DegreeType } from '../../../../../Interfaces/idegree';
 import { ClassService } from '../../../../../Services/class.service';
 import { DegreeService } from '../../../../../Services/degree.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin-all-student-tests-result',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   templateUrl: './admin-all-student-tests-result.component.html',
   styleUrls: ['./admin-all-student-tests-result.component.css']
 })
@@ -22,11 +23,11 @@ export class AdminAllStudentTestsResultComponent implements OnInit {
 
   // Exam types filter options
   examTypeOptions = [
-    { value: 'الكل', label: 'الكل', type: undefined },
-    { value: 'MidTerm1', label: 'منتصف الفصل الأول', type: DegreeType.MidTerm1 },
-    { value: 'Final1', label: 'نهاية الفصل الأول', type: DegreeType.Final1 },
-    { value: 'MidTerm2', label: 'منتصف الفصل الثاني', type: DegreeType.MidTerm2 },
-    { value: 'Final2', label: 'نهاية الفصل الثاني', type: DegreeType.Final2 }
+    { value: 'الكل', label: 'examTypes.الكل', type: undefined },
+    { value: 'MidTerm1', label: 'examTypes.MidTerm1', type: DegreeType.MidTerm1 },
+    { value: 'Final1', label: 'examTypes.Final1', type: DegreeType.Final1 },
+    { value: 'MidTerm2', label: 'examTypes.MidTerm2', type: DegreeType.MidTerm2 },
+    { value: 'Final2', label: 'examTypes.Final2', type: DegreeType.Final2 }
   ];
 
   // Data properties
@@ -98,28 +99,57 @@ export class AdminAllStudentTestsResultComponent implements OnInit {
     });
   }
 
-  // Get exam type display name
-  getExamTypeDisplayName(degreeType: number): string {
-    switch(degreeType) {
-      case DegreeType.MidTerm1: return 'منتصف الفصل الأول';
-      case DegreeType.Final1: return 'نهاية الفصل الأول';
-      case DegreeType.MidTerm2: return 'منتصف الفصل الثاني';
-      case DegreeType.Final2: return 'نهاية الفصل الثاني';
-      default: return 'غير محدد';
+  // Get exam type display name - handle both string and number
+  getExamTypeDisplayName(degreeType: number | string): string {
+    // Convert string to number if needed
+    let typeValue: number;
+    
+    if (typeof degreeType === 'string') {
+      switch(degreeType) {
+        case 'MidTerm1': typeValue = DegreeType.MidTerm1; break;
+        case 'Final1': typeValue = DegreeType.Final1; break;
+        case 'MidTerm2': typeValue = DegreeType.MidTerm2; break;
+        case 'Final2': typeValue = DegreeType.Final2; break;
+        default: typeValue = 0;
+      }
+    } else {
+      typeValue = degreeType;
+    }
+    
+    // Now use the number value
+    switch(typeValue) {
+      case DegreeType.MidTerm1: return 'examTypes.MidTerm1';
+      case DegreeType.Final1: return 'examTypes.Final1';
+      case DegreeType.MidTerm2: return 'examTypes.MidTerm2';
+      case DegreeType.Final2: return 'examTypes.Final2';
+      default: return 'examTypes.unknown';
     }
   }
 
-  // Get max score for exam type
-  getExamTypeMaxScore(degreeType: number): number {
-    switch(degreeType) {
-      case DegreeType.MidTerm1:
-      case DegreeType.MidTerm2:
-        return 20;
-      case DegreeType.Final1:
-      case DegreeType.Final2:
-        return 80;
-      default:
-        return 100;
+  // Update other methods to handle string degree types
+  getExamTypeMaxScore(degreeType: number | string): number {
+    if (typeof degreeType === 'string') {
+      switch(degreeType) {
+        case 'MidTerm1':
+        case 'MidTerm2':
+          return 20;
+        case 'Final1':
+        case 'Final2':
+          return 80;
+        default:
+          return 100;
+      }
+    } else {
+      switch(degreeType) {
+        case DegreeType.MidTerm1:
+        case DegreeType.MidTerm2:
+          return 20;
+        case DegreeType.Final1:
+        case DegreeType.Final2:
+          return 80;
+        default:
+          return 100;
+      }
     }
   }
 
@@ -128,7 +158,20 @@ export class AdminAllStudentTestsResultComponent implements OnInit {
     const studentData = this.studentFullDegreesMap.get(studentId);
     if (!studentData || !studentData.degrees) return 0;
     
-    const examDegrees = studentData.degrees.filter(d => d.degreeType === examType);
+    const examDegrees = studentData.degrees.filter(d => {
+      if (typeof d.degreeType === 'string') {
+        // Map string to number for comparison
+        const stringToNum: { [key: string]: number } = {
+          'MidTerm1': DegreeType.MidTerm1,
+          'Final1': DegreeType.Final1,
+          'MidTerm2': DegreeType.MidTerm2,
+          'Final2': DegreeType.Final2
+        };
+        return stringToNum[d.degreeType] === examType;
+      }
+      return d.degreeType === examType;
+    });
+    
     if (examDegrees.length === 0) return 0;
     
     const totalScore = examDegrees.reduce((sum, d) => sum + d.score, 0);
@@ -156,12 +199,21 @@ export class AdminAllStudentTestsResultComponent implements OnInit {
           
           // Filter by selected type if needed
           if (this.selectedType !== 'الكل') {
-            const selectedOption = this.examTypeOptions.find(opt => opt.value === this.selectedType);
-            if (selectedOption?.type !== undefined) {
-              degrees = degrees.filter(degree => 
-                degree && degree.degreeType === selectedOption.type
-              );
-            }
+            degrees = degrees.filter(degree => {
+              if (!degree) return false;
+              
+              if (typeof degree.degreeType === 'string') {
+                // Compare string directly
+                return degree.degreeType === this.selectedType;
+              } else {
+                // Convert selectedType to number for comparison
+                const selectedOption = this.examTypeOptions.find(opt => opt.value === this.selectedType);
+                if (selectedOption?.type !== undefined) {
+                  return degree.degreeType === selectedOption.type;
+                }
+                return false;
+              }
+            });
           }
           
           this.studentDegreesMap.set(studentId, degrees);
@@ -203,12 +255,21 @@ export class AdminAllStudentTestsResultComponent implements OnInit {
     
     // Filter by selected type if needed
     if (this.selectedType !== 'الكل') {
-      const selectedOption = this.examTypeOptions.find(opt => opt.value === this.selectedType);
-      if (selectedOption?.type !== undefined) {
-        degrees = degrees.filter(degree => 
-          degree && degree.degreeType === selectedOption.type
-        );
-      }
+      degrees = degrees.filter(degree => {
+        if (!degree) return false;
+        
+        if (typeof degree.degreeType === 'string') {
+          // Compare string directly
+          return degree.degreeType === this.selectedType;
+        } else {
+          // Convert selectedType to number for comparison
+          const selectedOption = this.examTypeOptions.find(opt => opt.value === this.selectedType);
+          if (selectedOption?.type !== undefined) {
+            return degree.degreeType === selectedOption.type;
+          }
+          return false;
+        }
+      });
     }
     
     this.selectedStudentDegrees = degrees;
@@ -258,59 +319,37 @@ export class AdminAllStudentTestsResultComponent implements OnInit {
 
   // Calculate pass/fail status
   getPassStatus(score: number, maxScore: number): { status: string, isPass: boolean } {
-    if (maxScore === 0) return { status: 'غير محدد', isPass: false };
+    if (maxScore === 0) return { status: 'studentResults.unknownStatus', isPass: false };
     const percentage = (score / maxScore) * 100;
     const isPass = percentage >= 50;
     return {
-      status: isPass ? 'ناجح' : 'راسب',
+      status: isPass ? 'studentResults.passed' : 'studentResults.failed',
       isPass: isPass
     };
   }
 
-  // Calculate student average
+  // Calculate student average for specific set of degrees
   calculateStudentAverage(degrees: DegreeItemDto[]): number {
     if (!degrees || degrees.length === 0) return 0;
     
-    const totalPercentage = degrees.reduce((sum, degree) => {
-      if (degree && degree.maxScore > 0) {
-        return sum + (degree.score / degree.maxScore);
-      }
-      return sum;
-    }, 0);
+    const totalScore = degrees.reduce((sum, degree) => sum + degree.score, 0);
+    const totalMaxScore = degrees.reduce((sum, degree) => sum + degree.maxScore, 0);
     
-    return (totalPercentage / degrees.length) * 100;
+    if (totalMaxScore === 0) return 0;
+    return (totalScore / totalMaxScore) * 100;
   }
 
-  // Calculate overall student average from all exams
+  // Calculate overall student average from all exams - FIXED VERSION
   calculateStudentOverallAverage(studentId: string): number {
     const studentData = this.studentFullDegreesMap.get(studentId);
     if (!studentData || !studentData.degrees || studentData.degrees.length === 0) return 0;
     
-    let totalWeightedScore = 0;
-    let totalMaxWeightedScore = 0;
+    // Calculate simple percentage: total score ÷ total max score × 100
+    const totalScore = studentData.degrees.reduce((sum, degree) => sum + degree.score, 0);
+    const totalMaxScore = studentData.degrees.reduce((sum, degree) => sum + degree.maxScore, 0);
     
-    studentData.degrees.forEach(degree => {
-      const weight = this.getExamWeight(degree.degreeType);
-      totalWeightedScore += degree.score * weight;
-      totalMaxWeightedScore += degree.maxScore * weight;
-    });
-    
-    if (totalMaxWeightedScore === 0) return 0;
-    return (totalWeightedScore / totalMaxWeightedScore) * 100;
-  }
-
-  // Get weight for exam type
-  private getExamWeight(degreeType: number): number {
-    switch(degreeType) {
-      case DegreeType.MidTerm1:
-      case DegreeType.MidTerm2:
-        return 0.2; // 20%
-      case DegreeType.Final1:
-      case DegreeType.Final2:
-        return 0.8; // 80%
-      default:
-        return 1;
-    }
+    if (totalMaxScore === 0) return 0;
+    return (totalScore / totalMaxScore) * 100;
   }
 
   // Calculate degree percentage
@@ -344,12 +383,21 @@ export class AdminAllStudentTestsResultComponent implements OnInit {
             let degrees = studentData.degrees || [];
             
             if (this.selectedType !== 'الكل') {
-              const selectedOption = this.examTypeOptions.find(opt => opt.value === this.selectedType);
-              if (selectedOption?.type !== undefined) {
-                degrees = degrees.filter(degree => 
-                  degree && degree.degreeType === selectedOption.type
-                );
-              }
+              degrees = degrees.filter(degree => {
+                if (!degree) return false;
+                
+                if (typeof degree.degreeType === 'string') {
+                  // Compare string directly
+                  return degree.degreeType === this.selectedType;
+                } else {
+                  // Convert selectedType to number for comparison
+                  const selectedOption = this.examTypeOptions.find(opt => opt.value === this.selectedType);
+                  if (selectedOption?.type !== undefined) {
+                    return degree.degreeType === selectedOption.type;
+                  }
+                  return false;
+                }
+              });
             }
             
             this.studentDegreesMap.set(student.id, degrees);
