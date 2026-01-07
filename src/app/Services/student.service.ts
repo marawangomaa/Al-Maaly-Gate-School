@@ -48,12 +48,10 @@ export class StudentService {
   }
 
   GetStudentEntity(studentId: string): Observable<ApiResponse<any>> {
-
     const token = this._Auth?.getToken();
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-
     return this.http.get<ApiResponse<any>>(`${this.apiUrl}/Student/${studentId}`, { headers });
   }
 
