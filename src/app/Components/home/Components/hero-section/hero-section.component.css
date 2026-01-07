@@ -15,11 +15,15 @@
 
 .hero-title {
   color: #FFFFFF;
+  line-height: 1.8;
 }
 
 .hero-subtitle {
   color: #FFFFFF;
-  font-weight: var(--font-weight-normal);
+}
+
+.hero-title span {
+  color: var(--color-primary-300);
 }
 
 .hero-overlay {
@@ -113,13 +117,13 @@
 }
 
 .feature-card {
-  background-color: var(--color-primary-400);
+  background-color: var(--color-primary-300);
   color: var(--color-text-dark-bg);
   padding: var(--space-lg);
   border-radius: var(--radius-3xlg);
   border: none;
   height: 100%;
-  text-align: right;
+  /* text-align: right; */
   transition: all 0.3s ease;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
@@ -132,7 +136,7 @@
 
 .card-icon {
   font-size: 2.5rem;
-  color: #87ceeb;
+  color: var(--color-text-dark-bg);
   display: inline-block;
   transition: transform 0.3s ease;
 }
