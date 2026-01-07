@@ -2,7 +2,11 @@
   <div class="hero-overlay"></div>
 
   <div class="hero-content">
-    <h1 class="hero-title" [innerHTML]="'HERO.TITLE' | translate"></h1>
+    <h1 class="hero-title">
+      {{ "HERO.TITLE_Part1" | translate }}
+      <span>{{ "HERO.TITLE_SPAN" | translate }}</span>
+      {{ "HERO.TITLE_Part2" | translate }}
+    </h1>
     <p class="hero-subtitle">{{ "HERO.SUBTITLE" | translate }}</p>
     <!-- <button class="primary-btn hero-cta">{{ 'HERO.CTA' | translate }}</button> -->
   </div>

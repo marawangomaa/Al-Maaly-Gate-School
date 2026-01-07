@@ -46,6 +46,37 @@ button {
   background: none;
 }
 
+html[lang="en"] {
+  /* Smaller font sizes for English (Latin script is more compact) */
+  --font-sm: 1.4rem;
+  /* 12px equivalent - Reduced from 1.4rem */
+  --font-base: 1.6rem;
+  /* 14px equivalent - Reduced from 1.6rem */
+  --font-lg: 1.8rem;
+  /* 16px equivalent - Reduced from 1.8rem */
+  --font-xl: 2.2rem;
+  /* 20px equivalent - Reduced from 2.4rem */
+  --font-2xl: 2.8rem;
+  /* 26px equivalent - Reduced from 3rem */
+  --font-3xl: 3.4rem;
+  /* 32px equivalent - Reduced from 4rem */
+  --font-6xl: 6rem;
+  /* 58px equivalent - Reduced from 6.2rem */
+
+  --font-weight-normal: 300;
+  --font-weight-medium: 400;
+  --font-weight-semibold: 500;
+  --font-weight-bold: 600;
+
+  /* Adjust typography for English */
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Additional English-specific adjustments */
+  direction: ltr;
+  text-align: left;
+  letter-spacing: -0.011em;
+}
 
 /* =========================================================
    LIGHT THEME VARIABLES
@@ -161,6 +192,8 @@ button {
    LANGUAGE DIRECTION SUPPORT
    ========================================================= */
 
+
+
 /* Default (LTR) */
 html[dir="ltr"] {
   direction: ltr;
@@ -189,6 +222,9 @@ html[dir="rtl"] .icon-flip {
   transform: scaleX(-1);
 }
 
+
+
+
 /* =========================================================
   COMPONENT BASE STYLES
 ========================================================= */
@@ -212,6 +248,7 @@ html[dir="rtl"] .icon-flip {
   border-radius: var(--radius-md);
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
+
 
 .primary-btn:hover {
   background-color: var(--color-primary-500);

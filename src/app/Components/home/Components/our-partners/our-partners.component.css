@@ -11,8 +11,8 @@
     margin-bottom: var(--space-2xl);
 }
 
-.partner-header p {
-    font-size: var(--font-lg);
+.paragraph {
+    font-size: var(--font-2xl);
 }
 
 /* Partner Grid */

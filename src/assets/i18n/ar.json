@@ -394,8 +394,10 @@
     "SPORTS_FIELDS": "ملاعب رياضية مجهزة"
   },
   "HERO": {
-    "TITLE": "مرحبا بكم في <span class=\"accent-text\">\"مدرسة بوابة المعالي\" </span> استكشف اسلوبنا الجديد والفريد في التعلم",
-    "SUBTITLE": "افضل منصة للتعلم عن بعد في الوطن العربي",
+    "TITLE_Part1": "مرحبا بكم في",
+    "TITLE_SPAN": " 'مدرسة بوابة المعالي' ",
+    "TITLE_Part2": "استكشف اسلوبنا الجديد والفريد في التعلم",
+    "SUBTITLE": "منصتنا الجديدة للتعلّم عن بُعد في الوطن العربي",
     "CTA": "خد الخطوة الان"
   },
   "FEATURES": {
@@ -1483,33 +1485,26 @@
     "active": "نشط",
     "rejected": "مرفوض",
     "blocked": "محظور",
-
     "passport": "رقم الجواز",
     "nationality": "الجنسية",
     "iqama": "رقم الإقامة",
     "class": "الفصل",
-
     "approveAndAssign": "موافقة وإضافة للفصل",
     "reject": "رفض",
     "block": "حظر",
     "unblock": "إلغاء الحظر",
     "update": "تحديث",
-
     "noStudents": "لا يوجد طلاب",
     "noStudentsInCategory": "لا يوجد طلاب في هذا التصنيف",
-
     "assignStudent": "إضافة الطالب للفصل",
     "updateStudent": "تحديث بيانات الطالب",
     "student": "الطالب",
-
     "enterPassport": "أدخل رقم الجواز",
     "enterNationality": "أدخل الجنسية",
     "enterIqama": "أدخل رقم الإقامة",
-
     "passportRequired": "رقم الجواز مطلوب للموافقة",
     "nationalityRequired": "الجنسية مطلوبة للموافقة",
     "iqamaRequired": "رقم الإقامة مطلوب للموافقة",
-
     "selectClass": "اختر الفصل",
     "chooseClass": "-- اختر الفصل --",
     "fillAllFields": "يجب تعبئة جميع الحقول المطلوبة قبل المتابعة",
@@ -1670,29 +1665,29 @@
       "FALSE": "خطأ"
     }
   },
-      "parentManagement2": {
-        "search": {
-          "placeholder": "ابحث عن ولي الأمر بالاسم، البريد الإلكتروني أو الهاتف...",
-          "searchingFor": "البحث عن"
-        },
-        "filters": {
-          "showWithStudentsOnly": "مع طلاب فقط",
-          "showWithoutStudentsOnly": "بدون طلاب فقط",
-          "withStudents": "مع طلاب",
-          "withoutStudents": "بدون طلاب",
-          "clearAll": "مسح الكل"
-        },
-        "stats": {
-          "totalParents": "إجمالي الأولياء",
-          "withStudents": "مع طلاب",
-          "totalStudents": "إجمالي الطلاب",
-          "avgStudents": "متوسط الطلاب لكل ولي"
-        },
-        "emptyState": {
-          "noResults": "لا توجد نتائج",
-          "noResultsDescription": "لم يتم العثور على أولياء أمور مطابقين للبحث. حاول تغيير معايير البحث."
-        }
-      },
+  "parentManagement2": {
+    "search": {
+      "placeholder": "ابحث عن ولي الأمر بالاسم، البريد الإلكتروني أو الهاتف...",
+      "searchingFor": "البحث عن"
+    },
+    "filters": {
+      "showWithStudentsOnly": "مع طلاب فقط",
+      "showWithoutStudentsOnly": "بدون طلاب فقط",
+      "withStudents": "مع طلاب",
+      "withoutStudents": "بدون طلاب",
+      "clearAll": "مسح الكل"
+    },
+    "stats": {
+      "totalParents": "إجمالي الأولياء",
+      "withStudents": "مع طلاب",
+      "totalStudents": "إجمالي الطلاب",
+      "avgStudents": "متوسط الطلاب لكل ولي"
+    },
+    "emptyState": {
+      "noResults": "لا توجد نتائج",
+      "noResultsDescription": "لم يتم العثور على أولياء أمور مطابقين للبحث. حاول تغيير معايير البحث."
+    }
+  },
   "SUBJECTS": {
     "TITLE": "إدارة المواد",
     "CREATE_SUBJECT": "إضافة مادة",

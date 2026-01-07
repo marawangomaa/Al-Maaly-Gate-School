@@ -321,8 +321,8 @@
     }
   },
   "FOOTER": {
-    "LOGO_ALT": "Al-Ma'ali Schools Logo",
-    "DESCRIPTION": "Al-Ma'ali Schools aim to achieve the highest quality level in education to build essential and necessary skills that enable our students to complete their university education.",
+    "LOGO_ALT": "Al Maaly Gate Schools Logo",
+    "DESCRIPTION": "Al Maaly Gate Schools aim to achieve the highest quality level in education to build essential and necessary skills that enable our students to complete their university education.",
     "QUICK_LINKS": {
       "TITLE": "Quick Links",
       "HOME": "Home",
@@ -342,7 +342,7 @@
       "INSTAGRAM": "Instagram",
       "TWITTER": "X Platform"
     },
-    "COPYRIGHT": "&copy;2026 Al-Ma'ali Schools, All rights reserved"
+    "COPYRIGHT": "&copy;2026 Al Maaly Gate Schools, All rights reserved"
   },
   "PROGRAMS": {
     "TITLE": "Our Programs",
@@ -394,8 +394,10 @@
     "SPORTS_FIELDS": "Equipped Sports Fields"
   },
   "HERO": {
-    "TITLE": "Welcome to <span class=\"accent-text\">\"Al-Ma'ali Schools\" </span> Explore our new and unique learning style",
-    "SUBTITLE": "The best remote learning platform in the Arab world",
+   "TITLE_Part1": "Welcome to",
+    "TITLE_SPAN": " 'Al Maaly Gate Schools' ",	
+    "TITLE_Part2": "Discover Our New Remote Learning Platform in the Arab World",
+    "SUBTITLE": "our new remote learning platform in the Arab world",
     "CTA": "Take the Step Now"
   },
   "FEATURES": {
@@ -473,7 +475,7 @@
   "ACCORDION": {
     "VISION": {
       "TITLE": "Our Vision",
-      "CONTENT": "Al-Ma'ali Schools aim to achieve the highest quality level in education to build essential and necessary skills that enable our students to complete their university education."
+      "CONTENT": "Al Maaly Gate Schools aim to achieve the highest quality level in education to build essential and necessary skills that enable our students to complete their university education."
     },
     "MISSION": {
       "TITLE": "Our Mission",
@@ -501,7 +503,7 @@
   },
   "ABOUT": {
     "TITLE": "About Us",
-    "DESCRIPTION": "Al-Ma'ali Schools provide global education with a distinguished British curriculum in a safe and positive environment, enhancing thinking and problem-solving skills while keeping pace with the needs of the era. We believe in a unique learning style for each student and strive to build outstanding and flexible generations, supporting parents and developing educational staff to achieve a distinguished and sustainable learning experience.",
+    "DESCRIPTION": "Al Maaly Gate Schools provide global education with a distinguished British curriculum in a safe and positive environment, enhancing thinking and problem-solving skills while keeping pace with the needs of the era. We believe in a unique learning style for each student and strive to build outstanding and flexible generations, supporting parents and developing educational staff to achieve a distinguished and sustainable learning experience.",
     "FEATURES": {
       "CURRICULUM": "Distinguished British Curriculum",
       "APPROACH": "New Educational Style",
@@ -1483,33 +1485,26 @@
     "active": "Active",
     "rejected": "Rejected",
     "blocked": "Blocked",
-
     "passport": "Passport Number",
     "nationality": "Nationality",
     "iqama": "Iqama Number",
     "class": "Class",
-
     "approveAndAssign": "Approve and Assign to Class",
     "reject": "Reject",
     "block": "Block",
     "unblock": "Unblock",
     "update": "Update",
-
     "noStudents": "No students",
     "noStudentsInCategory": "No students in this category",
-
     "assignStudent": "Add Student to Class",
     "updateStudent": "Update Student Data",
     "student": "Student",
-
     "enterPassport": "Enter passport number",
     "enterNationality": "Enter nationality",
     "enterIqama": "Enter iqama number",
-
     "passportRequired": "Passport number required for approval",
     "nationalityRequired": "Nationality required for approval",
     "iqamaRequired": "Iqama number required for approval",
-
     "selectClass": "Select Class",
     "chooseClass": "-- Select Class --",
     "fillAllFields": "All required fields must be filled before proceeding",

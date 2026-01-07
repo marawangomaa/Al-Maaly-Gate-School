@@ -15,7 +15,6 @@
 }
 
 
-
 /* Feature Cards Container */
 .feature-cards-container {
   display: flex;
@@ -30,7 +29,7 @@
 .feature-card {
   flex: 1;
   max-width: 489.2px;
-  max-height: 432px;
+  max-height: auto;
   border-radius: 3rem;
   overflow: hidden;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
