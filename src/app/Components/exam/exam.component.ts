@@ -37,11 +37,10 @@ export class ExamComponent implements OnInit {
     this.studentId = this._Auth.getStudentId()!;
     this.route.paramMap.subscribe(params => {
       this.examId = params.get('id')!;
+      if (this.examId) {
+        this.loadExam(this.examId);
+      }
     });
-
-    if (this.examId) {
-      this.loadExam(this.examId);
-    }
   }
 
   loadExam(examId: string) {

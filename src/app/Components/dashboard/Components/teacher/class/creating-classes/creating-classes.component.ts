@@ -5,8 +5,11 @@ import { isPlatformBrowser } from '@angular/common';
 import { ClassService } from '../../../../../../Services/class.service';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SubjectService } from '../../../../../../Services/subject.service';
+import { TeacherService } from '../../../../../../Services/teacher.service';
+import { ClassViewDto } from '../../../../../../Interfaces/iclass';
+import { SubjectViewDto } from '../../../../../../Interfaces/isubject';
 
 interface ClassFormModel {
   classId: FormControl<string>;
@@ -24,10 +27,10 @@ interface ClassFormModel {
   styleUrls: ['./creating-classes.component.css'],
 })
 export class CreatingClassesComponent implements OnInit {
-  
+
   classForm!: FormGroup<ClassFormModel>;
-  classes: any[] = [];
-  subjects: any[] = [];
+  classes: ClassViewDto[] | undefined= [];
+  subjects: SubjectViewDto[] | undefined= [];
   teacherId: string | null = null;
 
   constructor(
@@ -35,11 +38,12 @@ export class CreatingClassesComponent implements OnInit {
     private classService: ClassService,
     private subjectService: SubjectService,
     private appointmentService: ClassappointmentService,
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private translate: TranslateService,
+    private teacherService: TeacherService
+  ) { }
 
   ngOnInit(): void {
-
     // ✅ SSR-safe teacherId read
     if (isPlatformBrowser(this.platformId)) {
       this.teacherId = localStorage.getItem('teacherId');
@@ -57,16 +61,15 @@ export class CreatingClassesComponent implements OnInit {
   }
 
   loadDropdowns(): void {
-    this.classService.getAll().subscribe(res => {
+
+    this.teacherService.getTeacherClasses(this.teacherId).subscribe(res => {
       this.classes = res.data;
       console.log(res);
-      
     });
 
-    this.subjectService.getAll().subscribe(res => {
+    this.teacherService.getTeacherSubjects(this.teacherId).subscribe(res => {
       this.subjects = res.data;
       console.log(res);
-      
     });
   }
 
@@ -75,40 +78,71 @@ export class CreatingClassesComponent implements OnInit {
   }
 
   createClass(): void {
-  if (!this.teacherId) {
-    alert('Teacher ID not found.');
-    return;
+    if (!this.teacherId) {
+      alert(this.translate.instant('CLASSES.ALERTS.TEACHER_ID_NOT_FOUND'));
+      return;
+    }
+
+    if (this.classForm.invalid) {
+      this.classForm.markAllAsTouched();
+      return;
+    }
+
+    const form = this.classForm.getRawValue();
+
+    // FIX: Handle timezone issue - get local time components
+    const localStartDate = new Date(form.startTime);
+
+    // Get local time components (without timezone conversion)
+    const localStartTimeString = this.formatLocalTime(localStartDate);
+
+    // Calculate end time
+    const localEndDate = new Date(localStartDate.getTime() + form.duration * 60000);
+    const localEndTimeString = this.formatLocalTime(localEndDate);
+
+    const body = {
+      id: '',
+      link: form.link,
+      startTime: localStartTimeString, // Use local time string
+      endTime: localEndTimeString,     // Use local time string
+      status: 'Scheduled',
+      classId: form.classId,
+      subjectId: form.subjectId,
+      teacherId: this.teacherId
+    };
+
+    console.log('Creating appointment with:', body); // Debug log
+
+    this.appointmentService.create(body).subscribe(() => {
+      alert(this.translate.instant('CLASSES.ALERTS.APPOINTMENT_CREATED'));
+      this.classForm.reset({ duration: 60 });
+    });
   }
 
-  if (this.classForm.invalid) {
-    this.classForm.markAllAsTouched();
-    return;
+  // Helper method to format date in local time without timezone offset
+  private formatLocalTime(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+
+    // Format: YYYY-MM-DDTHH:mm:ss (local time)
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
   }
 
-  const form = this.classForm.getRawValue();
+  // Alternative: If your backend expects UTC, use this method
+  private formatToUTC(date: Date): string {
+    // Get UTC time components
+    const year = date.getUTCFullYear();
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    const hours = String(date.getUTCHours()).padStart(2, '0');
+    const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+    const seconds = String(date.getUTCSeconds()).padStart(2, '0');
 
-  // Parse the startTime string to Date object
-  const startTimeDate = new Date(form.startTime);
-  
-  // Calculate end time by adding duration in milliseconds
-  const endTimeDate = new Date(startTimeDate.getTime() + form.duration * 60000);
-
-  const body = {
-    id: '',
-    link: form.link,
-    startTime: startTimeDate.toISOString(), // Ensure proper ISO string format
-    endTime: endTimeDate.toISOString(),     // Use the calculated end time
-    status: 'Scheduled',
-    classId: form.classId,
-    subjectId: form.subjectId,
-    teacherId: this.teacherId
-  };
-
-  console.log('Creating appointment with:', body); // Debug log
-
-  this.appointmentService.create(body).subscribe(() => {
-    alert('Appointment created successfully!');
-    this.classForm.reset({ duration: 60 });
-  });
-}
+    // Format: YYYY-MM-DDTHH:mm:ssZ (UTC)
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}Z`;
+  }
 }

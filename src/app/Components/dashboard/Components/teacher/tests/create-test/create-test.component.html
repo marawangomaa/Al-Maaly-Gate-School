@@ -14,21 +14,20 @@
 
               <!-- TITLE -->
               <div class="mb-3">
-                <label class="form-label small-label">{{
-                  "TEST.TITLE" | translate
-                }}</label>
+                <label class="form-label small-label">{{ "TEST.TITLE" | translate }}</label>
                 <input
                   type="text"
                   class="form-control input-lg"
                   [(ngModel)]="testTitle"
                   name="testTitle"
+                  [placeholder]="'TEST.TITLE_PLACEHOLDER' | translate"
                   required
                 />
               </div>
 
               <!-- START DATE -->
               <div class="mb-3">
-                <label class="form-label small-label">Start Date</label>
+                <label class="form-label small-label">{{ "TEST.START_DATE" | translate }}</label>
                 <input
                   type="date"
                   class="form-control"
@@ -40,8 +39,7 @@
 
               <!-- START TIME -->
               <div class="mb-3">
-                <label class="form-label small-label">Start Time</label>
-
+                <label class="form-label small-label">{{ "TEST.START_TIME" | translate }}</label>
                 <div class="d-flex gap-2">
                   <!-- Time input (12-hour format) -->
                   <input
@@ -51,11 +49,10 @@
                     name="startHour"
                     min="1"
                     max="12"
-                    placeholder="HH"
+                    placeholder="{{ 'TEST.HOUR' | translate }}"
                     required
                     style="max-width: 80px"
                   />
-
                   <input
                     type="number"
                     class="form-control"
@@ -63,11 +60,10 @@
                     name="startMinute"
                     min="0"
                     max="59"
-                    placeholder="MM"
+                    placeholder="{{ 'TEST.MINUTE' | translate }}"
                     required
                     style="max-width: 80px"
                   />
-
                   <!-- AM/PM -->
                   <select
                     class="form-select"
@@ -76,22 +72,22 @@
                     required
                     style="max-width: 90px"
                   >
-                    <option value="AM">AM</option>
-                    <option value="PM">PM</option>
+                    <option value="AM">{{ "TEST.AM" | translate }}</option>
+                    <option value="PM">{{ "TEST.PM" | translate }}</option>
                   </select>
                 </div>
               </div>
 
               <!-- CLASS DROPDOWN -->
               <div class="mb-3">
-                <label class="form-label small-label">Class</label>
+                <label class="form-label small-label">{{ "TEST.CLASS" | translate }}</label>
                 <select
                   class="form-select"
                   [(ngModel)]="classId"
                   name="classId"
                   required
                 >
-                  <option value="" disabled selected>Select Class</option>
+                  <option value="" disabled selected>{{ "TEST.SELECT_CLASS" | translate }}</option>
                   <option *ngFor="let c of classes" [value]="c.id">
                     {{ c.className }}
                   </option>
@@ -100,148 +96,105 @@
 
               <!-- SUBJECT DROPDOWN -->
               <div class="mb-3">
-                <label class="form-label small-label">Subject</label>
+                <label class="form-label small-label">{{ "TEST.SUBJECT" | translate }}</label>
                 <select
                   class="form-select"
                   [(ngModel)]="subjectId"
                   name="subjectId"
                   required
                 >
-                  <option value="" disabled selected>Select Subject</option>
-                  <!-- Show only teacher's subjects -->
+                  <option value="" disabled selected>{{ "TEST.SELECT_SUBJECT" | translate }}</option>
                   <option *ngFor="let s of teacherSubjects" [value]="s.id">
                     {{ s.subjectName }}
                   </option>
                 </select>
-                
-                <!-- Show message if no subjects -->
                 <div *ngIf="teacherSubjects.length === 0 && !loading" class="text-muted small mt-1">
                   <i class="bi bi-info-circle me-1"></i>
-                  No subjects assigned to you yet.
+                  {{ "TEST.NO_SUBJECTS" | translate }}
                 </div>
               </div>
 
-              <!-- NUMBERS -->
-              <div class="col g-2 mb-3">
-                <div class="col">
-                  <label class="form-label small-label">Duration (Hours)</label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    [(ngModel)]="duration"
-                    name="duration"
-                    min="1"
-                    required
-                  />
-                </div>
-                <!-- عرض الدرجات المحسوبة تلقائياً -->
-                <div class="col">
-                  <label class="form-label small-label"
-                    >Total Questions Degree</label
-                  >
-                  <input
-                    type="number"
-                    class="form-control bg-light"
-                    [value]="totalQuestionsDegree"
-                    readonly
-                    disabled
-                  />
-                  <small class="text-muted">Auto-calculated</small>
-                </div>
-
-                <div class="col">
-                  <label class="form-label small-label"
-                    >Passing Degree (50%)</label
-                  >
-                  <input
-                    type="number"
-                    class="form-control bg-light"
-                    [value]="calculatedMinDegree"
-                    readonly
-                    disabled
-                  />
-                  <small class="text-muted">Auto-calculated</small>
-                </div>
+              <!-- DURATION -->
+              <div class="mb-3">
+                <label class="form-label small-label">{{ "TEST.DURATION" | translate }}</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="duration"
+                  name="duration"
+                  min="1"
+                  required
+                />
               </div>
 
-              <div class="row g-2 mb-3" *ngIf="false">
-                <div class="col-6"></div>
-                <div class="col-3">
-                  <label class="form-label small-label">Max</label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    [(ngModel)]="maxDegree"
-                    name="maxDegree"
-                    [value]="calculatedMaxDegree"
-                    hidden
-                  />
-                </div>
-                <div class="col-3">
-                  <label class="form-label small-label">Min</label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    [(ngModel)]="minDegree"
-                    name="minDegree"
-                    [value]="calculatedMinDegree"
-                    hidden
-                  />
-                </div>
+              <!-- TOTAL QUESTIONS DEGREE -->
+              <div class="mb-3">
+                <label class="form-label small-label">{{ "TEST.TOTAL_DEGREE" | translate }}</label>
+                <input
+                  type="number"
+                  class="form-control bg-light"
+                  [value]="totalQuestionsDegree"
+                  readonly
+                  disabled
+                />
+                <small class="text-muted">{{ "TEST.AUTO_CALCULATED" | translate }}</small>
               </div>
 
-              <!-- عرض ملخص الدرجات -->
-              <div
-                class="alert alert-info"
-                *ngIf="selectedQuestions.length > 0"
-              >
-                <h6>Degree Summary:</h6>
+              <!-- PASSING DEGREE -->
+              <div class="mb-3">
+                <label class="form-label small-label">{{ "TEST.PASSING_DEGREE" | translate }}</label>
+                <input
+                  type="number"
+                  class="form-control bg-light"
+                  [value]="calculatedMinDegree"
+                  readonly
+                  disabled
+                />
+                <small class="text-muted">{{ "TEST.AUTO_CALCULATED" | translate }}</small>
+              </div>
+
+              <!-- Hidden inputs for max and min degree -->
+              <div class="d-none">
+                <input
+                  type="number"
+                  [(ngModel)]="maxDegree"
+                  name="maxDegree"
+                  [value]="calculatedMaxDegree"
+                />
+                <input
+                  type="number"
+                  [(ngModel)]="minDegree"
+                  name="minDegree"
+                  [value]="calculatedMinDegree"
+                />
+              </div>
+
+              <!-- DEGREE SUMMARY -->
+              <div class="alert alert-info" *ngIf="selectedQuestions.length > 0">
+                <h6>{{ "TEST.DEGREE_SUMMARY" | translate }}:</h6>
                 <ul class="mb-0">
                   <li>
-                    Total Selected Questions:
+                    {{ "TEST.TOTAL_SELECTED_QUESTIONS" | translate }}:
                     <strong>{{ selectedQuestions.length }}</strong>
                   </li>
                   <li>
-                    Total Questions Degree:
+                    {{ "TEST.TOTAL_QUESTIONS_DEGREE" | translate }}:
                     <strong>{{ totalQuestionsDegree }}</strong>
                   </li>
                   <li>
-                    Passing Degree (50%):
+                    {{ "TEST.PASSING_DEGREE" | translate }}:
                     <strong>{{ calculatedMinDegree }}</strong>
                   </li>
                   <li>
-                    Maximum Degree: <strong>{{ calculatedMaxDegree }}</strong>
+                    {{ "TEST.MAX_DEGREE" | translate }}:
+                    <strong>{{ calculatedMaxDegree }}</strong>
                   </li>
                 </ul>
               </div>
 
-              <div
-                class="alert alert-info"
-                *ngIf="selectedQuestions.length > 0"
-              >
-                <h6>Auto-calculated Degrees:</h6>
-                <p class="mb-1">
-                  Total Questions Degree:
-                  <strong>{{ totalQuestionsDegree }}</strong>
-                </p>
-                <p class="mb-0">Passing Rate: <strong>50%</strong></p>
-              </div>
-
-              <div
-                class="alert alert-info"
-                *ngIf="selectedQuestions.length > 0"
-              >
-                <h6>Auto-calculated Degrees:</h6>
-                <p class="mb-1">
-                  Total Questions Degree:
-                  <strong>{{ totalQuestionsDegree }}</strong>
-                </p>
-                <p class="mb-0">Passing Rate: <strong>50%</strong></p>
-              </div>
-
               <div class="mt-4 d-grid">
                 <button type="submit" class="primary-btn">
-                  <i class="bi bi-save me-2"></i> Create Test
+                  <i class="bi bi-save me-2"></i>{{ "TEST.CREATE_BTN" | translate }}
                 </button>
               </div>
             </div>
@@ -254,16 +207,12 @@
               <div class="question-group mb-4">
                 <div class="group-header d-flex justify-content-between">
                   <h5 class="mb-0">
-                    <i class="bi bi-ui-radios-grid me-2"></i>MCQ
+                    <i class="bi bi-ui-radios-grid me-2"></i>{{ "TEST.MCQ_QUESTIONS" | translate }}
                   </h5>
                   <span class="badge">{{ grouped.mcq.length }}</span>
                 </div>
-
-                <div class="list-grid mt-3">
-                  <div
-                    *ngFor="let q of grouped.mcq"
-                    class="form-check q-item mb-2"
-                  >
+                <div class="list-grid mt-3" *ngIf="grouped.mcq.length > 0; else noMcq">
+                  <div *ngFor="let q of grouped.mcq" class="form-check q-item mb-2">
                     <input
                       type="checkbox"
                       class="form-check-input visually-hidden"
@@ -271,39 +220,34 @@
                       (change)="toggleQuestion(q.id, $event)"
                       id="mcq-{{ q.id }}"
                     />
-
-                    <label
-                      class="form-check-label q-label"
-                      for="mcq-{{ q.id }}"
-                    >
+                    <label class="form-check-label q-label" for="mcq-{{ q.id }}">
                       <div class="q-left">
                         <i class="bi bi-question-circle q-icon"></i>
                         <div class="q-text">{{ q.content }}</div>
                       </div>
                       <div class="q-right">
-                        <span class="chip"
-                          >{{ q.choices?.length }} choices</span
-                        >
+                        <span class="chip">{{ q.choices?.length }} {{ "TEST.CHOICES" | translate }}</span>
                       </div>
                     </label>
                   </div>
                 </div>
+                <ng-template #noMcq>
+                  <div class="text-center text-muted py-3">
+                    {{ "TEST.NO_MCQ" | translate }}
+                  </div>
+                </ng-template>
               </div>
 
               <!-- Connection -->
               <div class="question-group mb-4">
                 <div class="group-header d-flex justify-content-between">
                   <h5 class="mb-0">
-                    <i class="bi bi-ui-radios-grid me-2"></i>Connection
+                    <i class="bi bi-link me-2"></i>{{ "TEST.CONNECTION" | translate }}
                   </h5>
                   <span class="badge">{{ grouped.connection.length }}</span>
                 </div>
-
-                <div class="list-grid mt-3">
-                  <div
-                    *ngFor="let q of grouped.connection"
-                    class="form-check q-item mb-2"
-                  >
+                <div class="list-grid mt-3" *ngIf="grouped.connection.length > 0">
+                  <div *ngFor="let q of grouped.connection" class="form-check q-item mb-2">
                     <input
                       type="checkbox"
                       class="form-check-input visually-hidden"
@@ -311,19 +255,13 @@
                       (change)="toggleQuestion(q.id, $event)"
                       id="connection-{{ q.id }}"
                     />
-
-                    <label
-                      class="form-check-label q-label"
-                      for="connection-{{ q.id }}"
-                    >
+                    <label class="form-check-label q-label" for="connection-{{ q.id }}">
                       <div class="q-left">
                         <i class="bi bi-question-circle q-icon"></i>
                         <div class="q-text">{{ q.content }}</div>
                       </div>
                       <div class="q-right">
-                        <span class="chip"
-                          >{{ q.choices?.length }} choices</span
-                        >
+                        <span class="chip">{{ q.choices?.length }} {{ "TEST.CHOICES" | translate }}</span>
                       </div>
                     </label>
                   </div>
@@ -334,16 +272,12 @@
               <div class="question-group mb-4">
                 <div class="group-header d-flex justify-content-between">
                   <h5 class="mb-0">
-                    <i class="bi bi-toggle2-on me-2"></i>True / False
+                    <i class="bi bi-toggle2-on me-2"></i>{{ "TEST.TRUE_FALSE" | translate }}
                   </h5>
                   <span class="badge">{{ grouped.truefalse.length }}</span>
                 </div>
-
-                <div class="list-grid mt-3">
-                  <div
-                    *ngFor="let q of grouped.truefalse"
-                    class="form-check q-item mb-2"
-                  >
+                <div class="list-grid mt-3" *ngIf="grouped.truefalse.length > 0; else noTrueFalse">
+                  <div *ngFor="let q of grouped.truefalse" class="form-check q-item mb-2">
                     <input
                       type="checkbox"
                       class="form-check-input visually-hidden"
@@ -351,7 +285,6 @@
                       (change)="toggleQuestion(q.id, $event)"
                       id="tf-{{ q.id }}"
                     />
-
                     <label class="form-check-label q-label" for="tf-{{ q.id }}">
                       <div class="q-left">
                         <i class="bi bi-check2-circle q-icon"></i>
@@ -363,22 +296,23 @@
                     </label>
                   </div>
                 </div>
+                <ng-template #noTrueFalse>
+                  <div class="text-center text-muted py-3">
+                    {{ "TEST.NO_TRUEFALSE" | translate }}
+                  </div>
+                </ng-template>
               </div>
 
-              <!-- Complete -->
+              <!-- Complete / Text Questions -->
               <div class="question-group">
                 <div class="group-header d-flex justify-content-between">
                   <h5 class="mb-0">
-                    <i class="bi bi-chat-text-fill me-2"></i>Text Questions
+                    <i class="bi bi-chat-text-fill me-2"></i>{{ "TEST.TEXT_QUESTIONS" | translate }}
                   </h5>
                   <span class="badge">{{ grouped.complete.length }}</span>
                 </div>
-
-                <div class="list-grid mt-3">
-                  <div
-                    *ngFor="let q of grouped.complete"
-                    class="form-check q-item mb-2"
-                  >
+                <div class="list-grid mt-3" *ngIf="grouped.complete.length > 0; else noText">
+                  <div *ngFor="let q of grouped.complete" class="form-check q-item mb-2">
                     <input
                       type="checkbox"
                       class="form-check-input visually-hidden"
@@ -386,21 +320,22 @@
                       (change)="toggleQuestion(q.id, $event)"
                       id="complete-{{ q.id }}"
                     />
-
-                    <label
-                      class="form-check-label q-label"
-                      for="complete-{{ q.id }}"
-                    >
+                    <label class="form-check-label q-label" for="complete-{{ q.id }}">
                       <div class="q-left">
                         <i class="bi bi-file-text q-icon"></i>
                         <div class="q-text">{{ q.content }}</div>
                       </div>
                       <div class="q-right">
-                        <span class="chip">{{ q.degree }} marks</span>
+                        <span class="chip">{{ q.degree }} {{ "TEST.MARKS" | translate }}</span>
                       </div>
                     </label>
                   </div>
                 </div>
+                <ng-template #noText>
+                  <div class="text-center text-muted py-3">
+                    {{ "TEST.NO_TEXT" | translate }}
+                  </div>
+                </ng-template>
               </div>
             </ng-container>
           </div>

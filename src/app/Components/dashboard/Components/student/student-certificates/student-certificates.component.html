@@ -5,14 +5,20 @@
 
   <!-- Loading -->
   <div *ngIf="isLoading" class="loading-section text-center">
-    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
+    <div
+      class="spinner-border text-primary"
+      style="width: 3rem; height: 3rem"
+    ></div>
     <p class="mt-3 text-muted">
       {{ "CERTIFICATION_STUDENT.LOADING" | translate }}
     </p>
   </div>
 
   <!-- Empty -->
-  <div *ngIf="!isLoading && certificates.length === 0" class="empty-state text-center">
+  <div
+    *ngIf="!isLoading && certificates.length === 0"
+    class="empty-state text-center"
+  >
     <i class="bi bi-file-earmark-text empty-icon"></i>
     <p class="empty-title">
       {{ "CERTIFICATION_STUDENT.NO_CERTIFICATES" | translate }}
@@ -24,12 +30,17 @@
 
   <!-- Certificates -->
   <div *ngIf="!isLoading && certificates.length > 0" class="row g-4 mt-2">
-    <div class="col-12 col-md-6 col-lg-4" *ngFor="let certificate of certificates">
+    <div
+      class="col-12 col-md-6 col-lg-4"
+      *ngFor="let certificate of certificates"
+    >
       <div class="certificate-card card shadow-sm">
-
         <div class="d-flex justify-content-between align-items-start mb-3">
           <h3 class="cert-title">{{ certificate.degreeType }}</h3>
-          <span class="badge px-3 py-2" [ngClass]="getStatusBadgeClass(certificate)">
+          <span
+            class="badge px-3 py-2"
+            [ngClass]="getStatusBadgeClass(certificate)"
+          >
             {{ getStatusText(certificate) }}
           </span>
         </div>
@@ -50,7 +61,8 @@
           <p *ngIf="certificate.verified">
             <i class="bi bi-check-circle"></i>
             {{ "CERTIFICATION_STUDENT.VERIFIED_BY" | translate }}:
-            {{ certificate.verifiedBy }} on {{ formatDate(certificate.verifiedDate!) }}
+            {{ certificate.verifiedBy }} on
+            {{ formatDate(certificate.verifiedDate!) }}
           </p>
 
           <p *ngIf="certificate.academicYear">
@@ -61,12 +73,20 @@
         </div>
 
         <div class="btn-group mt-3 w-100">
-          <button class="primary-btn w-50" (click)="viewCertificate(certificate)" [disabled]="certificate.archived">
+          <button
+            class="primary-btn w-50"
+            (click)="viewCertificate(certificate)"
+            [disabled]="certificate.archived"
+          >
             <i class="bi bi-eye me-1"></i>
             {{ "CERTIFICATION_STUDENT.VIEW" | translate }}
           </button>
 
-          <button class="primary-btn w-50" (click)="downloadCertificate(certificate)" [disabled]="certificate.archived">
+          <button
+            class="primary-btn w-50"
+            (click)="downloadCertificate(certificate)"
+            [disabled]="certificate.archived"
+          >
             <i class="bi bi-download me-1"></i>
             {{ "CERTIFICATION_STUDENT.DOWNLOAD" | translate }}
           </button>
@@ -75,18 +95,20 @@
         <div *ngIf="certificate.archived" class="mt-2 text-center">
           <small class="text-muted">
             <i class="bi bi-archive"></i>
-            {{ "CERTIFICATION_STUDENT.ARCHIVED_ON" | translate }}: {{ formatDate(certificate.archivedDate!) }}
+            {{ "CERTIFICATION_STUDENT.ARCHIVED_ON" | translate }}:
+            {{ formatDate(certificate.archivedDate!) }}
           </small>
         </div>
-
       </div>
     </div>
   </div>
 
   <!-- Messages -->
-  <div *ngIf="message"
+  <div
+    *ngIf="message"
     class="alert mt-4"
-    [ngClass]="messageType === 'success' ? 'alert-success' : 'alert-danger'">
+    [ngClass]="messageType === 'success' ? 'alert-success' : 'alert-danger'"
+  >
     {{ message }}
   </div>
 </div>

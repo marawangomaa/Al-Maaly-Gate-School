@@ -17,6 +17,7 @@ import { ConfirmEmailComponent } from './Components/confirm-email/confirm-email.
 import { GuestGuard } from './Guards/guest.guard';
 import { ConfirmationStatusComponent } from './Components/confirmation-status/confirmation-status.component';
 
+
 export const routes: Routes = [
 
   // Visitor layout
@@ -26,25 +27,41 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       {
-        path: 'home', component: HomeComponent,
+        path: 'home',
+        loadComponent: () => import('./Components/home/home.component').then(m => m.HomeComponent),
         canActivate: [GuestGuard]
       },
       {
-        path: 'login', component: LoginComponent,
+        path: 'login',
+        loadComponent: () => import('./Components/login/login.component').then(m => m.LoginComponent),
         canActivate: [GuestGuard]
       },
       {
-        path: 'register', component: RegisterComponent,
+        path: 'forgot-password',
+        loadComponent: () =>
+          import('./Components/login/Components/forgot-password.component/forgot-password.component.component')
+            .then(m => m.ForgotPasswordComponentComponent),
+        canActivate: [GuestGuard]
+      },
+      {
+        path: 'reset-password',
+        loadComponent: () =>
+          import('./Components/login/Components/reset-password-component/reset-password-component.component')
+            .then(m => m.ResetPasswordComponentComponent)
+      },
+      {
+        path: 'register',
+        loadComponent: () => import('./Components/register/register.component').then(m => m.RegisterComponent),
         canActivate: [GuestGuard]
       },
       {
         path: 'confirm-email',
-        component: ConfirmEmailComponent,
+        loadComponent: () => import('./Components/confirm-email/confirm-email.component').then(m => m.ConfirmEmailComponent),
         canActivate: [GuestGuard]
       },
       {
         path: 'confirmation-status',
-        component: ConfirmationStatusComponent,
+        loadComponent: () => import('./Components/confirmation-status/confirmation-status.component').then(m => m.ConfirmationStatusComponent),
         canActivate: [GuestGuard]
       }
     ]
@@ -56,8 +73,14 @@ export const routes: Routes = [
     component: LogedInComponent,
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
-      { path: 'home', component: HomeloggedinComponent },
-      { path: 'exam/:id', component: ExamComponent },
+      {
+        path: 'home',
+        loadComponent: () => import('./Components/homeloggedin/homeloggedin.component').then(m => m.HomeloggedinComponent),
+      },
+      {
+        path: 'exam/:id', loadComponent: () => import('./Components/exam/exam.component').then(m => m.ExamComponent),
+        data: { renderMode: 'server' }
+      },
       // Dashboard
       {
         path: 'dashboard',
@@ -286,9 +309,11 @@ export const routes: Routes = [
                 .then(m => m.StudentCertificatesComponent)
           }
         ]
-      }, {
+      },
+      {
         path: 'account/status/:status',
-        component: AccountStatusDisplayerComponent
+        loadComponent: () => import('./Components/account-status-displayer/account-status-displayer.component').then(m => m.AccountStatusDisplayerComponent),
+        data: { renderMode: 'server' }
       },
 
       { path: 'profile', component: ProfileComponent }

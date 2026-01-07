@@ -6,7 +6,7 @@
         <h3 class="main-title mb-0">{{ 'TEACHER_CLASSES.TITLE' | translate }}</h3>
         <button class="btn btn-outline-primary" (click)="toggleAllStudents()">
           <i class="bi" [class.bi-chevron-down]="!allExpanded" [class.bi-chevron-up]="allExpanded"></i>
-          {{ allExpanded ? 'Collapse All' : 'Expand All' }}
+          {{ allExpanded ? ('TEACHER_CLASSES.COLLAPSE_ALL' | translate) : ('TEACHER_CLASSES.EXPAND_ALL' | translate) }}
         </button>
       </div>
     </div>
@@ -19,7 +19,7 @@
         <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
-        <p class="mt-3 fs-5 text-muted">Loading your classes and subjects...</p>
+        <p class="mt-3 fs-5 text-muted">{{ 'TEACHER_CLASSES.LOADING_CLASSES' | translate }}</p>
       </div>
     </div>
   </div>
@@ -30,8 +30,8 @@
       <div class="alert alert-info d-flex align-items-center">
         <i class="bi bi-info-circle-fill fs-4 me-3"></i>
         <div>
-          <h5 class="alert-heading mb-2">No Classes Assigned</h5>
-          <p class="mb-0">You are not assigned to any classes yet. Please contact the administrator.</p>
+          <h5 class="alert-heading mb-2">{{ 'TEACHER_CLASSES.NO_CLASSES_TITLE' | translate }}</h5>
+          <p class="mb-0">{{ 'TEACHER_CLASSES.NO_CLASSES_MESSAGE' | translate }}</p>
         </div>
       </div>
     </div>
@@ -56,18 +56,18 @@
                 <div class="class-info">
                   <span class="badge bg-light text-primary me-2">
                     <i class="bi bi-book me-1"></i>
-                    {{ teacherSubjects.length }} Subjects
+                    {{ teacherSubjects.length }} {{ 'TEACHER_CLASSES.SUBJECTS' | translate }}
                   </span>
                   <span class="badge bg-light text-primary">
                     <i class="bi bi-people me-1"></i>
-                    {{ getStudentsForClass(cls.id).length }} Students
+                    {{ getStudentsForClass(cls.id).length }} {{ 'TEACHER_CLASSES.STUDENTS' | translate }}
                   </span>
                 </div>
               </div>
             </div>
             <div>
               <span class="badge bg-white text-primary fs-6 px-3 py-2">
-                {{ calculateClassAverage(cls.id) }}% Average
+                {{ calculateClassAverage(cls.id) }}% {{ 'TEACHER_CLASSES.AVERAGE' | translate }}
               </span>
             </div>
           </div>
@@ -80,7 +80,7 @@
           <div class="mb-4">
             <h6 class="section-title">
               <i class="bi bi-grid-3x3-gap-fill me-2"></i>
-              Assigned Subjects
+              {{ 'TEACHER_CLASSES.ASSIGNED_SUBJECTS' | translate }}
             </h6>
             <div class="d-flex flex-wrap gap-2">
               <span *ngFor="let subject of teacherSubjects" 
@@ -95,12 +95,12 @@
           <div class="students-section">
             <h6 class="section-title mb-3">
               <i class="bi bi-person-lines-fill me-2"></i>
-              Students Grades Management
+              {{ 'TEACHER_CLASSES.STUDENTS_GRADES_MANAGEMENT' | translate }}
             </h6>
             
             <div *ngIf="getStudentsForClass(cls.id).length === 0" class="alert alert-warning">
               <i class="bi bi-exclamation-triangle me-2"></i>
-              No students enrolled in this class yet.
+              {{ 'TEACHER_CLASSES.NO_STUDENTS_ENROLLED' | translate }}
             </div>
 
             <div class="accordion" id="studentsAccordion">
@@ -120,10 +120,10 @@
                         <div class="text-start">
                           <h6 class="mb-1 fw-bold">{{ getStudentName(cls.id, studentId) }}</h6>
                           <div class="text-muted small">
-                            <span class="me-3"><i class="bi bi-person-badge me-1"></i> ID: {{ studentId | shortenId }}</span>
+                            <span class="me-3"><i class="bi bi-person-badge me-1"></i> {{ 'TEACHER_CLASSES.ID' | translate }}: {{ studentId | shortenId }}</span>
                             <span *ngIf="hasExistingGrades(studentId)">
                               <i class="bi bi-star-fill text-warning me-1"></i>
-                              {{ calculateStudentAverage(studentId) }}% Average
+                              {{ calculateStudentAverage(studentId) }}% {{ 'TEACHER_CLASSES.AVERAGE' | translate }}
                             </span>
                           </div>
                         </div>
@@ -141,7 +141,7 @@
                           </div>
                         </div>
                         <span class="badge" [ngClass]="hasExistingGrades(studentId) ? 'bg-success' : 'bg-secondary'">
-                          {{ hasExistingGrades(studentId) ? 'Graded' : 'Pending' }}
+                          {{ hasExistingGrades(studentId) ? ('TEACHER_CLASSES.GRADED' | translate) : ('TEACHER_CLASSES.PENDING' | translate) }}
                         </span>
                       </div>
                     </div>
@@ -157,14 +157,14 @@
                     <div *ngIf="hasExistingGrades(studentId)" class="alert alert-success d-flex align-items-center mb-4">
                       <i class="bi bi-check-circle-fill fs-4 me-3"></i>
                       <div>
-                        <strong>Grades already exist for this student.</strong> 
-                        You can update the scores below. Changes will overwrite existing grades.
+                        <strong>{{ 'TEACHER_CLASSES.EXISTING_GRADES_ALERT_TITLE' | translate }}</strong> 
+                        {{ 'TEACHER_CLASSES.EXISTING_GRADES_ALERT_MESSAGE' | translate }}
                       </div>
                     </div>
 
                     <form [formGroup]="getStudentForm(cls.id, studentId)!" class="grades-form">
                       
-                      <!-- Exam Types Navigation - UPDATED SECTION -->
+                      <!-- Exam Types Navigation -->
                       <div class="exam-type-nav mb-4">
                         <nav>
                           <div class="nav nav-pills" id="nav-tab" role="tablist">
@@ -173,28 +173,28 @@
                                     (click)="setActiveExamType(examTypes[0])"
                                     [class.active]="activeExamType.type === examTypes[0].type">
                               <i class="bi bi-file-earmark-text me-2"></i>
-                              Midterm 1 ({{ examTypes[0].maxScore }})
+                              {{ 'TEACHER_CLASSES.MIDTERM_1_MAX' | translate: { value: examTypes[0].maxScore } }}
                             </button>
                             <button class="nav-link" 
                                     type="button"
                                     (click)="setActiveExamType(examTypes[1])"
                                     [class.active]="activeExamType.type === examTypes[1].type">
                               <i class="bi bi-file-earmark-medical me-2"></i>
-                              Final 1 ({{ examTypes[1].maxScore }})
+                              {{ 'TEACHER_CLASSES.FINAL_1_MAX' | translate: { value: examTypes[1].maxScore } }}
                             </button>
                             <button class="nav-link" 
                                     type="button"
                                     (click)="setActiveExamType(examTypes[2])"
                                     [class.active]="activeExamType.type === examTypes[2].type">
                               <i class="bi bi-file-earmark-text me-2"></i>
-                              Midterm 2 ({{ examTypes[2].maxScore }})
+                              {{ 'TEACHER_CLASSES.MIDTERM_2_MAX' | translate: { value: examTypes[2].maxScore } }}
                             </button>
                             <button class="nav-link" 
                                     type="button"
                                     (click)="setActiveExamType(examTypes[3])"
                                     [class.active]="activeExamType.type === examTypes[3].type">
                               <i class="bi bi-file-earmark-medical me-2"></i>
-                              Final 2 ({{ examTypes[3].maxScore }})
+                              {{ 'TEACHER_CLASSES.FINAL_2_MAX' | translate: { value: examTypes[3].maxScore } }}
                             </button>
                           </div>
                         </nav>
@@ -202,28 +202,27 @@
                         <!-- Total Score Info -->
                         <div class="mt-2 text-center">
                           <small class="text-muted">
-                            Total for both terms: {{ examTypes[0].maxScore + examTypes[1].maxScore + examTypes[2].maxScore + examTypes[3].maxScore }} marks
-                            (Midterms: {{ examTypes[0].maxScore + examTypes[2].maxScore }} + Finals: {{ examTypes[1].maxScore + examTypes[3].maxScore }})
+                            {{ 'TEACHER_CLASSES.TOTAL_BOTH_TERMS' | translate }}: {{ examTypes[0].maxScore + examTypes[1].maxScore + examTypes[2].maxScore + examTypes[3].maxScore }} {{ 'TEACHER_CLASSES.MARKS' | translate }}
+                            ({{ 'TEACHER_CLASSES.MIDTERMS' | translate }}: {{ examTypes[0].maxScore + examTypes[2].maxScore }} + {{ 'TEACHER_CLASSES.FINALS' | translate }}: {{ examTypes[1].maxScore + examTypes[3].maxScore }})
                           </small>
                         </div>
                       </div>
 
-                      
                       <!-- Global Component Scores Toggle -->
                       <div class="mb-4">
                         <div class="form-check form-switch">
                           <input class="form-check-input" 
                                  type="checkbox" 
                                  role="switch" 
-                                 id="useComponents{{studentId}}"
+                                 [id]="'useComponents' + studentId"
                                  [checked]="getStudentForm(cls.id, studentId)?.get('useComponents')?.value"
                                  (change)="toggleComponents(cls.id, studentId, $event)">
-                          <label class="form-check-label fw-bold" for="useComponents{{studentId}}">
+                          <label class="form-check-label fw-bold" [for]="'useComponents' + studentId">
                             <i class="bi bi-pie-chart-fill me-2"></i>
-                            Use Component Scores (Oral/Exam/Practical)
+                            {{ 'TEACHER_CLASSES.USE_COMPONENTS_SWITCH' | translate }}
                           </label>
                           <small class="text-muted d-block ms-4">
-                            Enable to enter detailed scores for subjects that have separate components
+                            {{ 'TEACHER_CLASSES.USE_COMPONENTS_HINT' | translate }}
                           </small>
                         </div>
                       </div>
@@ -246,15 +245,15 @@
                                   </h6>
                                   <div class="d-flex justify-content-between align-items-center">
                                     <small class="text-muted">
-                                      Max: {{ asFormGroup(degreeControl).get('maxScore')?.value }} marks
+                                      {{ 'TEACHER_CLASSES.MAX' | translate }}: {{ asFormGroup(degreeControl).get('maxScore')?.value }} {{ 'TEACHER_CLASSES.MARKS' | translate }}
                                       <span *ngIf="asFormGroup(degreeControl).get('useComponents')?.value" class="ms-2">
-                                        (Components: {{ calculateComponentMaxTotalControl(degreeControl) | number:'1.0-2' }})
+                                        ({{ 'TEACHER_CLASSES.COMPONENTS' | translate }}: {{ calculateComponentMaxTotalControl(degreeControl) | number:'1.0-2' }})
                                       </span>
                                     </small>
                                     <span *ngIf="getExistingGrade(studentId, asFormGroup(degreeControl).get('subjectId')?.value, getActiveDegreeType())" 
                                           class="badge bg-info">
                                       <i class="bi bi-check-circle me-1"></i>
-                                      Graded
+                                      {{ 'TEACHER_CLASSES.GRADED' | translate }}
                                     </span>
                                   </div>
                                 </div>
@@ -269,7 +268,7 @@
                                           formControlName="useComponents"
                                           (change)="toggleSubjectComponents(degreeControl)">
                                     <label class="form-check-label small" [for]="'subjectComponents' + studentId + i">
-                                      Use components for this subject
+                                      {{ 'TEACHER_CLASSES.USE_COMPONENTS_SUBJECT' | translate }}
                                     </label>
                                   </div>
                                 </div>
@@ -280,7 +279,7 @@
                                   
                                   <div class="mb-2 text-center">
                                     <small class="text-muted">
-                                      Total components weight: {{ activeExamType.maxScore }} marks
+                                      {{ 'TEACHER_CLASSES.TOTAL_COMPONENTS_WEIGHT' | translate }}: {{ activeExamType.maxScore }} {{ 'TEACHER_CLASSES.MARKS' | translate }}
                                     </small>
                                   </div>
                                   
@@ -292,14 +291,14 @@
                                         <i class="bi bi-circle-fill me-1" style="font-size: 6px;"></i>
                                         {{ asFormGroup(componentControl).get('componentName')?.value }}
                                         <span class="ms-auto badge bg-light text-dark">
-                                          {{ asFormGroup(componentControl).get('maxScore')?.value | number:'1.0-2' }} marks
+                                          {{ asFormGroup(componentControl).get('maxScore')?.value | number:'1.0-2' }} {{ 'TEACHER_CLASSES.MARKS' | translate }}
                                         </span>
                                       </label>
                                       <div class="input-group input-group-sm">
                                         <input type="number" 
                                               class="form-control"
                                               formControlName="score"
-                                              placeholder="Score"
+                                              [placeholder]="'TEACHER_CLASSES.SCORE' | translate"
                                               min="0"
                                               [max]="asFormGroup(componentControl).get('maxScore')?.value"
                                               step="0.5">
@@ -315,14 +314,14 @@
                                       </div>
                                       <div *ngIf="asFormGroup(componentControl).get('score')?.invalid && asFormGroup(componentControl).get('score')?.touched" 
                                           class="invalid-feedback d-block small mt-1">
-                                        Invalid score
+                                        {{ 'TEACHER_CLASSES.INVALID_SCORE' | translate }}
                                       </div>
                                     </div>
                                   </div>
 
                                   <!-- Calculated Total -->
                                   <div class="calculated-total bg-light p-2 rounded text-center mt-3">
-                                    <small class="text-muted d-block">Calculated Total ({{ activeExamType.maxScore }} marks)</small>
+                                    <small class="text-muted d-block">{{ 'TEACHER_CLASSES.CALCULATED_TOTAL' | translate }} ({{ activeExamType.maxScore }} {{ 'TEACHER_CLASSES.MARKS' | translate }})</small>
                                     <strong class="text-success">
                                       {{ calculateComponentTotalControl(degreeControl) | number:'1.0-2' }} / {{ calculateComponentMaxTotalControl(degreeControl) | number:'1.0-2' }}
                                     </strong>
@@ -339,13 +338,13 @@
                                 <div *ngIf="!asFormGroup(degreeControl).get('useComponents')?.value">
                                   <div class="simple-score-input">
                                     <label class="small fw-semibold mb-2">
-                                      <i class="bi bi-input-cursor-text me-1"></i>Total Score ({{ activeExamType.maxScore }} marks)
+                                      <i class="bi bi-input-cursor-text me-1"></i>{{ 'TEACHER_CLASSES.TOTAL_SCORE' | translate }} ({{ activeExamType.maxScore }} {{ 'TEACHER_CLASSES.MARKS' | translate }})
                                     </label>
                                     <div class="input-group">
                                       <input type="number" 
                                             class="form-control"
                                             formControlName="score"
-                                            placeholder="Enter score"
+                                            [placeholder]="'TEACHER_CLASSES.ENTER_SCORE' | translate"
                                             min="0"
                                             [max]="asFormGroup(degreeControl).get('maxScore')?.value"
                                             step="0.5">
@@ -353,7 +352,7 @@
                                     </div>
                                     <div *ngIf="asFormGroup(degreeControl).get('score')?.invalid && asFormGroup(degreeControl).get('score')?.touched" 
                                         class="invalid-feedback d-block small mt-1">
-                                      Score must be between 0 and {{ asFormGroup(degreeControl).get('maxScore')?.value }}
+                                      {{ 'TEACHER_CLASSES.SCORE_VALIDATION' | translate }} {{ asFormGroup(degreeControl).get('maxScore')?.value }}
                                     </div>
                                   </div>
 
@@ -369,7 +368,7 @@
                                   <!-- Existing Grade Display -->
                                   <div *ngIf="getExistingGrade(studentId, asFormGroup(degreeControl).get('subjectId')?.value, getActiveDegreeType())" 
                                       class="existing-grade mt-2">
-                                    <small class="text-muted">Current:</small>
+                                    <small class="text-muted">{{ 'TEACHER_CLASSES.CURRENT' | translate }}:</small>
                                     <div class="badge bg-info-subtle text-info border">
                                       {{ getExistingGrade(studentId, asFormGroup(degreeControl).get('subjectId')?.value, getActiveDegreeType())?.score }} / {{ asFormGroup(degreeControl).get('maxScore')?.value }}
                                     </div>
@@ -389,7 +388,7 @@
                                   class="btn btn-outline-secondary"
                                   (click)="resetForm(cls.id, studentId)">
                             <i class="bi bi-arrow-counterclockwise me-2"></i>
-                            Reset
+                            {{ 'TEACHER_CLASSES.RESET' | translate }}
                           </button>
                           <div class="d-flex gap-2">
                             <button type="button" 
@@ -397,7 +396,7 @@
                                     (click)="saveAsDraft(cls.id, studentId)"
                                     [disabled]="getStudentForm(cls.id, studentId)?.invalid || savingStudentId === studentId">
                               <i class="bi bi-save me-2"></i>
-                              Save Draft
+                              {{ 'TEACHER_CLASSES.SAVE_DRAFT' | translate }}
                             </button>
                             <button type="button" 
                                     class="btn btn-success"
@@ -406,12 +405,12 @@
                               
                               <span *ngIf="savingStudentId === studentId">
                                 <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-                                Saving...
+                                {{ 'TEACHER_CLASSES.SAVING' | translate }}
                               </span>
                               
                               <span *ngIf="savingStudentId !== studentId">
                                 <i class="bi bi-check-circle me-2"></i>
-                                {{ hasExistingGrades(studentId) ? 'Update Grades' : 'Save Grades' }}
+                                {{ hasExistingGrades(studentId) ? ('TEACHER_CLASSES.UPDATE_GRADES' | translate) : ('TEACHER_CLASSES.SAVE_GRADES' | translate) }}
                               </span>
                             </button>
                           </div>

@@ -6,7 +6,7 @@ import { AuthService } from '../../../../../Services/AuthService';
 import { ApiResponse } from '../../../../../Interfaces/auth';
 import { CommonModule } from '@angular/common';
 import { ParentService } from '../../../../../Services/parent.service';
-import { iparentViewDto } from '../../../../../Interfaces/iparentViewDto';
+import { iparentViewDto, iparentViewDtoWithDocs } from '../../../../../Interfaces/iparentViewDto';
 import { FormsModule } from '@angular/forms';
 import { StudentService } from '../../../../../Services/student.service';
 import { istudentSearchResult } from '../../../../../Interfaces/istudentSearchResult';
@@ -14,12 +14,6 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { environment } from '../../../../../../environments/environment';
 import { ifileRecord } from '../../../../../Interfaces/ifileRecord';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-
-// Update the interface to include docCount (add this if you can modify the interface file)
-// Otherwise, extend it locally
-interface iparentViewDtoWithDocs extends iparentViewDto {
-  docCount?: number;
-}
 
 @Component({
   selector: 'app-admin-parent-accounts',
@@ -40,7 +34,8 @@ export class AdminParentsAccountsComponent {
   searchResults: istudentSearchResult[] = [];
   isSearching: boolean = false;
   selectedStudent: any = null;
-  relation: string = 'father';
+  gender: string = '';
+  relation: string = '';
   isAssigning: boolean = false;
   hasPerformedSearch: boolean = false;
 
@@ -203,14 +198,14 @@ export class AdminParentsAccountsComponent {
     }
   }
 
-  openAssignModal(parentId: string, parentName: string): void {
+  openAssignModal(parentId: string, parentName: string, gender: string): void {
     this.selectedParentIdForModal = parentId;
     this.selectedParentNameForModal = parentName;
     this.showAssignModal = true;
     this.searchQuery = '';
     this.searchResults = [];
     this.selectedStudent = null;
-    this.relation = 'father';
+    this.gender = gender;
     this.hasPerformedSearch = false;
   }
 
@@ -303,7 +298,11 @@ export class AdminParentsAccountsComponent {
       return;
     }
 
-    this.openAssignModal(parentId, parent.fullName);
+
+
+
+
+    this.openAssignModal(parentId, parent.fullName, parent.gender);
   }
 
   private approveParentAccountAfterAssignment(parentId: string): void {
@@ -408,7 +407,7 @@ export class AdminParentsAccountsComponent {
     this.searchQuery = '';
     this.searchResults = [];
     this.selectedStudent = null;
-    this.relation = 'father';
+    this.gender = '';
     this.isSearching = false;
     this.isAssigning = false;
     this.hasPerformedSearch = false;
@@ -501,6 +500,7 @@ export class AdminParentsAccountsComponent {
       this._parentService.GetAllParents().subscribe({
         next: (response: ApiResponse<iparentViewDtoWithDocs[]>) => {
           this.allparents = response.data || [];
+          console.log('Loaded parents:', this.allparents);
           // Optionally calculate docCount for each parent if your backend doesn't provide it
           // this.allparents.forEach(parent => {
           //   parent.docCount = Math.floor(Math.random() * 5); // For demo only, remove in production

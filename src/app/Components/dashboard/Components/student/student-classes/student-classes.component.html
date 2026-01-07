@@ -1,46 +1,50 @@
 <div class="container mt-4">
-  <h3 class="main-title">قائمة المحاضرات</h3>
+  <h3 class="main-title">{{ "STUDENT_CLASSES.TITLE" | translate }}</h3>
 
-  <!-- أزرار الفلترة -->
+  <!-- Filter Buttons -->
   <div class="mb-3 d-flex gap-2">
     <button
       class="outline-btn"
       [class.primary-btn]="filter === 'all'"
       (click)="filter = 'all'"
     >
-      الكل
+      {{ "STUDENT_CLASSES.FILTER_ALL" | translate }}
     </button>
     <button
       class="outline-btn"
       [class.primary-btn]="filter === 'Running'"
       (click)="filter = 'Running'"
     >
-      الحصة الجارية
+      {{ "STUDENT_CLASSES.FILTER_RUNNING" | translate }}
     </button>
     <button
       class="outline-btn"
       [class.primary-btn]="filter === 'Upcoming'"
       (click)="filter = 'Upcoming'"
     >
-      يمكن حضورها
+      {{ "STUDENT_CLASSES.FILTER_UPCOMING" | translate }}
     </button>
     <button
       class="outline-btn"
       [class.primary-btn]="filter === 'Finished'"
       (click)="filter = 'Finished'"
     >
-      التي حضرتها
+      {{ "STUDENT_CLASSES.FILTER_FINISHED" | translate }}
     </button>
   </div>
 
-  <!-- عرض المحاضرات -->
+  <!-- Display Lectures -->
   <div class="row g-3">
     <div *ngFor="let lec of filteredLectures" class="col-md-6">
       <div class="card p-3">
         <h5 class="sub-title mb-1">{{ lec.subjectName }}</h5>
-        <p class="text-muted mb-1">المعلم: {{ lec.teacherName }}</p>
+        <p class="text-muted mb-1">
+          {{ "STUDENT_CLASSES.TEACHER" | translate }}: {{ lec.teacherName }}
+        </p>
         <p class="text-muted mb-2">
-          التاريخ: {{ lec.startTime | date : "fullDate" }} الساعة
+          {{ "STUDENT_CLASSES.DATE" | translate }}:
+          {{ lec.startTime | date : "fullDate" }}
+          {{ "STUDENT_CLASSES.TIME" | translate }}
           {{ lec.endTime | date : "shortTime" }}
         </p>
         <div class="d-flex justify-content-between align-items-center">
@@ -52,7 +56,7 @@
             [disabled]="lec.status === 'Finished' || lec.status === 'Upcoming'"
             (click)="attendLecture(lec)"
           >
-            حضور المحاضرة
+            {{ "STUDENT_CLASSES.ATTEND_LECTURE" | translate }}
           </button>
         </div>
       </div>

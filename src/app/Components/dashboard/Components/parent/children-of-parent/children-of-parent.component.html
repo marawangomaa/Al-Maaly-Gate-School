@@ -2,9 +2,11 @@
   <!-- Loading State -->
   <div *ngIf="isLoading" class="loading-container">
     <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Loading...</span>
+      <span class="visually-hidden">{{
+        "PARENT_CHILDREN.LOADING_PARENT" | translate
+      }}</span>
     </div>
-    <p class="mt-2">Loading parent information...</p>
+    <p class="mt-2">{{ "PARENT_CHILDREN.LOADING_PARENT" | translate }}</p>
   </div>
 
   <!-- Error State -->
@@ -14,7 +16,7 @@
       class="btn btn-sm btn-outline-danger ms-3"
       (click)="loadParentWithChildren()"
     >
-      Retry
+      {{ "PARENT_CHILDREN.RETRY" | translate }}
     </button>
   </div>
 
@@ -24,33 +26,39 @@
       <div class="card-header bg-primary text-white">
         <h2 class="mb-0">
           <i class="bi bi-person-badge me-2"></i>
-          Parent Information
+          {{ "PARENT_CHILDREN.PARENT_INFORMATION" | translate }}
         </h2>
       </div>
       <div class="card-body">
         <div class="row">
           <div class="col-md-6">
             <div class="info-item">
-              <strong><i class="bi bi-person me-2"></i>Full Name:</strong>
+              <strong
+                ><i class="bi bi-person me-2"></i
+                >{{ "PARENT_CHILDREN.FULL_NAME" | translate }}:</strong
+              >
               <span>{{ parent.fullName }}</span>
             </div>
             <div class="info-item">
-              <strong><i class="bi bi-envelope me-2"></i>Email:</strong>
+              <strong
+                ><i class="bi bi-envelope me-2"></i
+                >{{ "PARENT_CHILDREN.EMAIL" | translate }}:</strong
+              >
               <span>{{ parent.email }}</span>
             </div>
             <div class="info-item">
-              <strong><i class="bi bi-telephone me-2"></i>Contact Info:</strong>
+              <strong
+                ><i class="bi bi-telephone me-2"></i
+                >{{ "PARENT_CHILDREN.CONTACT_INFO" | translate }}:</strong
+              >
               <span>{{ parent.contactInfo }}</span>
             </div>
           </div>
           <div class="col-md-6">
             <div class="info-item">
-              <strong><i class="bi bi-link me-2"></i>Relation:</strong>
-              <span>{{ parent.relation || "Not specified" }}</span>
-            </div>
-            <div class="info-item">
               <strong
-                ><i class="bi bi-people me-2"></i>Number of Students:</strong
+                ><i class="bi bi-people me-2"></i
+                >{{ "PARENT_CHILDREN.NUMBER_OF_STUDENTS" | translate }}:</strong
               >
               <span class="badge bg-secondary">{{
                 parent.students.length || 0
@@ -67,7 +75,7 @@
         <div class="card-header bg-success text-white">
           <h3 class="mb-0">
             <i class="bi bi-people-fill me-2"></i>
-            Associated Students
+            {{ "PARENT_CHILDREN.ASSOCIATED_STUDENTS" | translate }}
           </h3>
         </div>
         <div class="card-body">
@@ -75,7 +83,7 @@
             *ngIf="!parent.students || parent.students.length === 0"
             class="alert alert-info"
           >
-            No students associated with this parent.
+            {{ "PARENT_CHILDREN.NO_STUDENTS" | translate }}
           </div>
 
           <div
@@ -86,10 +94,10 @@
               <table class="table table-hover">
                 <thead class="table-light">
                   <tr>
-                    <th>#</th>
-                    <th>Full Name</th>
-                    <th>Relation</th>
-                    <th>Actions</th>
+                    <th>{{ "PARENT_CHILDREN.TABLE_NUMBER" | translate }}</th>
+                    <th>{{ "PARENT_CHILDREN.FULL_NAME" | translate }}</th>
+                    <th>{{ "PARENT_CHILDREN.RELATION" | translate }}</th>
+                    <th>{{ "PARENT_CHILDREN.ACTIONS" | translate }}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -104,7 +112,7 @@
                     <td>{{ student.fullName }}</td>
                     <td>
                       <span
-                        class="badge"
+                        class="paragraph-badge"
                         [ngClass]="{
                           'bg-warning': student.relation === 'Father',
                           'bg-info': student.relation === 'Mother',
@@ -112,7 +120,11 @@
                             !student.relation || student.relation === 'Other'
                         }"
                       >
-                        {{ student.relation || "Not specified" }}
+                        {{
+                          student.relation ||
+                            ("PARENT_CHILDREN_TS.INFO.NOT_SPECIFIED"
+                              | translate)
+                        }}
                       </span>
                     </td>
                     <td>
@@ -120,27 +132,26 @@
                         <button
                           class="btn btn-outline-primary"
                           (click)="viewStudentCertificates(student)"
-                          title="View Certificates"
+                          title="{{
+                            'PARENT_CHILDREN.CERTIFICATES' | translate
+                          }}"
                         >
-                          <i class="bi bi-award"></i> Certificates
+                          <i class="bi bi-award"></i>
+                          {{ "PARENT_CHILDREN.CERTIFICATES" | translate }}
                         </button>
                         <button
                           class="btn btn-outline-success"
                           (click)="downloadAllCertificates(student)"
-                          title="Download All Certificates"
+                          title="{{
+                            'PARENT_CHILDREN.DOWNLOAD_ALL' | translate
+                          }}"
                           *ngIf="
                             studentCertificates &&
                             studentCertificates.length > 0
                           "
                         >
-                          <i class="bi bi-download"></i> Download All
-                        </button>
-                        <button
-                          class="btn btn-outline-info"
-                          (click)="onStudentSelect(student)"
-                          title="View Student Details"
-                        >
-                          <i class="bi bi-eye"></i> View
+                          <i class="bi bi-download"></i>
+                          {{ "PARENT_CHILDREN.DOWNLOAD_ALL" | translate }}
                         </button>
                       </div>
                     </td>
@@ -160,12 +171,13 @@
           <div class="d-flex justify-content-between align-items-center">
             <h3 class="mb-0">
               <i class="bi bi-award me-2"></i>
-              Certificates for {{ selectedStudent.fullName }}
+              {{ "PARENT_CHILDREN.CERTIFICATES_FOR" | translate }}
+              {{ selectedStudent.fullName }}
             </h3>
             <button
               class="btn btn-sm btn-outline-dark"
               (click)="clearCertificateView()"
-              title="Close certificates view"
+              title="{{ 'PARENT_CHILDREN.CLOSE' | translate }}"
             >
               <i class="bi bi-x-lg"></i>
             </button>
@@ -175,42 +187,13 @@
           <!-- Loading certificates -->
           <div *ngIf="loadingCertificates" class="text-center py-3">
             <div class="spinner-border text-warning" role="status">
-              <span class="visually-hidden">Loading certificates...</span>
+              <span class="visually-hidden">{{
+                "PARENT_CHILDREN.LOADING_CERTIFICATES" | translate
+              }}</span>
             </div>
-            <p class="mt-2 text-muted">Loading certificates...</p>
-          </div>
-
-          <!-- Certificate Statistics -->
-          <div
-            *ngIf="!loadingCertificates && studentCertificates"
-            class="certificate-stats mb-4"
-          >
-            <div class="row">
-              <div class="col-md-3">
-                <div class="stat-card text-center p-3 bg-light rounded">
-                  <h4 class="text-primary">{{ studentCertificates.length }}</h4>
-                  <p class="mb-0 text-muted">Total Certificates</p>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="stat-card text-center p-3 bg-light rounded">
-                  <h4 class="text-success">{{ verifiedCertificatesCount }}</h4>
-                  <p class="mb-0 text-muted">Verified</p>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="stat-card text-center p-3 bg-light rounded">
-                  <h4 class="text-danger">{{ archivedCertificatesCount }}</h4>
-                  <p class="mb-0 text-muted">Archived</p>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="stat-card text-center p-3 bg-light rounded">
-                  <h4 class="text-info">{{ degreeTypes.length }}</h4>
-                  <p class="mb-0 text-muted">Degree Types</p>
-                </div>
-              </div>
-            </div>
+            <p class="mt-2 text-muted">
+              {{ "PARENT_CHILDREN.LOADING_CERTIFICATES" | translate }}
+            </p>
           </div>
 
           <!-- No certificates -->
@@ -223,7 +206,7 @@
             class="alert alert-info"
           >
             <i class="bi bi-info-circle me-2"></i>
-            No certificates found for this student.
+            {{ "PARENT_CHILDREN.NO_CERTIFICATES" | translate }}
           </div>
 
           <!-- Certificate Filters -->
@@ -245,7 +228,9 @@
                     [(ngModel)]="selectedDegreeType"
                     (change)="filterCertificates()"
                   >
-                    <option value="all">All Degree Types</option>
+                    <option value="all">
+                      {{ "PARENT_CHILDREN.ALL_DEGREE_TYPES" | translate }}
+                    </option>
                     <option *ngFor="let type of degreeTypes" [value]="type">
                       {{ type }}
                     </option>
@@ -262,7 +247,7 @@
                     (change)="filterCertificates()"
                   />
                   <label class="form-check-label" for="showVerifiedOnly">
-                    Show Verified Only
+                    {{ "PARENT_CHILDREN.SHOW_VERIFIED_ONLY" | translate }}
                   </label>
                 </div>
               </div>
@@ -290,7 +275,11 @@
                         !certificate.verified && !certificate.archived
                     }"
                   >
-                    <strong>Certificate #{{ i + 1 }}</strong>
+                    <strong
+                      >{{ "PARENT_CHILDREN.CERTIFICATE_NO" | translate }} #{{
+                        i + 1
+                      }}</strong
+                    >
                     <span
                       class="badge"
                       [ngClass]="{
@@ -306,18 +295,35 @@
                   <div class="card-body">
                     <div class="certificate-info">
                       <p>
-                        <strong>Certificate No:</strong>
+                        <strong
+                          >{{
+                            "PARENT_CHILDREN.CERTIFICATE_NO" | translate
+                          }}:</strong
+                        >
                         {{ certificate.certificateNumber }}
                       </p>
                       <p>
-                        <strong>Issued Date:</strong>
+                        <strong
+                          >{{
+                            "PARENT_CHILDREN.ISSUED_DATE" | translate
+                          }}:</strong
+                        >
                         {{ certificate.issuedDate | date : "mediumDate" }}
                       </p>
                       <p>
-                        <strong>Academic Year:</strong>
+                        <strong
+                          >{{
+                            "PARENT_CHILDREN.ACADEMIC_YEAR" | translate
+                          }}:</strong
+                        >
                         {{ certificate.academicYear || "N/A" }}
                       </p>
-                      <p><strong>File:</strong> {{ certificate.fileName }}</p>
+                      <p>
+                        <strong
+                          >{{ "PARENT_CHILDREN.FILE" | translate }}:</strong
+                        >
+                        {{ certificate.fileName }}
+                      </p>
 
                       <div class="status-badges mt-3">
                         <span
@@ -328,7 +334,9 @@
                           }"
                         >
                           {{
-                            certificate.verified ? "Verified" : "Not Verified"
+                            certificate.verified
+                              ? ("PARENT_CHILDREN.VERIFIED" | translate)
+                              : ("PARENT_CHILDREN.NOT_VERIFIED" | translate)
                           }}
                         </span>
                         <span
@@ -338,7 +346,11 @@
                             'bg-secondary': !certificate.archived
                           }"
                         >
-                          {{ certificate.archived ? "Archived" : "Active" }}
+                          {{
+                            certificate.archived
+                              ? ("PARENT_CHILDREN.ARCHIVED" | translate)
+                              : ("PARENT_CHILDREN.ACTIVE" | translate)
+                          }}
                         </span>
                       </div>
 
@@ -349,13 +361,21 @@
                       >
                         <p class="mb-1">
                           <small
-                            ><strong>Verified By:</strong>
+                            ><strong
+                              >{{
+                                "PARENT_CHILDREN.VERIFIED_BY" | translate
+                              }}:</strong
+                            >
                             {{ certificate.verifiedBy || "N/A" }}</small
                           >
                         </p>
                         <p class="mb-0">
                           <small
-                            ><strong>Verified Date:</strong>
+                            ><strong
+                              >{{
+                                "PARENT_CHILDREN.VERIFIED_DATE" | translate
+                              }}:</strong
+                            >
                             {{
                               certificate.verifiedDate | date : "mediumDate"
                             }}</small
@@ -370,7 +390,11 @@
                       >
                         <p class="mb-0">
                           <small
-                            ><strong>Archived Date:</strong>
+                            ><strong
+                              >{{
+                                "PARENT_CHILDREN.ARCHIVED_DATE" | translate
+                              }}:</strong
+                            >
                             {{
                               certificate.archivedDate | date : "mediumDate"
                             }}</small
@@ -384,14 +408,16 @@
                       <button
                         class="btn btn-sm btn-outline-primary"
                         (click)="viewCertificateDetails(certificate)"
-                        title="View Details"
+                        title="{{ 'PARENT_CHILDREN.VIEW_DETAILS' | translate }}"
                       >
                         <i class="bi bi-eye"></i>
                       </button>
                       <button
                         class="btn btn-sm btn-outline-success"
                         (click)="downloadCertificate(certificate)"
-                        title="Download Certificate"
+                        title="{{
+                          'PARENT_CHILDREN.DOWNLOAD_CERTIFICATE' | translate
+                        }}"
                         *ngIf="certificate.pdfData"
                       >
                         <i class="bi bi-download"></i>
@@ -399,7 +425,9 @@
                       <button
                         class="btn btn-sm btn-outline-info"
                         (click)="previewCertificate(certificate)"
-                        title="Preview Certificate"
+                        title="{{
+                          'PARENT_CHILDREN.PREVIEW_CERTIFICATE' | translate
+                        }}"
                       >
                         <i class="bi bi-file-earmark-pdf"></i>
                       </button>
@@ -413,7 +441,9 @@
             <div *ngIf="selectedCertificate" class="mt-4">
               <div class="card">
                 <div class="card-header bg-info text-white">
-                  <h5 class="mb-0">Certificate Details</h5>
+                  <h5 class="mb-0">
+                    {{ "PARENT_CHILDREN.CERTIFICATE_DETAILS" | translate }}
+                  </h5>
                 </div>
                 <div class="card-body">
                   <pre>{{ selectedCertificate | json }}</pre>

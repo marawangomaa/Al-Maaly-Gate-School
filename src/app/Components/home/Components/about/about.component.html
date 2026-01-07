@@ -1,61 +1,43 @@
-<!-- CTA Section with Student Images -->
+<!-- Updated template using translation keys -->
 <section class="cta-section">
   <div class="cta-container">
     <div class="cta-content">
-      <!-- Right Side: Student Images -->
       <div class="cta-right">
-        <!-- Decorative Circle -->
+        <!-- Images remain the same -->
         <div class="decorative-circle">
           <img
             src="assets/images/About_us_decoration.svg"
             alt="Student with laptop"
           />
         </div>
-
-        <!-- Main Student Image -->
         <div class="student-image-main">
           <img src="assets/images/person_1.png" alt="Student with laptop" />
         </div>
-
-        <!-- Top Right Image -->
         <div class="student-image-top-right">
           <img src="assets/images/person_2.png" alt="Student with laptop" />
         </div>
-
-        <!-- Bottom Right Image -->
         <div class="student-image-bottom-right">
           <img src="assets/images/person_3.png" alt="Student thinking" />
         </div>
       </div>
-      <!-- Left Side: Checkmarks and Button -->
       <div class="cta-left">
-        <h2 class="cta-heading hero-title">مــن نــحــن</h2>
-        <p class="paragraph">
-          مدارس المعالي تقدم تعليمًا عالميًا بمنهج بريطاني مميز في بيئة آمنة
-          وإيجابية، تعزز مهارات التفكير وحل المشكلات وتواكب احتياجات العصر. نؤمن
-          بأسلوب تعلم فريد لكل طالب، ونسعى لبناء أجيال متفوقة ومرنة، مع دعم
-          أولياء الأمور وتطوير الكوادر التعليمية لتحقيق تجربة تعلم متميزة
-          ومستدامة.
-        </p>
+        <h2 class="cta-heading hero-title">{{ "ABOUT.TITLE" | translate }}</h2>
+        <p class="paragraph">{{ "ABOUT.DESCRIPTION" | translate }}</p>
         <div class="checkmarks-list">
           <div class="checkmark-item">
-            <img
-              src="assets/images/iconsax-tick-square.svg"
-              alt="CheckIcon"
-            />منهج بريطاني مميز
-          </div>
-          <div class="checkmark-item">
-            <img
-              src="assets/images/iconsax-tick-square.svg"
-              alt="CheckIcon"
-            />اسلوب تعليمي جديد
+            <img src="assets/images/iconsax-tick-square.svg" alt="CheckIcon" />
+            {{ "ABOUT.FEATURES.CURRICULUM" | translate }}
           </div>
           <div class="checkmark-item">
             <img src="assets/images/iconsax-tick-square.svg" alt="CheckIcon" />
-            تعليم رقمي مواكب وحديث
+            {{ "ABOUT.FEATURES.APPROACH" | translate }}
+          </div>
+          <div class="checkmark-item">
+            <img src="assets/images/iconsax-tick-square.svg" alt="CheckIcon" />
+            {{ "ABOUT.FEATURES.DIGITAL" | translate }}
           </div>
         </div>
-        <!-- <button class="primary-btn">احجز مقعدك معنا</button> -->
+        <!-- <button class="primary-btn">{{ 'ABOUT.BUTTON' | translate }}</button> -->
       </div>
     </div>
   </div>

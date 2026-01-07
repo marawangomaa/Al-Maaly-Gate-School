@@ -29,12 +29,8 @@
         <!-- Username -->
         <div class="mb-3">
           <label class="form-label">{{ "LOGIN.USERNAME" | translate }}</label>
-          <input
-            type="email"
-            formControlName="email"
-            class="form-control cool-input"
-            placeholder="{{ 'LOGIN.USERNAME' | translate }}"
-          />
+          <input type="email" formControlName="email" class="form-control cool-input"
+            placeholder="{{ 'LOGIN.USERNAME' | translate }}" />
           @if (f['email'].touched && f['email'].invalid) {
           <div class="text-danger small mt-1">
             @if (f['email'].errors?.['required']) {
@@ -49,12 +45,8 @@
         <!-- Password -->
         <div class="mb-3">
           <label class="form-label">{{ "LOGIN.PASSWORD" | translate }}</label>
-          <input
-            type="password"
-            formControlName="password"
-            class="form-control cool-input"
-            placeholder="{{ 'LOGIN.PASSWORD' | translate }}"
-          />
+          <input type="password" formControlName="password" class="form-control cool-input"
+            placeholder="{{ 'LOGIN.PASSWORD' | translate }}" />
           @if (f['password'].touched && f['password'].invalid) {
           <div class="text-danger small mt-1">
             @if (f['password'].errors?.['required']) {
@@ -67,18 +59,21 @@
         </div>
         <div class="text-center mt-3">
           <p>
-            <a [routerLink]="['/confirm-email']">confirmed your email</a>
+            <a [routerLink]="['/confirm-email']"> {{ 'LOGIN.CONFIRM_EMAIL' | translate }}</a>
           </p>
         </div>
+        <div class="text-center mt-2">
+          <a class="text-decoration-none" [routerLink]="['/forgot-password']">
+            {{ 'LOGIN.FORGOT_PASSWORD' | translate }}
+          </a>
+        </div>
         <!-- Button -->
-        <button
-          class="cool-btn w-100 mt-3"
-          type="submit"
-          [disabled]="loading || loginForm.invalid"
-        >
+        <button class="cool-btn w-100 mt-3" type="submit" [disabled]="loading || loginForm.invalid">
           {{ loading ? "..." : ("LOGIN.SUBMIT" | translate) }}
         </button>
       </form>
+   
+
     </div>
   </div>
 </div>

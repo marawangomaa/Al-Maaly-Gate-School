@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Certificate, DegreeType } from '../../../../../Interfaces/icertificate';
 import { CertificateService } from '../../../../../Services/certificate.service';
 import { FormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-student-certificates',
@@ -17,7 +17,8 @@ export class StudentCertificatesComponent {
   message = '';
   messageType: 'success' | 'error' = 'success';
 
-  constructor(private certificateService: CertificateService) {}
+  private certificateService = inject(CertificateService);
+  private translate = inject(TranslateService);
 
   ngOnInit(): void {
     this.loadCertificates();
@@ -33,7 +34,7 @@ export class StudentCertificatesComponent {
         this.isLoading = false;
       },
       error: (error) => {
-        this.showMessage('Error loading certificates: ' + error.message, 'error');
+        this.showMessage(this.translate.instant('CERTIFICATION_TS_MESSAGES.ERRORS.LOADING_ERROR') + ': ' + error.message, 'error');
         this.isLoading = false;
       }
     });
@@ -45,7 +46,7 @@ export class StudentCertificatesComponent {
         this.certificateService.openPdfInNewTab(blob);
       },
       error: (error) => {
-        this.showMessage('Error loading certificate: ' + error.message, 'error');
+        this.showMessage(this.translate.instant('CERTIFICATION_TS_MESSAGES.ERRORS.VIEW_ERROR') + ': ' + error.message, 'error');
       }
     });
   }
@@ -54,10 +55,10 @@ export class StudentCertificatesComponent {
     this.certificateService.getMyCertificateFromDb(certificate.degreeType).subscribe({
       next: (blob) => {
         this.certificateService.downloadPdf(blob, certificate.fileName);
-        this.showMessage('Certificate downloaded successfully', 'success');
+        this.showMessage(this.translate.instant('CERTIFICATION_TS_MESSAGES.SUCCESS.DOWNLOAD_SUCCESS'), 'success');
       },
       error: (error) => {
-        this.showMessage('Error downloading certificate: ' + error.message, 'error');
+        this.showMessage(this.translate.instant('CERTIFICATION_TS_MESSAGES.ERRORS.DOWNLOAD_ERROR') + ': ' + error.message, 'error');
       }
     });
   }
@@ -66,8 +67,6 @@ export class StudentCertificatesComponent {
     const date = typeof dateString === 'string' ? new Date(dateString) : dateString;
     return date.toLocaleDateString();
   }
-
-  // Removed formatFileSize method as fileSize is no longer in Certificate interface
 
   private showMessage(message: string, type: 'success' | 'error'): void {
     this.message = message;

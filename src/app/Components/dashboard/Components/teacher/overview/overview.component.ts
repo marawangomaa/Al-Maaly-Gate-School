@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TeacherService } from '../../../../../Services/teacher.service';
 import { ServiceResult, TeacherViewDto } from '../../../../../Interfaces/iteacher';
 import { SubjectViewDto } from '../../../../../Interfaces/isubject';
@@ -74,7 +74,8 @@ export class OverviewComponent implements OnInit {
     private fileService: FileService,
     private imageService: ImageService,
     private AuthService: AuthService,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -432,9 +433,14 @@ loadProfileImage(): void {
    * Get account status text
    */
   getAccountStatusText(status: string): string {
-    if (!status) return 'Unknown';
-    return status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
-  }
+  const statusMap: { [key: string]: string } = {
+    'ACTIVE': 'TEACHER_OVERVIEW.ACTIVE',
+    'INACTIVE': 'TEACHER_OVERVIEW.INACTIVE',
+    'PENDING': 'TEACHER_OVERVIEW.PENDING',
+    'SUSPENDED': 'TEACHER_OVERVIEW.SUSPENDED'
+  };
+  return this.translate.instant(statusMap[status] || status);
+}
 
   /**
    * Show success toast

@@ -70,6 +70,8 @@ export class AuthService {
     return this.role?.toLowerCase() === 'parent';
   }
 
+  
+
   getAccountStatus(): AccountStatus | null {
     const status = this.payload?.['AccountStatus'] || this.payload?.['accountStatus'];
     if (!status) return null;

@@ -7,6 +7,10 @@ export interface iparentViewDto {
     contactInfo: string;
     appUserId: string;
     type: string;
-    relation?: string | null;
     accountStatus: AccountStatus;
+    gender: string;
+}
+
+export interface iparentViewDtoWithDocs extends iparentViewDto {
+    docCount?: number;
 }

@@ -7,7 +7,7 @@
       </h2>
       <div class="last-updated text-muted small">
         <span *ngIf="!loading; else loadingTpl">
-          ID: {{ teacherIdShort }}
+          {{ 'TEACHER_OVERVIEW.ID' | translate }}: {{ teacherIdShort }}
         </span>
         <ng-template #loadingTpl>
           {{ 'TEACHER_OVERVIEW.LOADING' | translate }}
@@ -230,13 +230,13 @@
               <div class="subject-item card border p-3">
                 <div class="d-flex justify-content-between align-items-start">
                   <div>
-                    <h6 class="mb-1">{{ subject.subjectName || 'Unnamed Subject' }}</h6>
+                    <h6 class="mb-1">{{ subject.subjectName || 'TEACHER_OVERVIEW.UNNAMED_SUBJECT' | translate }}</h6>
                     <div class="small text-muted">
                       <span *ngIf="subject.gradeName">
-                        <i class="bi bi-graph-up me-1"></i>Grade: {{ subject.gradeName }}
+                        <i class="bi bi-graph-up me-1"></i>{{ 'TEACHER_OVERVIEW.GRADE' | translate }}: {{ subject.gradeName }}
                       </span>
                       <span *ngIf="subject.creditHours" class="ms-2">
-                        <i class="bi bi-clock me-1"></i>Credits: {{ subject.creditHours }}
+                        <i class="bi bi-clock me-1"></i>{{ 'TEACHER_OVERVIEW.CREDITS' | translate }}: {{ subject.creditHours }}
                       </span>
                     </div>
                   </div>
@@ -284,15 +284,15 @@
               <div class="class-item card border p-3">
                 <div class="d-flex justify-content-between align-items-start">
                   <div>
-                    <h6 class="mb-1">{{ classItem.className || 'Unnamed Class' }}</h6>
+                    <h6 class="mb-1">{{ classItem.className || 'TEACHER_OVERVIEW.UNNAMED_CLASS' | translate }}</h6>
                     <div class="small text-muted">
-                      <i class="bi bi-hash me-1"></i>ID: {{ classItem.id.substring(0, 8) }}...
+                      <i class="bi bi-hash me-1"></i>{{ 'TEACHER_OVERVIEW.ID' | translate }}: {{ classItem.id.substring(0, 8) }}...
                     </div>
                     <div class="small text-muted mt-1">
-                      <i class="bi bi-person-fill me-1"></i>Students: {{ classItem.studentCount || 'N/A' }}
+                      <i class="bi bi-person-fill me-1"></i>{{ 'TEACHER_OVERVIEW.STUDENTS' | translate }}: {{ classItem.studentCount || 'N/A' }}
                     </div>
                   </div>
-                  <span class="badge bg-light text-dark">{{ classItem.gradeName || 'No Grade' }}</span>
+                  <span class="badge bg-light text-dark">{{ classItem.gradeName || 'TEACHER_OVERVIEW.NO_GRADE' | translate }}</span>
                 </div>
               </div>
             </div>

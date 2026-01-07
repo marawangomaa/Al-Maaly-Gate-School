@@ -1,67 +1,69 @@
 <div class="container mt-4">
-  <h3 class="main-title">درجات الطالب</h3>
+  <h3 class="main-title">{{ "STUDENT_GRADES.TITLE" | translate }}</h3>
 
-  <!-- أزرار الفلترة -->
+  <!-- Filter Buttons -->
   <div class="mb-3 d-flex gap-2 flex-wrap">
     <button
       class="outline-btn"
       [class.primary-btn]="filter === 'all'"
       (click)="filter = 'all'"
     >
-      الكل
+      {{ "STUDENT_GRADES.FILTER_ALL" | translate }}
     </button>
     <button
       class="outline-btn"
       [class.primary-btn]="filter === 'assignments'"
       (click)="filter = 'assignments'"
     >
-      أعمال السنة
+      {{ "STUDENT_GRADES.FILTER_ASSIGNMENTS" | translate }}
     </button>
     <button
       class="outline-btn"
       [class.primary-btn]="filter === 'finals'"
       (click)="filter = 'finals'"
     >
-      الاختبارات النهائية
+      {{ "STUDENT_GRADES.FILTER_FINALS" | translate }}
     </button>
     <button
       class="outline-btn"
       [class.primary-btn]="filter === 'online'"
       (click)="filter = 'online'"
     >
-      الاختبارات الأونلاين
+      {{ "STUDENT_GRADES.FILTER_ONLINE" | translate }}
     </button>
     <button
       class="outline-btn"
       [class.primary-btn]="filter === 'offline'"
       (click)="filter = 'offline'"
     >
-      الاختبارات الأوفلاين
+      {{ "STUDENT_GRADES.FILTER_OFFLINE" | translate }}
     </button>
   </div>
 
-  <!-- حالة التحميل -->
+  <!-- Loading State -->
   <div *ngIf="!ExamsResults" class="text-center py-4">
     <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">جاري التحميل...</span>
+      <span class="visually-hidden">{{
+        "STUDENT_GRADES.LOADING_RESULTS" | translate
+      }}</span>
     </div>
-    <p class="mt-2">جاري تحميل النتائج...</p>
+    <p class="mt-2">{{ "STUDENT_GRADES.LOADING_RESULTS" | translate }}</p>
   </div>
 
-  <!-- جدول الدرجات -->
+  <!-- Grades Table -->
   <div *ngIf="ExamsResults" class="table-responsive">
     <table class="table table-hover align-middle">
       <thead class="table-dark">
         <tr>
-          <th>المادة</th>
-          <th>المعلم</th>
-          <th>النوع</th>
-          <th>العنوان</th>
-          <th>التاريخ</th>
-          <th>(أقل/النهائية) النسبة</th>
-          <th>الدرجة</th>
-          <th>الحالة</th>
-          <th>الإجراءات</th>
+          <th>{{ "STUDENT_GRADES.SUBJECT" | translate }}</th>
+          <th>{{ "STUDENT_GRADES.TEACHER" | translate }}</th>
+          <th>{{ "STUDENT_GRADES.TYPE" | translate }}</th>
+          <th>{{ "STUDENT_GRADES.TITLE_HEADER" | translate }}</th>
+          <th>{{ "STUDENT_GRADES.DATE" | translate }}</th>
+          <th>{{ "STUDENT_GRADES.MIN_FINAL_RATIO" | translate }}</th>
+          <th>{{ "STUDENT_GRADES.SCORE" | translate }}</th>
+          <th>{{ "STUDENT_GRADES.STATUS" | translate }}</th>
+          <th>{{ "STUDENT_GRADES.ACTIONS" | translate }}</th>
         </tr>
       </thead>
       <tbody>
@@ -87,7 +89,7 @@
             <button
               class="btn btn-primary btn-sm"
               (click)="showCorrection(result.studentId, result.examId)"
-              title="عرض التصحيح"
+              title="{{ 'STUDENT_GRADES.SHOW_CORRECTION' | translate }}"
               [disabled]="loadingCorrection"
             >
               <span
@@ -95,7 +97,7 @@
                 class="spinner-border spinner-border-sm me-1"
               ></span>
               <i *ngIf="!loadingCorrection" class="fas fa-eye me-1"></i>
-              عرض التصحيح
+              {{ "STUDENT_GRADES.SHOW_CORRECTION" | translate }}
             </button>
           </td>
         </tr>
@@ -104,7 +106,7 @@
   </div>
 </div>
 
-<!-- مودال عرض التصحيح -->
+<!-- Correction Modal -->
 <div
   class="modal fade show"
   [class.d-block]="showCorrectionModal"
@@ -117,32 +119,36 @@
       <div class="modal-header bg-primary text-white">
         <h5 class="modal-title">
           <i class="fas fa-check-circle me-2"></i>
-          تصحيح الإجابات
+          {{ "STUDENT_GRADES.CORRECTION_MODAL_TITLE" | translate }}
         </h5>
         <button
           type="button"
           class="btn-close btn-close-white"
           (click)="closeCorrectionModal()"
-          aria-label="إغلاق"
+          [attr.aria-label]="'STUDENT_GRADES.CLOSE' | translate"
         ></button>
       </div>
 
       <div class="modal-body">
-        <!-- حالة التحميل -->
+        <!-- Loading State -->
         <div *ngIf="loadingCorrection" class="text-center py-5">
           <div
             class="spinner-border text-primary"
             style="width: 3rem; height: 3rem"
             role="status"
           >
-            <span class="visually-hidden">جاري التحميل...</span>
+            <span class="visually-hidden">{{
+              "STUDENT_GRADES_TS.INFO.LOADING_CORRECTION" | translate
+            }}</span>
           </div>
-          <p class="mt-3">جاري تحميل التصحيح...</p>
+          <p class="mt-3">
+            {{ "STUDENT_GRADES_TS.INFO.LOADING_CORRECTION" | translate }}
+          </p>
         </div>
 
-        <!-- محتوى التصحيح -->
+        <!-- Correction Content -->
         <div *ngIf="!loadingCorrection && selectedCorrectionData.length > 0">
-          <!-- ملخص النتائج -->
+          <!-- Results Summary -->
           <div class="summary-card mb-4">
             <div class="row text-center">
               <div class="col-md-3 mb-3">
@@ -150,7 +156,9 @@
                   <h3 class="text-primary mb-1">
                     {{ getTotalCorrectAnswers() }}
                   </h3>
-                  <p class="mb-0 text-white-50">الإجابات الصحيحة</p>
+                  <p class="mb-0 text-white-50">
+                    {{ "STUDENT_GRADES.CORRECT_ANSWERS" | translate }}
+                  </p>
                 </div>
               </div>
               <div class="col-md-3 mb-3">
@@ -158,7 +166,9 @@
                   <h3 class="text-warning mb-1">
                     {{ getTotalQuestions() - getTotalCorrectAnswers() }}
                   </h3>
-                  <p class="mb-0 text-white-50">الإجابات الخاطئة</p>
+                  <p class="mb-0 text-white-50">
+                    {{ "STUDENT_GRADES.WRONG_ANSWERS" | translate }}
+                  </p>
                 </div>
               </div>
               <div class="col-md-3 mb-3">
@@ -166,13 +176,17 @@
                   <h3 class="text-success mb-1">
                     {{ getTotalStudentMarks() }}
                   </h3>
-                  <p class="mb-0 text-white-50">الدرجة المحصلة</p>
+                  <p class="mb-0 text-white-50">
+                    {{ "STUDENT_GRADES.EARNED_SCORE" | translate }}
+                  </p>
                 </div>
               </div>
               <div class="col-md-3 mb-3">
                 <div class="stat-item">
                   <h3 class="text-info mb-1">{{ getTotalPossibleMarks() }}</h3>
-                  <p class="mb-0 text-white-50">الدرجة الكلية</p>
+                  <p class="mb-0 text-white-50">
+                    {{ "STUDENT_GRADES.TOTAL_SCORE" | translate }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -189,13 +203,14 @@
                   ></div>
                 </div>
                 <p class="mt-2 mb-0 text-white-50">
-                  النسبة: {{ getPercentage() }}%
+                  {{ "STUDENT_GRADES.RATIO" | translate }}:
+                  {{ getPercentage() }}%
                 </p>
               </div>
             </div>
           </div>
 
-          <!-- الأسئلة والإجابات -->
+          <!-- Questions and Answers -->
           <div class="container-fluid">
             <div class="questions-container">
               <div
@@ -209,7 +224,7 @@
                   >
                     <h6 class="mb-0 text-dark">
                       <i class="fas fa-question-circle me-2 text-primary"></i>
-                      سؤال {{ i + 1 }}
+                      {{ "STUDENT_GRADES.QUESTION" | translate }} {{ i + 1 }}
                     </h6>
                     <div class="d-flex align-items-center gap-2">
                       <span
@@ -219,20 +234,25 @@
                           'bg-danger': !answer.isCorrect
                         }"
                       >
-                        {{ answer.isCorrect ? "صحيحة" : "خاطئة" }}
+                        {{
+                          answer.isCorrect
+                            ? ("STUDENT_GRADES.YES" | translate)
+                            : ("STUDENT_GRADES.NO" | translate)
+                        }}
                       </span>
                       <span class="badge bg-secondary">
-                        {{ answer.questionDegree }} درجة
+                        {{ answer.questionDegree }}
+                        {{ "STUDENT_GRADES.SCORE" | translate }}
                       </span>
                     </div>
                   </div>
 
                   <div class="card-body">
-                    <!-- نص السؤال -->
+                    <!-- Question Text -->
                     <div class="question-content mb-4">
                       <h6 class="text-dark mb-2">
                         <i class="fas fa-file-alt me-2 text-primary"></i>
-                        نص السؤال:
+                        {{ "STUDENT_GRADES.QUESTION" | translate }}:
                       </h6>
                       <p class="mb-0 p-3 bg-light rounded border">
                         {{ answer.questionContent }}
@@ -240,12 +260,12 @@
                     </div>
 
                     <div class="row">
-                      <!-- إجابة الطالب -->
+                      <!-- Student Answer -->
                       <div class="col-md-6 mb-3">
                         <div class="answer-section">
                           <h6 class="text-primary mb-3">
                             <i class="fas fa-user-graduate me-2"></i>
-                            إجابة الطالب:
+                            {{ "STUDENT_GRADES.STUDENT_ANSWER" | translate }}:
                           </h6>
                           <div
                             class="student-answer p-3 rounded border"
@@ -268,12 +288,12 @@
                         </div>
                       </div>
 
-                      <!-- الإجابة الصحيحة -->
+                      <!-- Correct Answer -->
                       <div class="col-md-6 mb-3">
                         <div class="answer-section">
                           <h6 class="text-success mb-3">
                             <i class="fas fa-check-double me-2"></i>
-                            الإجابة الصحيحة:
+                            {{ "STUDENT_GRADES.CORRECT_ANSWER" | translate }}:
                           </h6>
                           <div
                             class="correct-answer p-3 bg-success text-white rounded border border-success"
@@ -287,25 +307,37 @@
                       </div>
                     </div>
 
-                    <!-- تفاصيل إضافية -->
+                    <!-- Additional Details -->
                     <div class="row mt-3">
                       <div class="col-12">
                         <div class="marks-section p-3 bg-light rounded border">
                           <div class="row text-center">
                             <div class="col-md-4">
-                              <strong>الدرجة المحصلة:</strong>
+                              <strong
+                                >{{
+                                  "STUDENT_GRADES.EARNED_MARK" | translate
+                                }}:</strong
+                              >
                               <span class="fw-bold text-primary ms-1">{{
                                 answer.studentMark || 0
                               }}</span>
                             </div>
                             <div class="col-md-4">
-                              <strong>الدرجة الكاملة:</strong>
+                              <strong
+                                >{{
+                                  "STUDENT_GRADES.FULL_MARK" | translate
+                                }}:</strong
+                              >
                               <span class="fw-bold text-success ms-1">{{
                                 answer.questionDegree
                               }}</span>
                             </div>
                             <div class="col-md-4">
-                              <strong>نوع السؤال:</strong>
+                              <strong
+                                >{{
+                                  "STUDENT_GRADES.QUESTION_TYPE" | translate
+                                }}:</strong
+                              >
                               <span class="badge bg-info ms-1">{{
                                 answer.questionType
                               }}</span>
@@ -321,14 +353,16 @@
           </div>
         </div>
 
-        <!-- حالة عدم وجود بيانات -->
+        <!-- No Data State -->
         <div
           *ngIf="!loadingCorrection && selectedCorrectionData.length === 0"
           class="text-center py-5"
         >
           <i class="fas fa-exclamation-circle fa-3x text-muted mb-3"></i>
-          <h5 class="text-muted">لا توجد بيانات للعرض</h5>
-          <p class="text-muted">لم يتم العثور على بيانات التصحيح</p>
+          <h5 class="text-muted">{{ "STUDENT_GRADES.NO_DATA" | translate }}</h5>
+          <p class="text-muted">
+            {{ "STUDENT_GRADES.NO_CORRECTION_DATA" | translate }}
+          </p>
         </div>
       </div>
 
@@ -339,12 +373,12 @@
           (click)="closeCorrectionModal()"
         >
           <i class="fas fa-times me-1"></i>
-          إغلاق
+          {{ "STUDENT_GRADES.CLOSE" | translate }}
         </button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- خلفية المودال -->
+<!-- Modal Background -->
 <div class="modal-backdrop fade show" *ngIf="showCorrectionModal"></div>

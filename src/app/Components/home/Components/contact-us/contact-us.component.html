@@ -1,33 +1,37 @@
 <div class="contact-us-section">
   <div class="section-header">
-    <h2 class="main-title">تواصل معنا</h2>
-    <p class="paragraph">نحن سعداء دائما باستقبال استفساراتكم او شكاويكم</p>
+    <h2 class="main-title">{{ "CONTACT.TITLE" | translate }}</h2>
+    <p class="paragraph">{{ "CONTACT.SUBTITLE" | translate }}</p>
   </div>
 
   <div class="container contact-content">
     <div class="contact-info-map-container">
       <div class="contact-info">
-        <h3 class="sub-title">بيانات الاتصال</h3>
+        <h3 class="sub-title">
+          {{ "CONTACT.CONTACT_INFO.TITLE" | translate }}
+        </h3>
         <div class="info-item">
-          <!-- Placeholder for Phone Icon -->
           <img src="assets/images/Contact.svg" alt="phone number" />
           <p class="paragraph">
-            +966 016 369 3555
+            {{ "CONTACT.CONTACT_INFO.PHONE.PHONE1" | translate }}
             <br />
-            +966 016 369 4555
+            {{ "CONTACT.CONTACT_INFO.PHONE.PHONE2" | translate }}
           </p>
         </div>
         <div class="info-item">
-          <!-- Placeholder for Email Icon -->
           <img src="assets/images/Mail.svg" alt="mail" />
           <p class="paragraph">{{ contactInfo.email }}</p>
         </div>
         <div class="info-item">
-          <p class="paragraph">Address:</p>
+          <p class="paragraph">
+            {{ "CONTACT.CONTACT_INFO.ADDRESS.LABEL" | translate }}:
+          </p>
           <p class="paragraph">{{ contactInfo.address }}</p>
         </div>
         <div class="info-item">
-          <p class="paragraph">Mailing Box Address:</p>
+          <p class="paragraph">
+            {{ "CONTACT.CONTACT_INFO.MAILING_BOX.LABEL" | translate }}:
+          </p>
           <p class="paragraph">{{ contactInfo.MaillingBox }}</p>
         </div>
       </div>
@@ -42,57 +46,145 @@
           allowfullscreen=""
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"
+          [title]="'CONTACT.MAP.TITLE' | translate"
         ></iframe>
       </div>
     </div>
     <div class="contact-form-container">
-      <form class="contact-form">
+      <form
+        [formGroup]="contactForm"
+        (ngSubmit)="onSubmit()"
+        class="contact-form"
+      >
         <!-- Full Name Input -->
         <div class="div-input">
-          <label for="full-name">الاسم الكامل</label>
+          <label for="full-name">{{
+            "CONTACT.FORM.FULL_NAME.LABEL" | translate
+          }}</label>
           <input
             type="text"
             id="full-name"
-            name="fullName"
-            placeholder="أدخل اسمك الكامل"
+            formControlName="name"
+            [placeholder]="'CONTACT.FORM.FULL_NAME.PLACEHOLDER' | translate"
+            [class.invalid]="
+              contactForm.get('name')?.invalid &&
+              contactForm.get('name')?.touched
+            "
           />
+          <div
+            class="error-message"
+            *ngIf="
+              contactForm.get('name')?.invalid &&
+              contactForm.get('name')?.touched
+            "
+          >
+            <span *ngIf="contactForm.get('name')?.errors?.['required']">
+              {{ "CONTACT.FORM.ERRORS.REQUIRED" | translate }}
+            </span>
+            <span *ngIf="contactForm.get('name')?.errors?.['minlength']">
+              {{ "CONTACT.FORM.ERRORS.MIN_LENGTH_NAME" | translate }}
+            </span>
+          </div>
         </div>
 
         <!-- Email Input -->
         <div class="div-input">
-          <label for="email">البريد الإلكتروني</label>
+          <label for="email">{{
+            "CONTACT.FORM.EMAIL.LABEL" | translate
+          }}</label>
           <input
             type="email"
             id="email"
-            name="email"
-            placeholder="أدخل بريدك الإلكتروني"
+            formControlName="email"
+            [placeholder]="'CONTACT.FORM.EMAIL.PLACEHOLDER' | translate"
+            [class.invalid]="
+              contactForm.get('email')?.invalid &&
+              contactForm.get('email')?.touched
+            "
           />
+          <div
+            class="error-message"
+            *ngIf="
+              contactForm.get('email')?.invalid &&
+              contactForm.get('email')?.touched
+            "
+          >
+            <span *ngIf="contactForm.get('email')?.errors?.['required']">
+              {{ "CONTACT.FORM.ERRORS.REQUIRED" | translate }}
+            </span>
+            <span *ngIf="contactForm.get('email')?.errors?.['email']">
+              {{ "CONTACT.FORM.ERRORS.EMAIL" | translate }}
+            </span>
+          </div>
         </div>
 
         <!-- Phone Number Input -->
         <div class="div-input">
-          <label for="phone">رقم الهاتف</label>
+          <label for="phone">{{
+            "CONTACT.FORM.PHONE.LABEL" | translate
+          }}</label>
           <input
             type="tel"
             id="phone"
-            name="phone"
-            placeholder="أدخل رقم هاتفك"
+            formControlName="phone"
+            [placeholder]="'CONTACT.FORM.PHONE.PLACEHOLDER' | translate"
+            [class.invalid]="
+              contactForm.get('phone')?.invalid &&
+              contactForm.get('phone')?.touched
+            "
           />
+          <div
+            class="error-message"
+            *ngIf="
+              contactForm.get('phone')?.invalid &&
+              contactForm.get('phone')?.touched
+            "
+          >
+            <span *ngIf="contactForm.get('phone')?.errors?.['required']">
+              {{ "CONTACT.FORM.ERRORS.REQUIRED" | translate }}
+            </span>
+          </div>
         </div>
 
         <!-- Message Textarea -->
         <div class="div-input message-input">
-          <label for="message">الرسالة</label>
+          <label for="message">{{
+            "CONTACT.FORM.MESSAGE.LABEL" | translate
+          }}</label>
           <textarea
             id="message"
-            name="message"
+            formControlName="message"
             rows="6"
-            placeholder="اكتب رسالتك هنا"
+            [placeholder]="'CONTACT.FORM.MESSAGE.PLACEHOLDER' | translate"
+            [class.invalid]="
+              contactForm.get('message')?.invalid &&
+              contactForm.get('message')?.touched
+            "
           ></textarea>
+          <div
+            class="error-message"
+            *ngIf="
+              contactForm.get('message')?.invalid &&
+              contactForm.get('message')?.touched
+            "
+          >
+            <span *ngIf="contactForm.get('message')?.errors?.['required']">
+              {{ "CONTACT.FORM.ERRORS.REQUIRED" | translate }}
+            </span>
+            <span *ngIf="contactForm.get('message')?.errors?.['minlength']">
+              {{ "CONTACT.FORM.ERRORS.MIN_LENGTH_MESSAGE" | translate }}
+            </span>
+          </div>
         </div>
 
         <!-- Submit Button -->
-        <button type="submit" class="submit-button">إرسال</button>
+        <button
+          type="submit"
+          class="submit-button"
+          [disabled]="contactForm.invalid"
+        >
+          {{ "CONTACT.FORM.SUBMIT" | translate }}
+        </button>
       </form>
     </div>
   </div>

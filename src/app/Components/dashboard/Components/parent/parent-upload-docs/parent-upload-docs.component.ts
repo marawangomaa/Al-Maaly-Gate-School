@@ -2,22 +2,25 @@ import { Component } from '@angular/core';
 import { ParentService } from '../../../../../Services/parent.service';
 import { ApiResponseHandler } from '../../../../../utils/api-response-handler';
 import { NgFor, NgIf } from '@angular/common';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-parent-upload-docs',
   standalone: true,
-  imports: [NgFor, NgIf],
+  imports: [NgFor, NgIf, TranslateModule],
   templateUrl: './parent-upload-docs.component.html',
   styleUrls: ['./parent-upload-docs.component.css']
 })
 export class ParentUploadDocsComponent {
-
   files: (File | null)[] = [null];
   isUploading = false;
   errorMessage: string | null = null;
   successMessage: string | null = null;
 
-  constructor(private parentService: ParentService) { }
+  constructor(
+    private parentService: ParentService,
+    private translate: TranslateService
+  ) { }
 
   onFileSelected(event: Event, index: number): void {
     const input = event.target as HTMLInputElement;
@@ -27,7 +30,7 @@ export class ParentUploadDocsComponent {
 
     // ✅ PDF ONLY
     if (file.type !== 'application/pdf') {
-      this.errorMessage = 'Only PDF files are allowed';
+      this.errorMessage = this.translate.instant('PARENT_UPLOAD_DOCS_TS.ERRORS.ONLY_PDF');
       input.value = '';
       return;
     }
@@ -56,7 +59,7 @@ export class ParentUploadDocsComponent {
     const selectedFiles = this.files.filter(f => f !== null) as File[];
 
     if (selectedFiles.length === 0) {
-      this.errorMessage = 'Please select at least one file';
+      this.errorMessage = this.translate.instant('PARENT_UPLOAD_DOCS_TS.ERRORS.NO_FILES_SELECTED');
       return;
     }
 
@@ -75,7 +78,7 @@ export class ParentUploadDocsComponent {
       )
       .subscribe({
         next: () => {
-          this.successMessage = 'Files uploaded successfully';
+          this.successMessage = this.translate.instant('PARENT_UPLOAD_DOCS.FILES_UPLOAD_SUCCESS');
           this.files = [null];
         },
         error: err => {
