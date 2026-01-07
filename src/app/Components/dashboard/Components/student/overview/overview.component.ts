@@ -125,7 +125,6 @@ export class OverviewComponent implements OnInit {
       next: (response) => {
         if (response.data) {
           this.studentProfile = response.data;
-          localStorage.setItem('studentClassId', this.studentProfile?.classId || '');
           this.loadExamResults();
         } else {
           this.showError(response.message || this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.ERRORS.FAILED_TO_LOAD_STUDENT_DETAILS'));
@@ -365,14 +364,14 @@ export class OverviewComponent implements OnInit {
 
   get accountStatusText(): string {
     if (!this.userProfile?.accountStatus) return this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.STATUS.UNKNOWN');
-    
+
     const statusMap: { [key: string]: string } = {
       'Active': this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.STATUS.ACTIVE'),
       'Pending': this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.STATUS.PENDING'),
       'Rejected': this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.STATUS.REJECTED'),
       'Blocked': this.translate.instant('STUDENT_OVERVIEW.TS_MESSAGES.STATUS.BLOCKED')
     };
-    
+
     return statusMap[this.userProfile.accountStatus] || this.userProfile.accountStatus;
   }
 
