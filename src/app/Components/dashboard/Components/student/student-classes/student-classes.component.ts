@@ -6,6 +6,7 @@ import { ApiResponse } from '../../../../../Interfaces/auth';
 import { AuthService } from '../../../../../Services/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { StudentService } from '../../../../../Services/student.service';
 
 @Component({
   selector: 'app-student-classes',
@@ -14,6 +15,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
   styleUrl: './student-classes.component.css'
 })
 export class StudentClassesComponent implements OnInit {
+  classId: string | null = null;
   classes?: iclassAppointments[];
   _ClassAppointments = inject(ClassAppointmentsService);
   private platformId = inject(PLATFORM_ID);
@@ -22,33 +24,38 @@ export class StudentClassesComponent implements OnInit {
 
   constructor(
     private AuthService: AuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private StudentService: StudentService
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
   ngOnInit(): void {
-    // Try to get classId from route parameters first
-    this.route.paramMap.subscribe(params => {
-      this.classId = params.get('classId') || '';
-      if (this.classId) {
-        this.getClassAppointments();
-      }
-    });
-
-    // If no route parameter, try localStorage (only in browser)
-    if (!this.classId && this.isBrowser) {
-      const storedClassId = localStorage.getItem('studentClassId');
-      if (storedClassId) {
-        this.classId = storedClassId;
-        this.getClassAppointments();
-      } else {
-        console.warn(this.translate.instant('STUDENT_CLASSES_TS.WARNINGS.NO_CLASS_ID_FOUND'));
-      }
+    if (this.isBrowser) {
+      const studentId = localStorage.getItem('studentId')!;
+      this.GetStudentEntity(studentId);
     }
   }
 
-  classId: string = '';
+  GetStudentEntity(studentId: string) {
+    this.StudentService.GetStudentEntity(studentId).subscribe({
+      next: (response: ApiResponse<any>) => {
+        if (response.success && response.data) {
+          this.classId = response.data.classId;
+          this.getClassAppointments();
+          return response.data.id;
+        } else {
+          console.error(this.translate.instant('STUDENT_CLASSES_TS.ERRORS.FAILED_TO_GET_STUDENT_ID'), response.message);
+          return null;
+        }
+      },
+      error: (error: ApiResponse<any>) => {
+        console.error(this.translate.instant('STUDENT_CLASSES_TS.ERRORS.FAILED_TO_GET_STUDENT_ID'), error.message || error);
+        return null;
+      }
+    });
+  }
+
   filter: 'all' | 'Running' | 'Finished' | 'Upcoming' = 'all';
 
   get filteredLectures() {
