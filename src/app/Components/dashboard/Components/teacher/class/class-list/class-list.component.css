@@ -1,7 +1,11 @@
+/* =========================================================
+   SCHEDULED CLASSES COMPONENT - DARK/LIGHT MODE FIX
+   ========================================================= */
+
 /* Scheduled Classes */
 .scheduled-classes .scheduled-card {
   background-color: var(--color-bg-secondary);
-  border: 1px solid var(--color-border, var(--color-gray-200));
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   transition: background-color 0.3s ease, border-color 0.3s ease;
@@ -11,22 +15,43 @@
   border-color: var(--color-primary-300);
 }
 
+/* Table Styling */
+.scheduled-classes .scheduled-table {
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-light-bg);
+}
+
 .scheduled-classes .scheduled-table thead {
   background-color: var(--color-bg);
   color: var(--color-text-light-bg);
   border-bottom: 2px solid var(--color-primary-200);
 }
 
+.scheduled-classes .scheduled-table th {
+  background-color: var(--color-bg);
+  color: var(--color-text-light-bg);
+  font-weight: var(--font-weight-semibold);
+  border-color: var(--color-border);
+}
+
+.scheduled-classes .scheduled-table td {
+  color: var(--color-text-light-bg);
+  border-color: var(--color-border);
+  background-color: var(--color-bg-secondary);
+}
+
 .scheduled-classes .scheduled-table th,
 .scheduled-classes .scheduled-table td {
   vertical-align: middle;
   padding: var(--space-md);
-  border-color: var(--color-gray-200);
-  color: var(--color-text-light-bg);
 }
 
-.scheduled-classes .scheduled-table tr:hover {
+.scheduled-classes .scheduled-table tbody tr:hover {
   background-color: var(--color-primary-100);
+  transition: background-color 0.3s ease;
+}
+
+.scheduled-classes .scheduled-table tbody tr {
   transition: background-color 0.3s ease;
 }
 
@@ -43,29 +68,189 @@
 
 .status-badge.active {
   background-color: var(--color-primary-300);
+  color: var(--color-text-dark-bg);
 }
 
 .status-badge.inactive {
   background-color: var(--color-gray-300);
+  color: var(--color-text-dark-bg);
+}
+
+/* Button fixes for dark mode */
+.scheduled-classes .outline-btn {
+  background-color: transparent;
+  color: var(--color-text-light-bg);
+  border: 1px solid var(--color-text-light-bg);
+  padding: 0.4rem 1rem;
+  font-size: var(--font-sm);
+  border-radius: var(--radius-full);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.scheduled-classes .outline-btn:hover {
+  background-color: var(--color-primary-400);
+  color: var(--color-text-dark-bg);
+  border-color: var(--color-primary-400);
+  transform: translateY(-1px);
+}
+
+.scheduled-classes .danger-btn {
+  background-color: var(--color-danger-400);
+  color: var(--color-text-dark-bg);
+  border: 1px solid transparent;
+  padding: 0.4rem 1rem;
+  font-size: var(--font-sm);
+  border-radius: var(--radius-full);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.scheduled-classes .danger-btn:hover {
+  background-color: var(--color-danger-500);
+  transform: translateY(-1px);
+}
+
+.scheduled-classes .danger-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Text colors */
+.scheduled-classes .text-muted {
+  color: var(--color-text-muted) !important;
+}
+
+.scheduled-classes .text-center {
+  text-align: center !important;
+}
+
+/* Table container */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Bootstrap table overrides for dark mode */
+.table {
+  --bs-table-bg: var(--color-bg-secondary);
+  --bs-table-color: var(--color-text-light-bg);
+  --bs-table-border-color: var(--color-border);
+  --bs-table-striped-bg: var(--color-gray-100);
+  --bs-table-active-bg: var(--color-primary-100);
+  --bs-table-hover-bg: var(--color-primary-100);
+}
+
+.table> :not(caption)>*>* {
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-light-bg);
+  border-bottom-color: var(--color-border);
+}
+
+.table>thead {
+  --bs-table-bg: var(--color-bg);
+  color: var(--color-text-light-bg);
+}
+
+.table>tbody>tr:hover {
+  --bs-table-accent-bg: var(--color-primary-100);
+  color: var(--color-text-light-bg);
+}
+
+/* Bootstrap card overrides */
+.card {
+  --bs-card-bg: var(--color-bg-secondary);
+  --bs-card-border-color: var(--color-border);
+  --bs-card-cap-bg: var(--color-bg);
+  --bs-card-color: var(--color-text-light-bg);
+}
+
+/* Additional dark mode adjustments */
+[data-theme="dark"] .scheduled-classes .scheduled-table thead {
+  border-bottom-color: var(--color-primary-400);
+}
+
+[data-theme="dark"] .scheduled-classes .scheduled-card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="dark"] .scheduled-classes .outline-btn {
+  border-color: var(--color-primary-300);
+  color: var(--color-primary-300);
+}
+
+[data-theme="dark"] .scheduled-classes .outline-btn:hover {
+  background-color: var(--color-primary-400);
+  color: var(--color-text-dark-bg);
+}
+
+[data-theme="dark"] .scheduled-classes .status-badge.active {
+  background-color: var(--color-primary-200);
+}
+
+[data-theme="dark"] .scheduled-classes .status-badge.inactive {
+  background-color: var(--color-gray-400);
+}
+
+/* Bootstrap alignment fixes */
+.align-middle {
+  vertical-align: middle !important;
+}
+
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+
+.mb-4 {
+  margin-bottom: var(--space-lg) !important;
+}
+
+.py-4 {
+  padding-top: var(--space-xl) !important;
+  padding-bottom: var(--space-xl) !important;
 }
 
 /* Responsive adjustments */
 @media (max-width: 992px) {
   .scheduled-classes .scheduled-table {
-    font-size: 1.4rem;
+    font-size: var(--font-sm);
+  }
+
+  .scheduled-classes .scheduled-table th,
+  .scheduled-classes .scheduled-table td {
+    padding: var(--space-sm);
   }
 }
 
 @media (max-width: 768px) {
   .scheduled-classes .scheduled-table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
+    font-size: 1.3rem;
   }
 
   .scheduled-classes .status-badge,
   .scheduled-classes .btn-sm {
-    font-size: 1.3rem;
-    padding: 0.3rem 1rem;
+    font-size: 1.2rem;
+    padding: 0.3rem 0.8rem;
+  }
+
+  .scheduled-classes .scheduled-table thead th {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .scheduled-classes .scheduled-table {
+    font-size: 1.2rem;
+  }
+
+  .scheduled-classes .scheduled-table th,
+  .scheduled-classes .scheduled-table td {
+    padding: var(--space-xs) var(--space-sm);
+  }
+
+  .scheduled-classes .outline-btn,
+  .scheduled-classes .danger-btn {
+    padding: 0.3rem 0.6rem;
+    font-size: 1.1rem;
   }
 }

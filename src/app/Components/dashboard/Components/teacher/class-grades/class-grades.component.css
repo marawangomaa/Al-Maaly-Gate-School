@@ -1,480 +1,573 @@
-.teacher-grades {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-}
+/* =========================================================
+   TEACHER GRADES COMPONENT - DARK/LIGHT MODE FIX
+   ========================================================= */
 
-/* Card Styling */
-.card {
-  border: none;
-  border-radius: 1rem;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
-}
-
-.card.expanded {
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15) !important;
-}
-
-/* Gradient Header */
-.bg-gradient-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-}
-
-/* Class Icon */
-.class-icon {
-  width: 60px;
-  height: 60px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Subject Badges */
-.subject-badge {
-  background: white;
-  border: 1px solid #dee2e6;
-  border-radius: 50px;
-  padding: 8px 16px;
-  font-size: 0.9rem;
-  color: #495057;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-}
-
-.subject-badge:hover {
-  background: #e7f1ff;
-  border-color: #0d6efd;
-  transform: translateY(-1px);
-}
-
-/* Section Titles */
-.section-title {
-  color: #495057;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid #e9ecef;
-  margin-bottom: 1.5rem;
-  font-weight: 600;
-}
-
-/* Student Avatar */
-.student-avatar {
-  width: 48px;
-  height: 48px;
-  background: #f8f9fa;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Grade Summary */
-.grade-summary {
-  text-align: center;
-}
-
-.total-score {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #212529;
-  line-height: 1;
-}
-
-.total-score small {
-  font-size: 0.9rem;
-}
-
-/* Progress Bar */
-.progress {
-  border-radius: 10px;
-  overflow: hidden;
-  background: #e9ecef;
-}
-
-.progress-bar {
-  &.bg-success { background-color: #198754 !important; }
-  &.bg-primary { background-color: #0d6efd !important; }
-  &.bg-info { background-color: #0dcaf0 !important; }
-  &.bg-warning { background-color: #ffc107 !important; }
-  &.bg-danger { background-color: #dc3545 !important; }
-}
-
-/* Exam Type Navigation */
-.exam-type-nav .nav-pills {
-  background: #f8f9fa;
-  border-radius: 10px;
-  padding: 0.25rem;
-}
-
-.exam-type-nav .nav-link {
-  border-radius: 8px !important;
-  padding: 0.75rem 1rem;
-  color: #495057;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  border: none;
-}
-
-.exam-type-nav .nav-link:hover {
-  background: #e9ecef;
-}
-
-.exam-type-nav .nav-link.active {
-  background: #0d6efd !important;
-  color: white !important;
-  box-shadow: 0 4px 10px rgba(13, 110, 253, 0.3);
-}
-
-/* Subject Cards */
-.subject-card {
-  border: 2px solid transparent;
-  transition: all 0.3s ease;
-}
-
-.subject-card:hover {
-  border-color: #0d6efd;
-  transform: translateY(-3px);
-}
-
-.subject-card.has-components {
-  border-color: #20c997;
-  background: linear-gradient(to bottom right, #ffffff, #f8fff9);
-}
-
-.subject-card.has-components .subject-header {
-  border-bottom: 2px solid #20c997;
-  padding-bottom: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-.subject-name {
-  color: #212529;
-  min-height: 2.5rem;
-}
-
-/* Components Section */
-.components-section {
-  background: #f8f9fa;
-  border-radius: 8px;
-  padding: 1rem;
-  border-left: 4px solid #20c997;
-}
-
-.components-section .input-group {
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-
-.components-section .input-group-sm .form-control {
-  font-size: 0.875rem;
-  padding: 0.25rem 0.5rem;
-}
-
-.components-section .input-group-text {
-  background: #e9ecef;
-  border-color: #dee2e6;
-  font-weight: 500;
-  width: 40px;
-  justify-content: center;
-  font-size: 0.875rem;
-  padding: 0.25rem;
-}
-
-.calculated-total {
-  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
-  border: 1px solid #90caf9;
-  border-radius: 6px;
-}
-
-/* Form Controls */
-.form-control:focus {
-  border-color: #0d6efd;
-  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-}
-
-.form-check-input:checked {
-  background-color: #0d6efd;
-  border-color: #0d6efd;
-}
-
-.form-switch .form-check-input {
-  width: 3em;
-  height: 1.5em;
-}
-
-/* Action Buttons */
-.action-buttons {
-  background: #f8f9fa;
-  border-radius: 12px;
-  padding: 1rem 1.5rem;
-}
-
-.btn-success {
-  background: linear-gradient(135deg, #28a745, #20c997);
-  border: none;
-  padding: 0.75rem 2rem;
-  font-weight: 500;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-.btn-success:hover {
-  background: linear-gradient(135deg, #218838, #1ea181);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
-}
-
-.btn-success:disabled {
-  opacity: 0.65;
-  transform: none;
-  box-shadow: none;
-}
-
-.btn-outline-primary {
-  border-radius: 8px;
-  padding: 0.75rem 1.5rem;
-  transition: all 0.3s ease;
-}
-
-.btn-outline-primary:hover {
-  transform: translateY(-2px);
-}
-
-/* Accordion Customization */
-.accordion-button {
-  border-radius: 12px !important;
-  background: white !important;
-  border: 2px solid #e9ecef !important;
-  padding: 1.25rem !important;
-  transition: all 0.3s ease;
-}
-
-.accordion-button:not(.collapsed) {
-  background: #f8f9fa !important;
-  border-color: #0d6efd !important;
-  box-shadow: 0 4px 15px rgba(13, 110, 253, 0.1);
-}
-
-.accordion-button:focus {
-  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
-  border-color: #0d6efd !important;
-}
-
-.accordion-body {
-  background: white;
-  border: 2px solid #e9ecef;
-  border-top: none;
-  border-radius: 0 0 12px 12px;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .exam-type-nav .nav-pills {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    padding: 0.5rem;
+   .teacher-grades {
+    min-height: 100vh;
+    background: var(--color-bg-secondary); /* Changed from hardcoded gradient */
   }
   
-  .exam-type-nav .nav-link {
-    white-space: nowrap;
+  /* Card Styling */
+  .card {
+    border: none;
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    background-color: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+  }
+  
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  .card.expanded {
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15) !important;
+  }
+  
+  /* Gradient Header - fixed for dark mode */
+  .bg-gradient-primary {
+    background: linear-gradient(135deg, var(--color-primary-300) 0%, var(--color-primary-500) 100%) !important;
+    color: var(--color-text-dark-bg) !important;
+    border-color: transparent !important;
+  }
+  
+  /* Class Icon */
+  .class-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Subject Badges */
+  .subject-badge {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 50px;
+    padding: 8px 16px;
     font-size: 0.9rem;
-    padding: 0.5rem 0.75rem;
+    color: var(--color-text-light-bg);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
   }
   
-  .action-buttons .d-flex {
-    flex-direction: column;
-    gap: 1rem;
+  .subject-badge:hover {
+    background: var(--color-primary-100);
+    border-color: var(--color-primary-400);
+    transform: translateY(-1px);
   }
   
-  .action-buttons .btn {
-    width: 100%;
+  /* Section Titles */
+  .section-title {
+    color: var(--color-text-light-bg);
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--color-border);
+    margin-bottom: 1.5rem;
+    font-weight: 600;
   }
   
+  /* Student Avatar */
   .student-avatar {
-    width: 36px;
-    height: 36px;
+    width: 48px;
+    height: 48px;
+    background: var(--color-gray-100);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary-400);
+  }
+  
+  /* Grade Summary */
+  .grade-summary {
+    text-align: center;
   }
   
   .total-score {
-    font-size: 1.25rem;
-  }
-}
-
-/* Loading Animation */
-.spinner-border {
-  animation-duration: 0.75s;
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
-}
-
-/* Focus States */
-:focus {
-  outline: none;
-}
-
-/* Badge Animations */
-.badge {
-  transition: all 0.3s ease;
-}
-
-.badge:hover {
-  transform: scale(1.05);
-}
-
-/* Input Validation States */
-.form-control.ng-invalid.ng-touched {
-  border-color: #dc3545;
-}
-
-.form-control.ng-valid.ng-touched {
-  border-color: #198754;
-}
-
-.invalid-feedback {
-  display: none;
-}
-
-.form-control.ng-invalid.ng-touched ~ .invalid-feedback {
-  display: block;
-}
-
-/* Tooltips */
-.tooltip {
-  font-size: 0.875rem;
-}
-
-/* Card Header Animation */
-.card-header {
-  transition: all 0.3s ease;
-}
-
-.card-header:hover {
-  background: linear-gradient(135deg, #667eea 0%, #5a6fd8 100%) !important;
-}
-
-/* Alert Styling */
-.alert {
-  border-radius: 12px;
-  border: none;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
-.alert-info {
-  background: linear-gradient(135deg, #d1ecf1, #bee5eb);
-  color: #0c5460;
-}
-
-.alert-success {
-  background: linear-gradient(135deg, #d4edda, #c3e6cb);
-  color: #155724;
-}
-
-.alert-warning {
-  background: linear-gradient(135deg, #fff3cd, #ffeaa7);
-  color: #856404;
-}
-
-/* Form Switch Enhancement */
-.form-switch .form-check-input {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
-  background-position: left center;
-  background-size: contain;
-}
-
-.form-switch .form-check-input:checked {
-  background-position: right center;
-}
-
-/* Animation for form transitions */
-.accordion-collapse {
-  transition: height 0.35s ease;
-}
-
-/* Print Styles */
-@media print {
-  .teacher-grades {
-    background: white !important;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--color-text-light-bg);
+    line-height: 1;
   }
   
-  .btn, .nav, .alert {
-    display: none !important;
+  .total-score small {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
   }
   
-  .card {
-    box-shadow: none !important;
-    border: 1px solid #dee2e6 !important;
+  /* Progress Bar */
+  .progress {
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--color-gray-100);
   }
   
-  .card-header {
-    background: white !important;
+  .progress-bar {
+    transition: width 0.3s ease;
+  }
+  
+  /* Exam Type Navigation */
+  .exam-type-nav .nav-pills {
+    background: var(--color-gray-100);
+    border-radius: 10px;
+    padding: 0.25rem;
+  }
+  
+  .exam-type-nav .nav-link {
+    border-radius: 8px !important;
+    padding: 0.75rem 1rem;
+    color: var(--color-text-light-bg);
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: none;
+    background: transparent;
+  }
+  
+  .exam-type-nav .nav-link:hover {
+    background: var(--color-gray-200);
+  }
+  
+  .exam-type-nav .nav-link.active {
+    background: var(--color-primary-400) !important;
+    color: var(--color-text-dark-bg) !important;
+    box-shadow: 0 4px 10px rgba(13, 110, 253, 0.3);
+  }
+  
+  /* Subject Cards */
+  .subject-card {
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    background: var(--color-bg);
+  }
+  
+  .subject-card:hover {
+    border-color: var(--color-primary-400);
+    transform: translateY(-3px);
+  }
+  
+  .subject-card.has-components {
+    border-color: #20c997;
+    background: var(--color-bg);
+  }
+  
+  .subject-card.has-components .subject-header {
+    border-bottom: 2px solid #20c997;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .subject-name {
+    color: var(--color-text-light-bg);
+    min-height: 2.5rem;
+  }
+  
+  /* Components Section */
+  .components-section {
+    background: var(--color-gray-100);
+    border-radius: 8px;
+    padding: 1rem;
+    border-left: 4px solid #20c997;
+  }
+  
+  .components-section .input-group {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+  
+  .components-section .input-group-sm .form-control {
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;
+    background: var(--color-bg);
+    color: var(--color-text-light-bg);
+    border-color: var(--color-border);
+  }
+  
+  .components-section .input-group-text {
+    background: var(--color-gray-200);
+    border-color: var(--color-border);
+    font-weight: 500;
+    width: 40px;
+    justify-content: center;
+    font-size: 0.875rem;
+    padding: 0.25rem;
+    color: var(--color-text-light-bg);
+  }
+  
+  .calculated-total {
+    background: linear-gradient(135deg, var(--color-primary-100), var(--color-primary-200));
+    border: 1px solid var(--color-primary-300);
+    border-radius: 6px;
+    color: var(--color-text-light-bg);
+  }
+  
+  /* Form Controls */
+  .form-control {
+    background-color: var(--color-bg);
+    color: var(--color-text-light-bg);
+    border-color: var(--color-border);
+  }
+  
+  .form-control:focus {
+    border-color: var(--color-primary-400);
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    background-color: var(--color-bg);
+    color: var(--color-text-light-bg);
+  }
+  
+  .form-check-input:checked {
+    background-color: var(--color-primary-400);
+    border-color: var(--color-primary-400);
+  }
+  
+  .form-switch .form-check-input {
+    width: 3em;
+    height: 1.5em;
+  }
+  
+  /* Action Buttons */
+  .action-buttons {
+    background: var(--color-gray-100);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+  
+  .btn-success {
+    background: linear-gradient(135deg, var(--color-primary-400), var(--color-primary-500));
+    border: none;
+    padding: 0.75rem 2rem;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    color: var(--color-text-dark-bg);
+  }
+  
+  .btn-success:hover {
+    background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600));
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(var(--color-primary-400), 0.3);
+    color: var(--color-text-dark-bg);
+  }
+  
+  .btn-success:disabled {
+    opacity: 0.65;
+    transform: none;
+    box-shadow: none;
+  }
+  
+  .btn-outline-primary {
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+    border-color: var(--color-primary-400);
+    color: var(--color-primary-400);
+  }
+  
+  .btn-outline-primary:hover {
+    transform: translateY(-2px);
+    background-color: var(--color-primary-400);
+    color: var(--color-text-dark-bg);
+  }
+  
+  .btn-outline-secondary {
+    border-color: var(--color-border);
+    color: var(--color-text-light-bg);
+  }
+  
+  .btn-outline-secondary:hover {
+    background-color: var(--color-gray-200);
+    color: var(--color-text-light-bg);
+  }
+  
+  /* Accordion Customization */
+  .accordion-button {
+    border-radius: 12px !important;
+    background: var(--color-bg) !important;
+    border: 2px solid var(--color-border) !important;
+    padding: 1.25rem !important;
+    transition: all 0.3s ease;
+    color: var(--color-text-light-bg) !important;
+  }
+  
+  .accordion-button:not(.collapsed) {
+    background: var(--color-gray-100) !important;
+    border-color: var(--color-primary-400) !important;
+    box-shadow: 0 4px 15px rgba(var(--color-primary-400), 0.1);
+    color: var(--color-text-light-bg) !important;
+  }
+  
+  .accordion-button:focus {
+    box-shadow: 0 0 0 0.25rem rgba(var(--color-primary-400), 0.25) !important;
+    border-color: var(--color-primary-400) !important;
+  }
+  
+  .accordion-body {
+    background: var(--color-bg);
+    border: 2px solid var(--color-border);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    color: var(--color-text-light-bg);
+  }
+  
+  /* Alert Styling */
+  .alert {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+  
+  .alert-info {
+    background: linear-gradient(135deg, var(--color-primary-100), var(--color-primary-200));
+    color: var(--color-text-light-bg);
+    border: 1px solid var(--color-primary-300);
+  }
+  
+  .alert-success {
+    background: linear-gradient(135deg, #d4edda, #c3e6cb);
+    color: var(--color-text-light-bg);
+    border: 1px solid #c3e6cb;
+  }
+  
+  .alert-warning {
+    background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+    color: var(--color-text-light-bg);
+    border: 1px solid #ffeaa7;
+  }
+  
+  /* Text Colors */
+  .text-muted {
+    color: var(--color-text-muted) !important;
+  }
+  
+  .text-primary {
+    color: var(--color-primary-400) !important;
+  }
+  
+  .text-success {
+    color: #198754 !important;
+  }
+  
+  .text-info {
+    color: #0dcaf0 !important;
+  }
+  
+  .text-warning {
+    color: #ffc107 !important;
+  }
+  
+  .text-danger {
+    color: var(--color-danger-400) !important;
+  }
+  
+  /* Background Colors */
+  .bg-white {
+    background-color: var(--color-bg) !important;
+  }
+  
+  .bg-light {
+    background-color: var(--color-gray-100) !important;
+  }
+  
+  .bg-primary {
+    background-color: var(--color-primary-400) !important;
+    color: var(--color-text-dark-bg) !important;
+  }
+  
+  .bg-success {
+    background-color: #198754 !important;
+    color: white !important;
+  }
+  
+  .bg-info {
+    background-color: #0dcaf0 !important;
+    color: white !important;
+  }
+  
+  .bg-warning {
+    background-color: #ffc107 !important;
     color: black !important;
   }
-}
-
-/* Add to your CSS file */
-.components-section .input-group-text[readonly] {
-  background-color: #f8f9fa !important;
-  cursor: not-allowed;
-}
-
-.badge.bg-light {
-  font-size: 0.7rem;
-  padding: 2px 6px;
-  border: 1px solid #dee2e6;
-}
-
-.progress[style*="height: 5px"] {
-  background-color: #e9ecef;
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-.calculated-total .progress {
-  margin-top: 8px;
-}
-
-/* Weight indicator */
-.weight-indicator {
-  font-size: 0.75rem;
-  padding: 2px 8px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
-  border: 1px solid #90caf9;
-  color: #1565c0;
-}
-
-/* Highlight for midterms */
-.midterm-card {
-  border-left: 4px solid #ffc107 !important;
-  background: linear-gradient(to bottom right, #ffffff, #fff8e1);
-}
-
-/* Highlight for finals */
-.final-card {
-  border-left: 4px solid #28a745 !important;
-  background: linear-gradient(to bottom right, #ffffff, #f0fff4);
-}
+  
+  .bg-danger {
+    background-color: var(--color-danger-400) !important;
+    color: var(--color-text-dark-bg) !important;
+  }
+  
+  .bg-secondary {
+    background-color: var(--color-gray-300) !important;
+    color: var(--color-text-light-bg) !important;
+  }
+  
+  /* Badge Colors */
+  .badge {
+    transition: all 0.3s ease;
+  }
+  
+  .badge.bg-light {
+    background-color: var(--color-gray-100) !important;
+    color: var(--color-text-light-bg) !important;
+    border: 1px solid var(--color-border);
+  }
+  
+  .badge.bg-primary {
+    background-color: var(--color-primary-400) !important;
+    color: var(--color-text-dark-bg) !important;
+  }
+  
+  .badge.bg-success {
+    background-color: #198754 !important;
+  }
+  
+  .badge.bg-info {
+    background-color: #0dcaf0 !important;
+  }
+  
+  .badge.bg-warning {
+    background-color: #ffc107 !important;
+    color: black !important;
+  }
+  
+  .badge.bg-danger {
+    background-color: var(--color-danger-400) !important;
+  }
+  
+  .badge:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Input Validation States */
+  .form-control.ng-invalid.ng-touched {
+    border-color: var(--color-danger-400);
+  }
+  
+  .form-control.ng-valid.ng-touched {
+    border-color: var(--color-primary-400);
+  }
+  
+  .invalid-feedback {
+    display: none;
+    color: var(--color-danger-400);
+  }
+  
+  .form-control.ng-invalid.ng-touched ~ .invalid-feedback {
+    display: block;
+  }
+  
+  /* Card Header Animation */
+  .card-header {
+    transition: all 0.3s ease;
+  }
+  
+  .card-header:hover {
+    background: linear-gradient(135deg, var(--color-primary-300) 0%, var(--color-primary-400) 100%) !important;
+  }
+  
+  /* Border Colors */
+  .border-0 {
+    border: 0 !important;
+  }
+  
+  .border {
+    border: 1px solid var(--color-border) !important;
+  }
+  
+  .border-top {
+    border-top: 1px solid var(--color-border) !important;
+  }
+  
+  /* Background Subtle Classes */
+  .bg-light-subtle {
+    background-color: var(--color-gray-100) !important;
+  }
+  
+  .bg-info-subtle {
+    background-color: var(--color-primary-100) !important;
+  }
+  
+  /* Additional Dark Mode Adjustments */
+  [data-theme="dark"] .alert-success {
+    color: #d1e7dd !important;
+  }
+  
+  [data-theme="dark"] .alert-info {
+    color: #cff4fc !important;
+  }
+  
+  [data-theme="dark"] .alert-warning {
+    color: #664d03 !important;
+  }
+  
+  [data-theme="dark"] .text-success {
+    color: #75b798 !important;
+  }
+  
+  [data-theme="dark"] .text-info {
+    color: #6edff6 !important;
+  }
+  
+  [data-theme="dark"] .text-warning {
+    color: #ffda6a !important;
+  }
+  
+  [data-theme="dark"] .text-danger {
+    color: #ea868f !important;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .exam-type-nav .nav-pills {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding: 0.5rem;
+    }
+    
+    .exam-type-nav .nav-link {
+      white-space: nowrap;
+      font-size: 0.9rem;
+      padding: 0.5rem 0.75rem;
+    }
+    
+    .action-buttons .d-flex {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .action-buttons .btn {
+      width: 100%;
+    }
+    
+    .student-avatar {
+      width: 36px;
+      height: 36px;
+    }
+    
+    .total-score {
+      font-size: 1.25rem;
+    }
+  }
+  
+  /* Print Styles */
+  @media print {
+    .teacher-grades {
+      background: white !important;
+    }
+    
+    .btn, .nav, .alert {
+      display: none !important;
+    }
+    
+    .card {
+      box-shadow: none !important;
+      border: 1px solid #dee2e6 !important;
+    }
+    
+    .card-header {
+      background: white !important;
+      color: black !important;
+    }
+  }
