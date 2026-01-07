@@ -342,7 +342,11 @@
       "INSTAGRAM": "Instagram",
       "TWITTER": "X Platform"
     },
-    "COPYRIGHT": "&copy;2026 Al Maaly Gate Schools, All rights reserved"
+    "COPYRIGHT": "&copy;2026 Al Maaly Gate Schools, All rights reserved",
+    "DEVELOPED_BY": {
+      "TITLE": "Developed By",
+      "NAME": "Nexora Development Team"
+    }
   },
   "PROGRAMS": {
     "TITLE": "Our Programs",

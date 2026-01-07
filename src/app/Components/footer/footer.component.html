@@ -1,100 +1,85 @@
-<footer class="app-footer container">
+<footer class="app-footer">
+
+  <!-- ===== MAIN FOOTER ===== -->
   <div class="container footer-main">
+
+    <!-- School Info -->
     <div class="footer-column logo-column">
-      <!-- Placeholder for Logo -->
-      <div class="logo-container">
-        <img
-          src="assets/images/logo (4).jpeg"
-          [alt]="'FOOTER.LOGO_ALT' | translate"
-          class="footer-logo"
-        />
-      </div>
-      <p class="paragraph footer-description">
-        {{ "FOOTER.DESCRIPTION" | translate }}
+      <img
+        [src]="isDarkMode ? 'assets/images/logoDark.png' : 'assets/images/logo-nobg.png'"
+        class="footer-logo"
+      />
+      <p class="footer-description">
+        {{ 'FOOTER.DESCRIPTION' | translate }}
       </p>
-      <div class="social-links">
-        <!-- Placeholder for Social Media Icons -->
-        <!-- <a href="#" class="social-icon"></a>
-        <a href="#" class="social-icon"></a>
-        <a href="#" class="social-icon"></a> -->
+    </div>
+
+    <!-- Quick Links -->
+    <div class="footer-column">
+      <h4 class="sub-title">{{ 'FOOTER.QUICK_LINKS.TITLE' | translate }}</h4>
+      <ul class="footer-links">
+        <li><a class="custom-link" href="#">{{ 'FOOTER.QUICK_LINKS.HOME' | translate }}</a></li>
+        <li><a class="custom-link" href="#">{{ 'FOOTER.QUICK_LINKS.ABOUT' | translate }}</a></li>
+        <li><a class="custom-link" href="#">{{ 'FOOTER.QUICK_LINKS.PROGRAMS' | translate }}</a></li>
+        <li><a class="custom-link" href="#">{{ 'FOOTER.QUICK_LINKS.CONTACT' | translate }}</a></li>
+      </ul>
+    </div>
+
+    <!-- Policies -->
+    <div class="footer-column">
+      <h4 class="sub-title">{{ 'FOOTER.POLICIES.TITLE' | translate }}</h4>
+      <ul class="footer-links">
+        <li><a class="custom-link" href="#">{{ 'FOOTER.POLICIES.PRIVACY' | translate }}</a></li>
+        <li><a class="custom-link" href="#">{{ 'FOOTER.POLICIES.TERMS' | translate }}</a></li>
+        <li><a class="custom-link" href="#">{{ 'FOOTER.POLICIES.COOKIES' | translate }}</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- ===== DEVELOPED BY SECTION ===== -->
+  <div class="footer-team-section">
+    <div class="container">
+      <h4 class="team-title">
+        {{ 'FOOTER.DEVELOPED_BY.TITLE' | translate }}
+      </h4>
+
+      <div class="team-card-premium">
+
+        <!-- WhatsApp Logo -->
+        <div class="team-logo-wrapper" (click)="openWhatsApp()" style="cursor: pointer;">
+          <img
+            [src]="isDarkMode ? 'assets/images/team-logo-dark.png' : 'assets/images/team-logo-light.png'"
+            class="team-logo"
+          />
+        </div>
+
+        <div class="team-info">
+          <span class="team-name">
+            {{ 'FOOTER.DEVELOPED_BY.NAME' | translate }}
+          </span>
+
+          <!-- WhatsApp phone -->
+          <span class="team-phone" (click)="openWhatsApp()" style="cursor: pointer;">
+            <i class="fa-brands fa-whatsapp"></i>
+            01140106990
+          </span>
+
+          <!-- Email -->
+          <span class="team-cta">
+            <a href="mailto:vstit2026@gmail.com" class="email-link">
+              vstit2026&#64;gmail.com
+            </a>
+          </span>
+        </div>
+
       </div>
     </div>
-
-    <div class="footer-column links-column">
-      <h4 class="sub-title">{{ "FOOTER.QUICK_LINKS.TITLE" | translate }}</h4>
-      <ul class="footer-links">
-        <li>
-          <a href="#" class="custom-link">{{
-            "FOOTER.QUICK_LINKS.HOME" | translate
-          }}</a>
-        </li>
-        <li>
-          <a href="#" class="custom-link">{{
-            "FOOTER.QUICK_LINKS.ABOUT" | translate
-          }}</a>
-        </li>
-        <li>
-          <a href="#" class="custom-link">{{
-            "FOOTER.QUICK_LINKS.PROGRAMS" | translate
-          }}</a>
-        </li>
-        <li>
-          <a href="#" class="custom-link">{{
-            "FOOTER.QUICK_LINKS.CONTACT" | translate
-          }}</a>
-        </li>
-      </ul>
-    </div>
-
-    <div class="footer-column contact-column">
-      <h4 class="sub-title">{{ "FOOTER.POLICIES.TITLE" | translate }}</h4>
-      <ul class="footer-links">
-        <li>
-          <a href="#" class="custom-link">{{
-            "FOOTER.POLICIES.PRIVACY" | translate
-          }}</a>
-        </li>
-        <li>
-          <a href="#" class="custom-link">{{
-            "FOOTER.POLICIES.TERMS" | translate
-          }}</a>
-        </li>
-        <li>
-          <a href="#" class="custom-link">{{
-            "FOOTER.POLICIES.COOKIES" | translate
-          }}</a>
-        </li>
-      </ul>
-    </div>
-
-    <div class="footer-column newsletter-column">
-      <h4 class="sub-title">{{ "FOOTER.FOLLOW_US.TITLE" | translate }}</h4>
-      <ul class="footer-links">
-        <li>
-          <a href="#" class="custom-link">{{
-            "FOOTER.FOLLOW_US.FACEBOOK" | translate
-          }}</a>
-        </li>
-        <li>
-          <a href="#" class="custom-link">{{
-            "FOOTER.FOLLOW_US.INSTAGRAM" | translate
-          }}</a>
-        </li>
-        <li>
-          <a href="#" class="custom-link">{{
-            "FOOTER.FOLLOW_US.TWITTER" | translate
-          }}</a>
-        </li>
-      </ul>
-    </div>
   </div>
 
+  <!-- ===== COPYRIGHT ===== -->
   <div class="footer-bottom">
-    <div class="container footer-bottom-content">
-      <p
-        class="paragraph copyright-text"
-        [innerHTML]="'FOOTER.COPYRIGHT' | translate"
-      ></p>
-    </div>
+    <p [innerHTML]="'FOOTER.COPYRIGHT' | translate"></p>
   </div>
+
 </footer>

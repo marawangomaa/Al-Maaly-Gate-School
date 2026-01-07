@@ -342,7 +342,11 @@
       "INSTAGRAM": "انستاجرام",
       "TWITTER": "منصة إكس"
     },
-    "COPYRIGHT": "&copy;2026 مدارس بوابة المعالي، كل الحقوق محفوظة"
+    "COPYRIGHT": "&copy;2026 مدارس بوابة المعالي، كل الحقوق محفوظة",
+    "DEVELOPED_BY": {
+      "TITLE": "Developed By",
+      "NAME": "Nexora Development Team"
+    }
   },
   "PROGRAMS": {
     "TITLE": "بــرامــجــنــا",

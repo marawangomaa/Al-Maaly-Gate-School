@@ -88,6 +88,7 @@ html[lang="en"] {
   --color-text-light-bg: #0d1117;
   --color-text-dark-bg: #e6f0ff;
   --color-text-muted: #555555;
+  --team-glow-color: rgba(0, 123, 255, 0.35);
 
   /* Primary Blue Shades */
   --color-primary-100: #e6f0ff;
@@ -162,6 +163,7 @@ html[lang="en"] {
   --color-bg: #0d1117;
   --color-bg-secondary: #161b22;
   --color-text-light-bg: #e6f0ff;
+  --team-glow-color: rgba(37, 211, 102, 0.45);
   /* reverse for dark mode */
   --color-text-dark-bg: #0d1117;
   /* reverse for dark mode */

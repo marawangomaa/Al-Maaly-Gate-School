@@ -9,7 +9,9 @@
     <!-- Brand -->
     <a class="navbar-brand d-flex align-items-center" routerLink="/">
       <img
-        src="assets/images/logo-nobg.png"
+        [src]=" isDarkMode
+          ? 'assets/images/logoDark.png'
+          : 'assets/images/logo-nobg.png' "
         alt="Logo"
         class="navbar-logo me-2"
       />

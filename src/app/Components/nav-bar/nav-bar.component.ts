@@ -4,6 +4,8 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { preloadTranslations } from '../../preload-translations';
 import { AuthService } from '../../Services/auth.service';
+import { ThemeService } from '../../Services/theme.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-nav-bar',
@@ -20,33 +22,34 @@ export class NavBarComponent implements OnInit {
   currentLang = 'ar';
   isDropdownOpen = false;
   isThemeDropdownOpen = false;
+  private themeSubscription?: Subscription; 
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private translate: TranslateService,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private themeService: ThemeService
   ) { }
 
   ngOnInit() {
     this.isLoggedIn = this.auth.isLoggedIn();
-    this.role = this.auth.getRole();  // Admin | Teacher | Student
+    this.role = this.auth.getRole();
 
-    if (isPlatformBrowser(this.platformId)) {
-      const savedLang = localStorage.getItem('lang') || 'ar';
-      this.currentLang = savedLang;
-      preloadTranslations(this.translate, savedLang);
+    // Subscribe to theme changes
+    this.themeSubscription = this.themeService.isDarkMode$.subscribe(isDark => {
+      this.isDarkMode = isDark;
+    });
 
-      document.documentElement.setAttribute('lang', savedLang);
-      document.documentElement.setAttribute(
-        'dir',
-        savedLang === 'ar' ? 'rtl' : 'ltr'
-      );
+    const savedLang = localStorage.getItem('lang') || 'ar';
+    this.currentLang = savedLang;
+    preloadTranslations(this.translate, savedLang);
 
-      const savedTheme = localStorage.getItem('theme') || 'light';
-      this.isDarkMode = savedTheme === 'dark';
-      document.body.setAttribute('data-theme', savedTheme);
-    }
+    document.documentElement.setAttribute('lang', savedLang);
+    document.documentElement.setAttribute(
+      'dir',
+      savedLang === 'ar' ? 'rtl' : 'ltr'
+    );
   }
 
   toggleDropdown() {
@@ -101,19 +104,23 @@ export class NavBarComponent implements OnInit {
   }
 
   toggleTheme() {
-    const newTheme = this.isDarkMode ? 'light' : 'dark';
-    this.setTheme(newTheme);
+    this.themeService.toggleTheme();
   }
 
   setTheme(theme: 'light' | 'dark') {
-    this.isDarkMode = (theme === 'dark');
-    document.body.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
+    this.themeService.setTheme(theme);
     this.isThemeDropdownOpen = false;
   }
 
   logout() {
     this.auth.logout();
     this.router.navigate(['/login']);
+  }
+
+  ngOnDestroy() {
+    // Clean up subscription
+    if (this.themeSubscription) {
+      this.themeSubscription.unsubscribe();
+    }
   }
 }
