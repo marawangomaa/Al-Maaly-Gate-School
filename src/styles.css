@@ -153,6 +153,28 @@ html[lang="en"] {
   --radius-lg: 1.6rem;
   --radius-3xlg: 3rem;
   --radius-full: 9999px;
+
+   /* Additional variables for buttons and alerts */
+  --color-alert-success-bg: #f0fdf4;
+  --color-alert-success-border: #bbf7d0;
+  --color-alert-success-text: #166534;
+  --color-alert-danger-bg: #fef2f2;
+  --color-alert-danger-border: #fecaca;
+  --color-alert-danger-text: #991b1b;
+  --color-alert-info-bg: #eff6ff;
+  --color-alert-info-border: #bfdbfe;
+  --color-alert-info-text: #1e40af;
+  
+  /* Button gradient colors */
+  --button-gradient-start: #2563eb;
+  --button-gradient-end: #4f46e5;
+  --button-hover-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+  /* Input specific variables for light mode */
+  --color-input-border: #d1d5db;
+  --color-input-border-focus: #2563eb;
+  --color-input-bg: #ffffff;
+  --color-input-text: #0d1117;
+  --color-input-placeholder: #6b7280;
 }
 
 /* =========================================================
@@ -187,6 +209,30 @@ html[lang="en"] {
 
   /* Borders & Shadows */
   --color-border: var(--color-gray-200);
+
+  /* Dark theme overrides for alerts and buttons */
+  --color-alert-success-bg: #052e16;
+  --color-alert-success-border: #14532d;
+  --color-alert-success-text: #86efac;
+  --color-alert-danger-bg: #450a0a;
+  --color-alert-danger-border: #7f1d1d;
+  --color-alert-danger-text: #fca5a5;
+  --color-alert-info-bg: #1e3a8a;
+  --color-alert-info-border: #1e40af;
+  --color-alert-info-text: #93c5fd;
+  
+  /* Button gradient for dark mode */
+  --button-gradient-start: #3b82f6;
+  --button-gradient-end: #6366f1;
+  --button-hover-shadow: 0 6px 18px rgba(59, 130, 246, 0.35);
+
+  /* Input specific variables for dark mode */
+  --color-input-border: var(--color-gray-400);
+  --color-input-border-focus: var(--color-primary-300);
+  --color-input-bg: var(--color-bg-secondary);
+  --color-input-text: var(--color-text-light-bg);
+  --color-input-placeholder: var(--color-gray-400);
+
 
 }
 

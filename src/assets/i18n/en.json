@@ -398,8 +398,8 @@
     "SPORTS_FIELDS": "Equipped Sports Fields"
   },
   "HERO": {
-   "TITLE_Part1": "Welcome to",
-    "TITLE_SPAN": " 'Al Maaly Gate Schools' ",	
+    "TITLE_Part1": "Welcome to",
+    "TITLE_SPAN": " 'Al Maaly Gate Schools' ",
     "TITLE_Part2": "Discover Our New Remote Learning Platform in the Arab World",
     "SUBTITLE": "our new remote learning platform in the Arab world",
     "CTA": "Take the Step Now"
@@ -1991,5 +1991,27 @@
       "END": "End",
       "NO_CLASSES": "No scheduled classes found"
     }
+  },
+  "FORGOT_PASSWORD": {
+    "TITLE": "Forgot Password",
+    "SUBTITLE": "Enter your email address and we'll send you a reset link.",
+    "EMAIL_LABEL": "Email",
+    "EMAIL_PLACEHOLDER": "example@email.com",
+    "SEND_RESET_LINK": "Send Reset Link",
+    "RESET_LINK_SENT": "Reset link has been sent to your email!",
+    "ERROR_OCCURRED": "An error occurred. Please try again."
+  }
+  ,
+  "RESET_PASSWORD": {
+    "TITLE": "Reset Password",
+    "NEW_PASSWORD_LABEL": "New Password",
+    "NEW_PASSWORD_PLACEHOLDER": "Enter new password",
+    "CONFIRM_PASSWORD_LABEL": "Confirm Password",
+    "CONFIRM_PASSWORD_PLACEHOLDER": "Confirm your new password",
+    "VALIDATION_MIN_LENGTH": "Password must be at least 6 characters",
+    "RESET_BUTTON": "Reset Password",
+    "SUCCESS_MESSAGE": "Your password has been reset successfully!",
+    "ERROR_MESSAGE": "An error occurred. Please try again.",
+    "PASSWORDS_MISMATCH": "Passwords do not match"
   }
 }
