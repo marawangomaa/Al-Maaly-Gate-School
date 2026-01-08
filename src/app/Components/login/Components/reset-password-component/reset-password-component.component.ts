@@ -3,10 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { AuthService } from '../../../../Services/auth.service';
+import { TranslateModule } from '@ngx-translate/core';
 @Component({
   standalone: true,
   selector: 'app-reset-password-component',
-  imports: [ReactiveFormsModule, NgIf],
+  imports: [ReactiveFormsModule, NgIf,TranslateModule],
   templateUrl: './reset-password-component.component.html',
   styleUrl: './reset-password-component.component.css'
 })

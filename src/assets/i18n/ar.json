@@ -1991,5 +1991,26 @@
       "END": "إنهاء",
       "NO_CLASSES": "لم يتم العثور على فصول مجدولة"
     }
+  },
+  "FORGOT_PASSWORD": {
+    "TITLE": "نسيان كلمة المرور",
+    "SUBTITLE": "أدخل عنوان بريدك الإلكتروني وسنرسل لك رابط إعادة التعيين.",
+    "EMAIL_LABEL": "البريد الإلكتروني",
+    "EMAIL_PLACEHOLDER": "example@email.com",
+    "SEND_RESET_LINK": "إرسال رابط إعادة التعيين",
+    "RESET_LINK_SENT": "تم إرسال رابط إعادة التعيين إلى بريدك الإلكتروني!",
+    "ERROR_OCCURRED": "حدث خطأ. يرجى المحاولة مرة أخرى."
+  },
+  "RESET_PASSWORD": {
+    "TITLE": "إعادة تعيين كلمة المرور",
+    "NEW_PASSWORD_LABEL": "كلمة المرور الجديدة",
+    "NEW_PASSWORD_PLACEHOLDER": "أدخل كلمة المرور الجديدة",
+    "CONFIRM_PASSWORD_LABEL": "تأكيد كلمة المرور",
+    "CONFIRM_PASSWORD_PLACEHOLDER": "تأكيد كلمة المرور الجديدة",
+    "VALIDATION_MIN_LENGTH": "يجب أن تكون كلمة المرور على الأقل 6 أحرف",
+    "RESET_BUTTON": "إعادة تعيين كلمة المرور",
+    "SUCCESS_MESSAGE": "تم إعادة تعيين كلمة المرور بنجاح!",
+    "ERROR_MESSAGE": "حدث خطأ. يرجى المحاولة مرة أخرى.",
+    "PASSWORDS_MISMATCH": "كلمات المرور غير متطابقة"
   }
 }
