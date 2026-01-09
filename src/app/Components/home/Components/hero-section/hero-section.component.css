@@ -237,19 +237,30 @@
     min-width: 280px;
     max-width: 320px;
   }
+  
+  /* For tablet: remove the second divider but keep the first */
+  .vertical-divider:nth-child(4) {
+    display: none; /* Hide the second divider on tablet */
+  }
+  
+  .vertical-divider {
+    margin: 0 4rem; /* Reduce margin on tablet */
+  }
 }
 
 @media (max-width: 768px) {
   .hero-section {
     height: auto;
     min-height: 100vh;
-    padding-bottom: 200px;
+    padding-bottom: 100px;
     background-attachment: scroll;
   }
 
   .hero-content {
     margin-top: 0;
     padding: var(--space-lg);
+    margin-inline-start: 2rem;
+    margin-inline-end: 2rem;
   }
 
   .hero-title {
@@ -271,7 +282,7 @@
 
   .feature-cards-container {
     padding: 0 var(--space-md);
-    transform: translateY(60%);
+    margin-top: -50px;
   }
 
   .feature-cards-row {
@@ -280,7 +291,6 @@
   }
 
   .feature-card-wrapper {
-
     gap: var(--space-md);
     min-width: 100%;
     max-width: 100%;
@@ -300,6 +310,26 @@
 
   .feature-card .paragraph {
     font-size: var(--font-sm);
+    width: 100%;
+  }
+  
+  /* For mobile: make dividers horizontal and only show between cards */
+  .vertical-divider {
+    width: 80%; /* Make it widthwise (horizontal) */
+    height: 2px; /* Make it thinner for horizontal */
+    margin: 1rem auto; /* Center it with top/bottom margin */
+    display: block; /* Show it */
+  }
+  
+  /* Hide the first divider before first card on mobile */
+  .vertical-divider:first-child {
+    display: none;
+  }
+  
+  /* Only show dividers between cards on mobile */
+  .vertical-divider:nth-child(2),
+  .vertical-divider:nth-child(4) {
+    display: block;
   }
 }
 
@@ -328,7 +358,8 @@
 
   .feature-cards-container {
     padding: 0 var(--space-sm);
-    transform: translateY(70%);
+    gap: 5px;
+    margin-top: -30px;
   }
 
   .feature-card {
@@ -341,9 +372,18 @@
 
   .feature-card .main-title {
     font-size: var(--font-base);
+    width: auto;
   }
 
   .feature-card .paragraph {
     font-size: var(--font-sm);
+    width: 100%;
+  }
+  
+  /* Adjust horizontal dividers for small mobile */
+  .vertical-divider {
+    width: 70%;
+    height: 1.5px;
+    margin: 0.8rem auto;
   }
 }

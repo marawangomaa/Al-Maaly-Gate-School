@@ -9,9 +9,9 @@
         [src]="isDarkMode ? 'assets/images/logoDark.png' : 'assets/images/logo-nobg.png'"
         class="footer-logo"
       />
-      <p class="footer-description">
+      <!-- <p class="footer-description">
         {{ 'FOOTER.DESCRIPTION' | translate }}
-      </p>
+      </p> -->
     </div>
 
     <!-- Quick Links -->
@@ -37,43 +37,39 @@
 
   </div>
 
-  <!-- ===== DEVELOPED BY SECTION ===== -->
-  <div class="footer-team-section">
+  <!-- ===== DEVELOPED BY (SMALL + LOGO) ===== -->
+  <div class="footer-team-simple">
     <div class="container">
-      <h4 class="team-title">
-        {{ 'FOOTER.DEVELOPED_BY.TITLE' | translate }}
-      </h4>
 
-      <div class="team-card-premium">
+      <div class="team-simple-row">
 
-        <!-- WhatsApp Logo -->
-        <div class="team-logo-wrapper" (click)="openWhatsApp()" style="cursor: pointer;">
+        <!-- Logo -->
+        
+
+        <!-- Name -->
+        <span class="team-simple-name">
+         {{ 'FOOTER.DEVELOPED_BY.TITLE' | translate }} 
+        </span>
+        <div class="team-simple-logo" (click)="openWhatsApp()" style="cursor: pointer;">
           <img
             [src]="isDarkMode ? 'assets/images/team-logo-dark.png' : 'assets/images/team-logo-light.png'"
-            class="team-logo"
+            alt="VST Logo"
           />
         </div>
 
-        <div class="team-info">
-          <span class="team-name">
-            {{ 'FOOTER.DEVELOPED_BY.NAME' | translate }}
-          </span>
+        <!-- Phone -->
+        <!-- <span class="team-simple-phone" (click)="openWhatsApp()" style="cursor: pointer;">
+          <i class="fa-brands fa-whatsapp"></i>
+          +201140106990
+        </span> -->
 
-          <!-- WhatsApp phone -->
-          <span class="team-phone" (click)="openWhatsApp()" style="cursor: pointer;">
-            <i class="fa-brands fa-whatsapp"></i>
-            01140106990
-          </span>
-
-          <!-- Email -->
-          <span class="team-cta">
-            <a href="mailto:vstit2026@gmail.com" class="email-link">
-              vstit2026&#64;gmail.com
-            </a>
-          </span>
-        </div>
+        <!-- Email -->
+        <!-- <a href="mailto:vstit2026@gmail.com" class="team-simple-email">
+          vstit2026&#64;gmail.com
+        </a> -->
 
       </div>
+
     </div>
   </div>
 

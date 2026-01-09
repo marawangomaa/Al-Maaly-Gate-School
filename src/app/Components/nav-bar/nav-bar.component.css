@@ -127,7 +127,7 @@
 
 .navbar-logo {
   height: 80px;
-  width: auto;
+  max-width: 232.35px;
   object-fit: contain;
   transition: transform 0.3s ease;
 }

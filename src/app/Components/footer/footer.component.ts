@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { ThemeService } from '../../Services/theme.service';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-footer',

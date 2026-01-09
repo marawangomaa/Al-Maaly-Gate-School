@@ -1,3 +1,31 @@
+.home-sections.container {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem; /* Reduced from 6rem for better mobile */
+  position: relative;
+}
+
+/* Optional: reduce spacing on smaller screens */
+@media (max-width: 1024px) {
+  .home-sections.container {
+    gap: 3.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .home-sections.container {
+    gap: 3rem;
+    padding: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-sections.container {
+    gap: 2.5rem;
+    padding: 0;
+  }
+}
+
 .card {
   border-radius: 12px;
   transition: transform 0.2s ease;
@@ -13,24 +41,4 @@ h1 {
 
 p {
   color: var(--text-secondary);
-}
-
-.home-sections {
-  display: flex;
-  flex-direction: column;
-  gap: 6rem;
-  /* vertical spacing between sections */
-}
-
-/* Optional: reduce spacing on smaller screens */
-@media (max-width: 768px) {
-  .home-sections {
-    gap: 4rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .home-sections {
-    gap: 3rem;
-  }
 }
