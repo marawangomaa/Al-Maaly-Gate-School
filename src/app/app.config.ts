@@ -15,7 +15,7 @@ export const appConfig: ApplicationConfig = {
 
     importProvidersFrom(
       TranslateModule.forRoot({
-        fallbackLang: 'ar',   // ✅ used only if key missing
+        fallbackLang: 'ar',          // default language
         loader: {
           provide: TranslateLoader,
           useFactory: HttpLoaderFactory,
