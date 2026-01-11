@@ -1262,7 +1262,7 @@
       },
       "description": {
         "label": "Description",
-        "placeholder": "Enter curriculum description (optional)"
+        "placeholder": "Enter curriculum description"
       },
       "errors": {
         "required": "This field is required",
@@ -1689,7 +1689,9 @@
     },
     "emptyState": {
       "noResults": "No results found",
-      "noResultsDescription": "No parents matching the search criteria. Try changing your search terms."
+      "noResultsDescription": "No parents matching the search criteria. Try changing your search terms.",
+      "title": "No Parents Available",
+      "description": "There are currently no parent accounts in the system."
     }
   },
   "SUBJECTS": {

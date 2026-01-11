@@ -65,8 +65,8 @@
 .team-simple-logo {
   padding-left: 0;
   margin-left: 0;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   /* border-radius: 50%;
   border: 1px solid var(--color-gray-300); */
   display: flex;
@@ -81,6 +81,7 @@
 
 /* Text */
 .team-simple-name {
+  font-size: medium;
   font-weight: 700;
   color: var(--color-primary-developer);
 }
