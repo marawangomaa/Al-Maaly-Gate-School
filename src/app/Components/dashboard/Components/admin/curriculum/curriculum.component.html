@@ -572,7 +572,7 @@
     <div class="error-header">
       <div class="d-flex align-items-center">
         <i class="bi bi-exclamation-octagon-fill me-2 fs-4"></i>
-        <h5 class="mb-0">Deletion Failed</h5>
+        <h5 class="mb-0">{{ 'curriculum.error.overlay.title' | translate }}</h5>
       </div>
       <button type="button" class="btn-close" (click)="closeErrorModal()" aria-label="Close"></button>
     </div>
@@ -582,7 +582,7 @@
       <div class="error-alert">
         <div class="d-flex align-items-center">
           <i class="bi bi-x-circle-fill me-2"></i>
-          <strong class="fs-6">Unable to Delete Curriculum</strong>
+          <strong class="fs-6">{{ 'curriculum.error.overlay.unableToDelete' | translate }}</strong>
         </div>
       </div>
 
@@ -590,7 +590,7 @@
       <div class="error-details">
         <div class="error-details-header">
           <i class="bi bi-bug-fill me-2"></i>
-          <span class="fw-medium">Error Details</span>
+          <span class="fw-medium">{{ 'curriculum.error.overlay.errorDetails' | translate }}</span>
         </div>
         <div class="error-details-content">
           <p class="mb-0">{{errorModalMessage}}</p>
@@ -601,43 +601,45 @@
       <div class="error-solutions">
         <div class="error-solutions-header">
           <i class="bi bi-lightbulb-fill me-2"></i>
-          <span class="fw-medium">Suggested Solutions</span>
+          <span class="fw-medium">{{ 'curriculum.error.overlay.suggestedSolutions' | translate }}</span>
         </div>
         <div class="error-solutions-content">
           <ul class="mb-0">
             <li *ngIf="selectedCurriculum?.gradeCount! > 0">
-              <strong>Grades:</strong> {{selectedCurriculum?.gradeCount}} grades are assigned.
-              Remove all grades from this curriculum first.
+              <strong>{{ 'curriculum.stats.grades' | translate }}:</strong> 
+              {{ 'curriculum.error.overlay.gradesAssigned' | translate:{count: selectedCurriculum?.gradeCount} }}
+              {{ 'curriculum.error.overlay.removeGradesFirst' | translate }}
             </li>
             <li *ngIf="selectedCurriculum?.studentCount! > 0">
-              <strong>Students:</strong> {{selectedCurriculum?.studentCount}} students are enrolled.
-              Transfer or remove these students first.
+              <strong>{{ 'curriculum.stats.students' | translate }}:</strong> 
+              {{ 'curriculum.error.overlay.studentsEnrolled' | translate:{count: selectedCurriculum?.studentCount} }}
+              {{ 'curriculum.error.overlay.transferStudentsFirst' | translate }}
             </li>
             <li *ngIf="selectedCurriculum?.teacherCount! > 0">
-              <strong>Teachers:</strong> {{selectedCurriculum?.teacherCount}} teachers are assigned.
-              Reassign these teachers to other curricula.
+              <strong>{{ 'curriculum.stats.teachers' | translate }}:</strong> 
+              {{ 'curriculum.error.overlay.teachersAssigned' | translate:{count: selectedCurriculum?.teacherCount} }}
+              {{ 'curriculum.error.overlay.reassignTeachersFirst' | translate }}
             </li>
-            <li
-              *ngIf="selectedCurriculum && !selectedCurriculum.gradeCount && !selectedCurriculum.studentCount && !selectedCurriculum.teacherCount">
-              Check if you have permission to delete curricula.
+            <li *ngIf="selectedCurriculum && !selectedCurriculum.gradeCount && !selectedCurriculum.studentCount && !selectedCurriculum.teacherCount">
+              {{ 'curriculum.error.overlay.checkPermissions' | translate }}
             </li>
-            <li>Contact your administrator if the problem persists.</li>
+            <li>{{ 'curriculum.error.overlay.contactAdmin' | translate }}</li>
           </ul>
 
           <!-- Quick Action Buttons -->
           <div class="error-actions mt-4 pt-3 border-top">
-            <h6 class="text-muted mb-3">Quick Actions:</h6>
+            <h6 class="text-muted mb-3">{{ 'curriculum.error.overlay.quickActions' | translate }}</h6>
             <div class="btn-group" role="group">
               <button type="button" class="btn btn-outline-primary btn-sm" (click)="onViewDetailsClick()"
                 *ngIf="selectedCurriculum">
-                <i class="bi bi-eye me-1"></i> View Details
+                <i class="bi bi-eye me-1"></i> {{ 'curriculum.error.overlay.viewDetails' | translate }}
               </button>
               <button type="button" class="btn btn-outline-warning btn-sm" (click)="onEditInsteadClick()"
                 *ngIf="selectedCurriculum">
-                <i class="bi bi-pencil me-1"></i> Edit Instead
+                <i class="bi bi-pencil me-1"></i> {{ 'curriculum.error.overlay.editInstead' | translate }}
               </button>
               <button type="button" class="btn btn-outline-info btn-sm" (click)="closeErrorModal(); loadCurricula()">
-                <i class="bi bi-arrow-clockwise me-1"></i> Refresh List
+                <i class="bi bi-arrow-clockwise me-1"></i> {{ 'curriculum.error.overlay.refreshList' | translate }}
               </button>
             </div>
           </div>
@@ -647,10 +649,10 @@
 
     <div class="error-footer">
       <button type="button" class="btn btn-outline-secondary" (click)="closeErrorModal()">
-        Close
+        {{ 'curriculum.error.overlay.close' | translate }}
       </button>
       <button type="button" class="btn btn-danger" (click)="onTryAgainClick()" *ngIf="selectedCurriculum">
-        <i class="bi bi-trash me-1"></i> Try Again
+        <i class="bi bi-trash me-1"></i> {{ 'curriculum.error.overlay.tryAgain' | translate }}
       </button>
     </div>
   </div>

@@ -1193,6 +1193,28 @@
     "studentId": "رقم الطالب"
   },
   "curriculum": {
+    "error": {
+      "overlay": {
+        "title": "فشل الحذف",
+        "unableToDelete": "غير قادر على حذف المنهج",
+        "errorDetails": "تفاصيل الخطأ",
+        "suggestedSolutions": "الحلول المقترحة",
+        "gradesAssigned": "{{count}} صف/صفوف معين.",
+        "removeGradesFirst": "قم بإزالة جميع الصفوف من هذا المنهج أولاً.",
+        "studentsEnrolled": "{{count}} طالب/طلاب مسجلين.",
+        "transferStudentsFirst": "قم بنقل أو إزالة هؤلاء الطلاب أولاً.",
+        "teachersAssigned": "{{count}} معلم/معلمين معينين.",
+        "reassignTeachersFirst": "أعد تعيين هؤلاء المعلمين إلى مناهج أخرى.",
+        "checkPermissions": "تحقق مما إذا كان لديك إذن لحذف المناهج.",
+        "contactAdmin": "اتصل بالمسؤول إذا استمرت المشكلة.",
+        "quickActions": "إجراءات سريعة",
+        "viewDetails": "عرض التفاصيل",
+        "editInstead": "التعديل بدلاً من ذلك",
+        "refreshList": "تحديث القائمة",
+        "close": "إغلاق",
+        "tryAgain": "إعادة المحاولة"
+      }
+    },
     "title": "إدارة المناهج الدراسية",
     "subtitle": "قم بإدارة وتنظيم مناهج مدرستك بكفاءة",
     "stats": {
