@@ -289,9 +289,15 @@ export class CurriculumComponent {
       return;
     }
 
-    const newCurriculum: CreateCurriculum = this.createForm.value;
-    this.loading = true;
+    const formValue = this.createForm.value;
 
+    // Ensure description is always an empty string if not provided
+    const newCurriculum: CreateCurriculum = {
+      name: formValue.name,
+      code: formValue.code,
+      description: formValue.description || ''  // Convert null/undefined to empty string
+    };
+    this.loading = true;
     this.curriculumService.create(newCurriculum)
       .pipe(
         finalize(() => this.loading = false),
