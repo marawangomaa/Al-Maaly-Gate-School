@@ -698,7 +698,7 @@
       "GRADE_NAME_LABEL": "اسم الصف *",
       "GRADE_NAME_REQUIRED": "اسم الصف مطلوب",
       "GRADE_NAME_MIN_LENGTH": "يجب أن يكون اسم الصف على الأقل حرفين",
-      "DESCRIPTION_LABEL": "الوصف",
+      "DESCRIPTION_LABEL": "الوصف (اختياري)",
       "DESCRIPTION_HINT": "اختياري. الحد الأقصى 500 حرف.",
       "CANCEL": "إلغاء",
       "CREATE": "إنشاء",
@@ -1283,7 +1283,7 @@
         "hint": "كود فريد للتحديد"
       },
       "description": {
-        "label": "الوصف",
+        "label": "الوصف (اختياري)",
         "placeholder": "أدخل وصف المنهج"
       },
       "errors": {

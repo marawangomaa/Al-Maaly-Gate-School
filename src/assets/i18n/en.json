@@ -698,7 +698,7 @@
       "GRADE_NAME_LABEL": "Grade Name *",
       "GRADE_NAME_REQUIRED": "Grade name is required",
       "GRADE_NAME_MIN_LENGTH": "Grade name must be at least 2 characters",
-      "DESCRIPTION_LABEL": "Description",
+      "DESCRIPTION_LABEL": "Description (optional)",
       "DESCRIPTION_HINT": "Optional. Maximum 500 characters.",
       "CANCEL": "Cancel",
       "CREATE": "Create",
@@ -1283,7 +1283,7 @@
         "hint": "Unique identification code"
       },
       "description": {
-        "label": "Description",
+        "label": "Description (optional)",
         "placeholder": "Enter curriculum description"
       },
       "errors": {
