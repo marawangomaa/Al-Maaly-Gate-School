@@ -1193,6 +1193,28 @@
     "studentId": "Student ID"
   },
   "curriculum": {
+    "error": {
+      "overlay": {
+        "title": "Deletion Failed",
+        "unableToDelete": "Unable to Delete Curriculum",
+        "errorDetails": "Error Details",
+        "suggestedSolutions": "Suggested Solutions",
+        "gradesAssigned": "{{count}} grades are assigned.",
+        "removeGradesFirst": "Remove all grades from this curriculum first.",
+        "studentsEnrolled": "{{count}} students are enrolled.",
+        "transferStudentsFirst": "Transfer or remove these students first.",
+        "teachersAssigned": "{{count}} teachers are assigned.",
+        "reassignTeachersFirst": "Reassign these teachers to other curricula.",
+        "checkPermissions": "Check if you have permission to delete curricula.",
+        "contactAdmin": "Contact your administrator if the problem persists.",
+        "quickActions": "Quick Actions",
+        "viewDetails": "View Details",
+        "editInstead": "Edit Instead",
+        "refreshList": "Refresh List",
+        "close": "Close",
+        "tryAgain": "Try Again"
+      }
+    },
     "title": "Curriculum Management",
     "subtitle": "Efficiently manage and organize your school's curricula",
     "stats": {
@@ -2002,8 +2024,7 @@
     "SEND_RESET_LINK": "Send Reset Link",
     "RESET_LINK_SENT": "Reset link has been sent to your email!",
     "ERROR_OCCURRED": "An error occurred. Please try again."
-  }
-  ,
+  },
   "RESET_PASSWORD": {
     "TITLE": "Reset Password",
     "NEW_PASSWORD_LABEL": "New Password",
