@@ -429,8 +429,13 @@
       "TITLE": "Contact Information",
       "PHONE": {
         "LABEL": "Phone Number",
-        "PHONE1": "+966 016 369 3555",
-        "PHONE2": "+966 016 369 4555"
+        "PHONE1": "+966 16 369 4555",
+        "PHONE2": "+966 16 369 3555"
+      },
+      "FACEBOOK": {
+        "LABEL": "Facebook",
+        "VALUE": "Al Maaly Int'l Schools",
+        "LINK": "https://www.facebook.com/almaalygate"
       },
       "EMAIL": {
         "LABEL": "Email",
