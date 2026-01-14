@@ -23,7 +23,11 @@ export class AdminGradesComponent implements OnInit {
   // Grade Properties
   grades: GradeViewDto[] = [];
   curricula: Curriculum[] = [];
-  selectedGrade: GradeWithDetailsDto | null = null;
+  // Store details for each grade separately
+  gradeDetailsMap: Map<string, GradeWithDetailsDto> = new Map();
+  gradeClassesMap: Map<string, ClassViewDto[]> = new Map();
+  gradeSubjectsMap: Map<string, SubjectViewDto[]> = new Map();
+  
   loading = false;
   gradesLoading = false;
   detailsLoading = false;
@@ -73,11 +77,16 @@ export class AdminGradesComponent implements OnInit {
   pageSize = 10;
   totalItems = 0;
   
-  // Expanded sections
+  // Expanded sections - track which grades are expanded
   expandedGrades: Set<string> = new Set();
+  // Track which grade details are currently loading
+  loadingGrades: Set<string> = new Set();
   
   // Filter
   selectedCurriculumId: string = 'all';
+  
+  // Store the currently selected grade for form operations
+  currentSelectedGradeId: string | null = null;
   
   constructor(
     private gradeService: GradeService,
@@ -196,65 +205,96 @@ export class AdminGradesComponent implements OnInit {
   }
   
   loadGradeDetails(gradeId: string): void {
+    // Toggle expansion
     if (this.expandedGrades.has(gradeId)) {
+      // Collapse the grade
       this.expandedGrades.delete(gradeId);
-      this.selectedGrade = null;
-      this.classes = [];
-      this.subjects = [];
+      // Clear current selection if it's the same grade
+      if (this.currentSelectedGradeId === gradeId) {
+        this.currentSelectedGradeId = null;
+      }
       return;
     }
     
-    this.detailsLoading = true;
+    // Add to loading set
+    this.loadingGrades.add(gradeId);
     this.expandedGrades.add(gradeId);
+    this.currentSelectedGradeId = gradeId;
+    
+    // Check if we already have details for this grade
+    if (this.gradeDetailsMap.has(gradeId)) {
+      this.loadingGrades.delete(gradeId);
+      return;
+    }
     
     // Load grade with details
     this.gradeService.getWithDetails(gradeId).subscribe({
       next: (response: ApiResponse<GradeWithDetailsDto>) => {
         if (response.success && response.data) {
-          this.selectedGrade = response.data;
+          // Store the details in the map
+          this.gradeDetailsMap.set(gradeId, response.data);
+          // Also load classes and subjects
           this.loadClassesForGrade(gradeId);
           this.loadSubjectsForGrade(gradeId);
         }
-        this.detailsLoading = false;
+        this.loadingGrades.delete(gradeId);
       },
       error: (error) => {
         console.error('Failed to load grade details:', error);
-        this.detailsLoading = false;
+        this.loadingGrades.delete(gradeId);
         this.expandedGrades.delete(gradeId);
       }
     });
   }
   
   loadClassesForGrade(gradeId: string): void {
-    this.classesLoading = true;
     this.gradeService.getClassesByGrade(gradeId).subscribe({
       next: (response: ApiResponse<ClassViewDto[]>) => {
         if (response.success && response.data) {
-          this.classes = response.data;
+          this.gradeClassesMap.set(gradeId, response.data);
         }
-        this.classesLoading = false;
       },
       error: (error) => {
         console.error('Failed to load classes:', error);
-        this.classesLoading = false;
+        this.gradeClassesMap.set(gradeId, []);
       }
     });
   }
   
   loadSubjectsForGrade(gradeId: string): void {
-    this.subjectsLoading = true;
     this.gradeService.getSubjectsByGrade(gradeId).subscribe({
       next: (response: ApiResponse<SubjectViewDto[]>) => {
         if (response.success && response.data) {
-          this.subjects = response.data;
+          this.gradeSubjectsMap.set(gradeId, response.data);
         }
-        this.subjectsLoading = false;
       },
       error: (error) => {
         console.error('Failed to load subjects:', error);
-        this.subjectsLoading = false;
+        this.gradeSubjectsMap.set(gradeId, []);
       }
     });
+  }
+  
+  // Helper methods to get data for a specific grade
+  getGradeDetails(gradeId: string | undefined): GradeWithDetailsDto | null {
+  if (!gradeId) return null;
+  return this.gradeDetailsMap.get(gradeId) || null;
+}
+  
+  getClassesForGrade(gradeId: string): ClassViewDto[] {
+    return this.gradeClassesMap.get(gradeId) || [];
+  }
+  
+  getSubjectsForGrade(gradeId: string): SubjectViewDto[] {
+    return this.gradeSubjectsMap.get(gradeId) || [];
+  }
+  
+  isGradeLoading(gradeId: string): boolean {
+    return this.loadingGrades.has(gradeId);
+  }
+  
+  isGradeExpanded(gradeId: string): boolean {
+    return this.expandedGrades.has(gradeId);
   }
   
   // Open Modals
@@ -281,7 +321,7 @@ export class AdminGradesComponent implements OnInit {
   openClassModal(gradeId?: string, classData?: ClassViewDto): void {
     this.isClassEditMode = !!classData;
     this.modalTitle = this.isClassEditMode ? 'Edit Class' : 'Add New Class';
-    const targetGradeId = gradeId || this.selectedGrade?.id || '';
+    const targetGradeId = gradeId || this.currentSelectedGradeId || '';
     
     if (classData) {
       this.classForm.patchValue({
@@ -301,7 +341,7 @@ export class AdminGradesComponent implements OnInit {
   openSubjectModal(gradeId?: string, subject?: SubjectViewDto): void {
     this.isSubjectEditMode = !!subject;
     this.modalTitle = this.isSubjectEditMode ? 'Edit Subject' : 'Add New Subject';
-    const targetGradeId = gradeId || this.selectedGrade?.id || '';
+    const targetGradeId = gradeId || this.currentSelectedGradeId || '';
     
     if (subject) {
       this.subjectForm.patchValue({
@@ -375,16 +415,17 @@ export class AdminGradesComponent implements OnInit {
           if (response.success && response.data) {
             alert('Grade updated successfully');
             this.loadGrades();
-            this.closeModals();
             
-            // Update selected grade if it's the one being edited
-            if (this.selectedGrade && this.selectedGrade.id === formValue.id) {
-              this.selectedGrade = {
-                ...this.selectedGrade,
-                ...response.data,
-                curriculum: this.selectedGrade.curriculum // Keep existing curriculum object
-              };
+            // Update the details in the map if it exists
+            if (this.gradeDetailsMap.has(formValue.id)) {
+              const currentDetails = this.gradeDetailsMap.get(formValue.id)!;
+              this.gradeDetailsMap.set(formValue.id, {
+                ...currentDetails,
+                ...response.data
+              });
             }
+            
+            this.closeModals();
           } else {
             alert(response.message || 'Failed to update grade');
           }
@@ -431,6 +472,7 @@ export class AdminGradesComponent implements OnInit {
     
     this.loading = true;
     const formValue = this.classForm.value;
+    const gradeId = formValue.gradeId;
     
     if (this.isClassEditMode) {
       const updateDto: UpdateClassDto = {
@@ -443,9 +485,8 @@ export class AdminGradesComponent implements OnInit {
         next: (response: any) => {
           if (response.success) {
             alert('Class updated successfully');
-            if (this.selectedGrade) {
-              this.loadClassesForGrade(this.selectedGrade.id);
-            }
+            // Reload classes for the specific grade
+            this.loadClassesForGrade(gradeId);
             this.closeModals();
           }
           this.loading = false;
@@ -461,13 +502,12 @@ export class AdminGradesComponent implements OnInit {
         className: formValue.className
       };
       
-      this.gradeService.createClass(formValue.gradeId, createDto).subscribe({
+      this.gradeService.createClass(gradeId, createDto).subscribe({
         next: (response: ApiResponse<ClassViewDto>) => {
           if (response.success && response.data) {
             alert('Class created successfully');
-            if (this.selectedGrade) {
-              this.loadClassesForGrade(this.selectedGrade.id);
-            }
+            // Reload classes for the specific grade
+            this.loadClassesForGrade(gradeId);
             this.closeModals();
           } else {
             alert(response.message || 'Failed to create class');
@@ -491,6 +531,7 @@ export class AdminGradesComponent implements OnInit {
     
     this.loading = true;
     const formValue = this.subjectForm.value;
+    const gradeId = formValue.gradeId;
     
     if (this.isSubjectEditMode) {
       const updateDto: SubjectUpdateDto = {
@@ -504,9 +545,8 @@ export class AdminGradesComponent implements OnInit {
         next: (response: ApiResponse<SubjectViewDto>) => {
           if (response.success && response.data) {
             alert('Subject updated successfully');
-            if (this.selectedGrade) {
-              this.loadSubjectsForGrade(this.selectedGrade.id);
-            }
+            // Reload subjects for the specific grade
+            this.loadSubjectsForGrade(gradeId);
             this.closeModals();
           } else {
             alert(response.message || 'Failed to update subject');
@@ -526,13 +566,12 @@ export class AdminGradesComponent implements OnInit {
         creditHours: formValue.creditHours
       };
       
-      this.gradeService.addSubject(formValue.gradeId, createDto).subscribe({
+      this.gradeService.addSubject(gradeId, createDto).subscribe({
         next: (response: ApiResponse<SubjectViewDto>) => {
           if (response.success && response.data) {
             alert('Subject added successfully');
-            if (this.selectedGrade) {
-              this.loadSubjectsForGrade(this.selectedGrade.id);
-            }
+            // Reload subjects for the specific grade
+            this.loadSubjectsForGrade(gradeId);
             this.closeModals();
           } else {
             alert(response.message || 'Failed to add subject');
@@ -556,9 +595,13 @@ export class AdminGradesComponent implements OnInit {
       next: (response: ApiResponse<boolean>) => {
         if (response.success && response.data) {
           alert('Grade deleted successfully');
-          this.loadGrades();
-          this.selectedGrade = null;
+          // Remove from maps
+          this.gradeDetailsMap.delete(this.deleteGradeId);
+          this.gradeClassesMap.delete(this.deleteGradeId);
+          this.gradeSubjectsMap.delete(this.deleteGradeId);
           this.expandedGrades.delete(this.deleteGradeId);
+          
+          this.loadGrades();
           this.closeModals();
         } else {
           alert(response.message || 'Failed to delete grade');
@@ -573,7 +616,7 @@ export class AdminGradesComponent implements OnInit {
     });
   }
   
-  removeClassFromGrade(classId: string): void {
+  removeClassFromGrade(classId: string, gradeId: string): void {
     if (!confirm('Are you sure you want to remove this class from the grade?')) {
       return;
     }
@@ -582,9 +625,8 @@ export class AdminGradesComponent implements OnInit {
       next: (response: ApiResponse<boolean>) => {
         if (response.success && response.data) {
           alert('Class removed from grade');
-          if (this.selectedGrade) {
-            this.loadClassesForGrade(this.selectedGrade.id);
-          }
+          // Reload classes for the specific grade
+          this.loadClassesForGrade(gradeId);
         } else {
           alert(response.message || 'Failed to remove class');
         }
@@ -596,7 +638,7 @@ export class AdminGradesComponent implements OnInit {
     });
   }
   
-  removeSubjectFromGrade(subjectId: string): void {
+  removeSubjectFromGrade(subjectId: string, gradeId: string): void {
     if (!confirm('Are you sure you want to remove this subject from the grade?')) {
       return;
     }
@@ -605,9 +647,8 @@ export class AdminGradesComponent implements OnInit {
       next: (response: ApiResponse<boolean>) => {
         if (response.success && response.data) {
           alert('Subject removed from grade');
-          if (this.selectedGrade) {
-            this.loadSubjectsForGrade(this.selectedGrade.id);
-          }
+          // Reload subjects for the specific grade
+          this.loadSubjectsForGrade(gradeId);
         } else {
           alert(response.message || 'Failed to remove subject');
         }
@@ -619,7 +660,7 @@ export class AdminGradesComponent implements OnInit {
     });
   }
   
-  moveClass(classId: string, newGradeId: string): void {
+  moveClass(classId: string, newGradeId: string, currentGradeId: string): void {
     if (!confirm('Are you sure you want to move this class to another grade?')) {
       return;
     }
@@ -628,9 +669,8 @@ export class AdminGradesComponent implements OnInit {
       next: (response: ApiResponse<boolean>) => {
         if (response.success && response.data) {
           alert('Class moved successfully');
-          if (this.selectedGrade) {
-            this.loadClassesForGrade(this.selectedGrade.id);
-          }
+          // Reload classes for the current grade
+          this.loadClassesForGrade(currentGradeId);
         } else {
           alert(response.message || 'Failed to move class');
         }
@@ -658,9 +698,12 @@ export class AdminGradesComponent implements OnInit {
           alert('Classes moved successfully');
           this.selectedClasses = [];
           this.selectAllClasses = false;
-          if (this.selectedGrade) {
-            this.loadClassesForGrade(this.selectedGrade.id);
+          
+          // Reload classes for the current grade if it's expanded
+          if (this.currentSelectedGradeId) {
+            this.loadClassesForGrade(this.currentSelectedGradeId);
           }
+          
           this.closeModals();
         } else {
           alert(response.message || 'Failed to move classes');
@@ -684,8 +727,13 @@ export class AdminGradesComponent implements OnInit {
   }
   
   toggleSelectAllClasses(): void {
+    const currentGradeId = this.currentSelectedGradeId;
+    if (!currentGradeId) return;
+    
+    const classes = this.getClassesForGrade(currentGradeId);
+    
     if (this.selectAllClasses) {
-      this.selectedClasses = this.classes.map(c => c.id);
+      this.selectedClasses = classes.map(c => c.id);
     } else {
       this.selectedClasses = [];
     }
@@ -732,5 +780,20 @@ export class AdminGradesComponent implements OnInit {
     }
     
     return this.paginatedGrades.filter(grade => grade.curriculumId === this.selectedCurriculumId);
+  }
+  
+  // Clear all cached data for a specific grade
+  clearGradeCache(gradeId: string): void {
+    this.gradeDetailsMap.delete(gradeId);
+    this.gradeClassesMap.delete(gradeId);
+    this.gradeSubjectsMap.delete(gradeId);
+  }
+  
+  // Refresh a specific grade's data
+  refreshGrade(gradeId: string): void {
+    this.clearGradeCache(gradeId);
+    if (this.expandedGrades.has(gradeId)) {
+      this.loadGradeDetails(gradeId);
+    }
   }
 }

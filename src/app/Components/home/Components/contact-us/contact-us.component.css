@@ -153,6 +153,11 @@
   min-height: 30rem;
 }
 
+.facebook {
+  color: var(--color-primary-500);
+  text-decoration: none;
+}
+
 /* Responsive Adjustments */
 @media (max-width: 900px) {
   .contact-content {
