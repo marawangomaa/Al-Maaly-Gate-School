@@ -453,15 +453,51 @@ export class AdminGradesComponent implements OnInit {
 
   // CRUD Operations
   saveGrade(): void {
-    if (this.gradeForm.invalid) {
-      this.markFormGroupTouched(this.gradeForm);
-      return;
-    }
+  if (this.gradeForm.invalid) {
+    this.markFormGroupTouched(this.gradeForm);
+    return;
+  }
 
-    this.loading = true;
-    const formValue = this.gradeForm.value;
-    const description = formValue.description?.trim();
+  this.loading = true;
+  const formValue = this.gradeForm.value;
+  const description = formValue.description?.trim();
 
+  if (this.isEditMode) {
+    // Update existing grade
+    const updateDto: UpdateGradeDto = {
+      id: formValue.id,
+      gradeName: formValue.gradeName,
+      description: description === '' ? undefined : description,
+      curriculumId: formValue.curriculumId
+    };
+
+    this.gradeService.update(updateDto.id, updateDto).subscribe({
+      next: (response: ApiResponse<GradeViewDto>) => {
+        if (response.success && response.data) {
+          alert('Grade updated successfully');
+          this.refreshAll();
+          this.closeModals();
+        } else {
+          alert(response.message || 'Failed to update grade');
+        }
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Failed to update grade:', error);
+        if (error.error?.errors) {
+          let errorMessages = [];
+          for (const [field, messages] of Object.entries(error.error.errors)) {
+            errorMessages.push(`${field}: ${(messages as string[]).join(', ')}`);
+          }
+          alert('Validation errors:\n' + errorMessages.join('\n'));
+        } else {
+          alert(error.error?.title || 'Failed to update grade');
+        }
+        this.loading = false;
+      }
+    });
+  } else {
+    // Create new grade
     const createDto: CreateGradeDto = {
       gradeName: formValue.gradeName,
       description: description === '' ? undefined : description,
@@ -494,6 +530,7 @@ export class AdminGradesComponent implements OnInit {
       }
     });
   }
+}
 
   saveClass(): void {
     if (this.classForm.invalid) {

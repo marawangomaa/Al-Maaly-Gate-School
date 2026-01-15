@@ -20,6 +20,7 @@ export interface CreateGradeDto {
 }
 
 export interface UpdateGradeDto {
+  id : string;
   gradeName: string;
   description?: string | null;
   curriculumId: string;
