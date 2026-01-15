@@ -63,7 +63,8 @@
               <h5 class="mb-0">{{ 'GRADE.GRADE_NAME' | translate:{gradeName: grade.gradeName} }}</h5>
               <small class="text-muted">
                 <i class="fas fa-book me-1"></i>
-                {{ 'GRADE.CURRICULUM' | translate }}: {{ grade.curriculumName || getCurriculumName(grade.curriculumId) }}
+                {{ 'GRADE.CURRICULUM' | translate }}: {{ grade.curriculumName || getCurriculumName(grade.curriculumId)
+                }}
               </small>
             </div>
             <div class="btn-group">
@@ -87,10 +88,12 @@
             <p class="card-text">{{ grade.description || ('GRADE.NO_DESCRIPTION' | translate) }}</p>
             <div class="grade-stats d-flex justify-content-between">
               <span class="badge bg-info">
-                <i class="fas fa-door-open"></i> {{ 'GRADE.CLASSES' | translate:{count: getClassesForGrade(grade.id).length} }}
+                <i class="fas fa-door-open"></i> {{ 'GRADE.CLASSES' | translate:{count:
+                getClassesForGrade(grade.id).length} }}
               </span>
               <span class="badge bg-success">
-                <i class="fas fa-book"></i> {{ 'GRADE.SUBJECTS' | translate:{count: getSubjectsForGrade(grade.id).length} }}
+                <i class="fas fa-book"></i> {{ 'GRADE.SUBJECTS' | translate:{count:
+                getSubjectsForGrade(grade.id).length} }}
               </span>
               <small class="text-muted">
                 {{ 'GRADE.CREATED' | translate:{date: (grade.createdAt | date:'mediumDate')} }}
@@ -110,19 +113,23 @@
                   <div class="curriculum-info mb-3 p-3 bg-light rounded">
                     <div class="d-flex justify-content-between align-items-center">
                       <div>
-                        <h6 class="mb-0"><i class="fas fa-book me-2"></i>{{ 'GRADE.CURRICULUM_DETAILS' | translate }}</h6>
+                        <h6 class="mb-0"><i class="fas fa-book me-2"></i>{{ 'GRADE.CURRICULUM_DETAILS' | translate }}
+                        </h6>
                         <div *ngIf="gradeDetails.curriculum" class="mt-2">
                           <strong>{{ gradeDetails.curriculum.name }}</strong> ({{ gradeDetails.curriculum.code }})
                           <p class="mb-1 small">{{ gradeDetails.curriculum.description }}</p>
                           <div class="d-flex mt-2">
                             <span class="badge bg-primary me-2">
-                              <i class="fas fa-graduation-cap"></i> {{ gradeDetails.curriculum.gradeCount }} {{ 'GRADE.GRADES' | translate }}
+                              <i class="fas fa-graduation-cap"></i> {{ gradeDetails.curriculum.gradeCount }} {{
+                              'GRADE.GRADES' | translate }}
                             </span>
                             <span class="badge bg-success me-2">
-                              <i class="fas fa-user-graduate"></i> {{ gradeDetails.curriculum.studentCount }} {{ 'GRADE.STUDENTS' | translate }}
+                              <i class="fas fa-user-graduate"></i> {{ gradeDetails.curriculum.studentCount }} {{
+                              'GRADE.STUDENTS' | translate }}
                             </span>
                             <span class="badge bg-warning">
-                              <i class="fas fa-chalkboard-teacher"></i> {{ gradeDetails.curriculum.teacherCount }} {{ 'GRADE.TEACHERS' | translate }}
+                              <i class="fas fa-chalkboard-teacher"></i> {{ gradeDetails.curriculum.teacherCount }} {{
+                              'GRADE.TEACHERS' | translate }}
                             </span>
                           </div>
                         </div>
@@ -134,14 +141,16 @@
                   <div class="classes-section mb-4">
                     <div class="d-flex justify-content-between align-items-center mb-2">
                       <h6 class="mb-0">
-                        <i class="fas fa-door-open"></i> {{ 'GRADE.CLASSES_SECTION.TITLE' | translate:{count: getClassesForGrade(grade.id).length} }}
+                        <i class="fas fa-door-open"></i> {{ 'GRADE.CLASSES_SECTION.TITLE' | translate:{count:
+                        getClassesForGrade(grade.id).length} }}
                       </h6>
                       <div>
                         <button class="btn btn-sm btn-success me-2" (click)="openClassModal(grade.id)">
                           <i class="fas fa-plus"></i> {{ 'GRADE.CLASSES_SECTION.ADD_CLASS' | translate }}
                         </button>
                         <button *ngIf="getClassesForGrade(grade.id).length > 0" class="btn btn-sm btn-warning"
-                          [disabled]="!gradeSelections.get(grade.id)?.selected?.length" (click)="openBulkMoveModal()">
+                          [disabled]="!gradeSelections.get(grade.id)?.selected?.length"
+                          (click)="openBulkMoveModal(grade.id)">
                           <i class="fas fa-exchange-alt"></i> {{ 'GRADE.CLASSES_SECTION.MOVE_SELECTED' | translate }}
                         </button>
                       </div>
@@ -206,7 +215,8 @@
                   <div class="subjects-section">
                     <div class="d-flex justify-content-between align-items-center mb-2">
                       <h6 class="mb-0">
-                        <i class="fas fa-book"></i> {{ 'GRADE.SUBJECTS_SECTION.TITLE' | translate:{count: getSubjectsForGrade(grade.id).length} }}
+                        <i class="fas fa-book"></i> {{ 'GRADE.SUBJECTS_SECTION.TITLE' | translate:{count:
+                        getSubjectsForGrade(grade.id).length} }}
                       </h6>
                       <button class="btn btn-sm btn-success" (click)="openSubjectModal(grade.id)">
                         <i class="fas fa-plus"></i> {{ 'GRADE.SUBJECTS_SECTION.ADD_SUBJECT' | translate }}
@@ -228,7 +238,8 @@
                                   <div>
                                     <h6 class="card-title mb-1">{{ subject.subjectName }}</h6>
                                     <p class="text-muted mb-2">
-                                      {{ 'GRADE.SUBJECTS_SECTION.CREDIT_HOURS' | translate:{hours: subject.creditHours} }}
+                                      {{ 'GRADE.SUBJECTS_SECTION.CREDIT_HOURS' | translate:{hours: subject.creditHours}
+                                      }}
                                     </p>
                                   </div>
                                   <div class="btn-group btn-group-sm">
@@ -245,7 +256,8 @@
                                 </div>
                                 <div class="d-flex justify-content-between">
                                   <small class="text-muted">
-                                    {{ 'GRADE.SUBJECTS_SECTION.TEACHER_COUNT' | translate:{count: subject.teacherCount} }}
+                                    {{ 'GRADE.SUBJECTS_SECTION.TEACHER_COUNT' | translate:{count: subject.teacherCount}
+                                    }}
                                   </small>
                                   <small class="text-muted">
                                     {{ 'GRADE.SUBJECTS_SECTION.EXAM_COUNT' | translate:{count: subject.examCount} }}
@@ -307,7 +319,8 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">{{ (isEditMode ? 'GRADE.MODALS.EDIT_GRADE' : 'GRADE.MODALS.ADD_GRADE') | translate }}</h5>
+          <h5 class="modal-title">{{ (isEditMode ? 'GRADE.MODALS.EDIT_GRADE' : 'GRADE.MODALS.ADD_GRADE') | translate }}
+          </h5>
           <button type="button" class="btn-close" (click)="closeModals()"></button>
         </div>
         <div class="modal-body">
@@ -378,7 +391,8 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">{{ (isClassEditMode ? 'GRADE.MODALS.EDIT_CLASS' : 'GRADE.MODALS.ADD_CLASS') | translate }}</h5>
+          <h5 class="modal-title">{{ (isClassEditMode ? 'GRADE.MODALS.EDIT_CLASS' : 'GRADE.MODALS.ADD_CLASS') |
+            translate }}</h5>
           <button type="button" class="btn-close" (click)="closeModals()"></button>
         </div>
         <div class="modal-body">
@@ -432,7 +446,8 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">{{ (isSubjectEditMode ? 'GRADE.MODALS.EDIT_SUBJECT' : 'GRADE.MODALS.ADD_SUBJECT') | translate }}</h5>
+          <h5 class="modal-title">{{ (isSubjectEditMode ? 'GRADE.MODALS.EDIT_SUBJECT' : 'GRADE.MODALS.ADD_SUBJECT') |
+            translate }}</h5>
           <button type="button" class="btn-close" (click)="closeModals()"></button>
         </div>
         <div class="modal-body">
@@ -524,7 +539,8 @@
           <button type="button" class="btn btn-secondary" (click)="closeModals()">
             {{ 'GRADE.MODALS.CANCEL' | translate }}
           </button>
-          <button type="button" class="btn btn-warning" (click)="bulkMoveClasses()" [disabled]="loading || bulkMoveForm.invalid">
+          <button type="button" class="btn btn-warning" (click)="bulkMoveClasses()"
+            [disabled]="loading || bulkMoveForm.invalid">
             <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
             {{ 'GRADE.MODALS.MOVE_CLASSES' | translate }}
           </button>

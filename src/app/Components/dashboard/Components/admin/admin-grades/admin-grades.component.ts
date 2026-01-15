@@ -27,62 +27,62 @@ export class AdminGradesComponent implements OnInit {
   gradeDetailsMap: Map<string, GradeWithDetailsDto> = new Map();
   gradeClassesMap: Map<string, ClassViewDto[]> = new Map();
   gradeSubjectsMap: Map<string, SubjectViewDto[]> = new Map();
-  
+
   loading = false;
   gradesLoading = false;
   detailsLoading = false;
   curriculaLoading = false;
-  
+
   // Search and Filter
   searchTerm = '';
   private searchSubject = new Subject<string>();
-  
+
   // Forms
   gradeForm!: FormGroup;
   classForm!: FormGroup;
   subjectForm!: FormGroup;
   bulkMoveForm!: FormGroup;
-  
+
   // Modal flags
   showGradeModal = false;
   showClassModal = false;
   showSubjectModal = false;
   showBulkMoveModal = false;
   showDeleteModal = false;
-  
+
   // Modal data
   modalMessage = '';
   deleteGradeId = '';
-  
+
   // Mode flags
   isEditMode = false;
   isClassEditMode = false;
   isSubjectEditMode = false;
-  
+
   // Bulk Operations
   selectedClasses: string[] = [];
-  
+
   // Pagination
   currentPage = 1;
   pageSize = 10;
   totalItems = 0;
-  
+
   // Expanded sections
   expandedGrades: Set<string> = new Set();
   loadingGrades: Set<string> = new Set();
-  
+
   // Filter
   selectedCurriculumId: string = 'all';
-  
+
   // Store the currently selected grade for form operations
   currentSelectedGradeId: string | null = null;
-  
+
   // Grade selections per grade
   gradeSelections: Map<string, { selected: string[], selectAll: boolean }> = new Map();
-  
+
   // Store target grade for bulk move operations
   private targetGradeIdForMove: string | null = null;
-  
+
   constructor(
     private gradeService: GradeService,
     private classService: ClassService,
@@ -93,12 +93,12 @@ export class AdminGradesComponent implements OnInit {
     this.initializeForms();
     this.setupSearch();
   }
-  
+
   ngOnInit(): void {
     this.loadGrades();
     this.loadCurricula();
   }
-  
+
   private initializeForms(): void {
     // Grade Form
     this.gradeForm = this.fb.group({
@@ -107,14 +107,14 @@ export class AdminGradesComponent implements OnInit {
       description: ['', [Validators.maxLength(500)]],
       curriculumId: ['', [Validators.required]]
     });
-    
+
     // Class Form
     this.classForm = this.fb.group({
       id: [''],
       className: ['', [Validators.required, Validators.minLength(2)]],
       gradeId: ['', [Validators.required]]
     });
-    
+
     // Subject Form
     this.subjectForm = this.fb.group({
       id: [''],
@@ -122,13 +122,13 @@ export class AdminGradesComponent implements OnInit {
       gradeId: ['', [Validators.required]],
       creditHours: [1, [Validators.required, Validators.min(1), Validators.max(10)]]
     });
-    
+
     // Bulk Move Form
     this.bulkMoveForm = this.fb.group({
       gradeId: ['', [Validators.required]]
     });
   }
-  
+
   private setupSearch(): void {
     this.searchSubject.pipe(
       debounceTime(300),
@@ -137,11 +137,11 @@ export class AdminGradesComponent implements OnInit {
       this.loadGrades();
     });
   }
-  
+
   onSearch(): void {
     this.searchSubject.next(this.searchTerm);
   }
-  
+
   // Load Curricula
   loadCurricula(): void {
     this.curriculaLoading = true;
@@ -156,28 +156,28 @@ export class AdminGradesComponent implements OnInit {
       }
     });
   }
-  
+
   // Load Grades
   loadGrades(): void {
     this.gradesLoading = true;
-    
+
     let apiCall: Observable<ApiResponse<GradeViewDto[]>>;
-    
+
     if (this.selectedCurriculumId && this.selectedCurriculumId !== 'all') {
       apiCall = this.gradeService.getByCurriculum(this.selectedCurriculumId);
     } else {
       apiCall = this.gradeService.getAll();
     }
-    
+
     apiCall.subscribe({
       next: (response: ApiResponse<GradeViewDto[]>) => {
         if (response.success && response.data) {
-          this.grades = this.searchTerm 
-            ? response.data.filter(grade => 
-                grade.gradeName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-                grade.description?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-                grade.curriculumName?.toLowerCase().includes(this.searchTerm.toLowerCase())
-              )
+          this.grades = this.searchTerm
+            ? response.data.filter(grade =>
+              grade.gradeName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+              grade.description?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+              grade.curriculumName?.toLowerCase().includes(this.searchTerm.toLowerCase())
+            )
             : response.data;
           this.totalItems = this.grades.length;
         }
@@ -189,7 +189,7 @@ export class AdminGradesComponent implements OnInit {
       }
     });
   }
-  
+
   // Refresh everything
   refreshAll(): void {
     this.loadGrades();
@@ -200,7 +200,7 @@ export class AdminGradesComponent implements OnInit {
       this.loadGradeDetails(gradeId);
     });
   }
-  
+
   // Refresh specific grades
   refreshGrades(gradeIds: string[]): void {
     gradeIds.forEach(gradeId => {
@@ -210,12 +210,12 @@ export class AdminGradesComponent implements OnInit {
       }
     });
   }
-  
+
   onCurriculumFilterChange(): void {
     this.currentPage = 1;
     this.loadGrades();
   }
-  
+
   loadGradeDetails(gradeId: string): void {
     // Toggle expansion
     if (this.expandedGrades.has(gradeId)) {
@@ -223,19 +223,20 @@ export class AdminGradesComponent implements OnInit {
       this.clearSelectionsForGrade(gradeId);
       if (this.currentSelectedGradeId === gradeId) {
         this.currentSelectedGradeId = null;
+        this.selectedClasses = [];
       }
       return;
     }
-    
+
     this.loadingGrades.add(gradeId);
     this.expandedGrades.add(gradeId);
     this.currentSelectedGradeId = gradeId;
-    
+
     if (this.gradeDetailsMap.has(gradeId)) {
       this.loadingGrades.delete(gradeId);
       return;
     }
-    
+
     this.gradeService.getWithDetails(gradeId).subscribe({
       next: (response: ApiResponse<GradeWithDetailsDto>) => {
         if (response.success && response.data) {
@@ -252,7 +253,7 @@ export class AdminGradesComponent implements OnInit {
       }
     });
   }
-  
+
   loadClassesForGrade(gradeId: string): void {
     this.gradeService.getClassesByGrade(gradeId).subscribe({
       next: (response: ApiResponse<ClassViewDto[]>) => {
@@ -266,7 +267,7 @@ export class AdminGradesComponent implements OnInit {
       }
     });
   }
-  
+
   loadSubjectsForGrade(gradeId: string): void {
     this.gradeService.getSubjectsByGrade(gradeId).subscribe({
       next: (response: ApiResponse<SubjectViewDto[]>) => {
@@ -280,87 +281,87 @@ export class AdminGradesComponent implements OnInit {
       }
     });
   }
-  
+
   // Helper methods
   getGradeDetails(gradeId: string | undefined): GradeWithDetailsDto | null {
     if (!gradeId) return null;
     return this.gradeDetailsMap.get(gradeId) || null;
   }
-  
+
   getClassesForGrade(gradeId: string): ClassViewDto[] {
     return this.gradeClassesMap.get(gradeId) || [];
   }
-  
+
   getSubjectsForGrade(gradeId: string): SubjectViewDto[] {
     return this.gradeSubjectsMap.get(gradeId) || [];
   }
-  
+
   isGradeLoading(gradeId: string): boolean {
     return this.loadingGrades.has(gradeId);
   }
-  
+
   isGradeExpanded(gradeId: string): boolean {
     return this.expandedGrades.has(gradeId);
   }
-  
+
   // Selection Management
   toggleClassSelection(gradeId: string, classId: string): void {
     if (!this.gradeSelections.has(gradeId)) {
       this.gradeSelections.set(gradeId, { selected: [], selectAll: false });
     }
-    
+
     const selection = this.gradeSelections.get(gradeId)!;
     const index = selection.selected.indexOf(classId);
-    
+
     if (index > -1) {
       selection.selected.splice(index, 1);
     } else {
       selection.selected.push(classId);
     }
-    
+
     const classes = this.getClassesForGrade(gradeId);
     selection.selectAll = selection.selected.length === classes.length;
   }
-  
+
   toggleSelectAllClasses(gradeId: string): void {
     if (!this.gradeSelections.has(gradeId)) {
       this.gradeSelections.set(gradeId, { selected: [], selectAll: false });
     }
-    
+
     const selection = this.gradeSelections.get(gradeId)!;
     const classes = this.getClassesForGrade(gradeId);
-    
+
     if (selection.selectAll) {
       selection.selected = [];
     } else {
       selection.selected = classes.map(c => c.id);
     }
-    
+
     selection.selectAll = !selection.selectAll;
   }
-  
+
   isClassSelected(gradeId: string, classId: string): boolean {
     if (!this.gradeSelections.has(gradeId)) {
       return false;
     }
     return this.gradeSelections.get(gradeId)!.selected.includes(classId);
   }
-  
+
   isSelectAllChecked(gradeId: string): boolean {
     if (!this.gradeSelections.has(gradeId)) {
       return false;
     }
     return this.gradeSelections.get(gradeId)!.selectAll;
   }
-  
+
   clearSelectionsForGrade(gradeId: string): void {
     this.gradeSelections.delete(gradeId);
   }
-  
+
   // Modal Operations
   openGradeModal(grade?: GradeViewDto): void {
     this.isEditMode = !!grade;
-    
+
     if (grade) {
       this.gradeForm.patchValue({
         id: grade.id,
@@ -373,14 +374,14 @@ export class AdminGradesComponent implements OnInit {
         curriculumId: ''
       });
     }
-    
+
     this.showGradeModal = true;
   }
-  
+
   openClassModal(gradeId?: string, classData?: ClassViewDto): void {
     this.isClassEditMode = !!classData;
     const targetGradeId = gradeId || this.currentSelectedGradeId || '';
-    
+
     if (classData) {
       this.classForm.patchValue({
         id: classData.id,
@@ -392,14 +393,14 @@ export class AdminGradesComponent implements OnInit {
         gradeId: targetGradeId
       });
     }
-    
+
     this.showClassModal = true;
   }
-  
+
   openSubjectModal(gradeId?: string, subject?: SubjectViewDto): void {
     this.isSubjectEditMode = !!subject;
     const targetGradeId = gradeId || this.currentSelectedGradeId || '';
-    
+
     if (subject) {
       this.subjectForm.patchValue({
         id: subject.id,
@@ -413,34 +414,29 @@ export class AdminGradesComponent implements OnInit {
         creditHours: 1
       });
     }
-    
+
     this.showSubjectModal = true;
   }
-  
-  openBulkMoveModal(): void {
-    const currentGradeId = this.currentSelectedGradeId;
-    if (!currentGradeId) {
-      alert('Please select a grade first');
-      return;
-    }
-    
-    const selection = this.gradeSelections.get(currentGradeId);
+
+  openBulkMoveModal(gradeId: string): void {
+    const selection = this.gradeSelections.get(gradeId);
     if (!selection || selection.selected.length === 0) {
       alert('Please select classes to move');
       return;
     }
-    
+
     this.selectedClasses = [...selection.selected];
+    this.currentSelectedGradeId = gradeId; // Set the current grade ID
     this.bulkMoveForm.reset({ gradeId: '' });
     this.showBulkMoveModal = true;
   }
-  
+
   openDeleteModal(gradeId: string, gradeName: string): void {
     this.deleteGradeId = gradeId;
     this.modalMessage = `Are you sure you want to delete grade "${gradeName}"? This action cannot be undone.`;
     this.showDeleteModal = true;
   }
-  
+
   closeModals(): void {
     this.showGradeModal = false;
     this.showClassModal = false;
@@ -451,26 +447,27 @@ export class AdminGradesComponent implements OnInit {
     this.classForm.reset();
     this.subjectForm.reset();
     this.bulkMoveForm.reset();
-    this.targetGradeIdForMove = null;
+    this.selectedClasses = []; // Clear selected classes
+    this.currentSelectedGradeId = null;
   }
-  
+
   // CRUD Operations
   saveGrade(): void {
     if (this.gradeForm.invalid) {
       this.markFormGroupTouched(this.gradeForm);
       return;
     }
-    
+
     this.loading = true;
     const formValue = this.gradeForm.value;
     const description = formValue.description?.trim();
-    
+
     const createDto: CreateGradeDto = {
       gradeName: formValue.gradeName,
       description: description === '' ? undefined : description,
       curriculumId: formValue.curriculumId
     };
-    
+
     this.gradeService.create(createDto).subscribe({
       next: (response: ApiResponse<GradeViewDto>) => {
         if (response.success && response.data) {
@@ -497,24 +494,24 @@ export class AdminGradesComponent implements OnInit {
       }
     });
   }
-  
+
   saveClass(): void {
     if (this.classForm.invalid) {
       this.markFormGroupTouched(this.classForm);
       return;
     }
-    
+
     this.loading = true;
     const formValue = this.classForm.value;
     const gradeId = formValue.gradeId;
-    
+
     if (this.isClassEditMode) {
       const updateDto: UpdateClassDto = {
         id: formValue.id,
         className: formValue.className,
         gradeId: formValue.gradeId
       };
-      
+
       this.classService.update(formValue.id, updateDto).subscribe({
         next: (response: any) => {
           if (response.success) {
@@ -539,7 +536,7 @@ export class AdminGradesComponent implements OnInit {
       const createDto: CreateClassInGradeDto = {
         className: formValue.className
       };
-      
+
       this.gradeService.createClass(gradeId, createDto).subscribe({
         next: (response: ApiResponse<ClassViewDto>) => {
           if (response.success && response.data) {
@@ -564,17 +561,17 @@ export class AdminGradesComponent implements OnInit {
       });
     }
   }
-  
+
   saveSubject(): void {
     if (this.subjectForm.invalid) {
       this.markFormGroupTouched(this.subjectForm);
       return;
     }
-    
+
     this.loading = true;
     const formValue = this.subjectForm.value;
     const gradeId = formValue.gradeId;
-    
+
     if (this.isSubjectEditMode) {
       const updateDto: SubjectUpdateDto = {
         id: formValue.id,
@@ -582,7 +579,7 @@ export class AdminGradesComponent implements OnInit {
         gradeId: formValue.gradeId,
         creditHours: formValue.creditHours
       };
-      
+
       this.subjectService.update(formValue.id, updateDto).subscribe({
         next: (response: ApiResponse<SubjectViewDto>) => {
           if (response.success && response.data) {
@@ -611,7 +608,7 @@ export class AdminGradesComponent implements OnInit {
         gradeId: formValue.gradeId,
         creditHours: formValue.creditHours
       };
-      
+
       this.gradeService.addSubject(gradeId, createDto).subscribe({
         next: (response: ApiResponse<SubjectViewDto>) => {
           if (response.success && response.data) {
@@ -636,10 +633,10 @@ export class AdminGradesComponent implements OnInit {
       });
     }
   }
-  
+
   deleteGrade(): void {
     if (!this.deleteGradeId) return;
-    
+
     this.loading = true;
     this.gradeService.delete(this.deleteGradeId).subscribe({
       next: (response: ApiResponse<boolean>) => {
@@ -649,7 +646,7 @@ export class AdminGradesComponent implements OnInit {
           this.clearGradeCache(this.deleteGradeId);
           this.expandedGrades.delete(this.deleteGradeId);
           this.clearSelectionsForGrade(this.deleteGradeId);
-          
+
           this.refreshAll();
           this.closeModals();
         } else {
@@ -664,12 +661,12 @@ export class AdminGradesComponent implements OnInit {
       }
     });
   }
-  
+
   removeClassFromGrade(classId: string, gradeId: string): void {
     if (!confirm('Are you sure you want to remove this class from the grade?')) {
       return;
     }
-    
+
     this.gradeService.removeClass(classId).subscribe({
       next: (response: ApiResponse<boolean>) => {
         if (response.success && response.data) {
@@ -690,12 +687,12 @@ export class AdminGradesComponent implements OnInit {
       }
     });
   }
-  
+
   removeSubjectFromGrade(subjectId: string, gradeId: string): void {
     if (!confirm('Are you sure you want to remove this subject from the grade?')) {
       return;
     }
-    
+
     this.gradeService.removeSubject(subjectId).subscribe({
       next: (response: ApiResponse<boolean>) => {
         if (response.success && response.data) {
@@ -716,12 +713,12 @@ export class AdminGradesComponent implements OnInit {
       }
     });
   }
-  
+
   moveClass(classId: string, newGradeId: string, currentGradeId: string): void {
     if (!confirm('Are you sure you want to move this class to another grade?')) {
       return;
     }
-    
+
     this.gradeService.moveClass(classId, newGradeId).subscribe({
       next: (response: ApiResponse<boolean>) => {
         if (response.success && response.data) {
@@ -729,14 +726,14 @@ export class AdminGradesComponent implements OnInit {
           // Clear cache for BOTH grades and refresh
           this.clearGradeCache(currentGradeId);
           this.clearGradeCache(newGradeId);
-          
+
           if (this.expandedGrades.has(currentGradeId)) {
             this.loadClassesForGrade(currentGradeId);
           }
           if (this.expandedGrades.has(newGradeId)) {
             this.loadClassesForGrade(newGradeId);
           }
-          
+
           this.refreshAll();
         } else {
           alert(response.message || 'Failed to move class');
@@ -748,41 +745,41 @@ export class AdminGradesComponent implements OnInit {
       }
     });
   }
-  
+
   bulkMoveClasses(): void {
     if (this.bulkMoveForm.invalid || this.selectedClasses.length === 0) {
       return;
     }
-    
+
     const targetGradeId = this.bulkMoveForm.value.gradeId;
     if (!targetGradeId) {
       alert('Please select a target grade');
       return;
     }
-    
+
     const dto: BulkMoveClassesDto = {
       classIds: this.selectedClasses,
       newGradeId: targetGradeId
     };
-    
+
     this.loading = true;
     this.gradeService.bulkMoveClasses(dto).subscribe({
       next: (response: ApiResponse<boolean>) => {
         if (response.success && response.data) {
           alert('Classes moved successfully');
-          
+
           // Clear cache for BOTH grades
           if (this.currentSelectedGradeId) {
             this.clearGradeCache(this.currentSelectedGradeId);
           }
           this.clearGradeCache(targetGradeId);
-          
+
           // Clear selections
           if (this.currentSelectedGradeId) {
             this.clearSelectionsForGrade(this.currentSelectedGradeId);
           }
           this.selectedClasses = [];
-          
+
           // Refresh both grades if they're expanded
           if (this.currentSelectedGradeId && this.expandedGrades.has(this.currentSelectedGradeId)) {
             this.loadClassesForGrade(this.currentSelectedGradeId);
@@ -790,7 +787,7 @@ export class AdminGradesComponent implements OnInit {
           if (this.expandedGrades.has(targetGradeId)) {
             this.loadClassesForGrade(targetGradeId);
           }
-          
+
           // Refresh everything
           this.refreshAll();
           this.closeModals();
@@ -806,7 +803,7 @@ export class AdminGradesComponent implements OnInit {
       }
     });
   }
-  
+
   // Helper Methods
   private markFormGroupTouched(formGroup: FormGroup): void {
     Object.values(formGroup.controls).forEach(control => {
@@ -816,40 +813,40 @@ export class AdminGradesComponent implements OnInit {
       }
     });
   }
-  
+
   getCurriculumName(curriculumId: string): string {
     const curriculum = this.curricula.find(c => c.id === curriculumId);
     return curriculum ? curriculum.name : 'Unknown Curriculum';
   }
-  
+
   clearGradeCache(gradeId: string): void {
     this.gradeDetailsMap.delete(gradeId);
     this.gradeClassesMap.delete(gradeId);
     this.gradeSubjectsMap.delete(gradeId);
   }
-  
+
   refreshGrade(gradeId: string): void {
     this.clearGradeCache(gradeId);
     if (this.expandedGrades.has(gradeId)) {
       this.loadGradeDetails(gradeId);
     }
   }
-  
+
   // Pagination
   get paginatedGrades(): GradeViewDto[] {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
     return this.grades.slice(start, end);
   }
-  
+
   onPageChange(page: number): void {
     this.currentPage = page;
   }
-  
+
   get totalPages(): number {
     return Math.ceil(this.totalItems / this.pageSize);
   }
-  
+
   get pageNumbers(): number[] {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
