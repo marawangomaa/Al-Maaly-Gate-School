@@ -731,14 +731,24 @@
       "DELETE_CONFIRM": "تأكيد الحذف",
       "DELETE_WARNING": "تحذير! لا يمكن التراجع عن هذا الإجراء.",
       "DELETE_CONFIRM_MESSAGE": "هل أنت متأكد أنك تريد حذف الصف \"{{gradeName}}\"?",
-      "DELETE_BTN": "حذف الصف"
+      "DELETE_BTN": "حذف الصف",
+      "DELETE_ERROR_TITLE": "لا يمكن حذف الصف",
+      "UNDERSTOOD": "فهمت"
     },
     "PAGINATION": {
       "previous": "السابق",
       "next": "التالي"
     },
     "ALERTS": {
-      "DELETE_WARNING": "تحذير! لا يمكن التراجع عن هذا الإجراء."
+      "DELETE_WARNING": "تحذير! لا يمكن التراجع عن هذا الإجراء.",
+      "CANNOT_DELETE_GRADE": "لا يمكن حذف الصف \"{{gradeName}}\"",
+      "DELETE_ERROR_DESC": "لا يمكن حذف هذا الصف لأنه لا يزال يحتوي على فصول و/أو مواد. يرجى إزالة جميع البيانات المرتبطة قبل حذف الصف.",
+      "REMOVE_CLASSES_FIRST": "يرجى إزالة جميع الفصول من هذا الصف أولاً.",
+      "REMOVE_SUBJECTS_FIRST": "يرجى إزالة جميع المواد من هذا الصف أولاً.",
+      "RECOMMENDED_ACTIONS": "الإجراءات الموصى بها",
+      "ACTION_REMOVE_CLASSES": "انتقل إلى تفاصيل الصف وقم بإزالة جميع الفصول",
+      "ACTION_REMOVE_SUBJECTS": "قم بإزالة جميع المواد من الصف",
+      "ACTION_TRY_AGAIN": "حاول حذف الصف مرة أخرى"
     }
   },
   "TEACHER_OVERVIEW": {

@@ -83,6 +83,10 @@ export class AdminGradesComponent implements OnInit {
   // Store target grade for bulk move operations
   private targetGradeIdForMove: string | null = null;
 
+  //property to store deletion error info
+  deleteErrorData: { gradeName: string, classes: number, subjects: number } | null = null;
+  showDeleteErrorModal = false;
+
   constructor(
     private gradeService: GradeService,
     private classService: ClassService,
@@ -432,9 +436,82 @@ export class AdminGradesComponent implements OnInit {
   }
 
   openDeleteModal(gradeId: string, gradeName: string): void {
-    this.deleteGradeId = gradeId;
-    this.modalMessage = `Are you sure you want to delete grade "${gradeName}"? This action cannot be undone.`;
-    this.showDeleteModal = true;
+  // First, try to get data from the local cache
+  const classes = this.getClassesForGrade(gradeId);
+  const subjects = this.getSubjectsForGrade(gradeId);
+  
+  // If we have cached data, use it
+  if (classes.length > 0 || subjects.length > 0) {
+    // Grade has dependencies, show error modal
+    this.deleteErrorData = {
+      gradeName: gradeName,
+      classes: classes.length,
+      subjects: subjects.length
+    };
+    this.showDeleteErrorModal = true;
+  } else {
+    // We don't have cached data, check if grade is expanded
+    if (this.isGradeExpanded(gradeId)) {
+      // If grade is expanded, we should have loaded the data already
+      // So if we get here with 0 classes and 0 subjects, it's safe to delete
+      this.deleteGradeId = gradeId;
+      this.modalMessage = `Are you sure you want to delete grade "${gradeName}"? This action cannot be undone.`;
+      this.showDeleteModal = true;
+    } else {
+      // Grade is not expanded, we need to fetch the details
+      // Show a loading state first
+      this.loading = true;
+      
+      // Load both classes and subjects for this grade
+      this.gradeService.getClassesByGrade(gradeId).subscribe({
+        next: (classesResponse: ApiResponse<ClassViewDto[]>) => {
+          this.gradeService.getSubjectsByGrade(gradeId).subscribe({
+            next: (subjectsResponse: ApiResponse<SubjectViewDto[]>) => {
+              this.loading = false;
+              
+              const classCount = classesResponse.success ? (classesResponse.data?.length || 0) : 0;
+              const subjectCount = subjectsResponse.success ? (subjectsResponse.data?.length || 0) : 0;
+              
+              if (classCount > 0 || subjectCount > 0) {
+                // Grade has dependencies, show error modal
+                this.deleteErrorData = {
+                  gradeName: gradeName,
+                  classes: classCount,
+                  subjects: subjectCount
+                };
+                this.showDeleteErrorModal = true;
+              } else {
+                // Grade can be deleted, show confirmation modal
+                this.deleteGradeId = gradeId;
+                this.modalMessage = `Are you sure you want to delete grade "${gradeName}"? This action cannot be undone.`;
+                this.showDeleteModal = true;
+              }
+            },
+            error: (error) => {
+              this.loading = false;
+              console.error('Failed to load subjects:', error);
+              // On error, show the confirmation modal (let the backend handle validation)
+              this.deleteGradeId = gradeId;
+              this.modalMessage = `Are you sure you want to delete grade "${gradeName}"? This action cannot be undone.`;
+              this.showDeleteModal = true;
+            }
+          });
+        },
+        error: (error) => {
+          this.loading = false;
+          console.error('Failed to load classes:', error);
+          // On error, show the confirmation modal (let the backend handle validation)
+          this.deleteGradeId = gradeId;
+          this.modalMessage = `Are you sure you want to delete grade "${gradeName}"? This action cannot be undone.`;
+          this.showDeleteModal = true;
+        }
+      });
+    }
+  }
+}
+  closeErrorModal(): void {
+    this.deleteErrorData = null;
+    this.showDeleteErrorModal = false;
   }
 
   closeModals(): void {
@@ -443,94 +520,96 @@ export class AdminGradesComponent implements OnInit {
     this.showSubjectModal = false;
     this.showBulkMoveModal = false;
     this.showDeleteModal = false;
+    this.showDeleteErrorModal = false;
     this.gradeForm.reset();
     this.classForm.reset();
     this.subjectForm.reset();
     this.bulkMoveForm.reset();
-    this.selectedClasses = []; // Clear selected classes
+    this.selectedClasses = [];
     this.currentSelectedGradeId = null;
+    this.deleteErrorData = null;
   }
 
   // CRUD Operations
   saveGrade(): void {
-  if (this.gradeForm.invalid) {
-    this.markFormGroupTouched(this.gradeForm);
-    return;
-  }
+    if (this.gradeForm.invalid) {
+      this.markFormGroupTouched(this.gradeForm);
+      return;
+    }
 
-  this.loading = true;
-  const formValue = this.gradeForm.value;
-  const description = formValue.description?.trim();
+    this.loading = true;
+    const formValue = this.gradeForm.value;
+    const description = formValue.description?.trim();
 
-  if (this.isEditMode) {
-    // Update existing grade
-    const updateDto: UpdateGradeDto = {
-      id: formValue.id,
-      gradeName: formValue.gradeName,
-      description: description === '' ? undefined : description,
-      curriculumId: formValue.curriculumId
-    };
+    if (this.isEditMode) {
+      // Update existing grade
+      const updateDto: UpdateGradeDto = {
+        id: formValue.id,
+        gradeName: formValue.gradeName,
+        description: description === '' ? undefined : description,
+        curriculumId: formValue.curriculumId
+      };
 
-    this.gradeService.update(updateDto.id, updateDto).subscribe({
-      next: (response: ApiResponse<GradeViewDto>) => {
-        if (response.success && response.data) {
-          alert('Grade updated successfully');
-          this.refreshAll();
-          this.closeModals();
-        } else {
-          alert(response.message || 'Failed to update grade');
-        }
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Failed to update grade:', error);
-        if (error.error?.errors) {
-          let errorMessages = [];
-          for (const [field, messages] of Object.entries(error.error.errors)) {
-            errorMessages.push(`${field}: ${(messages as string[]).join(', ')}`);
+      this.gradeService.update(updateDto.id, updateDto).subscribe({
+        next: (response: ApiResponse<GradeViewDto>) => {
+          if (response.success && response.data) {
+            alert('Grade updated successfully');
+            this.refreshAll();
+            this.closeModals();
+          } else {
+            alert(response.message || 'Failed to update grade');
           }
-          alert('Validation errors:\n' + errorMessages.join('\n'));
-        } else {
-          alert(error.error?.title || 'Failed to update grade');
-        }
-        this.loading = false;
-      }
-    });
-  } else {
-    // Create new grade
-    const createDto: CreateGradeDto = {
-      gradeName: formValue.gradeName,
-      description: description === '' ? undefined : description,
-      curriculumId: formValue.curriculumId
-    };
-
-    this.gradeService.create(createDto).subscribe({
-      next: (response: ApiResponse<GradeViewDto>) => {
-        if (response.success && response.data) {
-          alert('Grade created successfully');
-          this.refreshAll();
-          this.closeModals();
-        } else {
-          alert(response.message || 'Failed to create grade');
-        }
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Failed to create grade:', error);
-        if (error.error?.errors) {
-          let errorMessages = [];
-          for (const [field, messages] of Object.entries(error.error.errors)) {
-            errorMessages.push(`${field}: ${(messages as string[]).join(', ')}`);
+          this.loading = false;
+        },
+        error: (error) => {
+          console.error('Failed to update grade:', error);
+          if (error.error?.errors) {
+            let errorMessages = [];
+            for (const [field, messages] of Object.entries(error.error.errors)) {
+              errorMessages.push(`${field}: ${(messages as string[]).join(', ')}`);
+            }
+            alert('Validation errors:\n' + errorMessages.join('\n'));
+          } else {
+            alert(error.error?.title || 'Failed to update grade');
           }
-          alert('Validation errors:\n' + errorMessages.join('\n'));
-        } else {
-          alert(error.error?.title || 'Failed to create grade');
+          this.loading = false;
         }
-        this.loading = false;
-      }
-    });
+      });
+    } else {
+      // Create new grade
+      const createDto: CreateGradeDto = {
+        gradeName: formValue.gradeName,
+        description: description === '' ? undefined : description,
+        curriculumId: formValue.curriculumId
+      };
+
+      this.gradeService.create(createDto).subscribe({
+        next: (response: ApiResponse<GradeViewDto>) => {
+          if (response.success && response.data) {
+            alert('Grade created successfully');
+            this.refreshAll();
+            this.closeModals();
+          } else {
+            alert(response.message || 'Failed to create grade');
+          }
+          this.loading = false;
+        },
+        error: (error) => {
+          console.error('Failed to create grade:', error);
+          if (error.error?.errors) {
+            let errorMessages = [];
+            for (const [field, messages] of Object.entries(error.error.errors)) {
+              errorMessages.push(`${field}: ${(messages as string[]).join(', ')}`);
+            }
+            alert('Validation errors:\n' + errorMessages.join('\n'));
+          } else {
+            alert(error.error?.title || 'Failed to create grade');
+          }
+          this.loading = false;
+        }
+      });
+    }
   }
-}
 
   saveClass(): void {
     if (this.classForm.invalid) {

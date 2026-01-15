@@ -731,14 +731,24 @@
       "DELETE_CONFIRM": "Confirm Deletion",
       "DELETE_WARNING": "Warning! This action cannot be undone.",
       "DELETE_CONFIRM_MESSAGE": "Are you sure you want to delete grade \"{{gradeName}}\"?",
-      "DELETE_BTN": "Delete Grade"
+      "DELETE_BTN": "Delete Grade",
+      "DELETE_ERROR_TITLE": "Cannot Delete Grade",
+      "UNDERSTOOD": "Understood"
     },
     "PAGINATION": {
       "previous": "Previous",
       "next": "Next"
     },
     "ALERTS": {
-      "DELETE_WARNING": "Warning! This action cannot be undone."
+      "DELETE_WARNING": "Warning! This action cannot be undone.",
+      "CANNOT_DELETE_GRADE": "Cannot delete grade \"{{gradeName}}\"",
+      "DELETE_ERROR_DESC": "This grade cannot be deleted because it still contains classes and/or subjects. Please remove all associated data before deleting the grade.",
+      "REMOVE_CLASSES_FIRST": "Please remove all classes from this grade first.",
+      "REMOVE_SUBJECTS_FIRST": "Please remove all subjects from this grade first.",
+      "RECOMMENDED_ACTIONS": "Recommended Actions",
+      "ACTION_REMOVE_CLASSES": "Go to the grade details and remove all classes",
+      "ACTION_REMOVE_SUBJECTS": "Remove all subjects from the grade",
+      "ACTION_TRY_AGAIN": "Try deleting the grade again"
     }
   },
   "TEACHER_OVERVIEW": {

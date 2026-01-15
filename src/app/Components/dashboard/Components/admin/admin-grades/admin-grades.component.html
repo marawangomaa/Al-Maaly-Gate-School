@@ -586,4 +586,65 @@
       </div>
     </div>
   </div>
+  <!-- Delete Error Modal (Add this after the Delete Confirmation Modal) -->
+  <div *ngIf="showDeleteErrorModal" class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-warning">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            {{ 'GRADE.MODALS.DELETE_ERROR_TITLE' | translate }}
+          </h5>
+          <button type="button" class="btn-close" (click)="closeErrorModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-warning">
+            <div class="d-flex align-items-start">
+              <i class="fas fa-ban fa-2x me-3 mt-1"></i>
+              <div>
+                <h6 class="alert-heading">{{ 'GRADE.ALERTS.CANNOT_DELETE_GRADE' | translate:{gradeName:
+                  deleteErrorData?.gradeName || ''} }}</h6>
+                <p class="mb-2">{{ 'GRADE.ALERTS.DELETE_ERROR_DESC' | translate }}</p>
+
+                <!-- Show classes warning if exists -->
+                <div *ngIf="deleteErrorData && deleteErrorData.classes > 0" class="mb-3">
+                  <div class="d-flex align-items-center text-danger mb-1">
+                    <i class="fas fa-door-open me-2"></i>
+                    <strong>{{ 'GRADE.CLASSES' | translate:{count: deleteErrorData.classes} }}</strong>
+                  </div>
+                  <p class="small mb-0">{{ 'GRADE.ALERTS.REMOVE_CLASSES_FIRST' | translate }}</p>
+                </div>
+
+                <!-- Show subjects warning if exists -->
+                <div *ngIf="deleteErrorData && deleteErrorData.subjects > 0">
+                  <div class="d-flex align-items-center text-danger mb-1">
+                    <i class="fas fa-book me-2"></i>
+                    <strong>{{ 'GRADE.SUBJECTS' | translate:{count: deleteErrorData.subjects} }}</strong>
+                  </div>
+                  <p class="small mb-0">{{ 'GRADE.ALERTS.REMOVE_SUBJECTS_FIRST' | translate }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Steps -->
+          <div class="card mt-3">
+            <div class="card-body">
+              <h6 class="card-title">{{ 'GRADE.ALERTS.RECOMMENDED_ACTIONS' | translate }}</h6>
+              <ol class="mb-0">
+                <li>{{ 'GRADE.ALERTS.ACTION_REMOVE_CLASSES' | translate }}</li>
+                <li>{{ 'GRADE.ALERTS.ACTION_REMOVE_SUBJECTS' | translate }}</li>
+                <li>{{ 'GRADE.ALERTS.ACTION_TRY_AGAIN' | translate }}</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="closeErrorModal()">
+            <i class="fas fa-check me-1"></i> {{ 'GRADE.MODALS.UNDERSTOOD' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
