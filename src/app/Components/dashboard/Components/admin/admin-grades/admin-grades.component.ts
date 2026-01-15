@@ -395,74 +395,57 @@ export class AdminGradesComponent implements OnInit {
   
   // CRUD Operations
   saveGrade(): void {
-    if (this.gradeForm.invalid) {
-      this.markFormGroupTouched(this.gradeForm);
-      return;
-    }
-    
-    this.loading = true;
-    const formValue = this.gradeForm.value;
-    
-    if (this.isEditMode) {
-      const updateDto: UpdateGradeDto = {
-        gradeName: formValue.gradeName,
-        description: formValue.description,
-        curriculumId: formValue.curriculumId
-      };
-      
-      this.gradeService.update(formValue.id, updateDto).subscribe({
-        next: (response: ApiResponse<GradeViewDto>) => {
-          if (response.success && response.data) {
-            alert('Grade updated successfully');
-            this.loadGrades();
-            
-            // Update the details in the map if it exists
-            if (this.gradeDetailsMap.has(formValue.id)) {
-              const currentDetails = this.gradeDetailsMap.get(formValue.id)!;
-              this.gradeDetailsMap.set(formValue.id, {
-                ...currentDetails,
-                ...response.data
-              });
-            }
-            
-            this.closeModals();
-          } else {
-            alert(response.message || 'Failed to update grade');
-          }
-          this.loading = false;
-        },
-        error: (error) => {
-          console.error('Failed to update grade:', error);
-          alert('Failed to update grade');
-          this.loading = false;
-        }
-      });
-    } else {
-      const createDto: CreateGradeDto = {
-        gradeName: formValue.gradeName,
-        description: formValue.description,
-        curriculumId: formValue.curriculumId
-      };
-      
-      this.gradeService.create(createDto).subscribe({
-        next: (response: ApiResponse<GradeViewDto>) => {
-          if (response.success && response.data) {
-            alert('Grade created successfully');
-            this.loadGrades();
-            this.closeModals();
-          } else {
-            alert(response.message || 'Failed to create grade');
-          }
-          this.loading = false;
-        },
-        error: (error) => {
-          console.error('Failed to create grade:', error);
-          alert('Failed to create grade');
-          this.loading = false;
-        }
-      });
-    }
+  if (this.gradeForm.invalid) {
+    this.markFormGroupTouched(this.gradeForm);
+    return;
   }
+  
+  this.loading = true;
+  const formValue = this.gradeForm.value;
+  
+  // Clean the description field
+  const description = formValue.description?.trim();
+  
+  const createDto: CreateGradeDto = {
+    gradeName: formValue.gradeName,
+    description: description === '' ? undefined : description, // Convert empty to undefined
+    curriculumId: formValue.curriculumId
+  };
+  
+  // Log to debug
+  console.log('Sending DTO:', createDto);
+  console.log('Description:', createDto.description, 'Type:', typeof createDto.description);
+  
+  this.gradeService.create(createDto).subscribe({
+    next: (response: ApiResponse<GradeViewDto>) => {
+      if (response.success && response.data) {
+        alert('Grade created successfully');
+        this.loadGrades();
+        this.closeModals();
+      } else {
+        alert(response.message || 'Failed to create grade');
+      }
+      this.loading = false;
+    },
+    error: (error) => {
+      console.error('Full error:', error);
+      console.error('Error details:', error.error?.errors);
+      
+      // Display specific validation errors
+      if (error.error?.errors) {
+        let errorMessages = [];
+        for (const [field, messages] of Object.entries(error.error.errors)) {
+          errorMessages.push(`${field}: ${(messages as string[]).join(', ')}`);
+        }
+        alert('Validation errors:\n' + errorMessages.join('\n'));
+      } else {
+        alert(error.error?.title || 'Failed to create grade');
+      }
+      
+      this.loading = false;
+    }
+  });
+}
   
   saveClass(): void {
     if (this.classForm.invalid) {

@@ -4,7 +4,7 @@ import { SubjectCreateDto, SubjectViewDto } from "./isubject";
 export interface GradeViewDto {
   id: string;
   gradeName: string;
-  description: string;
+  description?: string;
   curriculumId: string;
   curriculumName: string;
   classCount: number;
@@ -15,13 +15,13 @@ export interface GradeViewDto {
 
 export interface CreateGradeDto {
   gradeName: string;
-  description: string;
+  description?: string | null;
   curriculumId: string;
 }
 
 export interface UpdateGradeDto {
   gradeName: string;
-  description: string;
+  description?: string | null;
   curriculumId: string;
 }
 
