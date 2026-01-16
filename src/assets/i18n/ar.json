@@ -429,8 +429,13 @@
       "TITLE": "بيانات الاتصال",
       "PHONE": {
         "LABEL": "رقم الهاتف",
-        "PHONE1": "+966 016 369 3555",
-        "PHONE2": "+966 016 369 4555"
+        "PHONE1": "+966 16 369 4555",
+        "PHONE2": "+966 16 369 3555"
+      },
+      "FACEBOOK": {
+        "LABEL": "فيسبوك",
+        "VALUE": "Al Maaly Int'l Schools",
+        "LINK": "https://www.facebook.com/almaalygate"
       },
       "EMAIL": {
         "LABEL": "البريد الإلكتروني",
@@ -698,7 +703,7 @@
       "GRADE_NAME_LABEL": "اسم الصف *",
       "GRADE_NAME_REQUIRED": "اسم الصف مطلوب",
       "GRADE_NAME_MIN_LENGTH": "يجب أن يكون اسم الصف على الأقل حرفين",
-      "DESCRIPTION_LABEL": "الوصف",
+      "DESCRIPTION_LABEL": "الوصف (اختياري)",
       "DESCRIPTION_HINT": "اختياري. الحد الأقصى 500 حرف.",
       "CANCEL": "إلغاء",
       "CREATE": "إنشاء",
@@ -726,14 +731,24 @@
       "DELETE_CONFIRM": "تأكيد الحذف",
       "DELETE_WARNING": "تحذير! لا يمكن التراجع عن هذا الإجراء.",
       "DELETE_CONFIRM_MESSAGE": "هل أنت متأكد أنك تريد حذف الصف \"{{gradeName}}\"?",
-      "DELETE_BTN": "حذف الصف"
+      "DELETE_BTN": "حذف الصف",
+      "DELETE_ERROR_TITLE": "لا يمكن حذف الصف",
+      "UNDERSTOOD": "فهمت"
     },
     "PAGINATION": {
       "previous": "السابق",
       "next": "التالي"
     },
     "ALERTS": {
-      "DELETE_WARNING": "تحذير! لا يمكن التراجع عن هذا الإجراء."
+      "DELETE_WARNING": "تحذير! لا يمكن التراجع عن هذا الإجراء.",
+      "CANNOT_DELETE_GRADE": "لا يمكن حذف الصف \"{{gradeName}}\"",
+      "DELETE_ERROR_DESC": "لا يمكن حذف هذا الصف لأنه لا يزال يحتوي على فصول و/أو مواد. يرجى إزالة جميع البيانات المرتبطة قبل حذف الصف.",
+      "REMOVE_CLASSES_FIRST": "يرجى إزالة جميع الفصول من هذا الصف أولاً.",
+      "REMOVE_SUBJECTS_FIRST": "يرجى إزالة جميع المواد من هذا الصف أولاً.",
+      "RECOMMENDED_ACTIONS": "الإجراءات الموصى بها",
+      "ACTION_REMOVE_CLASSES": "انتقل إلى تفاصيل الصف وقم بإزالة جميع الفصول",
+      "ACTION_REMOVE_SUBJECTS": "قم بإزالة جميع المواد من الصف",
+      "ACTION_TRY_AGAIN": "حاول حذف الصف مرة أخرى"
     }
   },
   "TEACHER_OVERVIEW": {
@@ -1193,6 +1208,28 @@
     "studentId": "رقم الطالب"
   },
   "curriculum": {
+    "error": {
+      "overlay": {
+        "title": "فشل الحذف",
+        "unableToDelete": "غير قادر على حذف المنهج",
+        "errorDetails": "تفاصيل الخطأ",
+        "suggestedSolutions": "الحلول المقترحة",
+        "gradesAssigned": "{{count}} صف/صفوف معين.",
+        "removeGradesFirst": "قم بإزالة جميع الصفوف من هذا المنهج أولاً.",
+        "studentsEnrolled": "{{count}} طالب/طلاب مسجلين.",
+        "transferStudentsFirst": "قم بنقل أو إزالة هؤلاء الطلاب أولاً.",
+        "teachersAssigned": "{{count}} معلم/معلمين معينين.",
+        "reassignTeachersFirst": "أعد تعيين هؤلاء المعلمين إلى مناهج أخرى.",
+        "checkPermissions": "تحقق مما إذا كان لديك إذن لحذف المناهج.",
+        "contactAdmin": "اتصل بالمسؤول إذا استمرت المشكلة.",
+        "quickActions": "إجراءات سريعة",
+        "viewDetails": "عرض التفاصيل",
+        "editInstead": "التعديل بدلاً من ذلك",
+        "refreshList": "تحديث القائمة",
+        "close": "إغلاق",
+        "tryAgain": "إعادة المحاولة"
+      }
+    },
     "title": "إدارة المناهج الدراسية",
     "subtitle": "قم بإدارة وتنظيم مناهج مدرستك بكفاءة",
     "stats": {
@@ -1261,7 +1298,7 @@
         "hint": "كود فريد للتحديد"
       },
       "description": {
-        "label": "الوصف",
+        "label": "الوصف (اختياري)",
         "placeholder": "أدخل وصف المنهج"
       },
       "errors": {

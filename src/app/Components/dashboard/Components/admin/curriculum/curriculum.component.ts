@@ -1,10 +1,11 @@
-import { Component, ElementRef, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CreateCurriculum, Curriculum, CurriculumDetails, UpdateCurriculum } from '../../../../../Interfaces/icurriculum';
 import { finalize, Subject, takeUntil } from 'rxjs';
 import { CurriculumService } from '../../../../../Services/curriculum.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
+import { ApiError } from '../../../../../Interfaces/api-error';
 
 @Component({
   selector: 'app-curriculum',
@@ -13,11 +14,15 @@ import { CommonModule } from '@angular/common';
   styleUrl: './curriculum.component.css'
 })
 export class CurriculumComponent {
-   @ViewChild('createModal') createModal!: ElementRef;
+  @ViewChild('createModal') createModal!: ElementRef;
   @ViewChild('editModal') editModal!: ElementRef;
   @ViewChild('detailsModal') detailsModal!: ElementRef;
   @ViewChild('deleteModal') deleteModal!: ElementRef;
   @ViewChild('checkModal') checkModal!: ElementRef;
+  @ViewChild('errorModal') errorModal!: ElementRef;
+
+  showErrorModal: boolean = false;
+  errorModalMessage: string = '';
 
   get searchTermControl(): FormControl {
     return this.searchForm.get('searchTerm') as FormControl;
@@ -50,37 +55,38 @@ export class CurriculumComponent {
   curricula: Curriculum[] = [];
   selectedCurriculum: Curriculum | null = null;
   curriculumDetails: CurriculumDetails | null = null;
-  
+
   createForm: FormGroup;
   editForm: FormGroup;
   searchForm: FormGroup;
-  
+
   loading = false;
   detailsLoading = false;
-  
+
   // Modal states
   showCreateModal = false;
   showEditModal = false;
   showDetailsModal = false;
   showDeleteModal = false;
   showCheckModal = false;
-  
+
   currentAction: 'delete' | 'checkStudents' | 'checkTeachers' | null = null;
   checkResult: boolean = false;
-  
+
   sortColumn: keyof Curriculum = 'name';
   sortDirection: 'asc' | 'desc' = 'asc';
   searchTerm: string = '';
-  
+
   // Toast messages
   toastMessages: { message: string, type: 'success' | 'error' | 'info', id: number }[] = [];
   private toastId = 0;
-  
+
   private destroy$ = new Subject<void>();
 
   constructor(
     private curriculumService: CurriculumService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private cdRef: ChangeDetectorRef
   ) {
     this.createForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(100)]],
@@ -140,7 +146,7 @@ export class CurriculumComponent {
   showToast(message: string, type: 'success' | 'error' | 'info'): void {
     const id = ++this.toastId;
     this.toastMessages.push({ message, type, id });
-    
+
     // Auto remove after 5 seconds
     setTimeout(() => {
       this.removeToast(id);
@@ -195,7 +201,7 @@ export class CurriculumComponent {
     this.selectedCurriculum = curriculum;
     this.detailsLoading = true;
     this.showDetailsModal = true;
-    
+
     this.curriculumService.getWithDetails(curriculum.id)
       .pipe(
         finalize(() => this.detailsLoading = false),
@@ -246,8 +252,8 @@ export class CurriculumComponent {
     this.selectedCurriculum = curriculum;
     this.currentAction = type;
     this.checkResult = false;
-    
-    const serviceCall = type === 'checkStudents' 
+
+    const serviceCall = type === 'checkStudents'
       ? this.curriculumService.hasStudents(curriculum.id)
       : this.curriculumService.hasTeachers(curriculum.id);
 
@@ -283,9 +289,15 @@ export class CurriculumComponent {
       return;
     }
 
-    const newCurriculum: CreateCurriculum = this.createForm.value;
-    this.loading = true;
+    const formValue = this.createForm.value;
 
+    // Ensure description is always an empty string if not provided
+    const newCurriculum: CreateCurriculum = {
+      name: formValue.name,
+      code: formValue.code,
+      description: formValue.description || ''  // Convert null/undefined to empty string
+    };
+    this.loading = true;
     this.curriculumService.create(newCurriculum)
       .pipe(
         finalize(() => this.loading = false),
@@ -348,11 +360,63 @@ export class CurriculumComponent {
         next: () => {
           this.curricula = this.curricula.filter(c => c.id !== this.selectedCurriculum!.id);
           this.showToast('Curriculum deleted successfully', 'success');
+          this.loadCurricula();
         },
-        error: (error) => {
-          this.showToast(error.message || 'Failed to delete curriculum', 'error');
+        error: (error: any) => {
+          let errorMessage = 'Failed to delete curriculum';
+
+          if (error.error) {
+            const apiError = error.error as ApiError;
+            if (apiError.message) {
+              errorMessage = apiError.message;
+            }
+            if (apiError.errors) {
+              const constraintErrors = Object.values(apiError.errors).flat();
+              if (constraintErrors.length > 0) {
+                errorMessage += ': ' + constraintErrors.join(' ');
+              }
+            }
+            if (error.status === 409) {
+              errorMessage = 'This curriculum cannot be deleted because it is being used by other records.';
+            } else if (error.status === 403) {
+              errorMessage = 'You do not have permission to delete this curriculum.';
+            } else if (error.status === 404) {
+              errorMessage = 'Curriculum not found. It may have been already deleted.';
+            }
+          } else if (error.message) {
+            errorMessage = error.message;
+          }
+
+          console.log('Showing error popup with message:', errorMessage);
+          this.showErrorPopup(errorMessage); // Changed from showDetailedErrorInModal to showErrorPopup
         }
       });
+  }
+
+  showErrorPopup(errorMessage: string): void {
+    console.log('Showing error popup with message:', errorMessage);
+
+    this.errorModalMessage = errorMessage;
+    this.showErrorModal = true;
+
+    // Close delete modal if it's open
+    this.closeDeleteModal();
+
+    // Prevent body scrolling when error popup is shown
+    document.body.style.overflow = 'hidden';
+
+    // Force change detection
+    this.cdRef.detectChanges();
+  }
+
+  closeErrorModal(): void {
+    this.showErrorModal = false;
+
+    // Restore body scrolling
+    document.body.style.overflow = '';
+
+    // Force change detection
+    this.cdRef.detectChanges();
   }
 
   // Helper methods
@@ -367,13 +431,13 @@ export class CurriculumComponent {
     this.curricula.sort((a, b) => {
       const valueA = a[column];
       const valueB = b[column];
-      
+
       if (typeof valueA === 'string' && typeof valueB === 'string') {
-        return this.sortDirection === 'asc' 
+        return this.sortDirection === 'asc'
           ? valueA.localeCompare(valueB)
           : valueB.localeCompare(valueA);
       }
-      
+
       return this.sortDirection === 'asc'
         ? (valueA as any) - (valueB as any)
         : (valueB as any) - (valueA as any);
@@ -382,7 +446,7 @@ export class CurriculumComponent {
 
   get filteredCurricula(): Curriculum[] {
     if (!this.searchTerm) return this.curricula;
-    
+
     return this.curricula.filter(curriculum =>
       curriculum.name.toLowerCase().includes(this.searchTerm) ||
       curriculum.code.toLowerCase().includes(this.searchTerm) ||
@@ -407,7 +471,7 @@ export class CurriculumComponent {
   getFormControlClass(form: FormGroup, controlName: string): string {
     const control = form.get(controlName);
     if (!control) return '';
-    
+
     if (control.touched && control.invalid) return 'is-invalid';
     if (control.touched && control.valid) return 'is-valid';
     return '';
@@ -415,7 +479,7 @@ export class CurriculumComponent {
 
   getCheckModalTitle(): string {
     if (!this.selectedCurriculum) return '';
-    
+
     if (this.currentAction === 'checkStudents') {
       return `Check Students for ${this.selectedCurriculum.name}`;
     } else {
@@ -425,9 +489,9 @@ export class CurriculumComponent {
 
   getCheckModalMessage(): string {
     if (!this.selectedCurriculum) return '';
-    
+
     const curriculumName = this.selectedCurriculum.name;
-    
+
     if (this.currentAction === 'checkStudents') {
       return this.checkResult
         ? `✅ ${curriculumName} has students assigned.`
@@ -440,11 +504,37 @@ export class CurriculumComponent {
   }
 
   getToastClass(type: 'success' | 'error' | 'info'): string {
-    switch(type) {
+    switch (type) {
       case 'success': return 'alert-success';
       case 'error': return 'alert-danger';
       case 'info': return 'alert-info';
       default: return 'alert-info';
     }
+  }
+  onViewDetailsClick(): void {
+    this.closeErrorModal();
+    if (this.selectedCurriculum) {
+      this.openDetailsModal(this.selectedCurriculum);
+    }
+  }
+
+  onEditInsteadClick(): void {
+    this.closeErrorModal();
+    if (this.selectedCurriculum) {
+      this.openEditModal(this.selectedCurriculum);
+    }
+  }
+
+  onTryAgainClick(): void {
+    this.closeErrorModal();
+    if (this.selectedCurriculum) {
+      this.openDeleteModal(this.selectedCurriculum);
+    }
+  }
+  ngAfterViewInit(): void {
+    // Debug: Check if modal elements exist
+    console.log('Create modal:', this.createModal?.nativeElement);
+    console.log('Edit modal:', this.editModal?.nativeElement);
+    console.log('Error modal:', this.errorModal?.nativeElement);
   }
 }
