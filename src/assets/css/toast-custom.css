@@ -61,26 +61,26 @@
 
 /* ENGLISH (LTR): Toast appears on RIGHT side */
 html[dir="ltr"] .toast-top-right {
-  top: 20px !important;
+  top: 60px !important;
   right: 20px !important;
   left: auto !important;
 }
 
 html[dir="ltr"] .toast-top-left {
-  top: 20px !important;
+  top: 60px !important;
   left: 20px !important;
   right: auto !important;
 }
 
 /* ARABIC (RTL): Toast appears on LEFT side */
 html[dir="rtl"] .toast-top-right {
-  top: 20px !important;
+  top: 60px !important;
   right: 20px !important;
   left: auto !important;
 }
 
 html[dir="rtl"] .toast-top-left {
-  top: 20px !important;
+  top: 60px !important;
   left: 20px !important;
   right: auto !important;
 }
