@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef,ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CreateCurriculum, Curriculum, CurriculumDetails, UpdateCurriculum } from '../../../../../Interfaces/icurriculum';
 import { finalize, Subject, takeUntil } from 'rxjs';
@@ -6,6 +6,7 @@ import { CurriculumService } from '../../../../../Services/curriculum.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { ApiError } from '../../../../../Interfaces/api-error';
+import { ToastService } from '../../../../../Services/UtilServices/toast.service';
 
 @Component({
   selector: 'app-curriculum',
@@ -86,7 +87,8 @@ export class CurriculumComponent {
   constructor(
     private curriculumService: CurriculumService,
     private fb: FormBuilder,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private toastService: ToastService
   ) {
     this.createForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(100)]],
@@ -133,30 +135,14 @@ export class CurriculumComponent {
       .subscribe({
         next: (data) => {
           this.curricula = data;
-          this.showToast('Curricula loaded successfully', 'success');
+          this.toastService.success('Curricula loaded successfully');
         },
         error: (error) => {
-          this.showToast('Failed to load curricula', 'error');
+          this.toastService.error('Failed to load curricula');
           console.error('Error loading curricula:', error);
         }
       });
   }
-
-  // Toast system
-  showToast(message: string, type: 'success' | 'error' | 'info'): void {
-    const id = ++this.toastId;
-    this.toastMessages.push({ message, type, id });
-
-    // Auto remove after 5 seconds
-    setTimeout(() => {
-      this.removeToast(id);
-    }, 5000);
-  }
-
-  removeToast(id: number): void {
-    this.toastMessages = this.toastMessages.filter(toast => toast.id !== id);
-  }
-
   // Modal handlers
   openCreateModal(): void {
     this.createForm.reset();
@@ -217,7 +203,7 @@ export class CurriculumComponent {
           });
         },
         error: (error) => {
-          this.showToast('Failed to load curriculum details', 'error');
+          this.toastService.error('Failed to load curriculum details');
           this.closeDetailsModal();
         }
       });
@@ -270,7 +256,7 @@ export class CurriculumComponent {
           });
         },
         error: (error) => {
-          this.showToast(`Failed to check ${type}`, 'error');
+          this.toastService.error(`Failed to check ${type}`);
         }
       });
   }
@@ -307,10 +293,10 @@ export class CurriculumComponent {
         next: (created) => {
           this.curricula.unshift(created);
           this.closeCreateModal();
-          this.showToast('Curriculum created successfully', 'success');
+          this.toastService.success('Curriculum created successfully');
         },
         error: (error) => {
-          this.showToast(error.message || 'Failed to create curriculum', 'error');
+          this.toastService.error(error.message || 'Failed to create curriculum');
         }
       });
   }
@@ -336,10 +322,10 @@ export class CurriculumComponent {
             this.curricula[index] = updated;
           }
           this.closeEditModal();
-          this.showToast('Curriculum updated successfully', 'success');
+          this.toastService.success('Curriculum updated successfully');
         },
         error: (error) => {
-          this.showToast(error.message || 'Failed to update curriculum', 'error');
+          this.toastService.error(error.message || 'Failed to update curriculum');
         }
       });
   }
@@ -359,7 +345,7 @@ export class CurriculumComponent {
       .subscribe({
         next: () => {
           this.curricula = this.curricula.filter(c => c.id !== this.selectedCurriculum!.id);
-          this.showToast('Curriculum deleted successfully', 'success');
+          this.toastService.success('Curriculum deleted successfully');
           this.loadCurricula();
         },
         error: (error: any) => {

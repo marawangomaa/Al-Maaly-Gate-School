@@ -1,3 +1,4 @@
+@import 'assets/css/toast-custom.css';
 /* =========================================================
    GLOBAL STYLES & THEMES
    ========================================================= */
@@ -18,7 +19,7 @@ html {
 }
 
 body {
-  font-family: var(--font-body, 'sans-serif');
+  font-family: var(--font-body, "sans-serif");
   background-color: var(--color-bg);
   color: var(--color-text);
   transition: background-color 0.3s ease, color 0.3s ease, direction 0.3s ease;
@@ -69,8 +70,9 @@ html[lang="en"] {
   --font-weight-bold: 600;
 
   /* Adjust typography for English */
-  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-heading: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-heading: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
 
   /* Additional English-specific adjustments */
   direction: ltr;
@@ -122,8 +124,8 @@ html[lang="en"] {
   --color-gray-500: #404040;
 
   /* Typography */
-  --font-body: 'Roboto', sans-serif;
-  --font-heading: 'Poppins', sans-serif;
+  --font-body: "Roboto", sans-serif;
+  --font-heading: "Poppins", sans-serif;
 
   /* Font Sizes */
   --font-sm: 1.4rem;
@@ -155,7 +157,7 @@ html[lang="en"] {
   --radius-3xlg: 3rem;
   --radius-full: 9999px;
 
-   /* Additional variables for buttons and alerts */
+  /* Additional variables for buttons and alerts */
   --color-alert-success-bg: #f0fdf4;
   --color-alert-success-border: #bbf7d0;
   --color-alert-success-text: #166534;
@@ -165,7 +167,7 @@ html[lang="en"] {
   --color-alert-info-bg: #eff6ff;
   --color-alert-info-border: #bfdbfe;
   --color-alert-info-text: #1e40af;
-  
+
   /* Button gradient colors */
   --button-gradient-start: #2563eb;
   --button-gradient-end: #4f46e5;
@@ -223,7 +225,7 @@ html[lang="en"] {
   --color-alert-info-bg: #1e3a8a;
   --color-alert-info-border: #1e40af;
   --color-alert-info-text: #93c5fd;
-  
+
   /* Button gradient for dark mode */
   --button-gradient-start: #3b82f6;
   --button-gradient-end: #6366f1;
@@ -235,15 +237,11 @@ html[lang="en"] {
   --color-input-bg: var(--color-bg-secondary);
   --color-input-text: var(--color-text-light-bg);
   --color-input-placeholder: var(--color-gray-400);
-
-
 }
 
 /* =========================================================
    LANGUAGE DIRECTION SUPPORT
    ========================================================= */
-
-
 
 /* Default (LTR) */
 html[dir="ltr"] {
@@ -273,9 +271,6 @@ html[dir="rtl"] .icon-flip {
   transform: scaleX(-1);
 }
 
-
-
-
 /* =========================================================
   COMPONENT BASE STYLES
 ========================================================= */
@@ -299,7 +294,6 @@ html[dir="rtl"] .icon-flip {
   border-radius: var(--radius-md);
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
-
 
 .primary-btn:hover {
   background-color: var(--color-primary-500);

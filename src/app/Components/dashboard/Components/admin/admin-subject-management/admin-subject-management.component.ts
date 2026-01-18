@@ -72,6 +72,7 @@ export class AdminSubjectManagementComponent {
       this.creditHours
     );
     this.LoadAllSubjects();
+    this.loadAllGrades();
   }
   public onSearchChange(): void {
     const term = this.searchTerm.toLowerCase().trim();
