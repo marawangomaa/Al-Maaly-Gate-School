@@ -2051,5 +2051,57 @@
     "SUCCESS_MESSAGE": "Your password has been reset successfully!",
     "ERROR_MESSAGE": "An error occurred. Please try again.",
     "PASSWORDS_MISMATCH": "Passwords do not match"
+  },
+  "TOAST": {
+    "TITLES": {
+      "SUCCESS": "Success",
+      "ERROR": "Error",
+      "WARNING": "Warning",
+      "INFO": "Information"
+    },
+    "MESSAGES": {
+      "GENERIC_SUCCESS": "Operation completed successfully",
+      "GENERIC_ERROR": "Something went wrong",
+      "GENERIC_WARNING": "Pay attention to this",
+      "GENERIC_INFO": "Information",
+      
+      "SAVED": "Saved successfully",
+      "UPDATED": "Updated successfully",
+      "DELETED": "Deleted successfully",
+      "CREATED": "Created successfully",
+      
+      "FORM_VALID": "Form is valid",
+      "FORM_INVALID": "Form is invalid",
+      "REQUIRED_FIELDS": "Please fill all required fields",
+      
+      "LOGIN_SUCCESS": "Logged in successfully",
+      "LOGIN_FAILED": "Login failed",
+      "LOGOUT_SUCCESS": "Logged out successfully",
+      "UNAUTHORIZED": "You are not authorized",
+      
+      "CONNECTION_ERROR": "Connection error",
+      "SERVER_ERROR": "Server error",
+      "TIMEOUT_ERROR": "Connection timeout",
+      
+      "FILE_UPLOADED": "File uploaded successfully",
+      "UPLOAD_FAILED": "File upload failed",
+      "INVALID_FILE": "Invalid file",
+      "FILE_SIZE_EXCEEDED": "File size exceeded",
+      
+      "SEARCH_COMPLETE": "Search complete",
+      "NO_RESULTS": "No results found",
+      "FILTER_APPLIED": "Filter applied",
+      
+      "PAYMENT_SUCCESS": "Payment successful",
+      "PAYMENT_FAILED": "Payment failed",
+      "TRANSACTION_COMPLETE": "Transaction completed",
+      
+      "NOTIFICATION_SENT": "Notification sent",
+      "NOTIFICATION_RECEIVED": "New notification received",
+      
+      "SYSTEM_UPDATED": "System updated",
+      "MAINTENANCE_MODE": "System in maintenance mode",
+      "COMING_SOON": "Coming soon"
+    }
   }
 }
