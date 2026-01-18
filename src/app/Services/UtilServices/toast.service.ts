@@ -90,7 +90,7 @@ export class ToastService {
    */
   private getPositionClass(): string {
     const isArabic = this.translate.currentLang === 'ar';
-    return isArabic ? 'toast-top-right' : 'toast-top-left';
+    return isArabic ? 'toast-top-left' : 'toast-top-right';
   }
 
   /**

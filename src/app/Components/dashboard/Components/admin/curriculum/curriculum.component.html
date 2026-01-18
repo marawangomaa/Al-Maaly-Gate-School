@@ -1,18 +1,4 @@
 <div class="container-fluid py-4">
-  <!-- Toast Container -->
-  <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1055;">
-    <div *ngFor="let toast of toastMessages" class="alert alert-dismissible fade show mb-2"
-      [class]="getToastClass(toast.type)" role="alert">
-      <div class="d-flex align-items-center">
-        <i [class]="toast.type === 'success' ? 'bi bi-check-circle-fill me-2' : 
-                   toast.type === 'error' ? 'bi bi-exclamation-circle-fill me-2' : 
-                   'bi bi-info-circle-fill me-2'"></i>
-        <span>{{toast.message}}</span>
-      </div>
-      <button type="button" class="btn-close" (click)="removeToast(toast.id)"></button>
-    </div>
-  </div>
-
   <!-- Header -->
   <div class="row mb-4">
     <div class="col">
