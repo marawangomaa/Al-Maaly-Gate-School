@@ -2063,46 +2063,13 @@
     "MESSAGES": {
       "GENERIC_SUCCESS": "تمت العملية بنجاح",
       "GENERIC_ERROR": "حدث خطأ ما",
-      "GENERIC_WARNING": "انتبه لهذا",
-      "GENERIC_INFO": "معلومات",
-      
+      "GENERIC_WARNING": "تحذير",
+      "GENERIC_INFO": "معلومة",
       "SAVED": "تم الحفظ بنجاح",
       "UPDATED": "تم التحديث بنجاح",
       "DELETED": "تم الحذف بنجاح",
-      "CREATED": "تم الإنشاء بنجاح",
-      
-      "FORM_VALID": "النموذج صالح",
-      "FORM_INVALID": "النموذج غير صالح",
-      "REQUIRED_FIELDS": "يرجى ملء جميع الحقول المطلوبة",
-      
-      "LOGIN_SUCCESS": "تم تسجيل الدخول بنجاح",
-      "LOGIN_FAILED": "فشل تسجيل الدخول",
-      "LOGOUT_SUCCESS": "تم تسجيل الخروج بنجاح",
-      "UNAUTHORIZED": "غير مصرح لك بالوصول",
-      
-      "CONNECTION_ERROR": "خطأ في الاتصال",
-      "SERVER_ERROR": "خطأ في الخادم",
-      "TIMEOUT_ERROR": "انتهت مهلة الاتصال",
-      
-      "FILE_UPLOADED": "تم رفع الملف بنجاح",
-      "UPLOAD_FAILED": "فشل رفع الملف",
-      "INVALID_FILE": "ملف غير صالح",
-      "FILE_SIZE_EXCEEDED": "حجم الملف يتجاوز الحد المسموح",
-      
-      "SEARCH_COMPLETE": "اكتمل البحث",
-      "NO_RESULTS": "لا توجد نتائج",
-      "FILTER_APPLIED": "تم تطبيق الفلتر",
-      
-      "PAYMENT_SUCCESS": "تم الدفع بنجاح",
-      "PAYMENT_FAILED": "فشل الدفع",
-      "TRANSACTION_COMPLETE": "اكتملت العملية",
-      
-      "NOTIFICATION_SENT": "تم إرسال الإشعار",
-      "NOTIFICATION_RECEIVED": "تم استلام إشعار جديد",
-      
-      "SYSTEM_UPDATED": "تم تحديث النظام",
-      "MAINTENANCE_MODE": "النظام في وضع الصيانة",
-      "COMING_SOON": "قريباً"
+      "CREATED": "تم الإنشاء بنجاح"
     }
   }
 }
+

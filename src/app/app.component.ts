@@ -12,25 +12,20 @@ import { ToastService } from './Services/UtilServices/toast.service';
 export class AppComponent implements OnInit, OnDestroy {
   title = 'Al-Maaly-Gate-School';
 
-  constructor(private translate: TranslateService, private toast: ToastService) {
+  constructor(private translate: TranslateService, private toastService: ToastService) {
     // Set default language
     this.translate.setDefaultLang('en');
-    
     // Use Arabic as initial language
-    this.translate.use('ar').subscribe(() => {
-      console.log('Translation service initialized with: ar');
-      
-      // Set document direction and language attributes
-      document.documentElement.dir = 'rtl';
-      document.documentElement.lang = 'ar';
-    });
+    this.translate.use('ar');
   }
 
   ngOnInit() {
-    this.toast.updated();
+    this.toastService.info();
+    this.toastService.success();
+    this.toastService.warning();
+    this.toastService.error();
   }
 
   ngOnDestroy() {
-
   }
 }
