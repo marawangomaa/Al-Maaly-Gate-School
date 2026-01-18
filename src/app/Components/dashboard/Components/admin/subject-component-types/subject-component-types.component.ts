@@ -6,8 +6,9 @@ import { CreateDegreeComponentTypeDto, DegreeComponentTypeDto, UpdateDegreeCompo
 import { forkJoin } from 'rxjs';
 import { SubjectService } from '../../../../../Services/subject.service';
 import { DegreeComponentTypeService } from '../../../../../Services/degrees-component-type.service';
-import { ToastService } from '../../../../../Services/toast.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { ToastService } from '../../../../../Services/UtilServices/toast.service';
+
 
 @Component({
   selector: 'app-subject-component-types',
@@ -61,12 +62,12 @@ export class SubjectComponentTypesComponent implements OnInit {
           this.subjects = response.data;
           this.loadComponentTypes();
         } else {
-          this.toastService.showError('Failed to load subjects');
+          this.toastService.error('Failed to load subjects');
           this.isLoading = false;
         }
       },
       error: (error) => {
-        this.toastService.showError('Failed to load subjects');
+        this.toastService.error('Failed to load subjects');
         console.error('Error loading subjects:', error);
         this.isLoading = false;
       }
@@ -94,7 +95,7 @@ export class SubjectComponentTypesComponent implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        this.toastService.showError('Failed to load component types');
+        this.toastService.error('Failed to load component types');
         console.error('Error loading component types:', error);
         this.isLoading = false;
       }
@@ -177,15 +178,15 @@ export class SubjectComponentTypesComponent implements OnInit {
       this.componentTypeService.updateComponentType(this.editingComponentTypeId, updateDto).subscribe({
         next: (response) => {
           if (response.success) {
-            this.toastService.showSuccess('Component type updated successfully');
+            this.toastService.success('Component type updated successfully');
             this.loadComponentTypes();
             this.cancelEdit();
           } else {
-            this.toastService.showError(response.message || 'Failed to update component type');
+            this.toastService.error(response.message || 'Failed to update component type');
           }
         },
         error: (error) => {
-          this.toastService.showError('Failed to update component type');
+          this.toastService.error('Failed to update component type');
           console.error('Update error:', error);
         }
       });
@@ -202,15 +203,15 @@ export class SubjectComponentTypesComponent implements OnInit {
       this.componentTypeService.createComponentType(createDto).subscribe({
         next: (response) => {
           if (response.success) {
-            this.toastService.showSuccess('Component type created successfully');
+            this.toastService.success('Component type created successfully');
             this.loadComponentTypes();
             this.cancelEdit();
           } else {
-            this.toastService.showError(response.message || 'Failed to create component type');
+            this.toastService.error(response.message || 'Failed to create component type');
           }
         },
         error: (error) => {
-          this.toastService.showError('Failed to create component type');
+          this.toastService.error('Failed to create component type');
           console.error('Create error:', error);
         }
       });
@@ -222,14 +223,14 @@ export class SubjectComponentTypesComponent implements OnInit {
       this.componentTypeService.deleteComponentType(id).subscribe({
         next: (response) => {
           if (response.success) {
-            this.toastService.showSuccess(response.message || 'Component type deleted successfully');
+            this.toastService.success(response.message || 'Component type deleted successfully');
             this.loadComponentTypes();
           } else {
-            this.toastService.showError(response.message || 'Failed to delete component type');
+            this.toastService.error(response.message || 'Failed to delete component type');
           }
         },
         error: (error) => {
-          this.toastService.showError('Failed to delete component type');
+          this.toastService.error('Failed to delete component type');
           console.error('Delete error:', error);
         }
       });
@@ -262,15 +263,15 @@ export class SubjectComponentTypesComponent implements OnInit {
     this.componentTypeService.reorderComponentTypes(this.reorderingSubjectId, componentTypeIds).subscribe({
       next: (response) => {
         if (response.success) {
-          this.toastService.showSuccess('Component types reordered successfully');
+          this.toastService.success('Component types reordered successfully');
           this.loadComponentTypes();
           this.cancelReorder();
         } else {
-          this.toastService.showError(response.message || 'Failed to reorder component types');
+          this.toastService.error(response.message || 'Failed to reorder component types');
         }
       },
       error: (error) => {
-        this.toastService.showError('Failed to reorder component types');
+        this.toastService.error('Failed to reorder component types');
         console.error('Reorder error:', error);
       }
     });
@@ -319,7 +320,7 @@ export class SubjectComponentTypesComponent implements OnInit {
         }
       },
       error: (error) => {
-        this.toastService.showError('Failed to save new order');
+        this.toastService.error('Failed to save new order');
         console.error('Save order error:', error);
       }
     });

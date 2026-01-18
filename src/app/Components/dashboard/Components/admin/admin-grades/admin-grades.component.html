@@ -196,8 +196,9 @@
                                       (click)="openClassModal(grade.id, classItem)" [title]="'COMMON.edit' | translate">
                                       <i class="bi bi-pencil-fill"></i>
                                     </button>
+                                    <!-- Change class remove button -->
                                     <button class="btn btn-outline-danger"
-                                      (click)="removeClassFromGrade(classItem.id, grade.id)"
+                                      (click)="openRemoveConfirmModal('class', classItem.id, classItem.className, grade.id)"
                                       [title]="'COMMON.delete' | translate">
                                       <i class="bi bi-trash3"></i>
                                     </button>
@@ -247,8 +248,9 @@
                                       (click)="openSubjectModal(grade.id, subject)" [title]="'COMMON.edit' | translate">
                                       <i class="bi bi-pencil-fill"></i>
                                     </button>
+                                    <!-- Change subject remove button -->
                                     <button class="btn btn-outline-danger"
-                                      (click)="removeSubjectFromGrade(subject.id, grade.id)"
+                                      (click)="openRemoveConfirmModal('subject', subject.id, subject.subjectName, grade.id)"
                                       [title]="'COMMON.delete' | translate">
                                       <i class="bi bi-trash3"></i>
                                     </button>
@@ -539,7 +541,8 @@
           <button type="button" class="btn btn-secondary" (click)="closeModals()">
             {{ 'GRADE.MODALS.CANCEL' | translate }}
           </button>
-          <button type="button" class="btn btn-warning" (click)="bulkMoveClasses()"
+          <!-- Change bulk move button in bulk move modal -->
+          <button type="button" class="btn btn-warning" (click)="openBulkMoveConfirmModal()"
             [disabled]="loading || bulkMoveForm.invalid">
             <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
             {{ 'GRADE.MODALS.MOVE_CLASSES' | translate }}
@@ -644,6 +647,52 @@
             <i class="fas fa-check me-1"></i> {{ 'GRADE.MODALS.UNDERSTOOD' | translate }}
           </button>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Confirmation Modal -->
+<div *ngIf="showConfirmModal" class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ modalTitle | translate }}</h5>
+        <button type="button" class="btn-close" (click)="closeModals()"></button>
+      </div>
+      <div class="modal-body">
+        <p>{{ modalMessage | translate:confirmData }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModals()">
+          {{ 'GRADE.MODALS.CANCEL' | translate }}
+        </button>
+        <button type="button" class="btn btn-primary" (click)="confirmActionHandler()" [disabled]="loading">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
+          {{ 'GRADE.MODALS.CONFIRM' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Remove Confirmation Modal -->
+<div *ngIf="showRemoveConfirmModal" class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ modalTitle | translate }}</h5>
+        <button type="button" class="btn-close" (click)="closeModals()"></button>
+      </div>
+      <div class="modal-body">
+        <p>{{ modalMessage | translate:confirmData }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModals()">
+          {{ 'GRADE.MODALS.CANCEL' | translate }}
+        </button>
+        <button type="button" class="btn btn-primary" (click)="confirmActionHandler()">
+          {{ 'GRADE.MODALS.CONFIRM' | translate }}
+        </button>
       </div>
     </div>
   </div>

@@ -8,12 +8,12 @@ import { DegreeService } from '../../../../../Services/degree.service';
 import { DegreeComponentTypeService } from '../../../../../Services/degrees-component-type.service';
 import { TeacherService } from '../../../../../Services/teacher.service';
 import { AddDegreesDto, DegreeComponent, DegreeInput, ExamTypeConfig, SubjectWithComponents, DegreeType } from '../../../../../Interfaces/idegree';
-import { ToastService } from '../../../../../Services/toast.service';
 import { AuthService } from '../../../../../Services/auth.service';
 import { ClassService } from '../../../../../Services/class.service';
 import { StudentModel } from '../../../../../Interfaces/istudent';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ShortenIdPipe } from '../../../../../Pipes/shorten-id.pipe';
+import { ToastService } from '../../../../../Services/UtilServices/toast.service';
 
 @Component({
   selector: 'app-class-grades',
@@ -97,23 +97,23 @@ export class ClassGradesComponent implements OnInit {
                 this.loadComponentTypes();
                 this.loadStudentsForClasses();
               } else {
-                this.toastService.showError('Failed to load subjects');
+                this.toastService.error('Failed to load subjects');
               }
               this.isLoadingSubjects = false;
             },
             error: (error) => {
-              this.toastService.showError('Failed to load subjects');
+              this.toastService.error('Failed to load subjects');
               console.error('Subjects error:', error);
               this.isLoadingSubjects = false;
             }
           });
         } else {
-          this.toastService.showError('Failed to load classes');
+          this.toastService.error('Failed to load classes');
         }
         this.isLoadingClasses = false;
       },
       error: (error) => {
-        this.toastService.showError('Failed to load classes');
+        this.toastService.error('Failed to load classes');
         console.error('Classes error:', error);
         this.isLoadingClasses = false;
       }
@@ -146,7 +146,7 @@ export class ClassGradesComponent implements OnInit {
         });
       },
       error: (error) => {
-        this.toastService.showError('Failed to load component types');
+        this.toastService.error('Failed to load component types');
         console.error('Component types error:', error);
       }
     });
@@ -183,7 +183,7 @@ export class ClassGradesComponent implements OnInit {
         this.isLoadingStudents = false;
       },
       error: (error) => {
-        this.toastService.showError('Failed to load students');
+        this.toastService.error('Failed to load students');
         console.error('Students error:', error);
         this.isLoadingStudents = false;
       }
@@ -516,24 +516,24 @@ export class ClassGradesComponent implements OnInit {
     const form = this.getStudentForm(classId, studentId);
     if (form) {
       this.initializeDegreesArray(form, studentId);
-      this.toastService.showInfo('Form reset to original values');
+      this.toastService.error('Form reset to original values');
     }
   }
 
   saveAsDraft(classId: string, studentId: string): void {
     const form = this.getStudentForm(classId, studentId);
     if (!form || form.invalid) {
-      this.toastService.showError('Form has invalid data');
+      this.toastService.error('Form has invalid data');
       return;
     }
     
-    this.toastService.showSuccess('Draft saved successfully');
+    this.toastService.error('Draft saved successfully');
   }
 
   saveStudentGrades(classId: string, studentId: string): void {
     const form = this.getStudentForm(classId, studentId);
     if (!form || form.invalid) {
-      this.toastService.showError('Please fill all required fields correctly');
+      this.toastService.error('Please fill all required fields correctly');
       this.markFormGroupTouched(form!);
       return;
     }
@@ -575,7 +575,7 @@ export class ClassGradesComponent implements OnInit {
     );
 
     if (validDegrees.length === 0) {
-      this.toastService.showError('No valid grades to save');
+      this.toastService.error('No valid grades to save');
       this.savingStudentId = null;
       return;
     }
@@ -588,7 +588,7 @@ export class ClassGradesComponent implements OnInit {
     this.degreeService.addDegrees(dto).subscribe({
       next: (response) => {
         if (response.success) {
-          this.toastService.showSuccess(response.message || 'Grades saved successfully');
+          this.toastService.error(response.message || 'Grades saved successfully');
           this.degreeService.getStudentDegrees(studentId).subscribe({
             next: (degreesResponse) => {
               if (degreesResponse.success && degreesResponse.data) {
@@ -600,12 +600,12 @@ export class ClassGradesComponent implements OnInit {
             }
           });
         } else {
-          this.toastService.showError(response.message || 'Failed to save grades');
+          this.toastService.error(response.message || 'Failed to save grades');
         }
         this.savingStudentId = null;
       },
       error: (error) => {
-        this.toastService.showError('Failed to save grades: ' + (error.error?.message || error.message));
+        this.toastService.error('Failed to save grades: ' + (error.error?.message || error.message));
         console.error('Save error:', error);
         this.savingStudentId = null;
       }
