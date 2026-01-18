@@ -12,6 +12,7 @@ import { SubjectService } from '../../../../../Services/subject.service';
 import { CurriculumService } from '../../../../../Services/curriculum.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { ApiResponse } from '../../../../../Interfaces/auth';
+import { ToastService } from '../../../../../Services/UtilServices/toast.service';
 
 @Component({
   selector: 'app-admin-grades',
@@ -49,10 +50,15 @@ export class AdminGradesComponent implements OnInit {
   showSubjectModal = false;
   showBulkMoveModal = false;
   showDeleteModal = false;
+  showConfirmModal = false;
+  showRemoveConfirmModal = false;
 
   // Modal data
   modalMessage = '';
+  modalTitle = '';
   deleteGradeId = '';
+  confirmAction: 'deleteGrade' | 'removeClass' | 'removeSubject' | 'moveClass' | 'bulkMove' | null = null;
+  confirmData: any = null;
 
   // Mode flags
   isEditMode = false;
@@ -92,7 +98,8 @@ export class AdminGradesComponent implements OnInit {
     private classService: ClassService,
     private subjectService: SubjectService,
     private curriculumService: CurriculumService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private toast: ToastService
   ) {
     this.initializeForms();
     this.setupSearch();
@@ -156,6 +163,7 @@ export class AdminGradesComponent implements OnInit {
       },
       error: (error) => {
         console.error('Failed to load curricula:', error);
+        this.toast.error('GRADE.ERRORS.LOAD_CURRICULA_FAILED');
         this.curriculaLoading = false;
       }
     });
@@ -189,6 +197,7 @@ export class AdminGradesComponent implements OnInit {
       },
       error: (error: any) => {
         console.error('Failed to load grades:', error);
+        this.toast.error('GRADE.ERRORS.LOAD_GRADES_FAILED');
         this.gradesLoading = false;
       }
     });
@@ -252,6 +261,7 @@ export class AdminGradesComponent implements OnInit {
       },
       error: (error) => {
         console.error('Failed to load grade details:', error);
+        this.toast.error('GRADE.ERRORS.LOAD_DETAILS_FAILED');
         this.loadingGrades.delete(gradeId);
         this.expandedGrades.delete(gradeId);
       }
@@ -267,6 +277,7 @@ export class AdminGradesComponent implements OnInit {
       },
       error: (error) => {
         console.error('Failed to load classes:', error);
+        this.toast.error('GRADE.ERRORS.LOAD_CLASSES_FAILED');
         this.gradeClassesMap.set(gradeId, []);
       }
     });
@@ -281,6 +292,7 @@ export class AdminGradesComponent implements OnInit {
       },
       error: (error) => {
         console.error('Failed to load subjects:', error);
+        this.toast.error('GRADE.ERRORS.LOAD_SUBJECTS_FAILED');
         this.gradeSubjectsMap.set(gradeId, []);
       }
     });
@@ -425,7 +437,7 @@ export class AdminGradesComponent implements OnInit {
   openBulkMoveModal(gradeId: string): void {
     const selection = this.gradeSelections.get(gradeId);
     if (!selection || selection.selected.length === 0) {
-      alert('Please select classes to move');
+      this.toast.warning('GRADE.ALERTS.SELECT_CLASSES_TO_MOVE');
       return;
     }
 
@@ -436,79 +448,83 @@ export class AdminGradesComponent implements OnInit {
   }
 
   openDeleteModal(gradeId: string, gradeName: string): void {
-  // First, try to get data from the local cache
-  const classes = this.getClassesForGrade(gradeId);
-  const subjects = this.getSubjectsForGrade(gradeId);
-  
-  // If we have cached data, use it
-  if (classes.length > 0 || subjects.length > 0) {
-    // Grade has dependencies, show error modal
-    this.deleteErrorData = {
-      gradeName: gradeName,
-      classes: classes.length,
-      subjects: subjects.length
-    };
-    this.showDeleteErrorModal = true;
-  } else {
-    // We don't have cached data, check if grade is expanded
-    if (this.isGradeExpanded(gradeId)) {
-      // If grade is expanded, we should have loaded the data already
-      // So if we get here with 0 classes and 0 subjects, it's safe to delete
-      this.deleteGradeId = gradeId;
-      this.modalMessage = `Are you sure you want to delete grade "${gradeName}"? This action cannot be undone.`;
-      this.showDeleteModal = true;
+    const classes = this.getClassesForGrade(gradeId);
+    const subjects = this.getSubjectsForGrade(gradeId);
+    
+    if (classes.length > 0 || subjects.length > 0) {
+      this.deleteErrorData = {
+        gradeName: gradeName,
+        classes: classes.length,
+        subjects: subjects.length
+      };
+      this.showDeleteErrorModal = true;
     } else {
-      // Grade is not expanded, we need to fetch the details
-      // Show a loading state first
-      this.loading = true;
-      
-      // Load both classes and subjects for this grade
-      this.gradeService.getClassesByGrade(gradeId).subscribe({
-        next: (classesResponse: ApiResponse<ClassViewDto[]>) => {
-          this.gradeService.getSubjectsByGrade(gradeId).subscribe({
-            next: (subjectsResponse: ApiResponse<SubjectViewDto[]>) => {
-              this.loading = false;
-              
-              const classCount = classesResponse.success ? (classesResponse.data?.length || 0) : 0;
-              const subjectCount = subjectsResponse.success ? (subjectsResponse.data?.length || 0) : 0;
-              
-              if (classCount > 0 || subjectCount > 0) {
-                // Grade has dependencies, show error modal
-                this.deleteErrorData = {
-                  gradeName: gradeName,
-                  classes: classCount,
-                  subjects: subjectCount
-                };
-                this.showDeleteErrorModal = true;
-              } else {
-                // Grade can be deleted, show confirmation modal
-                this.deleteGradeId = gradeId;
-                this.modalMessage = `Are you sure you want to delete grade "${gradeName}"? This action cannot be undone.`;
-                this.showDeleteModal = true;
-              }
-            },
-            error: (error) => {
-              this.loading = false;
-              console.error('Failed to load subjects:', error);
-              // On error, show the confirmation modal (let the backend handle validation)
-              this.deleteGradeId = gradeId;
-              this.modalMessage = `Are you sure you want to delete grade "${gradeName}"? This action cannot be undone.`;
-              this.showDeleteModal = true;
-            }
-          });
-        },
-        error: (error) => {
-          this.loading = false;
-          console.error('Failed to load classes:', error);
-          // On error, show the confirmation modal (let the backend handle validation)
-          this.deleteGradeId = gradeId;
-          this.modalMessage = `Are you sure you want to delete grade "${gradeName}"? This action cannot be undone.`;
-          this.showDeleteModal = true;
-        }
-      });
+      this.deleteGradeId = gradeId;
+      this.modalTitle = 'GRADE.MODALS.DELETE_CONFIRM';
+      this.modalMessage = 'GRADE.MODALS.DELETE_GRADE_CONFIRM';
+      this.confirmAction = 'deleteGrade';
+      this.confirmData = { gradeId, gradeName };
+      this.showConfirmModal = true;
     }
   }
-}
+
+  openRemoveConfirmModal(type: 'class' | 'subject', id: string, name: string, gradeId: string): void {
+    this.confirmData = { id, name, gradeId };
+    
+    if (type === 'class') {
+      this.modalTitle = 'GRADE.MODALS.REMOVE_CLASS_CONFIRM';
+      this.modalMessage = 'GRADE.MODALS.REMOVE_CLASS_MESSAGE';
+      this.confirmAction = 'removeClass';
+    } else {
+      this.modalTitle = 'GRADE.MODALS.REMOVE_SUBJECT_CONFIRM';
+      this.modalMessage = 'GRADE.MODALS.REMOVE_SUBJECT_MESSAGE';
+      this.confirmAction = 'removeSubject';
+    }
+    
+    this.showRemoveConfirmModal = true;
+  }
+
+  openBulkMoveConfirmModal(): void {
+    if (this.bulkMoveForm.invalid || this.selectedClasses.length === 0) {
+      this.toast.warning('GRADE.ALERTS.SELECT_TARGET_GRADE');
+      return;
+    }
+
+    const targetGradeId = this.bulkMoveForm.value.gradeId;
+    const targetGrade = this.grades.find(g => g.id === targetGradeId);
+    
+    this.modalTitle = 'GRADE.MODALS.BULK_MOVE_CONFIRM';
+    this.modalMessage = 'GRADE.MODALS.BULK_MOVE_MESSAGE';
+    this.confirmAction = 'bulkMove';
+    this.confirmData = {
+      targetGradeId: targetGradeId,
+      classIds: this.selectedClasses,
+      currentGradeId: this.currentSelectedGradeId,
+      targetGradeName: targetGrade?.gradeName || '',
+      count: this.selectedClasses.length
+    };
+    this.showConfirmModal = true;
+  }
+
+  confirmActionHandler(): void {
+    if (!this.confirmAction) return;
+
+    switch (this.confirmAction) {
+      case 'deleteGrade':
+        this.deleteGrade();
+        break;
+      case 'removeClass':
+        this.removeClassFromGrade();
+        break;
+      case 'removeSubject':
+        this.removeSubjectFromGrade();
+        break;
+      case 'bulkMove':
+        this.bulkMoveClasses();
+        break;
+    }
+  }
+
   closeErrorModal(): void {
     this.deleteErrorData = null;
     this.showDeleteErrorModal = false;
@@ -521,13 +537,21 @@ export class AdminGradesComponent implements OnInit {
     this.showBulkMoveModal = false;
     this.showDeleteModal = false;
     this.showDeleteErrorModal = false;
+    this.showConfirmModal = false;
+    this.showRemoveConfirmModal = false;
+    
     this.gradeForm.reset();
     this.classForm.reset();
     this.subjectForm.reset();
     this.bulkMoveForm.reset();
+    
     this.selectedClasses = [];
     this.currentSelectedGradeId = null;
     this.deleteErrorData = null;
+    this.confirmAction = null;
+    this.confirmData = null;
+    this.modalTitle = '';
+    this.modalMessage = '';
   }
 
   // CRUD Operations
@@ -542,7 +566,6 @@ export class AdminGradesComponent implements OnInit {
     const description = formValue.description?.trim();
 
     if (this.isEditMode) {
-      // Update existing grade
       const updateDto: UpdateGradeDto = {
         id: formValue.id,
         gradeName: formValue.gradeName,
@@ -553,30 +576,21 @@ export class AdminGradesComponent implements OnInit {
       this.gradeService.update(updateDto.id, updateDto).subscribe({
         next: (response: ApiResponse<GradeViewDto>) => {
           if (response.success && response.data) {
-            alert('Grade updated successfully');
+            this.toast.success('GRADE.MESSAGES.UPDATE_SUCCESS');
             this.refreshAll();
             this.closeModals();
           } else {
-            alert(response.message || 'Failed to update grade');
+            this.toast.error(response.message || 'GRADE.ERRORS.UPDATE_FAILED');
           }
           this.loading = false;
         },
         error: (error) => {
           console.error('Failed to update grade:', error);
-          if (error.error?.errors) {
-            let errorMessages = [];
-            for (const [field, messages] of Object.entries(error.error.errors)) {
-              errorMessages.push(`${field}: ${(messages as string[]).join(', ')}`);
-            }
-            alert('Validation errors:\n' + errorMessages.join('\n'));
-          } else {
-            alert(error.error?.title || 'Failed to update grade');
-          }
+          this.handleApiError(error, 'GRADE.ERRORS.UPDATE_FAILED');
           this.loading = false;
         }
       });
     } else {
-      // Create new grade
       const createDto: CreateGradeDto = {
         gradeName: formValue.gradeName,
         description: description === '' ? undefined : description,
@@ -586,25 +600,17 @@ export class AdminGradesComponent implements OnInit {
       this.gradeService.create(createDto).subscribe({
         next: (response: ApiResponse<GradeViewDto>) => {
           if (response.success && response.data) {
-            alert('Grade created successfully');
+            this.toast.success('GRADE.MESSAGES.CREATE_SUCCESS');
             this.refreshAll();
             this.closeModals();
           } else {
-            alert(response.message || 'Failed to create grade');
+            this.toast.error(response.message || 'GRADE.ERRORS.CREATE_FAILED');
           }
           this.loading = false;
         },
         error: (error) => {
           console.error('Failed to create grade:', error);
-          if (error.error?.errors) {
-            let errorMessages = [];
-            for (const [field, messages] of Object.entries(error.error.errors)) {
-              errorMessages.push(`${field}: ${(messages as string[]).join(', ')}`);
-            }
-            alert('Validation errors:\n' + errorMessages.join('\n'));
-          } else {
-            alert(error.error?.title || 'Failed to create grade');
-          }
+          this.handleApiError(error, 'GRADE.ERRORS.CREATE_FAILED');
           this.loading = false;
         }
       });
@@ -631,20 +637,21 @@ export class AdminGradesComponent implements OnInit {
       this.classService.update(formValue.id, updateDto).subscribe({
         next: (response: any) => {
           if (response.success) {
-            alert('Class updated successfully');
-            // Clear cache for the grade and refresh
+            this.toast.success('GRADE.MESSAGES.CLASS_UPDATE_SUCCESS');
             this.clearGradeCache(gradeId);
             if (this.expandedGrades.has(gradeId)) {
               this.loadClassesForGrade(gradeId);
             }
             this.refreshAll();
             this.closeModals();
+          } else {
+            this.toast.error(response.message || 'GRADE.ERRORS.CLASS_UPDATE_FAILED');
           }
           this.loading = false;
         },
         error: (error) => {
           console.error('Failed to update class:', error);
-          alert('Failed to update class');
+          this.toast.error('GRADE.ERRORS.CLASS_UPDATE_FAILED');
           this.loading = false;
         }
       });
@@ -656,8 +663,7 @@ export class AdminGradesComponent implements OnInit {
       this.gradeService.createClass(gradeId, createDto).subscribe({
         next: (response: ApiResponse<ClassViewDto>) => {
           if (response.success && response.data) {
-            alert('Class created successfully');
-            // Clear cache for the grade and refresh
+            this.toast.success('GRADE.MESSAGES.CLASS_CREATE_SUCCESS');
             this.clearGradeCache(gradeId);
             if (this.expandedGrades.has(gradeId)) {
               this.loadClassesForGrade(gradeId);
@@ -665,13 +671,13 @@ export class AdminGradesComponent implements OnInit {
             this.refreshAll();
             this.closeModals();
           } else {
-            alert(response.message || 'Failed to create class');
+            this.toast.error(response.message || 'GRADE.ERRORS.CLASS_CREATE_FAILED');
           }
           this.loading = false;
         },
         error: (error) => {
           console.error('Failed to create class:', error);
-          alert('Failed to create class');
+          this.toast.error('GRADE.ERRORS.CLASS_CREATE_FAILED');
           this.loading = false;
         }
       });
@@ -699,8 +705,7 @@ export class AdminGradesComponent implements OnInit {
       this.subjectService.update(formValue.id, updateDto).subscribe({
         next: (response: ApiResponse<SubjectViewDto>) => {
           if (response.success && response.data) {
-            alert('Subject updated successfully');
-            // Clear cache for the grade and refresh
+            this.toast.success('GRADE.MESSAGES.SUBJECT_UPDATE_SUCCESS');
             this.clearGradeCache(gradeId);
             if (this.expandedGrades.has(gradeId)) {
               this.loadSubjectsForGrade(gradeId);
@@ -708,13 +713,13 @@ export class AdminGradesComponent implements OnInit {
             this.refreshAll();
             this.closeModals();
           } else {
-            alert(response.message || 'Failed to update subject');
+            this.toast.error(response.message || 'GRADE.ERRORS.SUBJECT_UPDATE_FAILED');
           }
           this.loading = false;
         },
         error: (error) => {
           console.error('Failed to update subject:', error);
-          alert('Failed to update subject');
+          this.toast.error('GRADE.ERRORS.SUBJECT_UPDATE_FAILED');
           this.loading = false;
         }
       });
@@ -728,8 +733,7 @@ export class AdminGradesComponent implements OnInit {
       this.gradeService.addSubject(gradeId, createDto).subscribe({
         next: (response: ApiResponse<SubjectViewDto>) => {
           if (response.success && response.data) {
-            alert('Subject added successfully');
-            // Clear cache for the grade and refresh
+            this.toast.success('GRADE.MESSAGES.SUBJECT_ADD_SUCCESS');
             this.clearGradeCache(gradeId);
             if (this.expandedGrades.has(gradeId)) {
               this.loadSubjectsForGrade(gradeId);
@@ -737,13 +741,13 @@ export class AdminGradesComponent implements OnInit {
             this.refreshAll();
             this.closeModals();
           } else {
-            alert(response.message || 'Failed to add subject');
+            this.toast.error(response.message || 'GRADE.ERRORS.SUBJECT_ADD_FAILED');
           }
           this.loading = false;
         },
         error: (error) => {
           console.error('Failed to add subject:', error);
-          alert('Failed to add subject');
+          this.toast.error('GRADE.ERRORS.SUBJECT_ADD_FAILED');
           this.loading = false;
         }
       });
@@ -751,170 +755,124 @@ export class AdminGradesComponent implements OnInit {
   }
 
   deleteGrade(): void {
-    if (!this.deleteGradeId) return;
+    if (!this.confirmData?.gradeId) return;
 
     this.loading = true;
-    this.gradeService.delete(this.deleteGradeId).subscribe({
+    this.gradeService.delete(this.confirmData.gradeId).subscribe({
       next: (response: ApiResponse<boolean>) => {
         if (response.success && response.data) {
-          alert('Grade deleted successfully');
-          // Clean up local data
-          this.clearGradeCache(this.deleteGradeId);
-          this.expandedGrades.delete(this.deleteGradeId);
-          this.clearSelectionsForGrade(this.deleteGradeId);
-
+          this.toast.success('GRADE.MESSAGES.DELETE_SUCCESS');
+          this.clearGradeCache(this.confirmData.gradeId);
+          this.expandedGrades.delete(this.confirmData.gradeId);
+          this.clearSelectionsForGrade(this.confirmData.gradeId);
           this.refreshAll();
           this.closeModals();
         } else {
-          alert(response.message || 'Failed to delete grade');
+          this.toast.error(response.message || 'GRADE.ERRORS.DELETE_FAILED');
         }
         this.loading = false;
       },
       error: (error) => {
         console.error('Failed to delete grade:', error);
-        alert('Failed to delete grade');
+        this.toast.error('GRADE.ERRORS.DELETE_FAILED');
         this.loading = false;
       }
     });
   }
 
-  removeClassFromGrade(classId: string, gradeId: string): void {
-    if (!confirm('Are you sure you want to remove this class from the grade?')) {
-      return;
-    }
+  removeClassFromGrade(): void {
+    if (!this.confirmData) return;
 
-    this.gradeService.removeClass(classId).subscribe({
+    const { id, gradeId } = this.confirmData;
+
+    this.gradeService.removeClass(id).subscribe({
       next: (response: ApiResponse<boolean>) => {
         if (response.success && response.data) {
-          alert('Class removed from grade');
-          // Clear cache for the grade and refresh
+          this.toast.success('GRADE.MESSAGES.CLASS_REMOVE_SUCCESS');
           this.clearGradeCache(gradeId);
           if (this.expandedGrades.has(gradeId)) {
             this.loadClassesForGrade(gradeId);
           }
           this.refreshAll();
+          this.closeModals();
         } else {
-          alert(response.message || 'Failed to remove class');
+          this.toast.error(response.message || 'GRADE.ERRORS.CLASS_REMOVE_FAILED');
         }
       },
       error: (error) => {
         console.error('Failed to remove class:', error);
-        alert('Failed to remove class');
+        this.toast.error('GRADE.ERRORS.CLASS_REMOVE_FAILED');
       }
     });
   }
 
-  removeSubjectFromGrade(subjectId: string, gradeId: string): void {
-    if (!confirm('Are you sure you want to remove this subject from the grade?')) {
-      return;
-    }
+  removeSubjectFromGrade(): void {
+    if (!this.confirmData) return;
 
-    this.gradeService.removeSubject(subjectId).subscribe({
+    const { id, gradeId } = this.confirmData;
+
+    this.gradeService.removeSubject(id).subscribe({
       next: (response: ApiResponse<boolean>) => {
         if (response.success && response.data) {
-          alert('Subject removed from grade');
-          // Clear cache for the grade and refresh
+          this.toast.success('GRADE.MESSAGES.SUBJECT_REMOVE_SUCCESS');
           this.clearGradeCache(gradeId);
           if (this.expandedGrades.has(gradeId)) {
             this.loadSubjectsForGrade(gradeId);
           }
           this.refreshAll();
+          this.closeModals();
         } else {
-          alert(response.message || 'Failed to remove subject');
+          this.toast.error(response.message || 'GRADE.ERRORS.SUBJECT_REMOVE_FAILED');
         }
       },
       error: (error) => {
         console.error('Failed to remove subject:', error);
-        alert('Failed to remove subject');
-      }
-    });
-  }
-
-  moveClass(classId: string, newGradeId: string, currentGradeId: string): void {
-    if (!confirm('Are you sure you want to move this class to another grade?')) {
-      return;
-    }
-
-    this.gradeService.moveClass(classId, newGradeId).subscribe({
-      next: (response: ApiResponse<boolean>) => {
-        if (response.success && response.data) {
-          alert('Class moved successfully');
-          // Clear cache for BOTH grades and refresh
-          this.clearGradeCache(currentGradeId);
-          this.clearGradeCache(newGradeId);
-
-          if (this.expandedGrades.has(currentGradeId)) {
-            this.loadClassesForGrade(currentGradeId);
-          }
-          if (this.expandedGrades.has(newGradeId)) {
-            this.loadClassesForGrade(newGradeId);
-          }
-
-          this.refreshAll();
-        } else {
-          alert(response.message || 'Failed to move class');
-        }
-      },
-      error: (error) => {
-        console.error('Failed to move class:', error);
-        alert('Failed to move class');
+        this.toast.error('GRADE.ERRORS.SUBJECT_REMOVE_FAILED');
       }
     });
   }
 
   bulkMoveClasses(): void {
-    if (this.bulkMoveForm.invalid || this.selectedClasses.length === 0) {
-      return;
-    }
-
-    const targetGradeId = this.bulkMoveForm.value.gradeId;
-    if (!targetGradeId) {
-      alert('Please select a target grade');
-      return;
-    }
+    if (!this.confirmData) return;
 
     const dto: BulkMoveClassesDto = {
-      classIds: this.selectedClasses,
-      newGradeId: targetGradeId
+      classIds: this.confirmData.classIds,
+      newGradeId: this.confirmData.targetGradeId
     };
 
     this.loading = true;
     this.gradeService.bulkMoveClasses(dto).subscribe({
       next: (response: ApiResponse<boolean>) => {
         if (response.success && response.data) {
-          alert('Classes moved successfully');
-
-          // Clear cache for BOTH grades
+          this.toast.success('GRADE.MESSAGES.BULK_MOVE_SUCCESS');
+          
           if (this.currentSelectedGradeId) {
             this.clearGradeCache(this.currentSelectedGradeId);
           }
-          this.clearGradeCache(targetGradeId);
+          this.clearGradeCache(this.confirmData.targetGradeId);
 
-          // Clear selections
           if (this.currentSelectedGradeId) {
             this.clearSelectionsForGrade(this.currentSelectedGradeId);
           }
           this.selectedClasses = [];
 
-          // Refresh both grades if they're expanded
           if (this.currentSelectedGradeId && this.expandedGrades.has(this.currentSelectedGradeId)) {
             this.loadClassesForGrade(this.currentSelectedGradeId);
           }
-          if (this.expandedGrades.has(targetGradeId)) {
-            this.loadClassesForGrade(targetGradeId);
+          if (this.expandedGrades.has(this.confirmData.targetGradeId)) {
+            this.loadClassesForGrade(this.confirmData.targetGradeId);
           }
 
-          // Refresh everything
           this.refreshAll();
           this.closeModals();
         } else {
-          alert(response.message || 'Failed to move classes');
+          this.toast.error(response.message || 'GRADE.ERRORS.BULK_MOVE_FAILED');
         }
         this.loading = false;
       },
       error: (error) => {
         console.error('Failed to move classes:', error);
-        alert('Failed to move classes');
+        this.toast.error('GRADE.ERRORS.BULK_MOVE_FAILED');
         this.loading = false;
       }
     });
@@ -930,9 +888,21 @@ export class AdminGradesComponent implements OnInit {
     });
   }
 
+  private handleApiError(error: any, defaultMessageKey: string): void {
+    if (error.error?.errors) {
+      let errorMessages = [];
+      for (const [field, messages] of Object.entries(error.error.errors)) {
+        errorMessages.push(`${field}: ${(messages as string[]).join(', ')}`);
+      }
+      this.toast.error(errorMessages.join('\n'), 'COMMON.VALIDATION_ERROR');
+    } else {
+      this.toast.error(error.error?.title || defaultMessageKey);
+    }
+  }
+
   getCurriculumName(curriculumId: string): string {
     const curriculum = this.curricula.find(c => c.id === curriculumId);
-    return curriculum ? curriculum.name : 'Unknown Curriculum';
+    return curriculum ? curriculum.name : 'GRADE.UNKNOWN_CURRICULUM';
   }
 
   clearGradeCache(gradeId: string): void {

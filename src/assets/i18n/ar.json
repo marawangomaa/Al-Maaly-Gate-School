@@ -733,7 +733,45 @@
       "DELETE_CONFIRM_MESSAGE": "هل أنت متأكد أنك تريد حذف الصف \"{{gradeName}}\"?",
       "DELETE_BTN": "حذف الصف",
       "DELETE_ERROR_TITLE": "لا يمكن حذف الصف",
-      "UNDERSTOOD": "فهمت"
+      "UNDERSTOOD": "فهمت",
+      "DELETE_GRADE_CONFIRM": "هل أنت متأكد أنك تريد حذف الصف \"{{gradeName}}\"؟ لا يمكن التراجع عن هذا الإجراء.",
+      "REMOVE_CLASS_CONFIRM": "إزالة الفصل",
+      "REMOVE_CLASS_MESSAGE": "هل أنت متأكد أنك تريد إزالة الفصل \"{{name}}\" من هذا الصف؟",
+      "REMOVE_SUBJECT_CONFIRM": "إزالة المادة الدراسية",
+      "REMOVE_SUBJECT_MESSAGE": "هل أنت متأكد أنك تريد إزالة المادة الدراسية \"{{name}}\" من هذا الصف؟",
+      "BULK_MOVE_CONFIRM": "نقل الفصول",
+      "BULK_MOVE_MESSAGE": "هل أنت متأكد أنك تريد نقل {{count}} فصل إلى \"{{targetGradeName}}\"؟",
+      "CONFIRM": "تأكيد"
+    },
+    "ERRORS":
+    {
+      "LOAD_CURRICULA_FAILED": "فشل تحميل المناهج الدراسية",
+      "LOAD_GRADES_FAILED": "فشل تحميل الصفوف",
+      "LOAD_DETAILS_FAILED": "فشل تحميل تفاصيل الصف",
+      "LOAD_CLASSES_FAILED": "فشل تحميل الفصول",
+      "LOAD_SUBJECTS_FAILED": "فشل تحميل المواد الدراسية",
+      "UPDATE_FAILED": "فشل تحديث الصف",
+      "CREATE_FAILED": "فشل إنشاء الصف",
+      "DELETE_FAILED": "فشل حذف الصف",
+      "CLASS_UPDATE_FAILED": "فشل تحديث الفصل",
+      "CLASS_CREATE_FAILED": "فشل إنشاء الفصل",
+      "CLASS_REMOVE_FAILED": "فشل إزالة الفصل",
+      "SUBJECT_UPDATE_FAILED": "فشل تحديث المادة الدراسية",
+      "SUBJECT_ADD_FAILED": "فشل إضافة المادة الدراسية",
+      "SUBJECT_REMOVE_FAILED": "فشل إزالة المادة الدراسية",
+      "BULK_MOVE_FAILED": "فشل نقل الفصول"
+    },"MESSAGES":
+    {
+      "UPDATE_SUCCESS": "تم تحديث الصف بنجاح",
+      "CREATE_SUCCESS": "تم إنشاء الصف بنجاح",
+      "DELETE_SUCCESS": "تم حذف الصف بنجاح",
+      "CLASS_UPDATE_SUCCESS": "تم تحديث الفصل بنجاح",
+      "CLASS_CREATE_SUCCESS": "تم إنشاء الفصل بنجاح",
+      "CLASS_REMOVE_SUCCESS": "تم إزالة الفصل بنجاح",
+      "SUBJECT_UPDATE_SUCCESS": "تم تحديث المادة الدراسية بنجاح",
+      "SUBJECT_ADD_SUCCESS": "تم إضافة المادة الدراسية بنجاح",
+      "SUBJECT_REMOVE_SUCCESS": "تم إزالة المادة الدراسية بنجاح",
+      "BULK_MOVE_SUCCESS": "تم نقل الفصول بنجاح"
     },
     "PAGINATION": {
       "previous": "السابق",
@@ -748,7 +786,14 @@
       "RECOMMENDED_ACTIONS": "الإجراءات الموصى بها",
       "ACTION_REMOVE_CLASSES": "انتقل إلى تفاصيل الصف وقم بإزالة جميع الفصول",
       "ACTION_REMOVE_SUBJECTS": "قم بإزالة جميع المواد من الصف",
-      "ACTION_TRY_AGAIN": "حاول حذف الصف مرة أخرى"
+      "ACTION_TRY_AGAIN": "حاول حذف الصف مرة أخرى",
+      "SELECT_CLASSES_TO_MOVE": "الرجاء اختيار الفصول لنقلها",
+      "SELECT_TARGET_GRADE": "الرجاء اختيار الصف الهدف"
+    },
+    "UNKNOWN_CURRICULUM": "منهج غير معروف"
+    ,"COMMON":
+    {
+      "VALIDATION_ERROR": "خطأ في التحقق"
     }
   },
   "TEACHER_OVERVIEW": {
@@ -1031,6 +1076,14 @@
         "selectGrade": "اختر صف",
         "selectedGradeBelongsTo": "الصف المختار ينتمي إلى:"
       },
+      "edit": {
+        "title": "تعديل الفصل",
+        "className": "اسم الفصل",
+        "classNamePlaceholder": "أدخل اسم الفصل",
+        "grade": "الصف",
+        "selectGrade": "اختر صف",
+        "selectedGradeBelongsTo": "الصف المختار ينتمي إلى:"
+      },
       "details": {
         "title": "تفاصيل الفصل",
         "basicInfo": "المعلومات الأساسية",
@@ -1070,6 +1123,7 @@
         "assignToClass": "تعيين للفصل"
       },
       "bulk": {
+        "title": "تعيين المعلمين بالجملة",
         "assignTeachers": "التعيين الجماعي للمعلمين",
         "info": "اختر الفصول والمعلمين للتعيين الجماعي",
         "selectClasses": "اختر الفصول",
@@ -1088,7 +1142,23 @@
           "selectTargetGrade": "اختر الصف المستهدف",
           "currentGrade": "الصف الحالي"
         }
-      }
+      },
+      "moveClasses": {
+        "title": "نقل الفصول بالجملة",
+        "info": "نقل عدة فصول إلى صف مختلف"
+      },
+      "selectClasses": "اختر الفصول",
+      "selectTeachers": "اختر المعلمين",
+      "classList": "قائمة الفصول",
+      "teacherList": "قائمة المعلمين",
+      "newGrade": "الصف الجديد",
+      "selectTargetGrade": "اختر الصف الهدف",
+      "currentGrade": "الصف الحالي",
+      "currentTeachers": "المعلمون الحاليون",
+      "teacherName": "اسم المعلم",
+      "subjects": "المواد",
+      "noTeachersAvailable": "لا يوجد معلمون متاحون",
+      "noSubjects": "لا توجد مواد"
     },
     "status": {
       "active": "نشط",
@@ -1517,7 +1587,9 @@
     "close": "إغلاق",
     "search": "بحث",
     "loading": "جاري التحميل...",
-    "cancel": "إلغاء"
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "confirm": "تأكيد"
   },
   "students": {
     "management": "إدارة الطلاب",
@@ -1901,14 +1973,21 @@
       "GRADE": "الصف",
       "SELECT_GRADE": "-- اختر الصف --",
       "CREDIT_HOURS": "عدد الساعات",
-      "MANAGE_TEACHERS": "إدارة المدرسين"
+      "MANAGE_TEACHERS": "إدارة المدرسين",
+      "DELETE_CONFIRM_TITLE": "حذف المادة",
+      "DELETE_WARNING": "تحذير! هذا الإجراء لا يمكن التراجع عنه.",
+      "DELETE_CONFIRM_MESSAGE": "هل أنت متأكد من رغبتك في حذف المادة",
+      "DELETE_IRREVERSIBLE": "هذا الإجراء نهائي. سيتم إزالة جميع بيانات المادة بشكل دائم.",
+      "DELETE_CONFIRM_BUTTON": "حذف المادة"
     },
     "TEACHERS": {
       "MANAGE_TEACHERS": "إدارة مدرسو المادة",
       "ASSIGNED": "المدرسون المعيّنون",
       "AVAILABLE": "المدرسون المتاحون",
       "NO_ASSIGNED": "لا يوجد مدرسون معيّنون.",
-      "NO_AVAILABLE": "لا يوجد مدرسون متاحون."
+      "NO_AVAILABLE": "لا يوجد مدرسون متاحون.",
+      "ASSIGN_SUCCESS": "تم تعيين المعلم بنجاح",
+      "UNASSIGN_SUCCESS": "تم إلغاء تعيين المعلم بنجاح"
     },
     "COMMON": {
       "ACTIONS": "الإجراءات",
@@ -2051,8 +2130,7 @@
     "SUCCESS_MESSAGE": "تم إعادة تعيين كلمة المرور بنجاح!",
     "ERROR_MESSAGE": "حدث خطأ. يرجى المحاولة مرة أخرى.",
     "PASSWORDS_MISMATCH": "كلمات المرور غير متطابقة"
-  }
-  ,
+  },
   "TOAST": {
     "TITLES": {
       "SUCCESS": "نجاح",
@@ -2072,4 +2150,3 @@
     }
   }
 }
-
