@@ -2052,4 +2052,24 @@
     "ERROR_MESSAGE": "حدث خطأ. يرجى المحاولة مرة أخرى.",
     "PASSWORDS_MISMATCH": "كلمات المرور غير متطابقة"
   }
+  ,
+  "TOAST": {
+    "TITLES": {
+      "SUCCESS": "نجاح",
+      "ERROR": "خطأ",
+      "WARNING": "تحذير",
+      "INFO": "معلومة"
+    },
+    "MESSAGES": {
+      "GENERIC_SUCCESS": "تمت العملية بنجاح",
+      "GENERIC_ERROR": "حدث خطأ ما",
+      "GENERIC_WARNING": "تحذير",
+      "GENERIC_INFO": "معلومة",
+      "SAVED": "تم الحفظ بنجاح",
+      "UPDATED": "تم التحديث بنجاح",
+      "DELETED": "تم الحذف بنجاح",
+      "CREATED": "تم الإنشاء بنجاح"
+    }
+  }
 }
+

@@ -5,6 +5,9 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { provideHttpClient, withFetch, HttpClient } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpLoaderFactory } from './translate-loader';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideToastr } from 'ngx-toastr';
+import { toastrConfig } from './config/toastr.config';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -12,7 +15,11 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
     provideHttpClient(withFetch()),
-
+    
+    // ✅ Toastr configuration (MUST come after provideAnimations)
+    provideAnimations(), // Required for toast animations
+    provideToastr(toastrConfig),
+    
     importProvidersFrom(
       TranslateModule.forRoot({
         fallbackLang: 'ar',          // default language
@@ -22,6 +29,6 @@ export const appConfig: ApplicationConfig = {
           deps: [HttpClient],
         },
       })
-    ),
+    )
   ],
 };

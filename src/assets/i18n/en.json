@@ -2051,5 +2051,23 @@
     "SUCCESS_MESSAGE": "Your password has been reset successfully!",
     "ERROR_MESSAGE": "An error occurred. Please try again.",
     "PASSWORDS_MISMATCH": "Passwords do not match"
+  },
+  "TOAST": {
+    "TITLES": {
+      "SUCCESS": "Success",
+      "ERROR": "Error",
+      "WARNING": "Warning",
+      "INFO": "Information"
+    },
+    "MESSAGES": {
+      "GENERIC_SUCCESS": "Operation completed successfully",
+      "GENERIC_ERROR": "Something went wrong",
+      "GENERIC_WARNING": "Warning",
+      "GENERIC_INFO": "Information",
+      "SAVED": "Saved successfully",
+      "UPDATED": "Updated successfully",
+      "DELETED": "Deleted successfully",
+      "CREATED": "Created successfully"
+    }
   }
 }
