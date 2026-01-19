@@ -877,6 +877,7 @@
     "DEGREE": "Degree"
   },
   "COMMON": {
+    "search": "Search...",
     "LOADING": "Loading...",
     "SAVE": "Save",
     "EXPAND": "Expand",

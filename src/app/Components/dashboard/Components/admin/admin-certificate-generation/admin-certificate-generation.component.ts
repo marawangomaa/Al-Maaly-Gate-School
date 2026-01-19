@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { StudentModel } from '../../../../../Interfaces/istudent';
 import { ClassService } from '../../../../../Services/class.service';
 import { CertificateService } from '../../../../../Services/certificate.service';
-import { 
-  Certificate, 
-  DegreeType, 
-  CertificateSearchFilters 
+import {
+  Certificate,
+  DegreeType,
+  CertificateSearchFilters
 } from '../../../../../Interfaces/icertificate';
 import { ClassViewDto } from '../../../../../Interfaces/iclass';
 import { FormsModule } from '@angular/forms';
@@ -16,6 +16,7 @@ import { Curriculum } from '../../../../../Interfaces/icurriculum';
 import { GradeService } from '../../../../../Services/grade.service';
 import { CurriculumService } from '../../../../../Services/curriculum.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ToastService } from '../../../../../Services/UtilServices/toast.service';
 
 @Component({
   selector: 'app-admin-certificate-generation',
@@ -32,7 +33,7 @@ export class AdminCertificateGenerationComponent implements OnInit {
   certificates: Certificate[] = [];
   grades: GradeViewDto[] = [];
   curricula: Curriculum[] = [];
-  
+
   // Selection
   selectedClassId: string = '';
   selectedStudentId: string = '';
@@ -40,7 +41,7 @@ export class AdminCertificateGenerationComponent implements OnInit {
   selectedGradeId: string = '';
   selectedCurriculumId: string = '';
   selectedAcademicYear: string = new Date().getFullYear().toString();
-  
+
   // UI state
   isGenerating = false;
   isSaving = false;
@@ -49,39 +50,45 @@ export class AdminCertificateGenerationComponent implements OnInit {
   isLoading = false;
   message = '';
   messageType: 'success' | 'error' = 'success';
-  
+
   // Search filters
   searchFilters: CertificateSearchFilters = {};
   isSearching = false;
-  
+
   // Options
   degreeTypes = Object.values(DegreeType);
   academicYears: string[] = [];
-  
+
   // Tabs
   activeTab: 'generate' | 'search' | 'bulk' = 'generate';
-  
+
   // Bulk operation - NEW: For the Bulk tab
   bulkClassId: string = '';
   bulkDegreeType: DegreeType = DegreeType.MidTerm1;
   bulkAcademicYear: string = new Date().getFullYear().toString();
   bulkOperationType: 'generate' | 'download' = 'generate'; // NEW: Type of bulk operation
-  
+
   // Class-wide operation - NEW: For generating certificates for whole class
   classWideDegreeType: DegreeType = DegreeType.MidTerm1;
   classWideAcademicYear: string = new Date().getFullYear().toString();
   isGeneratingClassWide = false;
   isDownloadingClassWide = false;
-  
+
   // Verification
   verifyCertificateId: string = '';
   verifyBy: string = '';
+  
+  // Modal state
+  isConfirmModalOpen: boolean = false;
+  confirmModalMessage: string = '';
+  private confirmAction?: () => void;
 
   constructor(
     private classService: ClassService,
     private certificateService: CertificateService,
     private gradeService: GradeService,
-    private curriculumService: CurriculumService
+    private curriculumService: CurriculumService,
+    private toastService: ToastService
   ) {
     this.generateAcademicYears();
   }
@@ -108,7 +115,7 @@ export class AdminCertificateGenerationComponent implements OnInit {
         }
       },
       error: (error) => {
-        this.showMessage('Error loading classes', 'error');
+        this.toastService.error('Error loading classes', 'error');
       }
     });
   }
@@ -121,7 +128,7 @@ export class AdminCertificateGenerationComponent implements OnInit {
         }
       },
       error: (error) => {
-        this.showMessage('Error loading grades', 'error');
+        this.toastService.error('Error loading grades', 'error');
       }
     });
   }
@@ -132,7 +139,7 @@ export class AdminCertificateGenerationComponent implements OnInit {
         this.curricula = curricula;
       },
       error: (error) => {
-        this.showMessage('Error loading curricula', 'error');
+        this.toastService.error('Error loading curricula', 'error');
       }
     });
   }
@@ -162,12 +169,12 @@ export class AdminCertificateGenerationComponent implements OnInit {
       if (this.selectedGradeId) {
         return classItem.gradeId === this.selectedGradeId;
       }
-      
+
       if (this.selectedCurriculumId) {
         const grade = this.grades.find(g => g.id === classItem.gradeId);
         return grade?.curriculumId === this.selectedCurriculumId;
       }
-      
+
       return true;
     });
   }
@@ -191,7 +198,7 @@ export class AdminCertificateGenerationComponent implements OnInit {
         }
       },
       error: (error) => {
-        this.showMessage('Error loading students', 'error');
+        this.toastService.error('Error loading students', 'error');
       }
     });
   }
@@ -201,7 +208,7 @@ export class AdminCertificateGenerationComponent implements OnInit {
       this.filteredStudents = [...this.students];
       return;
     }
-    
+
     const searchTerm = this.searchFilters.studentName.toLowerCase();
     this.filteredStudents = this.students.filter(student =>
       student.fullName.toLowerCase().includes(searchTerm) ||
@@ -218,7 +225,7 @@ export class AdminCertificateGenerationComponent implements OnInit {
 
   generateCertificate(saveToDb: boolean): void {
     if (!this.selectedStudentId || !this.selectedDegreeType) {
-      this.showMessage('Please select a student and certificate type', 'error');
+      this.toastService.error('Please select a student and certificate type', 'error');
       return;
     }
 
@@ -233,11 +240,11 @@ export class AdminCertificateGenerationComponent implements OnInit {
       next: (blob) => {
         const fileName = `${this.selectedStudentId}_${this.selectedDegreeType}_certificate.pdf`;
         this.certificateService.downloadPdf(blob, fileName);
-        this.showMessage(`Certificate generated successfully${saveToDb ? ' and saved to database' : ''}`, 'success');
+        this.toastService.success(`Certificate generated successfully${saveToDb ? ' and saved to database' : ''}`, 'success');
         this.isGenerating = false;
       },
       error: (error) => {
-        this.showMessage('Error generating certificate: ' + error.message, 'error');
+        this.toastService.error('Error generating certificate: ' + error.message, 'error');
         this.isGenerating = false;
       }
     });
@@ -245,7 +252,7 @@ export class AdminCertificateGenerationComponent implements OnInit {
 
   saveToDatabase(): void {
     if (!this.selectedStudentId || !this.selectedDegreeType) {
-      this.showMessage('Please select a student and certificate type', 'error');
+      this.toastService.error('Please select a student and certificate type', 'error');
       return;
     }
 
@@ -255,14 +262,14 @@ export class AdminCertificateGenerationComponent implements OnInit {
     this.certificateService.saveCertificateToDb(this.selectedStudentId, this.selectedDegreeType).subscribe({
       next: (response) => {
         if (response.success) {
-          this.showMessage('Certificate saved to database successfully', 'success');
+          this.toastService.success('Certificate saved to database successfully', 'success');
         } else {
-          this.showMessage(response.message || 'Failed to save certificate', 'error');
+          this.toastService.error(response.message || 'Failed to save certificate', 'error');
         }
         this.isSaving = false;
       },
       error: (error) => {
-        this.showMessage('Error saving certificate to database: ' + error.message, 'error');
+        this.toastService.error('Error saving certificate to database: ' + error.message, 'error');
         this.isSaving = false;
       }
     });
@@ -273,7 +280,7 @@ export class AdminCertificateGenerationComponent implements OnInit {
 
   generateClassWideCertificates(): void {
     if (!this.selectedClassId || !this.classWideDegreeType) {
-      this.showMessage('Please select a class and certificate type', 'error');
+      this.toastService.error('Please select a class and certificate type', 'error');
       return;
     }
 
@@ -294,18 +301,18 @@ export class AdminCertificateGenerationComponent implements OnInit {
       next: (response) => {
         console.log('Bulk generation response:', response);
         if (response.success) {
-          this.showMessage(`Class-wide certificates generated successfully: ${response.message}`, 'success');
+          this.toastService.success(`Class-wide certificates generated successfully: ${response.message}`, 'success');
         } else {
-          this.showMessage(response.message || 'Class-wide generation failed', 'error');
+          this.toastService.error(response.message || 'Class-wide generation failed', 'error');
         }
         this.isGeneratingClassWide = false;
       },
       error: (error: HttpErrorResponse) => {
         console.error('Bulk generation error:', error);
-        
+
         // Provide more detailed error message
         let errorMessage = 'Error during class-wide generation: ';
-        
+
         if (error.status === 400) {
           errorMessage += 'Bad Request. Please check the input parameters.';
           if (error.error) {
@@ -318,8 +325,8 @@ export class AdminCertificateGenerationComponent implements OnInit {
         } else {
           errorMessage += error.message;
         }
-        
-        this.showMessage(errorMessage, 'error');
+
+        this.toastService.error(errorMessage, 'error');
         this.isGeneratingClassWide = false;
       }
     });
@@ -327,7 +334,7 @@ export class AdminCertificateGenerationComponent implements OnInit {
 
   downloadClassWideCertificates(): void {
     if (!this.selectedClassId || !this.classWideDegreeType) {
-      this.showMessage('Please select a class and certificate type', 'error');
+      this.toastService.error('Please select a class and certificate type', 'error');
       return;
     }
 
@@ -348,14 +355,14 @@ export class AdminCertificateGenerationComponent implements OnInit {
       next: (blob) => {
         const fileName = `certificates_class_${this.selectedClassId}_${this.classWideDegreeType}.zip`;
         this.certificateService.downloadZip(blob, fileName);
-        this.showMessage('Class-wide certificates downloaded successfully', 'success');
+        this.toastService.success('Class-wide certificates downloaded successfully', 'success');
         this.isDownloadingClassWide = false;
       },
       error: (error: HttpErrorResponse) => {
         console.error('Download error:', error);
-        
+
         let errorMessage = 'Error downloading class-wide certificates: ';
-        
+
         if (error.status === 400) {
           errorMessage += 'Bad Request. Please check the input parameters.';
         } else if (error.status === 404) {
@@ -365,8 +372,8 @@ export class AdminCertificateGenerationComponent implements OnInit {
         } else {
           errorMessage += error.message;
         }
-        
-        this.showMessage(errorMessage, 'error');
+
+        this.toastService.error(errorMessage, 'error');
         this.isDownloadingClassWide = false;
       }
     });
@@ -376,7 +383,7 @@ export class AdminCertificateGenerationComponent implements OnInit {
 
   bulkGenerateCertificates(): void {
     if (!this.bulkClassId || !this.bulkDegreeType) {
-      this.showMessage('Please select a class and certificate type', 'error');
+      this.toastService.error('Please select a class and certificate type', 'error');
       return;
     }
 
@@ -390,14 +397,14 @@ export class AdminCertificateGenerationComponent implements OnInit {
     ).subscribe({
       next: (response) => {
         if (response.success) {
-          this.showMessage(`Bulk certificate generation completed: ${response.message}`, 'success');
+          this.toastService.success(`Bulk certificate generation completed: ${response.message}`, 'success');
         } else {
-          this.showMessage(response.message || 'Bulk generation failed', 'error');
+          this.toastService.error(response.message || 'Bulk generation failed', 'error');
         }
         this.isBulkGenerating = false;
       },
       error: (error) => {
-        this.showMessage('Error during bulk generation: ' + error.message, 'error');
+        this.toastService.error('Error during bulk generation: ' + error.message, 'error');
         this.isBulkGenerating = false;
       }
     });
@@ -405,7 +412,7 @@ export class AdminCertificateGenerationComponent implements OnInit {
 
   downloadBulkCertificates(): void {
     if (!this.bulkClassId || !this.bulkDegreeType) {
-      this.showMessage('Please select a class and certificate type', 'error');
+      this.toastService.error('Please select a class and certificate type', 'error');
       return;
     }
 
@@ -420,11 +427,11 @@ export class AdminCertificateGenerationComponent implements OnInit {
       next: (blob) => {
         const fileName = `certificates_class_${this.bulkClassId}_${this.bulkDegreeType}.zip`;
         this.certificateService.downloadZip(blob, fileName);
-        this.showMessage('Bulk certificates downloaded successfully', 'success');
+        this.toastService.success('Bulk certificates downloaded successfully', 'success');
         this.isDownloadingBulk = false;
       },
       error: (error) => {
-        this.showMessage('Error downloading bulk certificates: ' + error.message, 'error');
+        this.toastService.error('Error downloading bulk certificates: ' + error.message, 'error');
         this.isDownloadingBulk = false;
       }
     });
@@ -438,14 +445,14 @@ export class AdminCertificateGenerationComponent implements OnInit {
       next: (response) => {
         if (response.success) {
           this.certificates = response.data || [];
-          this.showMessage(`Found ${this.certificates.length} certificates`, 'success');
+          this.toastService.success(`Found ${this.certificates.length} certificates`, 'success');
         } else {
-          this.showMessage(response.message || 'Search failed', 'error');
+          this.toastService.error(response.message || 'Search failed', 'error');
         }
         this.isSearching = false;
       },
       error: (error) => {
-        this.showMessage('Error searching certificates: ' + error.message, 'error');
+        this.toastService.error('Error searching certificates: ' + error.message, 'error');
         this.isSearching = false;
       }
     });
@@ -460,7 +467,7 @@ export class AdminCertificateGenerationComponent implements OnInit {
 
   viewCertificate(certificate: Certificate): void {
     if (!certificate.id || !certificate.studentId || !certificate.degreeType) {
-      this.showMessage('Cannot view certificate: missing data', 'error');
+      this.toastService.error('Cannot view certificate: missing data', 'error');
       return;
     }
 
@@ -469,14 +476,14 @@ export class AdminCertificateGenerationComponent implements OnInit {
         this.certificateService.openPdfInNewTab(blob);
       },
       error: (error) => {
-        this.showMessage('Error viewing certificate: ' + error.message, 'error');
+        this.toastService.error('Error viewing certificate: ' + error.message, 'error');
       }
     });
   }
 
   downloadCertificate(certificate: Certificate): void {
     if (!certificate.id || !certificate.studentId || !certificate.degreeType) {
-      this.showMessage('Cannot download certificate: missing data', 'error');
+      this.toastService.error('Cannot download certificate: missing data', 'error');
       return;
     }
 
@@ -486,21 +493,21 @@ export class AdminCertificateGenerationComponent implements OnInit {
         this.certificateService.downloadPdf(blob, fileName);
       },
       error: (error) => {
-        this.showMessage('Error downloading certificate: ' + error.message, 'error');
+        this.toastService.error('Error downloading certificate: ' + error.message, 'error');
       }
     });
   }
 
   verifyCertificate(): void {
     if (!this.verifyCertificateId || !this.verifyBy) {
-      this.showMessage('Please enter certificate ID and verifier name', 'error');
+      this.toastService.error('Please enter certificate ID and verifier name', 'error');
       return;
     }
 
     this.certificateService.verifyCertificate(this.verifyCertificateId, this.verifyBy).subscribe({
       next: (response) => {
         if (response.success) {
-          this.showMessage('Certificate verified successfully', 'success');
+          this.toastService.success('Certificate verified successfully', 'success');
           this.verifyCertificateId = '';
           this.verifyBy = '';
           // Refresh search results if on search tab
@@ -508,48 +515,39 @@ export class AdminCertificateGenerationComponent implements OnInit {
             this.searchCertificates();
           }
         } else {
-          this.showMessage(response.message || 'Verification failed', 'error');
+          this.toastService.error(response.message || 'Verification failed', 'error');
         }
       },
       error: (error) => {
-        this.showMessage('Error verifying certificate: ' + error.message, 'error');
+        this.toastService.error('Error verifying certificate: ' + error.message, 'error');
       }
     });
   }
 
   archiveCertificate(certificateId: string): void {
-    if (!confirm('Are you sure you want to archive this certificate? This action cannot be undone.')) {
-      return;
-    }
-
-    this.certificateService.archiveCertificate(certificateId).subscribe({
-      next: (response) => {
-        if (response.success) {
-          this.showMessage('Certificate archived successfully', 'success');
-          // Refresh search results
-          if (this.activeTab === 'search') {
-            this.searchCertificates();
+    this.openConfirm(
+      'Are you sure you want to archive this certificate? This action cannot be undone.',
+      () => {
+        this.certificateService.archiveCertificate(certificateId).subscribe({
+          next: (response) => {
+            if (response.success) {
+              this.toastService.success('Certificate archived successfully', 'success');
+              if (this.activeTab === 'search') {
+                this.searchCertificates();
+              }
+            } else {
+              this.toastService.error(response.message || 'Archiving failed', 'error');
+            }
+          },
+          error: (error) => {
+            this.toastService.error('Error archiving certificate: ' + error.message, 'error');
           }
-        } else {
-          this.showMessage(response.message || 'Archiving failed', 'error');
-        }
-      },
-      error: (error) => {
-        this.showMessage('Error archiving certificate: ' + error.message, 'error');
+        });
       }
-    });
+    );
   }
 
   // ========== UTILITY METHODS ==========
-
-  private showMessage(message: string, type: 'success' | 'error'): void {
-    this.message = message;
-    this.messageType = type;
-    setTimeout(() => {
-      this.message = '';
-    }, 5000);
-  }
-
   getVerificationStatus(certificate: Certificate): string {
     if (certificate.archived) return 'Archived';
     if (certificate.verified) return 'Verified';
@@ -585,11 +583,29 @@ export class AdminCertificateGenerationComponent implements OnInit {
   }
 
   getTabIndicatorPosition(): string {
-  const positions = {
-    'generate': 'translateX(0%)',
-    'bulk': 'translateX(100%)',
-    'search': 'translateX(200%)'
-  };
-  return positions[this.activeTab] || 'translateX(0%)';
-}
+    const positions = {
+      'generate': 'translateX(0%)',
+      'bulk': 'translateX(100%)',
+      'search': 'translateX(200%)'
+    };
+    return positions[this.activeTab] || 'translateX(0%)';
+  }
+  
+  //modal methods
+  openConfirm(message: string, action: () => void): void {
+    this.confirmModalMessage = message;
+    this.confirmAction = action;
+    this.isConfirmModalOpen = true;
+  }
+  
+  confirmYes(): void {
+    this.confirmAction?.();
+    this.closeConfirm();
+  }
+  
+  closeConfirm(): void {
+    this.isConfirmModalOpen = false;
+    this.confirmModalMessage = '';
+    this.confirmAction = undefined;
+  }
 }

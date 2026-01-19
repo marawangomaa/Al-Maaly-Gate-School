@@ -303,3 +303,27 @@
     </div>
   </div>
 </div>
+
+<!-- CONFIRMATION MODAL (Placed outside main container) -->
+<div *ngIf="isConfirmModalOpen" class="modal fade show" style="display: block; z-index: 1054">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Action</h5>
+        <button type="button" class="btn-close" (click)="closeConfirm()"></button>
+      </div>
+      <div class="modal-body">
+        <p>{{ confirmModalMessage }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeConfirm()">
+          Cancel
+        </button>
+        <button type="button" class="btn btn-primary" (click)="confirmYes()">
+          Yes, Continue
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="isConfirmModalOpen" class="modal-backdrop fade show" style="z-index: 1053"></div>

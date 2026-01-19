@@ -20,10 +20,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.toastService.info();
-    this.toastService.success();
-    this.toastService.warning();
-    this.toastService.error();
   }
 
   ngOnDestroy() {
