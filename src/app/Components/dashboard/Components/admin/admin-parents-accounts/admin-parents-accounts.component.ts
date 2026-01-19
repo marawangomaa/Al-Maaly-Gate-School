@@ -14,7 +14,6 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { environment } from '../../../../../../environments/environment';
 import { ifileRecord } from '../../../../../Interfaces/ifileRecord';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { ToastService } from '../../../../../Services/UtilServices/toast.service';
 
 @Component({
   selector: 'app-admin-parent-accounts',
@@ -46,10 +45,6 @@ export class AdminParentsAccountsComponent {
   currentDocIndex: number = 0;
   currentPdfUrl: SafeResourceUrl | null = null;
   showPdfViewer: boolean = false;
-  //modal
-  isConfirmModalOpen: boolean = false;
-  confirmModalMessage: string = '';
-  private confirmAction?: () => void;
 
   private subscription = new Subscription();
 
@@ -59,8 +54,7 @@ export class AdminParentsAccountsComponent {
     private adminService: AdminManagementService,
     private authService: AuthService,
     private translate: TranslateService,
-    private sanitizer: DomSanitizer, // Added for safe URL sanitization
-    private toastService: ToastService
+    private sanitizer: DomSanitizer // Added for safe URL sanitization
   ) { }
 
   ngOnInit(): void {
@@ -74,7 +68,7 @@ export class AdminParentsAccountsComponent {
   // Updated GetParentDocs to open modal instead of opening in new tabs
   async GetParentDocs(parentAppUserId: string | undefined): Promise<void> {
     if (!parentAppUserId) {
-      this.toastService.error(this.translate.instant('parents.messages.noUserId'));
+      alert(this.translate.instant('parents.messages.noUserId'));
       return;
     }
 
@@ -102,12 +96,12 @@ export class AdminParentsAccountsComponent {
               this.loadPdfDocument(0);
             }
           } else {
-            this.toastService.error(this.translate.instant('parents.messages.noDocs'));
+            alert(this.translate.instant('parents.messages.noDocs'));
           }
           this.isLoadingDocs = false;
         },
         error: (error: ApiResponse<ifileRecord[]>) => {
-          this.toastService.error(`${this.translate.instant('parents.messages.error')}: ${error.message}`);
+          alert(`${this.translate.instant('parents.messages.error')}: ${error.message}`);
           this.isLoadingDocs = false;
         }
       })
@@ -205,10 +199,6 @@ export class AdminParentsAccountsComponent {
   }
 
   openAssignModal(parentId: string, parentName: string, gender: string): void {
-    // Close other modals first
-    if (this.showDocsModal) this.closeDocsModal();
-    if (this.isConfirmModalOpen) this.closeConfirm();
-    
     this.selectedParentIdForModal = parentId;
     this.selectedParentNameForModal = parentName;
     this.showAssignModal = true;
@@ -298,15 +288,19 @@ export class AdminParentsAccountsComponent {
   ApproveParentAction(parentId: string): void {
     const adminUserId = this.authService.userId;
     if (!adminUserId) {
-      this.toastService.error(this.translate.instant('parents.messages.adminNotFound'));
+      alert(this.translate.instant('parents.messages.adminNotFound'));
       return;
     }
 
     const parent = this.allparents.find(t => t.id === parentId);
     if (!parent) {
-      this.toastService.error(this.translate.instant('parents.messages.accountNotFound'));
+      alert(this.translate.instant('parents.messages.accountNotFound'));
       return;
     }
+
+
+
+
 
     this.openAssignModal(parentId, parent.fullName, parent.gender);
   }
@@ -314,7 +308,7 @@ export class AdminParentsAccountsComponent {
   private approveParentAccountAfterAssignment(parentId: string): void {
     const adminUserId = this.authService.userId;
     if (!adminUserId) {
-      this.toastService.error(this.translate.instant('parents.messages.adminNotFound'));
+      alert(this.translate.instant('parents.messages.adminNotFound'));
       return;
     }
 
@@ -322,18 +316,18 @@ export class AdminParentsAccountsComponent {
       this.adminService.ApproveAccount(parentId, adminUserId, 'parent').subscribe({
         next: (result) => {
           if (result) {
-            this.toastService.success(this.translate.instant('parents.messages.approved'));
+            alert(this.translate.instant('parents.messages.approved'));
             const parent = this.allparents.find(t => t.id === parentId);
             if (parent) {
               parent.accountStatus = AccountStatus.Active;
             }
           } else {
-            this.toastService.error(this.translate.instant('parents.messages.approveFailed'));
+            alert(this.translate.instant('parents.messages.approveFailed'));
           }
         },
         error: (err) => {
           console.error('Approval error:', err);
-          this.toastService.error(`${this.translate.instant('parents.messages.error')}: ${err.message}`);
+          alert(`${this.translate.instant('parents.messages.error')}: ${err.message}`);
         }
       })
     );
@@ -341,7 +335,7 @@ export class AdminParentsAccountsComponent {
 
   searchStudentsInPopup(parentId: string): void {
     if (this.searchQuery.length < 2) {
-      this.toastService.error(this.translate.instant('parents.modal.minChars'));
+      alert(this.translate.instant('parents.modal.minChars'));
       return;
     }
 
@@ -357,7 +351,7 @@ export class AdminParentsAccountsComponent {
           this.isSearching = false;
         },
         error: (err) => {
-          this.toastService.error(`${this.translate.instant('parents.messages.error')}: ${err.message}`);
+          alert(`${this.translate.instant('parents.messages.error')}: ${err.message}`);
           this.isSearching = false;
           this.searchResults = [];
         }
@@ -371,60 +365,38 @@ export class AdminParentsAccountsComponent {
 
   assignStudentToParentInPopup(): void {
     if (!this.selectedStudent) {
-      this.toastService.error(
-        this.translate.instant('parents.messages.selectStudent')
-      );
+      alert(this.translate.instant('parents.messages.selectStudent'));
       return;
     }
 
     if (this.selectedStudent.isInRelation) {
-      this.toastService.error(
-        this.translate.instant('parents.messages.alreadyAssigned')
-      );
+      alert(this.translate.instant('parents.messages.alreadyAssigned'));
       return;
     }
 
-    this.openConfirm(
-      this.translate.instant('parents.confirmations.assignStudent'),
-      () => {
-        this.isAssigning = true;
+    const confirmation = confirm(this.translate.instant('parents.confirmations.assignStudent'));
+    if (!confirmation) return;
 
-        this.subscription.add(
-          this.adminService
-            .ApproveParentWithStudent(
-              this.selectedParentIdForModal,
-              this.selectedStudent!.id,
-              this.relation
-            )
-            .subscribe({
-              next: result => {
-                this.isAssigning = false;
+    this.isAssigning = true;
 
-                if (result.data) {
-                  this.toastService.success(
-                    `${this.translate.instant('parents.messages.assignSuccess')}: ${this.selectedStudent!.fullName}`
-                  );
+    this.subscription.add(
+      this.adminService.ApproveParentWithStudent(this.selectedParentIdForModal, this.selectedStudent.id, this.relation).subscribe({
+        next: result => {
+          this.isAssigning = false;
 
-                  this.approveParentAccountAfterAssignment(
-                    this.selectedParentIdForModal
-                  );
-
-                  this.closeAssignModal();
-                } else {
-                  this.toastService.error(
-                    this.translate.instant('parents.messages.assignFailed')
-                  );
-                }
-              },
-              error: err => {
-                this.isAssigning = false;
-                this.toastService.error(
-                  `${this.translate.instant('parents.messages.error')}: ${err.message}`
-                );
-              }
-            })
-        );
-      }
+          if (result.data) {
+            alert(`${this.translate.instant('parents.messages.assignSuccess')}: ${this.selectedStudent.fullName}`);
+            this.approveParentAccountAfterAssignment(this.selectedParentIdForModal);
+            this.closeAssignModal();
+          } else {
+            alert(this.translate.instant('parents.messages.assignFailed'));
+          }
+        },
+        error: err => {
+          this.isAssigning = false;
+          alert(`${this.translate.instant('parents.messages.error')}: ${err.message}`);
+        }
+      })
     );
   }
 
@@ -441,132 +413,84 @@ export class AdminParentsAccountsComponent {
     this.hasPerformedSearch = false;
   }
 
-  RejectParentAction(parentId: string): void {
-    this.openConfirm(
-      this.translate.instant('parents.confirmations.reject'),
-      () => {
-        const adminUserId = this.authService.userId;
+  async RejectParentAction(parentId: string): Promise<void> {
+    const confirmation = confirm(this.translate.instant('parents.confirmations.reject'));
+    if (!confirmation) return;
 
-        if (!adminUserId) {
-          this.toastService.error(
-            this.translate.instant('parents.messages.adminNotFound')
-          );
-          return;
-        }
+    const adminUserId = this.authService.userId;
+    if (!adminUserId) {
+      alert(this.translate.instant('parents.messages.adminNotFound'));
+      return;
+    }
 
-        this.subscription.add(
-          this.adminService
-            .RejectAccount(parentId, adminUserId, 'parent')
-            .subscribe({
-              next: result => {
-                if (result) {
-                  this.toastService.success(
-                    this.translate.instant('parents.messages.rejected')
-                  );
-
-                  const parent = this.allparents.find(p => p.id === parentId);
-                  if (parent) {
-                    parent.accountStatus = AccountStatus.Rejected;
-                  }
-                } else {
-                  this.toastService.error(
-                    this.translate.instant('parents.messages.rejectFailed')
-                  );
-                }
-              },
-              error: err =>
-                this.toastService.error(
-                  `${this.translate.instant('parents.messages.error')}: ${err.message}`
-                )
-            })
-        );
-      }
+    this.subscription.add(
+      this.adminService.RejectAccount(parentId, adminUserId, 'parent').subscribe({
+        next: result => {
+          if (result) {
+            alert(this.translate.instant('parents.messages.rejected'));
+            const parent = this.allparents.find(t => t.id === parentId);
+            if (parent) parent.accountStatus = AccountStatus.Rejected;
+          }
+          else {
+            alert(this.translate.instant('parents.messages.rejectFailed'));
+          }
+        },
+        error: err => alert(`${this.translate.instant('parents.messages.error')}: ${err.message}`)
+      })
     );
   }
 
-  BlockParentAction(parentId: string): void {
-    this.openConfirm(
-      this.translate.instant('parents.confirmations.block'),
-      () => {
-        const adminUserId = this.authService.userId;
+  async BlockParentAction(parentId: string): Promise<void> {
+    const confirmation = confirm(this.translate.instant('parents.confirmations.block'));
+    if (!confirmation) return;
 
-        if (!adminUserId) {
-          this.toastService.error(
-            this.translate.instant('parents.messages.adminNotFound')
-          );
-          return;
-        }
+    const adminUserId = this.authService.userId;
+    if (!adminUserId) {
+      alert(this.translate.instant('parents.messages.adminNotFound'));
+      return;
+    }
 
-        this.subscription.add(
-          this.adminService
-            .BlockAccount(parentId, adminUserId, 'parent')
-            .subscribe({
-              next: result => {
-                if (result) {
-                  this.toastService.success(
-                    this.translate.instant('parents.messages.blocked')
-                  );
-
-                  const parent = this.allparents.find(p => p.id === parentId);
-                  if (parent) {
-                    parent.accountStatus = AccountStatus.Blocked;
-                  }
-                } else {
-                  this.toastService.error(
-                    this.translate.instant('parents.messages.blockFailed')
-                  );
-                }
-              },
-              error: err =>
-                this.toastService.error(
-                  `${this.translate.instant('parents.messages.error')}: ${err.message}`
-                )
-            })
-        );
-      }
+    this.subscription.add(
+      this.adminService.BlockAccount(parentId, adminUserId, 'parent').subscribe({
+        next: result => {
+          if (result) {
+            alert(this.translate.instant('parents.messages.blocked'));
+            const parent = this.allparents.find(t => t.id === parentId);
+            if (parent) parent.accountStatus = AccountStatus.Blocked;
+          }
+          else {
+            alert(this.translate.instant('parents.messages.blockFailed'));
+          }
+        },
+        error: err => alert(`${this.translate.instant('parents.messages.error')}: ${err.message}`)
+      })
     );
   }
 
-  UnblockParentAction(parentId: string): void {
-    this.openConfirm(
-      this.translate.instant('parents.confirmations.unblock'),
-      () => {
-        const adminUserId = this.authService.userId;
+  async UnblockParentAction(parentId: string): Promise<void> {
+    const confirmation = confirm(this.translate.instant('parents.confirmations.unblock'));
+    if (!confirmation) return;
 
-        if (!adminUserId) {
-          this.toastService.error(
-            this.translate.instant('parents.messages.adminNotFound')
-          );
-          return;
-        }
+    const adminUserId = this.authService.userId;
+    if (!adminUserId) {
+      alert(this.translate.instant('parents.messages.adminNotFound'));
+      return;
+    }
 
-        this.subscription.add(
-          this.adminService
-            .UnblockAccount(parentId, adminUserId, 'parent')
-            .subscribe({
-              next: result => {
-                if (result) {
-                  this.toastService.success(
-                    this.translate.instant('parents.messages.unblocked')
-                  );
-
-                  const parent = this.allparents.find(p => p.id === parentId);
-                  if (parent) {
-                    parent.accountStatus = AccountStatus.Active;
-                  }
-                } else {
-                  this.toastService.error(
-                    this.translate.instant('parents.messages.unblockFailed')
-                  );
-                }
-              },
-              error: err =>
-                this.toastService.error(
-                  `${this.translate.instant('parents.messages.error')}: ${err.message}`
-                )
-            })
-        );
-      }
+    this.subscription.add(
+      this.adminService.UnblockAccount(parentId, adminUserId, 'parent').subscribe({
+        next: result => {
+          if (result) {
+            alert(this.translate.instant('parents.messages.unblocked'));
+            const parent = this.allparents.find(t => t.id === parentId);
+            if (parent) parent.accountStatus = AccountStatus.Active;
+          }
+          else {
+            alert(this.translate.instant('parents.messages.unblockFailed'));
+          }
+        },
+        error: err => alert(`${this.translate.instant('parents.messages.error')}: ${err.message}`)
+      })
     );
   }
 
@@ -577,39 +501,17 @@ export class AdminParentsAccountsComponent {
         next: (response: ApiResponse<iparentViewDtoWithDocs[]>) => {
           this.allparents = response.data || [];
           console.log('Loaded parents:', this.allparents);
+          // Optionally calculate docCount for each parent if your backend doesn't provide it
+          // this.allparents.forEach(parent => {
+          //   parent.docCount = Math.floor(Math.random() * 5); // For demo only, remove in production
+          // });
           this.isLoading = false;
         },
         error: err => {
           this.isLoading = false;
-          this.toastService.error(`${this.translate.instant('parents.messages.loadError')}: ${err.message}`);
+          alert(`${this.translate.instant('parents.messages.loadError')}: ${err.message}`);
         }
       })
     );
-  }
-
-  //modal methods
-  openConfirm(message: string, action: () => void): void {
-    // Close any other modals first
-    if (this.showAssignModal) {
-      this.closeAssignModal();
-    }
-    if (this.showDocsModal) {
-      this.closeDocsModal();
-    }
-    
-    this.confirmModalMessage = message;
-    this.confirmAction = action;
-    this.isConfirmModalOpen = true;
-  }
-
-  confirmYes(): void {
-    this.confirmAction?.();
-    this.closeConfirm();
-  }
-
-  closeConfirm(): void {
-    this.isConfirmModalOpen = false;
-    this.confirmModalMessage = '';
-    this.confirmAction = undefined;
   }
 }
