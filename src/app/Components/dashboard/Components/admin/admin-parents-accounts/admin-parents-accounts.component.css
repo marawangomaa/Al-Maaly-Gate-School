@@ -97,12 +97,11 @@
   margin-bottom: var(--space-lg);
 }
 
-/* Modal Specific Styles */
+/* Modal Specific Styles - FIXED */
 .modal-backdrop {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1040;
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
@@ -112,13 +111,28 @@
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1050;
   width: 100%;
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
   outline: 0;
+}
+
+.modal.show {
   display: block;
+}
+
+.modal.fade {
+  transition: opacity 0.15s linear;
+}
+
+.modal.fade .modal-dialog {
+  transition: transform 0.3s ease-out;
+  transform: translate(0, -50px);
+}
+
+.modal.show .modal-dialog {
+  transform: none;
 }
 
 .modal-dialog {
@@ -126,7 +140,12 @@
   width: auto;
   margin: 1.75rem auto;
   pointer-events: none;
-  max-width: 800px;
+}
+
+.modal-dialog-centered {
+  display: flex;
+  align-items: center;
+  min-height: calc(100% - 3.5rem);
 }
 
 .modal-content {
@@ -140,8 +159,6 @@
   border: 1px solid var(--color-gray-300);
   border-radius: var(--radius-lg);
   outline: 0;
-  max-height: 90vh;
-  overflow-y: auto;
 }
 
 .modal-header {
@@ -184,6 +201,33 @@
   margin: 0.25rem;
 }
 
+/* Modal Sizes */
+.modal-dialog {
+  max-width: 500px;
+}
+
+.modal-lg {
+  max-width: 800px;
+}
+
+.modal-xl {
+  max-width: 1140px;
+}
+
+/* Modal Scrolling */
+.modal-dialog-scrollable {
+  height: calc(100% - 3.5rem);
+}
+
+.modal-dialog-scrollable .modal-content {
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.modal-dialog-scrollable .modal-body {
+  overflow-y: auto;
+}
+
 /* Table Styles */
 .table-responsive {
   overflow-x: auto;
@@ -219,6 +263,106 @@
 
 .table-hover tbody tr:hover td {
   color: var(--color-primary-500);
+}
+
+/* PDF Viewer Styles */
+.pdf-viewer-container {
+  height: 100%;
+}
+
+.pdf-frame-container {
+  background-color: #f8f9fa;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+}
+
+.pdf-frame {
+  border: none;
+  display: block;
+  width: 100%;
+  height: 600px;
+}
+
+/* Document List Styles */
+.list-group-item.active {
+  background-color: #e3f2fd;
+  border-color: #b3e0ff;
+  color: #0a58ca;
+}
+
+/* Document icon colors */
+.fa-file-pdf {
+  color: #f40f02;
+}
+
+.fa-file-image {
+  color: #28a745;
+}
+
+.fa-file-word {
+  color: #2b579a;
+}
+
+.fa-file {
+  color: #6c757d;
+}
+
+/* PDF Controls */
+.pdf-controls {
+  background-color: var(--color-bg-secondary);
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-lg);
+}
+
+/* Loading Spinner Animation */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner-border {
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  vertical-align: text-bottom;
+  border: 0.25em solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+}
+
+.spinner-border-sm {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-width: 0.2em;
+}
+
+/* Hover Effects Enhancement */
+.grade-card:hover .card-header {
+  background-color: var(--color-primary-50);
+  transition: background-color 0.3s ease;
+}
+
+/* Status-specific hover effects */
+.badge.bg-pending:hover {
+  background-color: rgba(245, 158, 11, 0.2) !important;
+}
+
+.badge.bg-active:hover {
+  background-color: rgba(72, 187, 120, 0.2) !important;
+}
+
+.badge.bg-rejected:hover {
+  background-color: rgba(239, 68, 68, 0.2) !important;
+}
+
+.badge.bg-blocked:hover {
+  background-color: rgba(107, 114, 128, 0.2) !important;
 }
 
 /* Responsive Adjustments */
@@ -269,6 +413,14 @@
   .modal-footer {
     padding: var(--space-lg);
   }
+
+  .modal-xl {
+    max-width: 95%;
+  }
+
+  .pdf-frame {
+    height: 400px;
+  }
 }
 
 @media (max-width: 576px) {
@@ -293,6 +445,10 @@
   .modal-footer .btn {
     width: 100%;
     margin-bottom: var(--space-sm);
+  }
+
+  .pdf-frame {
+    height: 300px;
   }
 }
 
@@ -325,83 +481,93 @@ html[dir="rtl"] .modal-header .btn-close {
   margin-right: auto;
 }
 
-/* Loading Spinner Animation */
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Fix for btn-close in Bootstrap 5 */
+.btn-close {
+  box-sizing: content-box;
+  width: 1em;
+  height: 1em;
+  padding: 0.25em;
+  background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+  border: 0;
+  border-radius: 0.25rem;
+  opacity: 0.5;
 }
 
-.spinner-border {
-  animation: spin 1s linear infinite;
+.btn-close:hover {
+  opacity: 0.75;
 }
 
-/* Hover Effects Enhancement */
-.grade-card:hover .card-header {
-  background-color: var(--color-primary-50);
-  transition: background-color 0.3s ease;
+/* Ensure modal backdrop covers everything */
+.modal-backdrop.show {
+  opacity: 0.5;
 }
 
-/* Status-specific hover effects */
-.badge.bg-pending:hover {
-  background-color: rgba(245, 158, 11, 0.2) !important;
+.modal-backdrop.fade {
+  opacity: 0;
 }
 
-.badge.bg-active:hover {
-  background-color: rgba(72, 187, 120, 0.2) !important;
+.modal-backdrop.fade.show {
+  opacity: 0.5;
 }
 
-.badge.bg-rejected:hover {
-  background-color: rgba(239, 68, 68, 0.2) !important;
+/* Fix modal stacking order */
+.modal {
+  z-index: 1050;
 }
 
-.badge.bg-blocked:hover {
-  background-color: rgba(107, 114, 128, 0.2) !important;
-} 
-
-/* PDF Viewer Styles */
-.pdf-viewer-container {
-  height: 100%;
+.modal-backdrop {
+  z-index: 1040;
 }
 
-.pdf-frame-container {
-  background-color: #f8f9fa;
+/* Additional utility classes */
+.text-truncate {
   overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.pdf-frame {
-  border: none;
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Ensure modal dialogs are centered */
+.modal-dialog-centered::before {
   display: block;
+  height: calc(100vh - 3.5rem);
+  content: "";
 }
 
-/* Document List Styles */
-.list-group-item.active {
-  background-color: #e3f2fd;
-  border-color: #b3e0ff;
-  color: #0a58ca;
+/* Fix for modal overflow on mobile */
+@media (max-width: 576px) {
+  .modal-dialog {
+    margin: 0.5rem;
+  }
+  
+  .modal-dialog-centered {
+    min-height: calc(100% - 1rem);
+  }
+  
+  .modal-dialog-centered::before {
+    height: calc(100vh - 1rem);
+  }
 }
 
-/* Modal Styles */
-.modal-xl {
-  max-width: 1200px;
+/* Fix for iframe in PDF viewer */
+.pdf-frame-container iframe {
+  border: none;
 }
 
-/* Document icon colors */
-.fa-file-pdf {
-  color: #f40f02;
-}
-
-.fa-file-image {
-  color: #28a745;
-}
-
-.fa-file-word {
-  color: #2b579a;
-}
-
-.fa-file {
-  color: #6c757d;
+/* Ensure form elements are styled properly */
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--color-primary-400);
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }

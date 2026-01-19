@@ -20,27 +20,15 @@
   <!-- Tab Navigation -->
   <div class="tab-container">
     <div class="tab-nav">
-      <button 
-        class="tab-button" 
-        [class.tab-active]="activeTab === 'generate'"
-        (click)="switchTab('generate')"
-      >
+      <button class="tab-button" [class.tab-active]="activeTab === 'generate'" (click)="switchTab('generate')">
         <i class="fas fa-magic me-2"></i>
         {{ 'certificate2.tabs.generate' | translate }}
       </button>
-      <button 
-        class="tab-button" 
-        [class.tab-active]="activeTab === 'bulk'"
-        (click)="switchTab('bulk')"
-      >
+      <button class="tab-button" [class.tab-active]="activeTab === 'bulk'" (click)="switchTab('bulk')">
         <i class="fas fa-layer-group me-2"></i>
         {{ 'certificate2.tabs.bulk' | translate }}
       </button>
-      <button 
-        class="tab-button" 
-        [class.tab-active]="activeTab === 'search'"
-        (click)="switchTab('search')"
-      >
+      <button class="tab-button" [class.tab-active]="activeTab === 'search'" (click)="switchTab('search')">
         <i class="fas fa-search me-2"></i>
         {{ 'certificate2.tabs.search' | translate }}
       </button>
@@ -49,14 +37,11 @@
   </div>
 
   <!-- Message Alert -->
-  <div 
-    *ngIf="message" 
-    class="alert-message"
-    [class.alert-success]="messageType === 'success'"
-    [class.alert-error]="messageType === 'error'"
-  >
+  <div *ngIf="message" class="alert-message" [class.alert-success]="messageType === 'success'"
+    [class.alert-error]="messageType === 'error'">
     <div class="alert-content">
-      <i class="fas" [class.fa-check-circle]="messageType === 'success'" [class.fa-exclamation-circle]="messageType === 'error'"></i>
+      <i class="fas" [class.fa-check-circle]="messageType === 'success'"
+        [class.fa-exclamation-circle]="messageType === 'error'"></i>
       <span>{{ message }}</span>
     </div>
     <button class="alert-close" (click)="message = ''">
@@ -77,7 +62,7 @@
           {{ 'certificate2.filterDescription' | translate }}
         </p>
       </div>
-      
+
       <div class="filter-grid">
         <!-- Curriculum Filter -->
         <div class="filter-card">
@@ -86,11 +71,7 @@
             {{ 'certificate2.filterByCurriculum' | translate }}
           </label>
           <div class="select-wrapper">
-            <select 
-              [(ngModel)]="selectedCurriculumId"
-              (change)="onCurriculumChange()"
-              class="modern-select"
-            >
+            <select [(ngModel)]="selectedCurriculumId" (change)="onCurriculumChange()" class="modern-select">
               <option value="">{{ 'certificate2.allCurricula' | translate }}</option>
               <option *ngFor="let curriculum of curricula" [value]="curriculum.id">
                 {{ curriculum.name }} ({{ curriculum.code }})
@@ -107,14 +88,10 @@
             {{ 'certificate2.filterByGrade' | translate }}
           </label>
           <div class="select-wrapper">
-            <select 
-              [(ngModel)]="selectedGradeId"
-              (change)="onGradeChange()"
-              class="modern-select"
-            >
+            <select [(ngModel)]="selectedGradeId" (change)="onGradeChange()" class="modern-select">
               <option value="">{{ 'certificate2.allGrades' | translate }}</option>
               <option *ngFor="let grade of grades" [value]="grade.id">
-                {{ grade.gradeName }} 
+                {{ grade.gradeName }}
                 <span *ngIf="grade.curriculumName">({{ grade.curriculumName }})</span>
               </option>
             </select>
@@ -129,13 +106,10 @@
             {{ 'certificate2.selectClass' | translate }}
           </label>
           <div class="select-wrapper">
-            <select 
-              [(ngModel)]="selectedClassId" 
-              (change)="onClassChange()"
-              class="modern-select"
-              [disabled]="filteredClasses.length === 0"
-            >
-              <option value="">{{ filteredClasses.length === 0 ? ('certificate2.noClassesAvailable' | translate) : ('certificate2.classPlaceholder' | translate) }}</option>
+            <select [(ngModel)]="selectedClassId" (change)="onClassChange()" class="modern-select"
+              [disabled]="filteredClasses.length === 0">
+              <option value="">{{ filteredClasses.length === 0 ? ('certificate2.noClassesAvailable' | translate) :
+                ('certificate2.classPlaceholder' | translate) }}</option>
               <option *ngFor="let class of filteredClasses" [value]="class.id">
                 {{ class.className }} - {{ class.gradeName }}
               </option>
@@ -198,22 +172,18 @@
       </div>
 
       <div class="action-buttons">
-        <button 
-          (click)="generateClassWideCertificates()"
-          [disabled]="isGeneratingClassWide"
-          class="btn-primary btn-icon"
-        >
+        <button (click)="generateClassWideCertificates()" [disabled]="isGeneratingClassWide"
+          class="btn-primary btn-icon">
           <i class="fas" [class.fa-spinner]="isGeneratingClassWide" [class.fa-file-pdf]="!isGeneratingClassWide"></i>
-          {{ isGeneratingClassWide ? ('certificate2.generatingClassWide' | translate) : ('certificate2.generateClassWide' | translate) }}
+          {{ isGeneratingClassWide ? ('certificate2.generatingClassWide' | translate) :
+          ('certificate2.generateClassWide' | translate) }}
         </button>
 
-        <button 
-          (click)="downloadClassWideCertificates()"
-          [disabled]="isDownloadingClassWide"
-          class="btn-secondary btn-icon"
-        >
+        <button (click)="downloadClassWideCertificates()" [disabled]="isDownloadingClassWide"
+          class="btn-secondary btn-icon">
           <i class="fas" [class.fa-spinner]="isDownloadingClassWide" [class.fa-download]="!isDownloadingClassWide"></i>
-          {{ isDownloadingClassWide ? ('certificate2.downloadingClassWide' | translate) : ('certificate2.downloadClassWide' | translate) }}
+          {{ isDownloadingClassWide ? ('certificate2.downloadingClassWide' | translate) :
+          ('certificate2.downloadClassWide' | translate) }}
         </button>
       </div>
     </div>
@@ -231,13 +201,8 @@
       <div class="student-search" *ngIf="students.length > 0">
         <div class="search-container">
           <i class="fas fa-search search-icon"></i>
-          <input 
-            type="text"
-            [(ngModel)]="searchFilters.studentName"
-            (input)="searchStudents()"
-            class="search-input"
-            placeholder="{{ 'certificate2.searchStudentPlaceholder' | translate }}"
-          >
+          <input type="text" [(ngModel)]="searchFilters.studentName" (input)="searchStudents()" class="search-input"
+            placeholder="{{ 'certificate2.searchStudentPlaceholder' | translate }}">
         </div>
 
         <div *ngIf="filteredStudents.length > 0" class="student-select">
@@ -293,29 +258,17 @@
 
         <!-- Student Actions -->
         <div class="action-buttons">
-          <button 
-            (click)="generateCertificate(false)"
-            [disabled]="isGenerating"
-            class="btn-primary btn-icon"
-          >
+          <button (click)="generateCertificate(false)" [disabled]="isGenerating" class="btn-primary btn-icon">
             <i class="fas" [class.fa-spinner]="isGenerating" [class.fa-eye]="!isGenerating"></i>
             {{ isGenerating ? ('certificate2.generating' | translate) : ('certificate2.generatePdf' | translate) }}
           </button>
 
-          <button 
-            (click)="generateCertificate(true)"
-            [disabled]="isGenerating"
-            class="btn-success btn-icon"
-          >
+          <button (click)="generateCertificate(true)" [disabled]="isGenerating" class="btn-success btn-icon">
             <i class="fas" [class.fa-spinner]="isGenerating" [class.fa-save]="!isGenerating"></i>
             {{ isGenerating ? ('certificate2.saving' | translate) : ('certificate2.generateAndSave' | translate) }}
           </button>
 
-          <button 
-            (click)="saveToDatabase()"
-            [disabled]="isSaving"
-            class="btn-accent btn-icon"
-          >
+          <button (click)="saveToDatabase()" [disabled]="isSaving" class="btn-accent btn-icon">
             <i class="fas" [class.fa-spinner]="isSaving" [class.fa-database]="!isSaving"></i>
             {{ isSaving ? ('certificate2.saving' | translate) : ('certificate2.saveOnly' | translate) }}
           </button>
@@ -334,12 +287,8 @@
       </div>
 
       <div class="student-grid">
-        <div 
-          *ngFor="let student of filteredStudents"
-          class="student-card"
-          [class.student-card-active]="selectedStudentId === student.id"
-          (click)="selectStudent(student)"
-        >
+        <div *ngFor="let student of filteredStudents" class="student-card"
+          [class.student-card-active]="selectedStudentId === student.id" (click)="selectStudent(student)">
           <div class="student-avatar">
             {{ student.fullName.charAt(0) }}
           </div>
@@ -424,20 +373,15 @@
       </div>
 
       <div class="action-buttons">
-        <button 
-          (click)="bulkGenerateCertificates()"
-          [disabled]="isBulkGenerating || !bulkClassId"
-          class="btn-primary btn-icon"
-        >
+        <button (click)="bulkGenerateCertificates()" [disabled]="isBulkGenerating || !bulkClassId"
+          class="btn-primary btn-icon">
           <i class="fas" [class.fa-spinner]="isBulkGenerating" [class.fa-bolt]="!isBulkGenerating"></i>
-          {{ isBulkGenerating ? ('certificate2.bulkGenerating' | translate) : ('certificate2.bulkGenerate' | translate) }}
+          {{ isBulkGenerating ? ('certificate2.bulkGenerating' | translate) : ('certificate2.bulkGenerate' | translate)
+          }}
         </button>
 
-        <button 
-          (click)="downloadBulkCertificates()"
-          [disabled]="isDownloadingBulk || !bulkClassId"
-          class="btn-secondary btn-icon"
-        >
+        <button (click)="downloadBulkCertificates()" [disabled]="isDownloadingBulk || !bulkClassId"
+          class="btn-secondary btn-icon">
           <i class="fas" [class.fa-spinner]="isDownloadingBulk" [class.fa-file-archive]="!isDownloadingBulk"></i>
           {{ isDownloadingBulk ? ('certificate2.downloading' | translate) : ('certificate2.downloadBulk' | translate) }}
         </button>
@@ -463,12 +407,8 @@
               <i class="fas fa-user me-2"></i>
               {{ 'certificate2.studentName' | translate }}
             </label>
-            <input 
-              type="text"
-              [(ngModel)]="searchFilters.studentName"
-              class="modern-input"
-              placeholder="{{ 'certificate2.studentNamePlaceholder' | translate }}"
-            >
+            <input type="text" [(ngModel)]="searchFilters.studentName" class="modern-input"
+              placeholder="{{ 'certificate2.studentNamePlaceholder' | translate }}">
           </div>
 
           <div class="filter-card">
@@ -476,12 +416,8 @@
               <i class="fas fa-hashtag me-2"></i>
               {{ 'certificate2.certificateNumber' | translate }}
             </label>
-            <input 
-              type="text"
-              [(ngModel)]="searchFilters.certificateNumber"
-              class="modern-input"
-              placeholder="{{ 'certificate2.certificateNumberPlaceholder' | translate }}"
-            >
+            <input type="text" [(ngModel)]="searchFilters.certificateNumber" class="modern-input"
+              placeholder="{{ 'certificate2.certificateNumberPlaceholder' | translate }}">
           </div>
 
           <div class="filter-card">
@@ -521,11 +457,7 @@
               <i class="fas fa-calendar-day me-2"></i>
               {{ 'certificate2.fromDate' | translate }}
             </label>
-            <input 
-              type="date"
-              [(ngModel)]="searchFilters.fromDate"
-              class="modern-input"
-            >
+            <input type="date" [(ngModel)]="searchFilters.fromDate" class="modern-input">
           </div>
 
           <div class="filter-card">
@@ -533,28 +465,17 @@
               <i class="fas fa-calendar-day me-2"></i>
               {{ 'certificate2.toDate' | translate }}
             </label>
-            <input 
-              type="date"
-              [(ngModel)]="searchFilters.toDate"
-              class="modern-input"
-            >
+            <input type="date" [(ngModel)]="searchFilters.toDate" class="modern-input">
           </div>
         </div>
 
         <!-- Search Actions -->
         <div class="action-buttons">
-          <button 
-            (click)="searchCertificates()"
-            [disabled]="isSearching"
-            class="btn-primary btn-icon"
-          >
+          <button (click)="searchCertificates()" [disabled]="isSearching" class="btn-primary btn-icon">
             <i class="fas" [class.fa-spinner]="isSearching" [class.fa-search]="!isSearching"></i>
             {{ isSearching ? ('certificate2.searching' | translate) : ('certificate2.search' | translate) }}
           </button>
-          <button 
-            (click)="clearSearch()"
-            class="btn-outline btn-icon"
-          >
+          <button (click)="clearSearch()" class="btn-outline btn-icon">
             <i class="fas fa-eraser me-2"></i>
             {{ 'certificate2.clear' | translate }}
           </button>
@@ -602,26 +523,16 @@
               </div>
               <div class="table-cell">
                 <div class="action-buttons">
-                  <button 
-                    class="btn-icon-small btn-info"
-                    (click)="viewCertificate(cert)"
-                    title="{{ 'certificate2.view' | translate }}"
-                  >
+                  <button class="btn-icon-small btn-info" (click)="viewCertificate(cert)"
+                    title="{{ 'certificate2.view' | translate }}">
                     <i class="fas fa-eye"></i>
                   </button>
-                  <button 
-                    class="btn-icon-small btn-success"
-                    (click)="downloadCertificate(cert)"
-                    title="{{ 'certificate2.download' | translate }}"
-                  >
+                  <button class="btn-icon-small btn-success" (click)="downloadCertificate(cert)"
+                    title="{{ 'certificate2.download' | translate }}">
                     <i class="fas fa-download"></i>
                   </button>
-                  <button 
-                    *ngIf="!cert.archived"
-                    class="btn-icon-small btn-warning"
-                    (click)="archiveCertificate(cert.id)"
-                    title="{{ 'certificate2.archive' | translate }}"
-                  >
+                  <button *ngIf="!cert.archived" class="btn-icon-small btn-warning"
+                    (click)="archiveCertificate(cert.id)" title="{{ 'certificate2.archive' | translate }}">
                     <i class="fas fa-archive"></i>
                   </button>
                 </div>
@@ -648,12 +559,8 @@
               <i class="fas fa-fingerprint me-2"></i>
               {{ 'certificate2.certificateId' | translate }}
             </label>
-            <input 
-              type="text"
-              [(ngModel)]="verifyCertificateId"
-              class="modern-input"
-              placeholder="{{ 'certificate2.certificateIdPlaceholder' | translate }}"
-            >
+            <input type="text" [(ngModel)]="verifyCertificateId" class="modern-input"
+              placeholder="{{ 'certificate2.certificateIdPlaceholder' | translate }}">
           </div>
 
           <div class="form-group">
@@ -661,20 +568,13 @@
               <i class="fas fa-user-check me-2"></i>
               {{ 'certificate2.verifiedBy' | translate }}
             </label>
-            <input 
-              type="text"
-              [(ngModel)]="verifyBy"
-              class="modern-input"
-              placeholder="{{ 'certificate2.verifierName' | translate }}"
-            >
+            <input type="text" [(ngModel)]="verifyBy" class="modern-input"
+              placeholder="{{ 'certificate2.verifierName' | translate }}">
           </div>
 
           <div class="form-group">
-            <button 
-              (click)="verifyCertificate()"
-              [disabled]="!verifyCertificateId || !verifyBy"
-              class="btn-accent btn-icon"
-            >
+            <button (click)="verifyCertificate()" [disabled]="!verifyCertificateId || !verifyBy"
+              class="btn-accent btn-icon">
               <i class="fas fa-shield-check me-2"></i>
               {{ 'certificate2.verify' | translate }}
             </button>
@@ -684,3 +584,27 @@
     </div>
   </div>
 </div>
+
+<!-- CONFIRMATION MODAL (Placed outside main container) -->
+<div *ngIf="isConfirmModalOpen" class="modal fade show" style="display: block; z-index: 1054">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Action</h5>
+        <button type="button" class="btn-close" (click)="closeConfirm()"></button>
+      </div>
+      <div class="modal-body">
+        <p>{{ confirmModalMessage }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeConfirm()">
+          Cancel
+        </button>
+        <button type="button" class="btn btn-primary" (click)="confirmYes()">
+          Yes, Continue
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="isConfirmModalOpen" class="modal-backdrop fade show" style="z-index: 1053"></div>

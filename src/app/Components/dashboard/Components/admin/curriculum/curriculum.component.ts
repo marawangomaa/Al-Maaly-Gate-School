@@ -135,11 +135,9 @@ export class CurriculumComponent {
       .subscribe({
         next: (data) => {
           this.curricula = data;
-          this.toastService.success('Curricula loaded successfully');
         },
         error: (error) => {
-          this.toastService.error('Failed to load curricula');
-          console.error('Error loading curricula:', error);
+          this.toastService.error('Failed to load curricula', error.message);
         }
       });
   }

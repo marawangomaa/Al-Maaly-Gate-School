@@ -8,6 +8,7 @@ import { DegreeItemDto, StudentDegreesDto, DegreeType } from '../../../../../Int
 import { ClassService } from '../../../../../Services/class.service';
 import { DegreeService } from '../../../../../Services/degree.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { ToastService } from '../../../../../Services/UtilServices/toast.service';
 
 @Component({
   selector: 'app-admin-all-student-tests-result',
@@ -52,7 +53,8 @@ export class AdminAllStudentTestsResultComponent implements OnInit {
 
   constructor(
     private classService: ClassService,
-    private degreeService: DegreeService
+    private degreeService: DegreeService,
+    private toastService : ToastService
   ) {}
 
   ngOnInit(): void {
@@ -288,13 +290,13 @@ export class AdminAllStudentTestsResultComponent implements OnInit {
           this.studentFullDegreesMap.set(studentId, studentData);
           this.loadStudentDegreesForModal(studentData);
         } else {
-          alert('لا توجد نتائج لهذا الطالب');
+          this.toastService.error('حدث خطأ أثناء تحميل النتائج');
           this.loadingStudentDetails = false;
         }
       },
       error: (error) => {
         console.error('Error loading student degrees for modal:', error);
-        alert('حدث خطأ أثناء تحميل النتائج');
+        this.toastService.error('حدث خطأ أثناء تحميل النتائج');
         this.loadingStudentDetails = false;
       }
     });
