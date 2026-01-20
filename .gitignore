@@ -44,3 +44,8 @@ Thumbs.db
 
 package.json
 package-lock.json
+
+# Environment files
+/src/environments
+#proxy file
+proxy.conf.json
