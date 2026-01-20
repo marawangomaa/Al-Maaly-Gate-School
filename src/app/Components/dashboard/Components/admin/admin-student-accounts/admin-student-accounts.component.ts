@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { ClassViewDto } from '../../../../../Interfaces/iclass';
 import { ClassService } from '../../../../../Services/class.service';
 import istudentUpdate from '../../../../../Interfaces/istudentUpdate';
+import { ToastService } from '../../../../../Services/UtilServices/toast.service';
 
 @Component({
   selector: 'app-admin-student-accounts',
@@ -41,12 +42,18 @@ export class AdminStudentAccountsComponent implements OnInit, OnDestroy {
 
   private subscription = new Subscription();
 
+  // Modal state
+  isConfirmModalOpen: boolean = false;
+  confirmModalMessage: string = '';
+  private confirmAction?: () => void;
+
   constructor(
     private _StudentService: StudentService,
     private adminService: AdminManagementService,
     private authService: AuthService,
     private translate: TranslateService,
-    private _ClassService: ClassService
+    private _ClassService: ClassService,
+    private toastService: ToastService
   ) { }
 
   ngOnInit(): void {
@@ -188,22 +195,22 @@ export class AdminStudentAccountsComponent implements OnInit, OnDestroy {
   // دالة للتحقق من صحة البيانات المدخلة
   validateAdditionalInfo(): boolean {
     if (!this.passportNumber || this.passportNumber.trim() === '') {
-      alert('يرجى إدخال رقم الجواز');
+      this.toastService.warning('يرجى إدخال رقم الجواز');
       return false;
     }
 
     if (!this.nationality || this.nationality.trim() === '') {
-      alert('يرجى إدخال الجنسية');
+      this.toastService.warning('يرجى إدخال الجنسية');
       return false;
     }
 
     if (!this.iqamaNumber || this.iqamaNumber.trim() === '') {
-      alert('يرجى إدخال رقم الإقامة');
+      this.toastService.warning('يرجى إدخال رقم الإقامة');
       return false;
     }
 
     if (!this.selectedClassId) {
-      alert('يرجى اختيار فصل للطالب');
+      this.toastService.warning('يرجى اختيار فصل للطالب');
       return false;
     }
 
@@ -212,84 +219,83 @@ export class AdminStudentAccountsComponent implements OnInit, OnDestroy {
 
   // تحديث البيانات فقط (يغلق المودال بعد التحديث مباشرة)
   updateStudentInfoOnly(): void {
-    if (!this.selectedStudentForModal) return;
+    this.openConfirm('هل أنت متأكد من رغبتك في تحديث بيانات الطالب؟', () => {
+      if (!this.selectedStudentForModal) return;
 
-    if (!this.validateAdditionalInfo()) {
-      return;
-    }
+      if (!this.validateAdditionalInfo()) {
+        return;
+      }
+      this.isAssigning = true;
+      const studentId = this.selectedStudentForModal.id;
 
-    if (!confirm('هل أنت متأكد من تحديث بيانات الطالب؟')) return;
+      console.log('بدء عملية تحديث بيانات الطالب:', {
+        studentId,
+        passportNumber: this.passportNumber,
+        nationality: this.nationality,
+        iqamaNumber: this.iqamaNumber,
+        classId: this.selectedClassId
+      });
 
-    this.isAssigning = true;
-    const studentId = this.selectedStudentForModal.id;
+      // 1. تحديث بيانات الطالب
+      this.updateStudentAdditionalInfo(studentId).then(() => {
+        console.log('تم تحديث البيانات بنجاح');
 
-    console.log('بدء عملية تحديث بيانات الطالب:', {
-      studentId,
-      passportNumber: this.passportNumber,
-      nationality: this.nationality,
-      iqamaNumber: this.iqamaNumber,
-      classId: this.selectedClassId
-    });
-
-    // 1. تحديث بيانات الطالب
-    this.updateStudentAdditionalInfo(studentId).then(() => {
-      console.log('تم تحديث البيانات بنجاح');
-
-      // 2. إذا كان هناك classId، أضف الطالب للفصل
-      if (this.selectedClassId && this.selectedClassId.trim() !== '') {
-        const adminUserId = this.authService.userId;
-        if (adminUserId) {
-          this.addStudentToClass(studentId, adminUserId, true);
+        // 2. إذا كان هناك classId، أضف الطالب للفصل
+        if (this.selectedClassId && this.selectedClassId.trim() !== '') {
+          const adminUserId = this.authService.userId;
+          if (adminUserId) {
+            this.addStudentToClass(studentId, adminUserId, true);
+          } else {
+            this.finishUpdateProcess();
+          }
         } else {
           this.finishUpdateProcess();
         }
-      } else {
-        this.finishUpdateProcess();
-      }
-    }).catch(error => {
-      this.isAssigning = false;
-      console.error('خطأ في تحديث البيانات:', error);
-      alert(`خطأ في تحديث بيانات الطالب: ${error.message || 'حدث خطأ غير معروف'}`);
+      }).catch(error => {
+        this.isAssigning = false;
+        console.error('خطأ في تحديث البيانات:', error);
+        this.toastService.error(`خطأ في تحديث بيانات الطالب: ${error.message || 'حدث خطأ غير معروف'}`);
+      });
     });
   }
 
   // الموافقة على الطالب وإضافته للفصل
   approveStudentWithClass(): void {
-    if (!this.selectedStudentForModal) return;
+    this.openConfirm('هل أنت متأكد من رغبتك في الموافقة على هذا الطالب وإضافته للفصل؟', () => {
+      if (!this.selectedStudentForModal) return;
 
-    if (!this.validateAdditionalInfo()) {
-      return;
+      if (!this.validateAdditionalInfo()) {
+        return;
+      }
+      const adminUserId = this.authService.userId;
+      if (!adminUserId) {
+        this.toastService.error(this.translate.instant('students.messages.adminNotFound'));
+        return;
+      }
+
+      this.isAssigning = true;
+      const studentId = this.selectedStudentForModal.id;
+
+      console.log('بدء عملية الموافقة على الطالب:', {
+        studentId,
+        passportNumber: this.passportNumber,
+        nationality: this.nationality,
+        iqamaNumber: this.iqamaNumber,
+        classId: this.selectedClassId
+      });
+
+      // 1. تحديث بيانات الطالب
+      this.updateStudentAdditionalInfo(studentId).then(() => {
+        console.log('تم تحديث البيانات بنجاح');
+        // 2. ثانياً: الموافقة على الحساب
+        this.approveStudentAccount(studentId, adminUserId);
+      }).catch(error => {
+        this.isAssigning = false;
+        console.error('خطأ في تحديث البيانات:', error);
+        this.toastService.error(`خطأ في تحديث بيانات الطالب: ${error.message || 'حدث خطأ غير معروف'}`);
+      });
     }
-
-    if (!confirm(`هل أنت متأكد من رغبتك في تحديث بيانات الطالب والموافقة عليه وإضافته للفصل؟`)) return;
-
-    const adminUserId = this.authService.userId;
-    if (!adminUserId) {
-      alert(this.translate.instant('students.messages.adminNotFound'));
-      return;
-    }
-
-    this.isAssigning = true;
-    const studentId = this.selectedStudentForModal.id;
-
-    console.log('بدء عملية الموافقة على الطالب:', {
-      studentId,
-      passportNumber: this.passportNumber,
-      nationality: this.nationality,
-      iqamaNumber: this.iqamaNumber,
-      classId: this.selectedClassId
-    });
-
-    // 1. تحديث بيانات الطالب
-    this.updateStudentAdditionalInfo(studentId).then(() => {
-      console.log('تم تحديث البيانات بنجاح');
-      // 2. ثانياً: الموافقة على الحساب
-      this.approveStudentAccount(studentId, adminUserId);
-    }).catch(error => {
-      this.isAssigning = false;
-      console.error('خطأ في تحديث البيانات:', error);
-      alert(`خطأ في تحديث بيانات الطالب: ${error.message || 'حدث خطأ غير معروف'}`);
-    });
+    );
   }
 
   // تحديث البيانات الإضافية للطالب
@@ -342,7 +348,7 @@ export class AdminStudentAccountsComponent implements OnInit, OnDestroy {
         error: (approveErr) => {
           this.isAssigning = false;
           console.error('خطأ في الموافقة على الحساب:', approveErr);
-          alert(`تم تحديث البيانات ولكن حدث خطأ في الموافقة على الحساب: ${approveErr.message || 'حدث خطأ غير معروف'}`);
+          this.toastService.error(`تم تحديث البيانات ولكن حدث خطأ في الموافقة على الحساب: ${approveErr.message || 'حدث خطأ غير معروف'}`);
         }
       })
     );
@@ -373,20 +379,20 @@ export class AdminStudentAccountsComponent implements OnInit, OnDestroy {
 
             if (isUpdateOnly) {
               // للتحديث فقط
-              alert('تم تحديث بيانات الطالب وإضافته للفصل بنجاح');
+              this.toastService.success('تم تحديث بيانات الطالب وإضافته للفصل بنجاح');
               this.finishUpdateProcess();
             } else {
               // للموافقة وإضافة للفصل
-              alert('تم تحديث بيانات الطالب والموافقة عليه وإضافته للفصل بنجاح');
+              this.toastService.success('تم تحديث بيانات الطالب والموافقة عليه وإضافته للفصل بنجاح');
               this.closeAssignModal();
               this.LoadAllStudents();
             }
           } else {
             if (isUpdateOnly) {
-              alert('تم تحديث البيانات ولكن فشل إضافة الطالب للفصل');
+              this.toastService.error('تم تحديث البيانات ولكن فشل إضافة الطالب للفصل');
               this.finishUpdateProcess();
             } else {
-              alert('تم تحديث البيانات والموافقة على الحساب ولكن فشل إضافة الطالب للفصل');
+              this.toastService.error('تم تحديث البيانات والموافقة على الحساب ولكن فشل إضافة الطالب للفصل');
               this.closeAssignModal();
             }
           }
@@ -396,10 +402,10 @@ export class AdminStudentAccountsComponent implements OnInit, OnDestroy {
           console.error('خطأ في إضافة الطالب للفصل:', moveErr);
 
           if (isUpdateOnly) {
-            alert('تم تحديث البيانات ولكن حدث خطأ في إضافة الطالب للفصل');
+            this.toastService.error('تم تحديث البيانات ولكن حدث خطأ في إضافة الطالب للفصل');
             this.finishUpdateProcess();
           } else {
-            alert(`تم تحديث البيانات والموافقة على الحساب ولكن حدث خطأ في إضافة الطالب للفصل`);
+            this.toastService.error(`تم تحديث البيانات والموافقة على الحساب ولكن حدث خطأ في إضافة الطالب للفصل`);
             this.closeAssignModal();
           }
         }
@@ -431,82 +437,83 @@ export class AdminStudentAccountsComponent implements OnInit, OnDestroy {
   }
 
   RejectStudentAction(studentId: string): void {
-    if (!confirm('هل أنت متأكد من رغبتك في رفض هذا الطالب؟')) return;
-    const adminUserId = this.authService.userId;
-    if (!adminUserId) {
-      alert(this.translate.instant('students.messages.adminNotFound'));
-      return;
-    }
+    this.openConfirm('هل أنت متأكد من رغبتك في رفض هذا الطالب؟', () => {
+      const adminUserId = this.authService.userId;
+      if (!adminUserId) {
+        this.toastService.error(this.translate.instant('students.messages.adminNotFound'));
+        return;
+      }
 
-    this.subscription.add(
-      this.adminService.RejectAccount(studentId, adminUserId, 'student').subscribe({
-        next: result => {
-          if (result) {
-            alert(this.translate.instant('students.messages.rejected'));
-            const student = this.allStudents.find(t => t.id === studentId);
-            if (student) student.accountStatus = AccountStatus.Rejected;
-          }
-          else {
-            alert(this.translate.instant('students.messages.rejectFailed'));
-          }
-        },
-        error: err => alert(`${this.translate.instant('students.messages.error')}: ${err.message}`)
-      })
-    );
+      this.subscription.add(
+        this.adminService.RejectAccount(studentId, adminUserId, 'student').subscribe({
+          next: result => {
+            if (result) {
+              this.toastService.success(this.translate.instant('students.messages.rejected'));
+              const student = this.allStudents.find(t => t.id === studentId);
+              if (student) student.accountStatus = AccountStatus.Rejected;
+            }
+            else {
+              this.toastService.error(this.translate.instant('students.messages.rejectFailed'));
+            }
+          },
+          error: err => this.toastService.error(`${this.translate.instant('students.messages.error')}: ${err.message}`)
+        })
+      );
+    });
   }
 
-  async BlockStudentAction(studentId: string): Promise<void> {
-    const confirmation = confirm(this.translate.instant('students.confirmations.block'));
-    if (!confirmation) return;
+  BlockStudentAction(studentId: string): void {
+    this.openConfirm('هل أنت متأكد من رغبتك في حظر هذا الطالب؟', () => {
 
-    const adminUserId = this.authService.userId;
-    if (!adminUserId) {
-      alert(this.translate.instant('students.messages.adminNotFound'));
-      return;
-    }
+      const adminUserId = this.authService.userId;
+      if (!adminUserId) {
+        this.toastService.error(this.translate.instant('students.messages.adminNotFound'));
+        return;
+      }
 
-    this.subscription.add(
-      this.adminService.BlockAccount(studentId, adminUserId, 'student').subscribe({
-        next: result => {
-          if (result) {
-            alert(this.translate.instant('students.messages.blocked'));
-            const student = this.allStudents.find(t => t.id === studentId);
-            if (student) student.accountStatus = AccountStatus.Blocked;
-          }
-          else {
-            alert(this.translate.instant('students.messages.blockFailed'));
-          }
-        },
-        error: err => alert(`${this.translate.instant('students.messages.error')}: ${err.message}`)
-      })
-    );
+      this.subscription.add(
+        this.adminService.BlockAccount(studentId, adminUserId, 'student').subscribe({
+          next: result => {
+            if (result) {
+              this.toastService.success(this.translate.instant('students.messages.blocked'));
+              const student = this.allStudents.find(t => t.id === studentId);
+              if (student) student.accountStatus = AccountStatus.Blocked;
+            }
+            else {
+              this.toastService.error(this.translate.instant('students.messages.blockFailed'));
+            }
+          },
+          error: err => this.toastService.error(`${this.translate.instant('students.messages.error')}: ${err.message}`)
+        })
+      );
+
+    });
   }
 
-  async UnblockStudentAction(studentId: string): Promise<void> {
-    const confirmation = confirm(this.translate.instant('students.confirmations.unblock'));
-    if (!confirmation) return;
+  UnblockStudentAction(studentId: string): void {
+    this.openConfirm(this.translate.instant('students.confirmations.unblock'), () => {
+      const adminUserId = this.authService.userId;
+      if (!adminUserId) {
+        this.toastService.error(this.translate.instant('students.messages.adminNotFound'));
+        return;
+      }
 
-    const adminUserId = this.authService.userId;
-    if (!adminUserId) {
-      alert(this.translate.instant('students.messages.adminNotFound'));
-      return;
-    }
-
-    this.subscription.add(
-      this.adminService.UnblockAccount(studentId, adminUserId, 'student').subscribe({
-        next: result => {
-          if (result) {
-            alert(this.translate.instant('students.messages.unblocked'));
-            const student = this.allStudents.find(t => t.id === studentId);
-            if (student) student.accountStatus = AccountStatus.Active;
-          }
-          else {
-            alert(this.translate.instant('students.messages.unblockFailed'));
-          }
-        },
-        error: err => alert(`${this.translate.instant('students.messages.error')}: ${err.message}`)
-      })
-    );
+      this.subscription.add(
+        this.adminService.UnblockAccount(studentId, adminUserId, 'student').subscribe({
+          next: result => {
+            if (result) {
+              this.toastService.success(this.translate.instant('students.messages.unblocked'));
+              const student = this.allStudents.find(t => t.id === studentId);
+              if (student) student.accountStatus = AccountStatus.Active;
+            }
+            else {
+              this.toastService.error(this.translate.instant('students.messages.unblockFailed'));
+            }
+          },
+          error: err => this.toastService.error(`${this.translate.instant('students.messages.error')}: ${err.message}`)
+        })
+      );
+    });
   }
 
   private LoadAllStudents(): void {
@@ -519,7 +526,7 @@ export class AdminStudentAccountsComponent implements OnInit, OnDestroy {
           console.log('تم تحميل الطلاب:', this.allStudents.length);
         },
         error: err => {
-          alert(`خطأ في تحميل جميع الحسابات: ${err.message}`);
+          this.toastService.error(`خطأ في تحميل جميع الحسابات: ${err.message}`);
           this.isLoading = false;
         }
       })
@@ -547,5 +554,22 @@ export class AdminStudentAccountsComponent implements OnInit, OnDestroy {
     if (!classId) return 'غير محدد';
     const classObj = this.allClasses.find(c => c.id === classId);
     return classObj ? `${classObj.className} - ${classObj.gradeName}` : 'غير محدد';
+  }
+  //modal methods
+  openConfirm(message: string, action: () => void): void {
+    this.confirmModalMessage = message;
+    this.confirmAction = action;
+    this.isConfirmModalOpen = true;
+  }
+
+  confirmYes(): void {
+    this.confirmAction?.();
+    this.closeConfirm();
+  }
+
+  closeConfirm(): void {
+    this.isConfirmModalOpen = false;
+    this.confirmModalMessage = '';
+    this.confirmAction = undefined;
   }
 }

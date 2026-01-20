@@ -3,10 +3,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClassService } from '../../../../../Services/class.service';
 import { GradeService } from '../../../../../Services/grade.service';
-import { CurriculumService } from '../../../../../Services/curriculum.service'; // Added
-import { BulkMoveClassesDto, ClassDto, ClassViewDto, CreateClassDto } from '../../../../../Interfaces/iclass';
+import { CurriculumService } from '../../../../../Services/curriculum.service';
+import { BulkMoveClassesDto, ClassDto, ClassViewDto, CreateClassDto, UpdateClassDto } from '../../../../../Interfaces/iclass';
 import { GradeViewDto } from '../../../../../Interfaces/igrade';
-import { Curriculum } from '../../../../../Interfaces/icurriculum'; // Added
+import { Curriculum } from '../../../../../Interfaces/icurriculum';
 import { ApiResponseHandler } from '../../../../../utils/api-response-handler';
 import { Subscription } from 'rxjs';
 import { AdminManagementService } from '../../../../../Services/admin-management.service';
@@ -15,6 +15,7 @@ import { Teacher } from '../../../../../Interfaces/teacher';
 import { TranslateModule } from '@ngx-translate/core';
 import { BulkAssignTeachersDto } from '../../../../../Interfaces/iteacher';
 import { SubjectService } from '../../../../../Services/subject.service';
+import { ToastService } from '../../../../../Services/UtilServices/toast.service';
 
 declare var bootstrap: any;
 
@@ -34,12 +35,12 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
   allTeachers: any[] = [];
   filteredTeachers: Teacher[] = [];
   allGrades: GradeViewDto[] = [];
-  allCurricula: Curriculum[] = []; // Added
+  allCurricula: Curriculum[] = [];
   
   // Selection and state management
   selectedClassId: string | null = null;
   selectedClass: ClassViewDto | null = null;
-  selectedClasses: string[] = []; // For bulk operations
+  selectedClasses: string[] = [];
   classStudents: any[] = [];
 
   // Modal data
@@ -48,13 +49,12 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
   classStats: any = null;
 
   // UI state
-  successMessage: string | null = null;
   isLoadingDetails = false;
   loading = false;
 
   // Filtering and search
   selectedGradeFilter: string = '';
-  selectedCurriculumFilter: string = ''; // Added
+  selectedCurriculumFilter: string = '';
   searchTerm: string = '';
   sortBy: string = 'className';
   teacherSearchTerm: string = '';
@@ -81,19 +81,35 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
     gradeId: ''
   };
 
+  // Edit form model
+  editClassData: UpdateClassDto = {
+    id: '',
+    className: '',
+    gradeId: ''
+  };
+
+  // Confirmation modal
+  confirmationTitle: string = '';
+  confirmationMessage: string = '';
+  confirmationAction: () => void = () => {};
+  confirmationType: 'danger' | 'warning' | 'info' = 'info';
+  confirmButtonText: string = 'Confirm';
+  cancelButtonText: string = 'Cancel';
+
   constructor(
     private classService: ClassService,
     private gradeService: GradeService,
-    private curriculumService: CurriculumService, // Added
+    private curriculumService: CurriculumService,
     private adminManagementService: AdminManagementService,
     private teacherService: TeacherService,
-    private SubjectService: SubjectService
+    private SubjectService: SubjectService,
+    private toastService: ToastService
   ) { }
 
   ngOnInit(): void {
     this.loadAllClasses();
     this.loadAllGrades();
-    this.loadAllCurricula(); // Added
+    this.loadAllCurricula();
     this.loadAvailableSubjects();
   }
 
@@ -108,7 +124,6 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
     ApiResponseHandler.handleApiResponse<ClassViewDto[]>(this.classService.getAll()).subscribe({
       next: (classes) => {
         this.allClasses = classes;
-        // Enhance classes with curriculum information
         this.enhanceClassesWithCurriculumInfo();
         this.filterClasses();
         this.updatePagination();
@@ -116,6 +131,7 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error('Error loading classes:', error);
+        this.toastService.error('Failed to load classes', 'Error');
         this.loading = false;
       }
     });
@@ -128,6 +144,7 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error('Error loading grades:', error);
+        this.toastService.error('Failed to load grades', 'Error');
       }
     });
   }
@@ -139,6 +156,7 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error('Error loading curricula:', error);
+        this.toastService.error('Failed to load curricula', 'Error');
       }
     });
   }
@@ -155,6 +173,7 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
       },
       error: (error: any) => {
         console.error('Error loading subjects:', error);
+        this.toastService.error('Failed to load subjects', 'Error');
         this.availableSubjects = [];
       }
     });
@@ -164,9 +183,7 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
     this.allClasses.forEach(cls => {
       const grade = this.allGrades.find(g => g.id === cls.gradeId);
       if (grade) {
-        // Add curriculumId to class for filtering
         (cls as any).curriculumId = grade.curriculumId;
-        // Add curriculumName to class for display
         (cls as any).curriculumName = grade.curriculumName || this.getCurriculumName(grade.curriculumId);
       }
     });
@@ -177,20 +194,16 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
   filterClasses(): void {
     let filtered = this.allClasses;
 
-    // Filter by grade
     if (this.selectedGradeFilter) {
       filtered = filtered.filter(c => c.gradeId === this.selectedGradeFilter);
     }
 
-    // Filter by curriculum (NEW)
     if (this.selectedCurriculumFilter) {
-      // Get grades that belong to the selected curriculum
       const curriculumGrades = this.allGrades.filter(g => g.curriculumId === this.selectedCurriculumFilter);
       const curriculumGradeIds = curriculumGrades.map(g => g.id);
       filtered = filtered.filter(c => curriculumGradeIds.includes(c.gradeId));
     }
 
-    // Filter by search term
     if (this.searchTerm) {
       const term = this.searchTerm.toLowerCase();
       filtered = filtered.filter(c =>
@@ -200,7 +213,6 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
       );
     }
 
-    // Sort the results
     filtered = this.sortClassesArray(filtered);
 
     this.filteredClasses = filtered;
@@ -217,7 +229,7 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
           return (b.teacherCount || 0) - (a.teacherCount || 0);
         case 'gradeName':
           return (a.gradeName || '').localeCompare(b.gradeName || '');
-        case 'curriculumName': // NEW
+        case 'curriculumName':
           return ((a as any).curriculumName || '').localeCompare((b as any).curriculumName || '');
         case 'className':
         default:
@@ -235,7 +247,6 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
 
     let filtered = this.allTeachers;
 
-    // Filter by search term
     if (this.teacherSearchTerm) {
       const term = this.teacherSearchTerm.toLowerCase();
       filtered = filtered.filter(t =>
@@ -244,7 +255,6 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
       );
     }
 
-    // Filter by subject
     if (this.teacherSubjectFilter) {
       filtered = filtered.filter(t =>
         t.subjects && t.subjects.includes(this.teacherSubjectFilter)
@@ -255,10 +265,8 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
   }
 
   onCurriculumFilterChange(): void {
-    // When curriculum filter changes, update grade filter options
     if (this.selectedCurriculumFilter) {
       const curriculumGrades = this.allGrades.filter(g => g.curriculumId === this.selectedCurriculumFilter);
-      // If selected grade doesn't belong to selected curriculum, clear it
       if (this.selectedGradeFilter) {
         const selectedGrade = this.allGrades.find(g => g.id === this.selectedGradeFilter);
         if (selectedGrade && selectedGrade.curriculumId !== this.selectedCurriculumFilter) {
@@ -281,7 +289,6 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
     if (this.selectedClass) {
       this.isLoadingDetails = true;
       
-      // Load related data
       this.onClassSelected(classId);
       this.loadClassSubjects(classId);
       this.loadClassStatistics(classId);
@@ -371,27 +378,27 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
   // ========== TEACHER MANAGEMENT METHODS ==========
 
   loadAllTeachers(): void {
-  if (!this.selectedClassId) return;
+    if (!this.selectedClassId) return;
 
-  // Use the new service method to get teachers NOT assigned to this class
-  this.teacherService.getTeachersNotAssignedToClass(this.selectedClassId).subscribe({
-    next: (response) => {
-      if (response.success && response.data) {
-        this.allTeachers = response.data;
-        this.filteredTeachers = [...this.allTeachers];
-      } else {
-        console.error('Error loading teachers:', response.message);
+    this.teacherService.getTeachersNotAssignedToClass(this.selectedClassId).subscribe({
+      next: (response) => {
+        if (response.success && response.data) {
+          this.allTeachers = response.data;
+          this.filteredTeachers = [...this.allTeachers];
+        } else {
+          console.error('Error loading teachers:', response.message);
+          this.allTeachers = [];
+          this.filteredTeachers = [];
+        }
+      },
+      error: (err) => {
+        console.error('Error loading teachers:', err);
+        this.toastService.error('Failed to load teachers', 'Error');
         this.allTeachers = [];
         this.filteredTeachers = [];
       }
-    },
-    error: (err) => {
-      console.error('Error loading teachers:', err);
-      this.allTeachers = [];
-      this.filteredTeachers = [];
-    }
-  });
-}
+    });
+  }
 
   openAssignTeacherModal(classId: string): void {
     this.selectedClassId = classId;
@@ -399,26 +406,24 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
   }
 
   assignTeacherToClass(teacherId: string, classId: string): void {
-  this.adminManagementService.AssignTeacherToClass(teacherId, classId).subscribe({
-    next: (result) => {
-      if (result) {
-        this.showSuccess("Teacher assigned successfully!");
-        // Refresh the teacher list (remove assigned teacher)
-        this.allTeachers = this.allTeachers.filter(t => t.id !== teacherId);
-        this.filteredTeachers = this.filteredTeachers.filter(t => t.id !== teacherId);
-        // Refresh class details
-        this.loadClassTeachers(classId);
-        this.loadAllClasses();
-      } else {
-        alert(result || 'Failed to assign teacher');
+    this.adminManagementService.AssignTeacherToClass(teacherId, classId).subscribe({
+      next: (result) => {
+        if (result) {
+          this.toastService.success('Teacher assigned successfully!', 'Success');
+          this.allTeachers = this.allTeachers.filter(t => t.id !== teacherId);
+          this.filteredTeachers = this.filteredTeachers.filter(t => t.id !== teacherId);
+          this.loadClassTeachers(classId);
+          this.loadAllClasses();
+        } else {
+          this.toastService.error('Failed to assign teacher', 'Error');
+        }
+      },
+      error: (error) => {
+        console.error('Error assigning teacher to class:', error);
+        this.toastService.error(error.message || 'Failed to assign teacher', 'Error');
       }
-    },
-    error: (error) => {
-      console.error('Error assigning teacher to class:', error);
-      alert(error.message || 'Failed to assign teacher');
-    }
-  });
-}
+    });
+  }
 
   selectTeacher(teacherId: string): void {
     if (!this.selectedClassId) return;
@@ -426,19 +431,24 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
   }
 
   unassignTeacher(teacherId: string, classId: string): void {
-    if (confirm('Are you sure you want to unassign this teacher?')) {
-      this.adminManagementService.unassignTeacherFromClass(teacherId, classId).subscribe({
-        next: (result: any) => {
-          this.showSuccess("Teacher unassigned successfully!");
-          this.loadClassTeachers(classId);
-          this.loadAllClasses();
-        },
-        error: (error: any) => {
-          console.error('Error unassigning teacher:', error);
-          alert(error.message || 'Failed to unassign teacher');
-        }
-      });
-    }
+    this.showConfirmation(
+      'Unassign Teacher',
+      'Are you sure you want to unassign this teacher from the class?',
+      'warning',
+      () => {
+        this.adminManagementService.unassignTeacherFromClass(teacherId, classId).subscribe({
+          next: (result: any) => {
+            this.toastService.success('Teacher unassigned successfully!', 'Success');
+            this.loadClassTeachers(classId);
+            this.loadAllClasses();
+          },
+          error: (error: any) => {
+            console.error('Error unassigning teacher:', error);
+            this.toastService.error(error.message || 'Failed to unassign teacher', 'Error');
+          }
+        });
+      }
+    );
   }
 
   isTeacherAssigned(teacher: Teacher): boolean {
@@ -477,6 +487,7 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
       },
       error: (err: any) => {
         console.error('Error loading teachers for bulk assignment:', err);
+        this.toastService.error('Failed to load teachers', 'Error');
         this.bulkTeachers = [];
       }
     });
@@ -528,7 +539,7 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
 
   executeBulkOperation(): void {
     if (this.selectedClasses.length === 0) {
-      alert('Please select at least one class');
+      this.toastService.warning('Please select at least one class', 'Warning');
       return;
     }
 
@@ -544,73 +555,101 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
 
   private executeBulkMove(): void {
     if (!this.bulkMoveGradeId) {
-      alert('Please select a target grade');
+      this.toastService.warning('Please select a target grade', 'Warning');
       return;
     }
 
-    const dto: BulkMoveClassesDto = {
-      classIds: this.selectedClasses,
-      newGradeId: this.bulkMoveGradeId
-    };
+    this.showConfirmation(
+      'Bulk Move Classes',
+      `Are you sure you want to move ${this.selectedClasses.length} classes to the selected grade?`,
+      'warning',
+      () => {
+        const dto: BulkMoveClassesDto = {
+          classIds: this.selectedClasses,
+          newGradeId: this.bulkMoveGradeId
+        };
 
-    this.gradeService.bulkMoveClasses(dto).subscribe({
-      next: (response: any) => {
-        if (response.success) {
-          this.showSuccess(`Successfully moved ${this.selectedClasses.length} classes to new grade!`);
-          this.loadAllClasses();
-          this.closeModal('bulkOperationsModal');
-          this.selectedClasses = [];
-          this.bulkMoveGradeId = '';
-        }
-      },
-      error: (error: any) => {
-        alert('Error moving classes: ' + error.message);
+        this.gradeService.bulkMoveClasses(dto).subscribe({
+          next: (response: any) => {
+            if (response.success) {
+              this.toastService.success(`Successfully moved ${this.selectedClasses.length} classes to new grade!`, 'Success');
+              this.loadAllClasses();
+              this.closeModal('bulkOperationsModal');
+              this.selectedClasses = [];
+              this.bulkMoveGradeId = '';
+            } else {
+              this.toastService.error('Failed to move classes', 'Error');
+            }
+          },
+          error: (error: any) => {
+            console.error('Error moving classes:', error);
+            this.toastService.error('Failed to move classes: ' + error.message, 'Error');
+          }
+        });
       }
-    });
+    );
   }
 
   private executeBulkAssign(): void {
     if (this.selectedTeacherIds.length === 0) {
-      alert('Please select at least one teacher');
+      this.toastService.warning('Please select at least one teacher', 'Warning');
       return;
     }
 
-    const dto: BulkAssignTeachersDto = {
-      classIds: this.selectedClasses,
-      teacherIds: this.selectedTeacherIds
-    };
+    this.showConfirmation(
+      'Bulk Assign Teachers',
+      `Are you sure you want to assign ${this.selectedTeacherIds.length} teachers to ${this.selectedClasses.length} classes?`,
+      'warning',
+      () => {
+        const dto: BulkAssignTeachersDto = {
+          classIds: this.selectedClasses,
+          teacherIds: this.selectedTeacherIds
+        };
 
-    this.adminManagementService.bulkAssignTeachers(dto).subscribe({
-      next: (response: any) => {
-        if (response.success) {
-          this.showSuccess(`Successfully assigned ${this.selectedTeacherIds.length} teachers to ${this.selectedClasses.length} classes!`);
-          this.loadAllClasses();
-          this.closeModal('bulkOperationsModal');
-          this.selectedClasses = [];
-          this.selectedTeacherIds = [];
-        }
-      },
-      error: (error: any) => {
-        alert('Error assigning teachers: ' + error.message);
+        this.adminManagementService.bulkAssignTeachers(dto).subscribe({
+          next: (response: any) => {
+            if (response.success) {
+              this.toastService.success(`Successfully assigned ${this.selectedTeacherIds.length} teachers to ${this.selectedClasses.length} classes!`, 'Success');
+              this.loadAllClasses();
+              this.closeModal('bulkOperationsModal');
+              this.selectedClasses = [];
+              this.selectedTeacherIds = [];
+            } else {
+              this.toastService.error('Failed to assign teachers', 'Error');
+            }
+          },
+          error: (error: any) => {
+            console.error('Error assigning teachers:', error);
+            this.toastService.error('Failed to assign teachers: ' + error.message, 'Error');
+          }
+        });
       }
-    });
+    );
   }
 
   exportAllClasses(): void {
-    this.classService.exportAllClasses().subscribe({
-      next: (blob: Blob) => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `all_classes_data_${new Date().toISOString().split('T')[0]}.xlsx`;
-        a.click();
-        window.URL.revokeObjectURL(url);
-        this.showSuccess('All classes data exported successfully!');
-      },
-      error: (error: any) => {
-        alert('Error exporting all classes data: ' + error.message);
+    this.showConfirmation(
+      'Export All Classes',
+      'Are you sure you want to export all classes data to Excel?',
+      'info',
+      () => {
+        this.classService.exportAllClasses().subscribe({
+          next: (blob: Blob) => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `all_classes_data_${new Date().toISOString().split('T')[0]}.xlsx`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+            this.toastService.success('All classes data exported successfully!', 'Success');
+          },
+          error: (error: any) => {
+            console.error('Error exporting all classes data:', error);
+            this.toastService.error('Failed to export data: ' + error.message, 'Error');
+          }
+        });
       }
-    });
+    );
   }
 
   // ========== UTILITY METHODS ==========
@@ -659,11 +698,30 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
     }
   }
 
-  showSuccess(msg: string): void {
-    this.successMessage = msg;
-    setTimeout(() => {
-      this.successMessage = null;
-    }, 5000);
+  // ========== CONFIRMATION MODAL METHODS ==========
+
+  showConfirmation(
+    title: string,
+    message: string,
+    type: 'danger' | 'warning' | 'info' = 'info',
+    action: () => void,
+    confirmText: string = 'Confirm',
+    cancelText: string = 'Cancel'
+  ): void {
+    this.confirmationTitle = title;
+    this.confirmationMessage = message;
+    this.confirmationType = type;
+    this.confirmationAction = action;
+    this.confirmButtonText = confirmText;
+    this.cancelButtonText = cancelText;
+    
+    const modal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+    modal.show();
+  }
+
+  executeConfirmation(): void {
+    this.confirmationAction();
+    this.closeModal('confirmationModal');
   }
 
   // ========== PAGINATION METHODS ==========
@@ -700,7 +758,7 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
 
   createClass(): void {
     if (!this.newClass.className || !this.newClass.gradeId) {
-      alert('Please fill all required fields');
+      this.toastService.warning('Please fill all required fields', 'Warning');
       return;
     }
 
@@ -711,19 +769,62 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
         this.closeModal('createClassModal');
         this.newClass = { className: '', gradeId: '' };
         this.loadAllClasses();
-        this.showSuccess('Class created successfully!');
+        this.toastService.success('Class created successfully!', 'Success');
       },
       error: (error) => {
         console.error('Error creating class:', error);
-        alert(error.message || 'Failed to create class');
+        this.toastService.error(error.message || 'Failed to create class', 'Error');
       }
     });
   }
 
-  editClass(classId: string): void {
-    this.closeModal('classDetailsModal');
-    console.log('Edit class:', classId);
-    // Implement edit functionality
+  // ========== EDIT CLASS METHOD ==========
+  
+  openEditClassModal(classId: string): void {
+    const classToEdit = this.allClasses.find(c => c.id === classId);
+    if (classToEdit) {
+      // Close the details modal first
+      this.closeModal('classDetailsModal');
+      
+      // Set up the edit form data
+      this.editClassData = {
+        id: classToEdit.id,
+        className: classToEdit.className,
+        gradeId: classToEdit.gradeId
+      };
+      
+      // Show the edit modal
+      const modal = new bootstrap.Modal(document.getElementById('editClassModal'));
+      modal.show();
+    }
+  }
+
+  updateClass(): void {
+    if (!this.editClassData.id || !this.editClassData.className || !this.editClassData.gradeId) {
+      this.toastService.warning('Please fill all required fields', 'Warning');
+      return;
+    }
+
+    const updateData: UpdateClassDto = {
+      id: this.editClassData.id,
+      className: this.editClassData.className,
+      gradeId: this.editClassData.gradeId
+    };
+
+    ApiResponseHandler.handleApiResponse<ClassDto>(
+      this.classService.update(this.editClassData.id, updateData)
+    ).subscribe({
+      next: (updated) => {
+        this.closeModal('editClassModal');
+        this.editClassData = { id: '', className: '', gradeId: '' };
+        this.loadAllClasses();
+        this.toastService.success('Class updated successfully!', 'Success');
+      },
+      error: (error) => {
+        console.error('Error updating class:', error);
+        this.toastService.error(error.message || 'Failed to update class', 'Error');
+      }
+    });
   }
 
   moveClassToGrade(classId: string, className: string): void {
@@ -732,49 +833,67 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
       this.gradeService.moveClass(classId, newGradeId).subscribe({
         next: (response) => {
           if (response.success) {
-            this.showSuccess('Class moved to new grade successfully!');
+            this.toastService.success('Class moved to new grade successfully!', 'Success');
             this.loadAllClasses();
+          } else {
+            this.toastService.error('Failed to move class', 'Error');
           }
         },
         error: (error) => {
-          alert('Error moving class: ' + error.message);
+          console.error('Error moving class:', error);
+          this.toastService.error('Failed to move class: ' + error.message, 'Error');
         }
       });
     }
   }
 
   exportClassData(classId: string, className: string): void {
-    this.classService.exportClassData(classId).subscribe({
-      next: (blob: Blob) => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `class_${className}_data_${new Date().toISOString().split('T')[0]}.xlsx`;
-        a.click();
-        window.URL.revokeObjectURL(url);
-        this.showSuccess('Class data exported successfully!');
-      },
-      error: (error: any) => {
-        alert('Error exporting class data: ' + error.message);
+    this.showConfirmation(
+      'Export Class Data',
+      `Are you sure you want to export data for class "${className}"?`,
+      'info',
+      () => {
+        this.classService.exportClassData(classId).subscribe({
+          next: (blob: Blob) => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `class_${className}_data_${new Date().toISOString().split('T')[0]}.xlsx`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+            this.toastService.success('Class data exported successfully!', 'Success');
+          },
+          error: (error: any) => {
+            console.error('Error exporting class data:', error);
+            this.toastService.error('Failed to export data: ' + error.message, 'Error');
+          }
+        });
       }
-    });
+    );
   }
 
   deleteClass(classId: string, className: string): void {
-    if (confirm(`Are you sure you want to delete class "${className}"?`)) {
-      ApiResponseHandler.handleApiResponse<boolean>(
-        this.classService.delete(classId)
-      ).subscribe({
-        next: (result) => {
-          this.showSuccess('Class deleted successfully!');
-          this.loadAllClasses();
-        },
-        error: (error) => {
-          console.error('Error deleting class:', error);
-          alert(error.message || 'Failed to delete class');
-        }
-      });
-    }
+    this.showConfirmation(
+      'Delete Class',
+      `Are you sure you want to delete class "${className}"? This action cannot be undone.`,
+      'danger',
+      () => {
+        ApiResponseHandler.handleApiResponse<boolean>(
+          this.classService.delete(classId)
+        ).subscribe({
+          next: (result) => {
+            this.toastService.success('Class deleted successfully!', 'Success');
+            this.loadAllClasses();
+          },
+          error: (error) => {
+            console.error('Error deleting class:', error);
+            this.toastService.error(error.message || 'Failed to delete class', 'Error');
+          }
+        });
+      },
+      'Delete',
+      'Cancel'
+    );
   }
 
   getDisplayRange(): string {
@@ -795,44 +914,60 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
   moveStudentToAnotherClass(studentId: string, currentClassId: string): void {
     const newClassId = prompt('Enter the new class ID for this student (leave empty to unassign):');
     
-    const classIdToSend = newClassId === '' ? null : newClassId;
-    const adminUserId = this.getCurrentAdminUserId();
-    
-    if (classIdToSend !== undefined) {
-      this.adminManagementService.moveStudentToAnotherClass(studentId, classIdToSend, adminUserId).subscribe({
-        next: (result: any) => {
-          if (classIdToSend === null) {
-            this.showSuccess("Student removed from class successfully!");
-          } else {
-            this.showSuccess("Student moved to new class successfully!");
-          }
-          this.loadClassStudents(currentClassId);
-          this.loadAllClasses();
-        },
-        error: (error: any) => {
-          console.error('Error moving student:', error);
-          alert(error.message || 'Failed to move student');
+    if (newClassId !== null) {
+      const classIdToSend = newClassId === '' ? null : newClassId;
+      const adminUserId = this.getCurrentAdminUserId();
+      
+      this.showConfirmation(
+        classIdToSend === null ? 'Remove Student' : 'Move Student',
+        classIdToSend === null 
+          ? 'Are you sure you want to remove this student from the class?' 
+          : 'Are you sure you want to move this student to the new class?',
+        'warning',
+        () => {
+          this.adminManagementService.moveStudentToAnotherClass(studentId, classIdToSend, adminUserId).subscribe({
+            next: (result: any) => {
+              if (classIdToSend === null) {
+                this.toastService.success('Student removed from class successfully!', 'Success');
+              } else {
+                this.toastService.success('Student moved to new class successfully!', 'Success');
+              }
+              this.loadClassStudents(currentClassId);
+              this.loadAllClasses();
+            },
+            error: (error: any) => {
+              console.error('Error moving student:', error);
+              this.toastService.error(error.message || 'Failed to move student', 'Error');
+            }
+          });
         }
-      });
+      );
     }
   }
 
   removeStudentFromClass(studentId: string, classId: string): void {
-    if (confirm('Are you sure you want to remove this student from the class?')) {
-      const adminUserId = this.getCurrentAdminUserId();
-      
-      this.adminManagementService.moveStudentToAnotherClass(studentId, null, adminUserId).subscribe({
-        next: (result: any) => {
-          this.showSuccess("Student removed from class successfully!");
-          this.loadClassStudents(classId);
-          this.loadAllClasses();
-        },
-        error: (error: any) => {
-          console.error('Error removing student:', error);
-          alert(error.message || 'Failed to remove student');
-        }
-      });
-    }
+    this.showConfirmation(
+      'Remove Student',
+      'Are you sure you want to remove this student from the class?',
+      'danger',
+      () => {
+        const adminUserId = this.getCurrentAdminUserId();
+        
+        this.adminManagementService.moveStudentToAnotherClass(studentId, null, adminUserId).subscribe({
+          next: (result: any) => {
+            this.toastService.success('Student removed from class successfully!', 'Success');
+            this.loadClassStudents(classId);
+            this.loadAllClasses();
+          },
+          error: (error: any) => {
+            console.error('Error removing student:', error);
+            this.toastService.error(error.message || 'Failed to remove student', 'Error');
+          }
+        });
+      },
+      'Remove',
+      'Cancel'
+    );
   }
 
   private getCurrentAdminUserId(): string {
@@ -841,29 +976,24 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
   }
 
   getGradeCurriculumName(gradeId: string): string {
-  const grade = this.allGrades.find(g => g.id === gradeId);
-  if (grade) {
-    return grade.curriculumName || this.getCurriculumName(grade.curriculumId);
+    const grade = this.allGrades.find(g => g.id === gradeId);
+    if (grade) {
+      return grade.curriculumName || this.getCurriculumName(grade.curriculumId);
+    }
+    return 'Unknown Curriculum';
   }
-  return 'Unknown Curriculum';
-}
 
-
-// Add these methods to your AdminAllClassesComponent class
-getClassCurriculumName(cls: ClassViewDto): string {
-  if (!cls) return '';
-  // Find the grade for this class
-  const grade = this.allGrades.find(g => g.id === cls.gradeId);
-  if (grade) {
-    // Return curriculum name or look it up
-    return grade.curriculumName || this.getCurriculumName(grade.curriculumId);
+  getClassCurriculumName(cls: ClassViewDto): string {
+    if (!cls) return '';
+    const grade = this.allGrades.find(g => g.id === cls.gradeId);
+    if (grade) {
+      return grade.curriculumName || this.getCurriculumName(grade.curriculumId);
+    }
+    return '';
   }
-  return '';
-}
 
-hasClassCurriculum(cls: ClassViewDto): boolean {
-  if (!cls) return false;
-  return !!this.getClassCurriculumName(cls);
-}
-
+  hasClassCurriculum(cls: ClassViewDto): boolean {
+    if (!cls) return false;
+    return !!this.getClassCurriculumName(cls);
+  }
 }

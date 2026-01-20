@@ -51,7 +51,8 @@
             <th style="width: 60px;">#</th>
             <th>{{ 'parentManagement.SUBJECTS.SUBJECT_NAME' | translate }}</th>
             <th>{{ 'parentManagement.SUBJECTS.GRADE' | translate }}</th>
-            <th style="width: 170px;">
+            <th>{{ 'parentManagement.SUBJECTS.CREDIT_HOURS' | translate }}</th>
+            <th style="width: 200px;">
               {{ 'parentManagement.COMMON.ACTIONS' | translate }}
             </th>
           </tr>
@@ -67,16 +68,21 @@
               </span>
             </td>
             <td>
-              <button class="btn btn-sm btn-outline-primary"
-                      (click)="openTeachersModal(s.id)">
-                {{ 'parentManagement.SUBJECTS.MANAGE_TEACHERS' | translate }}
-              </button>
+              <span class="badge bg-info-subtle text-dark px-3 py-2">
+                {{ s.creditHours }} {{ 'parentManagement.SUBJECTS.CREDIT_HOURS' | translate }}
+              </span>
             </td>
             <td>
-              <button class="btn btn-sm btn-outline-danger"
-                      (click)="clickDeleteSubject(s.id)">
-                {{ 'parentManagement.COMMON.DELETE' | translate }}
-              </button>
+              <div class="d-flex gap-2">
+                <button class="btn btn-sm btn-outline-primary"
+                        (click)="openTeachersModal(s.id, s.subjectName)">
+                  {{ 'parentManagement.SUBJECTS.MANAGE_TEACHERS' | translate }}
+                </button>
+                <button class="btn btn-sm btn-outline-danger"
+                        (click)="openDeleteConfirmationModal(s.id, s.subjectName)">
+                  {{ 'parentManagement.COMMON.DELETE' | translate }}
+                </button>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -107,18 +113,19 @@
 
       <!-- Body -->
       <div class="modal-body px-4 py-3">
-
         <div class="form-floating mb-3">
           <input type="text"
                  class="form-control"
                  [placeholder]="'parentManagement.SUBJECTS.SUBJECT_NAME' | translate"
-                 [(ngModel)]="subjectName" />
-          <label>{{ 'parentManagement.SUBJECTS.SUBJECT_NAME' | translate }}</label>
+                 [(ngModel)]="subjectName"
+                 required />
+          <label>{{ 'parentManagement.SUBJECTS.SUBJECT_NAME' | translate }} *</label>
         </div>
 
         <div class="form-floating mb-3">
           <select class="form-select"
-                  [(ngModel)]="gradeId">
+                  [(ngModel)]="gradeId"
+                  required>
             <option value="" disabled>
               {{ 'parentManagement.SUBJECTS.SELECT_GRADE' | translate }}
             </option>
@@ -127,15 +134,17 @@
               {{ g.gradeName }}
             </option>
           </select>
-          <label>{{ 'parentManagement.SUBJECTS.GRADE' | translate }}</label>
+          <label>{{ 'parentManagement.SUBJECTS.GRADE' | translate }} *</label>
         </div>
 
         <div class="form-floating mb-3">
           <input type="number"
                  class="form-control"
                  [placeholder]="'parentManagement.SUBJECTS.CREDIT_HOURS' | translate"
-                 [(ngModel)]="creditHours" />
-          <label>{{ 'parentManagement.SUBJECTS.CREDIT_HOURS' | translate }}</label>
+                 [(ngModel)]="creditHours"
+                 min="1"
+                 required />
+          <label>{{ 'parentManagement.SUBJECTS.CREDIT_HOURS' | translate }} *</label>
         </div>
       </div>
 
@@ -170,6 +179,7 @@
       <div class="modal-header">
         <h5 class="modal-title fw-bold">
           {{ 'parentManagement.TEACHERS.MANAGE_TEACHERS' | translate }}
+          <span class="text-muted fs-6 ms-2">- {{ selectedSubjectName }}</span>
         </h5>
         <button type="button"
                 class="btn-close"
@@ -184,6 +194,7 @@
           <div class="col-md-6">
             <h6 class="fw-bold text-success mb-3">
               {{ 'parentManagement.TEACHERS.ASSIGNED' | translate }}
+              <span class="badge bg-success ms-2">{{ teachersAssignedToSubject.length }}</span>
             </h6>
 
             <div *ngIf="teachersAssignedToSubject.length === 0"
@@ -195,10 +206,10 @@
                  class="list-group shadow-sm">
               <div *ngFor="let teacher of teachersAssignedToSubject"
                    class="list-group-item d-flex justify-content-between align-items-center">
-                <span class="fw-semibold">
-                  {{ teacher.fullName }}
-                </span>
-
+                <div>
+                  <span class="fw-semibold d-block">{{ teacher.fullName }}</span>
+                  <small class="text-muted">{{ teacher.email }}</small>
+                </div>
                 <button class="btn btn-sm btn-outline-danger"
                         (click)="clickUnassignTeacherFromSubject(teacher.id, selectedSubjectId)">
                   {{ 'parentManagement.COMMON.UNASSIGN' | translate }}
@@ -211,6 +222,7 @@
           <div class="col-md-6">
             <h6 class="fw-bold text-primary mb-3">
               {{ 'parentManagement.TEACHERS.AVAILABLE' | translate }}
+              <span class="badge bg-primary ms-2">{{ teachersNotAssignedToSubject.length }}</span>
             </h6>
 
             <div *ngIf="teachersNotAssignedToSubject.length === 0"
@@ -222,10 +234,10 @@
                  class="list-group shadow-sm">
               <div *ngFor="let teacher of teachersNotAssignedToSubject"
                    class="list-group-item d-flex justify-content-between align-items-center">
-                <span class="fw-semibold">
-                  {{ teacher.fullName }}
-                </span>
-
+                <div>
+                  <span class="fw-semibold d-block">{{ teacher.fullName }}</span>
+                  <small class="text-muted">{{ teacher.email }}</small>
+                </div>
                 <button class="btn btn-sm btn-primary"
                         (click)="clickAssignTeacherToSubject(teacher.id, selectedSubjectId)">
                   {{ 'parentManagement.COMMON.ASSIGN' | translate }}
@@ -242,6 +254,63 @@
         <button class="btn btn-light"
                 (click)="closeTeachersModal()">
           {{ 'parentManagement.COMMON.CLOSE' | translate }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- =======================
+     Delete Confirmation Modal
+======================== -->
+<div *ngIf="isDeleteConfirmationModalOpen"
+     class="modal show"
+     tabindex="-1"
+     style="display: block; background: rgba(0,0,0,.5); z-index: 1055;">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+
+      <!-- Header -->
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold text-danger">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>
+          {{ 'parentManagement.SUBJECTS.DELETE_CONFIRM_TITLE' | translate }}
+        </h5>
+        <button type="button"
+                class="btn-close"
+                (click)="closeDeleteConfirmationModal()"></button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body px-4 py-3">
+        <div class="alert alert-danger">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>
+          {{ 'parentManagement.SUBJECTS.DELETE_WARNING' | translate }}
+        </div>
+        
+        <p class="mb-0">
+          {{ 'parentManagement.SUBJECTS.DELETE_CONFIRM_MESSAGE' | translate }}
+          <strong class="text-danger">"{{ subjectToDeleteName }}"</strong>?
+        </p>
+        
+        <div class="alert alert-warning mt-3">
+          <i class="bi bi-info-circle-fill me-2"></i>
+          {{ 'parentManagement.SUBJECTS.DELETE_IRREVERSIBLE' | translate }}
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer px-4">
+        <button class="btn btn-outline-secondary"
+                (click)="closeDeleteConfirmationModal()">
+          {{ 'parentManagement.COMMON.CANCEL' | translate }}
+        </button>
+
+        <button class="btn btn-danger"
+                (click)="confirmDeleteSubject()">
+          <i class="bi bi-trash-fill me-2"></i>
+          {{ 'parentManagement.SUBJECTS.DELETE_CONFIRM_BUTTON' | translate }}
         </button>
       </div>
 

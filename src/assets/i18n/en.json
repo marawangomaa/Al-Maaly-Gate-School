@@ -733,7 +733,45 @@
       "DELETE_CONFIRM_MESSAGE": "Are you sure you want to delete grade \"{{gradeName}}\"?",
       "DELETE_BTN": "Delete Grade",
       "DELETE_ERROR_TITLE": "Cannot Delete Grade",
-      "UNDERSTOOD": "Understood"
+      "UNDERSTOOD": "Understood",
+      "DELETE_GRADE_CONFIRM": "Are you sure you want to delete grade \"{{gradeName}}\"? This action cannot be undone.",
+      "REMOVE_CLASS_CONFIRM": "Remove Class",
+      "REMOVE_CLASS_MESSAGE": "Are you sure you want to remove class \"{{name}}\" from this grade?",
+      "REMOVE_SUBJECT_CONFIRM": "Remove Subject",
+      "REMOVE_SUBJECT_MESSAGE": "Are you sure you want to remove subject \"{{name}}\" from this grade?",
+      "BULK_MOVE_CONFIRM": "Move Classes",
+      "BULK_MOVE_MESSAGE": "Are you sure you want to move {{count}} classes to \"{{targetGradeName}}\"?",
+      "CONFIRM": "Confirm"
+    },
+    "ERRORS": {
+      "LOAD_CURRICULA_FAILED": "Failed to load curricula",
+      "LOAD_GRADES_FAILED": "Failed to load grades",
+      "LOAD_DETAILS_FAILED": "Failed to load grade details",
+      "LOAD_CLASSES_FAILED": "Failed to load classes",
+      "LOAD_SUBJECTS_FAILED": "Failed to load subjects",
+      "UPDATE_FAILED": "Failed to update grade",
+      "CREATE_FAILED": "Failed to create grade",
+      "DELETE_FAILED": "Failed to delete grade",
+      "CLASS_UPDATE_FAILED": "Failed to update class",
+      "CLASS_CREATE_FAILED": "Failed to create class",
+      "CLASS_REMOVE_FAILED": "Failed to remove class",
+      "SUBJECT_UPDATE_FAILED": "Failed to update subject",
+      "SUBJECT_ADD_FAILED": "Failed to add subject",
+      "SUBJECT_REMOVE_FAILED": "Failed to remove subject",
+      "BULK_MOVE_FAILED": "Failed to move classes"
+    },
+    "MESSAGES":
+    {
+      "UPDATE_SUCCESS": "Grade updated successfully",
+      "CREATE_SUCCESS": "Grade created successfully",
+      "DELETE_SUCCESS": "Grade deleted successfully",
+      "CLASS_UPDATE_SUCCESS": "Class updated successfully",
+      "CLASS_CREATE_SUCCESS": "Class created successfully",
+      "CLASS_REMOVE_SUCCESS": "Class removed successfully",
+      "SUBJECT_UPDATE_SUCCESS": "Subject updated successfully",
+      "SUBJECT_ADD_SUCCESS": "Subject added successfully",
+      "SUBJECT_REMOVE_SUCCESS": "Subject removed successfully",
+      "BULK_MOVE_SUCCESS": "Classes moved successfully"
     },
     "PAGINATION": {
       "previous": "Previous",
@@ -748,7 +786,14 @@
       "RECOMMENDED_ACTIONS": "Recommended Actions",
       "ACTION_REMOVE_CLASSES": "Go to the grade details and remove all classes",
       "ACTION_REMOVE_SUBJECTS": "Remove all subjects from the grade",
-      "ACTION_TRY_AGAIN": "Try deleting the grade again"
+      "ACTION_TRY_AGAIN": "Try deleting the grade again",
+      "SELECT_CLASSES_TO_MOVE": "Please select classes to move",
+      "SELECT_TARGET_GRADE": "Please select a target grade"
+    },
+    "UNKNOWN_CURRICULUM": "Unknown Curriculum",
+    "COMMON":
+    {
+      "VALIDATION_ERROR": "Validation Error"
     }
   },
   "TEACHER_OVERVIEW": {
@@ -832,6 +877,7 @@
     "DEGREE": "Degree"
   },
   "COMMON": {
+    "search": "Search...",
     "LOADING": "Loading...",
     "SAVE": "Save",
     "EXPAND": "Expand",
@@ -1031,6 +1077,14 @@
         "selectGrade": "Select Grade",
         "selectedGradeBelongsTo": "Selected grade belongs to:"
       },
+      "edit": {
+        "title": "Edit Class",
+        "className": "Class Name",
+        "classNamePlaceholder": "Enter class name",
+        "grade": "Grade",
+        "selectGrade": "Select a grade",
+        "selectedGradeBelongsTo": "Selected grade belongs to:"
+      },
       "details": {
         "title": "Class Details",
         "basicInfo": "Basic Information",
@@ -1070,6 +1124,7 @@
         "assignToClass": "Assign to Class"
       },
       "bulk": {
+        "title": "Bulk Assign Teachers",
         "assignTeachers": "Bulk Assign Teachers",
         "info": "Select classes and teachers for bulk assignment",
         "selectClasses": "Select Classes",
@@ -1083,11 +1138,17 @@
         "noTeachersAvailable": "No teachers available. Please ensure teachers are loaded.",
         "noSubjects": "No subjects",
         "moveClasses": {
+          "title": "Bulk Move Classes",
           "info": "Select classes to move to different grade",
           "newGrade": "New Grade",
           "selectTargetGrade": "Select Target Grade",
           "currentGrade": "Current Grade"
-        }
+        },
+        "classList": "Class List",
+        "teacherList": "Teacher List",
+        "newGrade": "New Grade",
+        "selectTargetGrade": "Select target grade",
+        "currentGrade": "Current Grade"
       }
     },
     "status": {
@@ -1901,14 +1962,21 @@
       "GRADE": "Grade",
       "SELECT_GRADE": "-- Select Grade --",
       "CREDIT_HOURS": "Credit Hours",
-      "MANAGE_TEACHERS": "Manage Teachers"
+      "MANAGE_TEACHERS": "Manage Teachers",
+      "DELETE_CONFIRM_TITLE": "Delete Subject",
+      "DELETE_WARNING": "Warning! This action cannot be undone.",
+      "DELETE_CONFIRM_MESSAGE": "Are you sure you want to delete subject",
+      "DELETE_IRREVERSIBLE": "This action is irreversible. All subject data will be permanently removed.",
+      "DELETE_CONFIRM_BUTTON": "Delete Subject"
     },
     "TEACHERS": {
       "MANAGE_TEACHERS": "Manage Subject Teachers",
       "ASSIGNED": "Assigned Teachers",
       "AVAILABLE": "Available Teachers",
       "NO_ASSIGNED": "No teachers assigned.",
-      "NO_AVAILABLE": "No teachers available."
+      "NO_AVAILABLE": "No teachers available.",
+      "ASSIGN_SUCCESS": "Teacher assigned successfully",
+      "UNASSIGN_SUCCESS": "Teacher unassigned successfully"
     },
     "COMMON": {
       "ACTIONS": "Actions",
