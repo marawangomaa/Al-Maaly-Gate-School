@@ -46,4 +46,5 @@ package.json
 package-lock.json
 
 # Environment files
-/src/environments/environment*.ts
+src/environments/environment.ts
+src/environments/environment.prod.ts
