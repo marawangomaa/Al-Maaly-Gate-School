@@ -8,6 +8,7 @@ import { AuthService } from '../../../../../Services/AuthService';
 import { FormsModule } from '@angular/forms';
 import { AccountStatus } from '../../../../../Interfaces/AccountStatus';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ToastService } from '../../../../../Services/UtilServices/toast.service';
 
 @Component({
   selector: 'app-admin-teacher-accounts',
@@ -28,12 +29,17 @@ export class AdminTeacherAccountsComponent implements OnInit, OnDestroy {
   selectedStatus: AccountStatus | 'all' = 'all';
 
   private subscription = new Subscription();
+  //Modal State
+  isConfirmModalOpen: boolean = false;
+  confirmModalMessage: string = '';
+  private confirmAction?: () => void;
 
   constructor(
     private teacherService: TeacherService,
     private adminService: AdminManagementService,
     private authService: AuthService,
-    private translate: TranslateService  // Added TranslateService
+    private translate: TranslateService,
+    private ToastService: ToastService
   ) { }
 
   ngOnInit(): void {
@@ -96,17 +102,17 @@ export class AdminTeacherAccountsComponent implements OnInit, OnDestroy {
   // Updated getStatusName method to use translation
   getStatusName(status: string | AccountStatus): string {
     const accountStatus = this.convertToAccountStatus(status);
-    
+
     switch (accountStatus) {
-      case AccountStatus.Pending: 
+      case AccountStatus.Pending:
         return this.translate.instant('teachers.status.pending');
-      case AccountStatus.Active: 
+      case AccountStatus.Active:
         return this.translate.instant('teachers.status.active');
-      case AccountStatus.Blocked: 
+      case AccountStatus.Blocked:
         return this.translate.instant('teachers.status.blocked');
-      case AccountStatus.Rejected: 
+      case AccountStatus.Rejected:
         return this.translate.instant('teachers.status.rejected');
-      default: 
+      default:
         return this.translate.instant('teachers.status.pending');
     }
   }
@@ -125,7 +131,7 @@ export class AdminTeacherAccountsComponent implements OnInit, OnDestroy {
   }
 
   getStatusDisplayName(status: AccountStatus | 'all'): string {
-    switch(status) {
+    switch (status) {
       case 'all':
         return 'teachers.statusDisplay.all';
       case AccountStatus.Pending:
@@ -171,117 +177,115 @@ export class AdminTeacherAccountsComponent implements OnInit, OnDestroy {
 
   //Approve Teacher
   async ApproveTeacherAction(teacherId: string): Promise<void> {
-    const confirmation = confirm(this.translate.instant('teachers.confirmations.approve'));
-    if (!confirmation) return;
+    this.openConfirm(this.translate.instant('teachers.confirmations.approve'), async () => {
+      const adminUserId = this.authService.userId;
+      if (!adminUserId) {
+        this.ToastService.warning(this.translate.instant('teachers.messages.adminNotFound'));
+        return;
+      }
 
-    const adminUserId = this.authService.userId;
-    if (!adminUserId) {
-      alert(this.translate.instant('teachers.messages.adminNotFound'));
-      return;
-    }
-
-    this.subscription.add(
-      this.adminService.ApproveAccount(teacherId, adminUserId, 'teacher').subscribe({
-        next: result => {
-          if (result) {
-            alert(this.translate.instant('teachers.messages.approved'));
-            // Update UI locally
-            const teacher = this.allTeachers.find(t => t.id === teacherId);
-            if (teacher) teacher.accountStatus = AccountStatus.Active;
-          } else {
-            alert(this.translate.instant('teachers.messages.approveFailed'));
-          }
-        },
-        error: err => alert(`${this.translate.instant('teachers.messages.error')}: ${err.message}`)
-      })
-    );
+      this.subscription.add(
+        this.adminService.ApproveAccount(teacherId, adminUserId, 'teacher').subscribe({
+          next: result => {
+            if (result) {
+              this.ToastService.success(this.translate.instant('teachers.messages.approved'));
+              // Update UI locally
+              const teacher = this.allTeachers.find(t => t.id === teacherId);
+              if (teacher) teacher.accountStatus = AccountStatus.Active;
+            } else {
+              this.ToastService.error(this.translate.instant('teachers.messages.approveFailed'));
+            }
+          },
+          error: err => this.ToastService.error(`${this.translate.instant('teachers.messages.error')}: ${err.message}`)
+        })
+      );
+    });
   }
 
   //reject-teacher
   async RejectTeacherAction(teacherId: string): Promise<void> {
-    const confirmation = confirm(this.translate.instant('teachers.confirmations.reject'));
-    if (!confirmation) return;
-    
-    const adminUserId = this.authService.userId;
-    if (!adminUserId) {
-      alert(this.translate.instant('teachers.messages.adminNotFound'));
-      return;
-    }
-    
-    this.subscription.add(
-      this.adminService.RejectAccount(teacherId, adminUserId, 'teacher').subscribe({
-        next: result => {
-          if (result) {
-            alert(this.translate.instant('teachers.messages.rejected'));
-            // Update UI locally
-            const teacher = this.allTeachers.find(t => t.id === teacherId);
-            if (teacher) teacher.accountStatus = AccountStatus.Rejected;
-          }
-          else {
-            alert(this.translate.instant('teachers.messages.rejectFailed'));
-          }
-        },
-        error: err => alert(`${this.translate.instant('teachers.messages.error')}: ${err.message}`)
-      })
-    );
+    this.openConfirm(this.translate.instant('teachers.confirmations.reject'), async () => {
+      const adminUserId = this.authService.userId;
+      if (!adminUserId) {
+        this.ToastService.warning(this.translate.instant('teachers.messages.adminNotFound'));
+        return;
+      }
+
+      this.subscription.add(
+        this.adminService.RejectAccount(teacherId, adminUserId, 'teacher').subscribe({
+          next: result => {
+            if (result) {
+              this.ToastService.success(this.translate.instant('teachers.messages.rejected'));
+              // Update UI locally
+              const teacher = this.allTeachers.find(t => t.id === teacherId);
+              if (teacher) teacher.accountStatus = AccountStatus.Rejected;
+            }
+            else {
+              this.ToastService.error(this.translate.instant('teachers.messages.rejectFailed'));
+            }
+          },
+          error: err => this.ToastService.error(`${this.translate.instant('teachers.messages.error')}: ${err.message}`)
+        })
+      );
+    });
+
   }
 
   //Block teacher
   async BlockTeacherAction(teacherId: string): Promise<void> {
-    const confirmation = confirm(this.translate.instant('teachers.confirmations.block'));
-    if (!confirmation) return;
-    
-    const adminUserId = this.authService.userId;
-    if (!adminUserId) {
-      alert(this.translate.instant('teachers.messages.adminNotFound'));
-      return;
-    }
+    this.openConfirm(this.translate.instant('teachers.confirmations.block'), async () => {
+      const adminUserId = this.authService.userId;
+      if (!adminUserId) {
+        this.ToastService.warning(this.translate.instant('teachers.messages.adminNotFound'));
+        return;
+      }
 
-    this.subscription.add(
-      this.adminService.BlockAccount(teacherId, adminUserId, 'teacher').subscribe({
-        next: result => {
-          if (result) {
-            alert(this.translate.instant('teachers.messages.blocked'));
-            // Update UI locally
-            const teacher = this.allTeachers.find(t => t.id === teacherId);
-            if (teacher) teacher.accountStatus = AccountStatus.Blocked;
-          }
-          else {
-            alert(this.translate.instant('teachers.messages.blockFailed'));
-          }
-        },
-        error: err => alert(`${this.translate.instant('teachers.messages.error')}: ${err.message}`)
-      })
-    );
+      this.subscription.add(
+        this.adminService.BlockAccount(teacherId, adminUserId, 'teacher').subscribe({
+          next: result => {
+            if (result) {
+              this.ToastService.success(this.translate.instant('teachers.messages.blocked'));
+              // Update UI locally
+              const teacher = this.allTeachers.find(t => t.id === teacherId);
+              if (teacher) teacher.accountStatus = AccountStatus.Blocked;
+            }
+            else {
+              this.ToastService.error(this.translate.instant('teachers.messages.blockFailed'));
+            }
+          },
+          error: err => this.ToastService.error(`${this.translate.instant('teachers.messages.error')}: ${err.message}`)
+        })
+      );
+    });
+
   }
 
   //Unblock teacher
   async UnblockTeacherAction(teacherId: string): Promise<void> {
-    const confirmation = confirm(this.translate.instant('teachers.confirmations.unblock'));
-    if (!confirmation) return;
-    
-    const adminUserId = this.authService.userId;
-    if (!adminUserId) {
-      alert(this.translate.instant('teachers.messages.adminNotFound'));
-      return;
-    }
-    
-    this.subscription.add(
-      this.adminService.UnblockAccount(teacherId, adminUserId, 'teacher').subscribe({
-        next: result => {
-          if (result) {
-            alert(this.translate.instant('teachers.messages.unblocked'));
-            // Update UI locally
-            const teacher = this.allTeachers.find(t => t.id === teacherId);
-            if (teacher) teacher.accountStatus = AccountStatus.Active;
-          }
-          else {
-            alert(this.translate.instant('teachers.messages.unblockFailed'));
-          }
-        },
-        error: err => alert(`${this.translate.instant('teachers.messages.error')}: ${err.message}`)
-      })
-    );
+    this.openConfirm(this.translate.instant('teachers.confirmations.unblock'), async () => {
+      const adminUserId = this.authService.userId;
+      if (!adminUserId) {
+        this.ToastService.warning(this.translate.instant('teachers.messages.adminNotFound'));
+        return;
+      }
+
+      this.subscription.add(
+        this.adminService.UnblockAccount(teacherId, adminUserId, 'teacher').subscribe({
+          next: result => {
+            if (result) {
+              this.ToastService.success(this.translate.instant('teachers.messages.unblocked'));
+              // Update UI locally
+              const teacher = this.allTeachers.find(t => t.id === teacherId);
+              if (teacher) teacher.accountStatus = AccountStatus.Active;
+            }
+            else {
+              this.ToastService.error(this.translate.instant('teachers.messages.unblockFailed'));
+            }
+          },
+          error: err => this.ToastService.error(`${this.translate.instant('teachers.messages.error')}: ${err.message}`)
+        })
+      );
+    });
   }
 
   //Load all teachers
@@ -300,5 +304,22 @@ export class AdminTeacherAccountsComponent implements OnInit, OnDestroy {
         }
       })
     );
+  }
+  //Modal  Methods
+  openConfirm(message: string, action: () => Promise<void>): void {
+    this.confirmModalMessage = message;
+    this.confirmAction = action;
+    this.isConfirmModalOpen = true;
+  }
+
+  confirmYes(): void {
+    this.confirmAction?.();
+    this.closeConfirm();
+  }
+
+  closeConfirm(): void {
+    this.isConfirmModalOpen = false;
+    this.confirmModalMessage = '';
+    this.confirmAction = undefined;
   }
 }
