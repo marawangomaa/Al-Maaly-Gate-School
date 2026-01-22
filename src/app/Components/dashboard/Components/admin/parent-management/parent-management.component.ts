@@ -10,6 +10,7 @@ import { iparentViewDto } from '../../../../../Interfaces/iparentViewDto';
 import { istudentProfile } from '../../../../../Interfaces/istudentProfile';
 import { AdminManagementService } from '../../../../../Services/admin-management.service';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { ToastService } from '../../../../../Services/UtilServices/toast.service';
 
 @Component({
   selector: 'app-parent-management',
@@ -55,13 +56,18 @@ export class ParentManagementComponent implements OnInit, OnDestroy {
     { value: 'guardian', label: 'parentManagement.parentCard.relations.guardian' },
     { value: 'other', label: 'parentManagement.parentCard.relations.other' }
   ];
+   //Modal State
+  isConfirmModalOpen: boolean = false;
+  confirmModalMessage: string = '';
+  private confirmAction?: () => void;
 
   constructor(
     private parentService: ParentService,
     private StudentService: StudentService,
     private AdminManagementService: AdminManagementService,
     private fb: FormBuilder,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private toastService: ToastService
   ) {
     this.addStudentForm = this.fb.group({
       parentId: ['', Validators.required],
@@ -403,5 +409,28 @@ export class ParentManagementComponent implements OnInit, OnDestroy {
   getStudentAlreadyLinked(studentId: string): boolean {
     if (!this.selectedParent) return false;
     return this.selectedParent.students.some(s => s.id === studentId);
+  }
+
+  //Modal  Methods
+  openConfirmAsync(message: string, action: () => Promise<void>): void {
+    this.confirmModalMessage = message;
+    this.confirmAction = action;
+    this.isConfirmModalOpen = true;
+  }
+  openConfirm(message: string, action: () => void): void {
+    this.confirmModalMessage = message;
+    this.confirmAction = action;
+    this.isConfirmModalOpen = true;
+  }
+
+  confirmYes(): void {
+    this.confirmAction?.();
+    this.closeConfirm();
+  }
+
+  closeConfirm(): void {
+    this.isConfirmModalOpen = false;
+    this.confirmModalMessage = '';
+    this.confirmAction = undefined;
   }
 }
