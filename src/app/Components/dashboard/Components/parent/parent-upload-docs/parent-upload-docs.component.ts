@@ -3,6 +3,7 @@ import { ParentService } from '../../../../../Services/parent.service';
 import { ApiResponseHandler } from '../../../../../utils/api-response-handler';
 import { NgFor, NgIf } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ToastService } from '../../../../../Services/UtilServices/toast.service';
 
 @Component({
   selector: 'app-parent-upload-docs',
@@ -19,7 +20,8 @@ export class ParentUploadDocsComponent {
 
   constructor(
     private parentService: ParentService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private toastService: ToastService
   ) { }
 
   onFileSelected(event: Event, index: number): void {
@@ -31,6 +33,7 @@ export class ParentUploadDocsComponent {
     // ✅ PDF ONLY
     if (file.type !== 'application/pdf') {
       this.errorMessage = this.translate.instant('PARENT_UPLOAD_DOCS_TS.ERRORS.ONLY_PDF');
+      this.toastService.error(this.translate.instant('PARENT_UPLOAD_DOCS_TS.ERRORS.ONLY_PDF'));
       input.value = '';
       return;
     }
@@ -60,6 +63,7 @@ export class ParentUploadDocsComponent {
 
     if (selectedFiles.length === 0) {
       this.errorMessage = this.translate.instant('PARENT_UPLOAD_DOCS_TS.ERRORS.NO_FILES_SELECTED');
+      this.toastService.error(this.translate.instant('PARENT_UPLOAD_DOCS_TS.ERRORS.NO_FILES_SELECTED'));
       return;
     }
 
@@ -79,10 +83,12 @@ export class ParentUploadDocsComponent {
       .subscribe({
         next: () => {
           this.successMessage = this.translate.instant('PARENT_UPLOAD_DOCS.FILES_UPLOAD_SUCCESS');
+          this.toastService.success(this.translate.instant('PARENT_UPLOAD_DOCS.FILES_UPLOAD_SUCCESS'));
           this.files = [null];
         },
         error: err => {
           this.errorMessage = err.message;
+          this.toastService.error(err.message);
         },
         complete: () => {
           this.isUploading = false;
