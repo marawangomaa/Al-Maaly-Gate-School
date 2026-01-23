@@ -56,7 +56,7 @@ export class ParentManagementComponent implements OnInit, OnDestroy {
     { value: 'guardian', label: 'parentManagement.parentCard.relations.guardian' },
     { value: 'other', label: 'parentManagement.parentCard.relations.other' }
   ];
-   //Modal State
+  //Modal State
   isConfirmModalOpen: boolean = false;
   confirmModalMessage: string = '';
   private confirmAction?: () => void;
@@ -79,7 +79,7 @@ export class ParentManagementComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadAllParentsWithChildren();
     this.loadAvailableStudents();
-    
+
     // Setup search debounce
     this.searchSubject.pipe(
       debounceTime(300),
@@ -105,11 +105,11 @@ export class ParentManagementComponent implements OnInit, OnDestroy {
       // Search filter
       if (this.searchQuery) {
         const searchLower = this.searchQuery.toLowerCase();
-        const matchesSearch = 
+        const matchesSearch =
           parent.fullName.toLowerCase().includes(searchLower) ||
           parent.email.toLowerCase().includes(searchLower) ||
           (parent.contactInfo && parent.contactInfo.toLowerCase().includes(searchLower));
-        
+
         if (!matchesSearch) return false;
       }
 
@@ -117,7 +117,7 @@ export class ParentManagementComponent implements OnInit, OnDestroy {
       if (this.showWithStudentsOnly && !this.showWithoutStudentsOnly) {
         if (parent.students.length === 0) return false;
       }
-      
+
       if (this.showWithoutStudentsOnly && !this.showWithStudentsOnly) {
         if (parent.students.length > 0) return false;
       }
@@ -139,11 +139,11 @@ export class ParentManagementComponent implements OnInit, OnDestroy {
     this.filteredAvailableStudents = this.availableStudents.filter(student => {
       // Search filter for students
       if (searchLower) {
-        const matchesSearch = 
+        const matchesSearch =
           student.fullName.toLowerCase().includes(searchLower) ||
           student.email.toLowerCase().includes(searchLower) ||
           (student.className && student.className.toLowerCase().includes(searchLower));
-        
+
         if (!matchesSearch) return false;
       }
       return true;
@@ -156,7 +156,7 @@ export class ParentManagementComponent implements OnInit, OnDestroy {
   }
 
   clearFilter(filterType: string): void {
-    switch(filterType) {
+    switch (filterType) {
       case 'withStudents':
         this.showWithStudentsOnly = false;
         break;
@@ -331,7 +331,7 @@ export class ParentManagementComponent implements OnInit, OnDestroy {
   addStudent(): void {
     if (this.addStudentForm.invalid) {
       const errorMsg = this.translate.instant('parentManagement.messages.fillAllFields');
-      alert(errorMsg);
+      this.toastService.error(errorMsg);
       return;
     }
 
@@ -353,57 +353,57 @@ export class ParentManagementComponent implements OnInit, OnDestroy {
         next: (result: ApiResponse<boolean>) => {
           if (result.success && result.data) {
             const successMsg = this.translate.instant('parentManagement.messages.addStudentSuccess');
-            alert(successMsg);
+            this.toastService.success(successMsg);
             // Reload the parent's data
             if (parentId) {
               this.loadParentWithChildren(parentId);
             }
           } else {
             const errorMsg = result.message || this.translate.instant('parentManagement.messages.addStudentFailed');
-            alert(errorMsg);
+            this.toastService.error(errorMsg);
           }
         },
         error: (error: any) => {
           const errorMsg = this.translate.instant('parentManagement.messages.errorAddingStudent');
           console.error(errorMsg, error);
           const alertMsg = this.translate.instant('parentManagement.messages.errorOccurred');
-          alert(alertMsg + ' ' + this.translate.instant('parentManagement.messages.addStudentFailed'));
+          this.toastService.error(alertMsg + ' ' + this.translate.instant('parentManagement.messages.addStudentFailed'));
         }
       });
   }
 
   removeStudent(parentId: string, studentId: string): void {
     const confirmMsg = this.translate.instant('parentManagement.messages.confirmRemove');
-    if (!confirm(confirmMsg)) {
-      return;
-    }
+    this.openConfirm(confirmMsg, () => {
+      this.isRemovingStudent = true;
 
-    this.isRemovingStudent = true;
-
-    this.AdminManagementService.removeStudentToParent(parentId, studentId)
-      .pipe(
-        takeUntil(this.destroy$),
-        finalize(() => this.isRemovingStudent = false)
-      )
-      .subscribe({
-        next: (result: ApiResponse<boolean>) => {
-          if (result.success && result.data) {
-            const successMsg = this.translate.instant('parentManagement.messages.removeStudentSuccess');
-            alert(successMsg);
-            // Reload the parent's data
-            this.loadParentWithChildren(parentId);
-          } else {
-            const errorMsg = result.message || this.translate.instant('parentManagement.messages.removeStudentFailed');
-            alert(errorMsg);
+      this.AdminManagementService.removeStudentToParent(parentId, studentId)
+        .pipe(
+          takeUntil(this.destroy$),
+          finalize(() => this.isRemovingStudent = false)
+        )
+        .subscribe({
+          next: (result: ApiResponse<boolean>) => {
+            if (result.success && result.data) {
+              const successMsg = this.translate.instant('parentManagement.messages.removeStudentSuccess');
+              this.toastService.success(successMsg);
+              // Reload the parent's data
+              this.loadParentWithChildren(parentId);
+            } else {
+              const errorMsg = result.message || this.translate.instant('parentManagement.messages.removeStudentFailed');
+              this.toastService.error(errorMsg);
+            }
+          },
+          error: (error) => {
+            const errorMsg = this.translate.instant('parentManagement.messages.errorRemovingStudent');
+            console.error(errorMsg, error);
+            const alertMsg = this.translate.instant('parentManagement.messages.errorOccurred');
+            this.toastService.error(alertMsg + ' ' + this.translate.instant('parentManagement.messages.removeStudentFailed'));
           }
-        },
-        error: (error) => {
-          const errorMsg = this.translate.instant('parentManagement.messages.errorRemovingStudent');
-          console.error(errorMsg, error);
-          const alertMsg = this.translate.instant('parentManagement.messages.errorOccurred');
-          alert(alertMsg + ' ' + this.translate.instant('parentManagement.messages.removeStudentFailed'));
-        }
-      });
+        });
+    });
+
+
   }
 
   getStudentAlreadyLinked(studentId: string): boolean {
