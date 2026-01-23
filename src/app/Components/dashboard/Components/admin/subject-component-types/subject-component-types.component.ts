@@ -31,6 +31,11 @@ export class SubjectComponentTypesComponent implements OnInit {
   componentTypeForm: FormGroup;
   reorderForm: FormGroup;
 
+  //Modal State
+  isConfirmModalOpen: boolean = false;
+  confirmModalMessage: string = '';
+  private confirmAction?: () => void;
+
   constructor(
     private fb: FormBuilder,
     private subjectService: SubjectService,
@@ -219,7 +224,7 @@ export class SubjectComponentTypesComponent implements OnInit {
   }
 
   deleteComponentType(id: string): void {
-    if (confirm('Are you sure you want to delete this component type? This action cannot be undone.')) {
+    this.openConfirm('Are you sure you want to delete this component type? This action cannot be undone.',() => {
       this.componentTypeService.deleteComponentType(id).subscribe({
         next: (response) => {
           if (response.success) {
@@ -234,7 +239,7 @@ export class SubjectComponentTypesComponent implements OnInit {
           console.error('Delete error:', error);
         }
       });
-    }
+    });
   }
 
   startReorder(subjectId: string): void {
@@ -349,5 +354,27 @@ export class SubjectComponentTypesComponent implements OnInit {
   getReorderControls(): any[] {
     const formArray = this.getReorderFormArray();
     return formArray.controls;
+  }
+  //Modal  Methods
+  openConfirmAsync(message: string, action: () => Promise<void>): void {
+    this.confirmModalMessage = message;
+    this.confirmAction = action;
+    this.isConfirmModalOpen = true;
+  }
+  openConfirm(message: string, action: () => void): void {
+    this.confirmModalMessage = message;
+    this.confirmAction = action;
+    this.isConfirmModalOpen = true;
+  }
+
+  confirmYes(): void {
+    this.confirmAction?.();
+    this.closeConfirm();
+  }
+
+  closeConfirm(): void {
+    this.isConfirmModalOpen = false;
+    this.confirmModalMessage = '';
+    this.confirmAction = undefined;
   }
 }

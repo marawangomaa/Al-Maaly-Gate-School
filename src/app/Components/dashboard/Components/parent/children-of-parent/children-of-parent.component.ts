@@ -9,6 +9,7 @@ import { ApiResponse } from '../../../../../Interfaces/auth';
 import { CertificateService } from '../../../../../Services/certificate.service';
 import { Certificate } from '../../../../../Interfaces/icertificate';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ToastService } from '../../../../../Services/UtilServices/toast.service';
 
 @Component({
   selector: 'app-children-of-parent',
@@ -38,7 +39,8 @@ export class ChildrenOfParentComponent implements OnInit {
     private parentService: ParentService,
     private certificateService: CertificateService,
     @Inject(PLATFORM_ID) private platformId: Object,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private toastService: ToastService
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
@@ -168,13 +170,13 @@ export class ChildrenOfParentComponent implements OnInit {
       window.URL.revokeObjectURL(url);
     } else {
       console.warn('No PDF data available for this certificate');
-      alert(this.translate.instant('PARENT_CHILDREN_TS.ERRORS.NO_PDF_DATA'));
+      this.toastService.error(this.translate.instant('PARENT_CHILDREN_TS.ERRORS.NO_PDF_DATA'));
     }
   }
 
   downloadAllCertificates(student: istudentMinimalDto): void {
     if (!this.studentCertificates || this.studentCertificates.length === 0) {
-      alert(this.translate.instant('PARENT_CHILDREN_TS.ERRORS.NO_CERTIFICATES_DOWNLOAD'));
+      this.toastService.error(this.translate.instant('PARENT_CHILDREN_TS.ERRORS.NO_CERTIFICATES_DOWNLOAD'));
       return;
     }
 
@@ -184,7 +186,7 @@ export class ChildrenOfParentComponent implements OnInit {
     if (firstCertificate) {
       this.downloadCertificate(firstCertificate);
     } else {
-      alert(this.translate.instant('PARENT_CHILDREN_TS.ERRORS.NO_PDF_DATA_AVAILABLE'));
+      this.toastService.error(this.translate.instant('PARENT_CHILDREN_TS.ERRORS.NO_PDF_DATA_AVAILABLE'));
     }
   }
 
@@ -195,7 +197,7 @@ export class ChildrenOfParentComponent implements OnInit {
       const url = window.URL.createObjectURL(blob);
       window.open(url, '_blank');
     } else {
-      alert(this.translate.instant('PARENT_CHILDREN_TS.ERRORS.PDF_PREVIEW_UNAVAILABLE'));
+      this.toastService.error(this.translate.instant('PARENT_CHILDREN_TS.ERRORS.PDF_PREVIEW_UNAVAILABLE'));
     }
   }
 
