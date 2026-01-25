@@ -1,17 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Teacher } from '../../../../../Interfaces/teacher';
 import { TeacherService } from '../../../../../Services/teacher.service';
 import { AdminManagementService } from '../../../../../Services/admin-management.service';
 import { AuthService } from '../../../../../Services/AuthService';
+import { ToastService } from '../../../../../Services/UtilServices/toast.service';
 
 
 @Component({
   selector: 'app-teachers',
   standalone: true,
-  imports: [FormsModule, NgFor, NgIf,NgClass],
+  imports: [FormsModule],
   templateUrl: './teachers.component.html',
   styleUrls: ['./teachers.component.css']
 })
@@ -28,7 +28,8 @@ export class TeachersComponent implements OnInit, OnDestroy {
   constructor(
     private teacherService: TeacherService,
     private adminService: AdminManagementService,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastService: ToastService
   ) { }
 
   ngOnInit(): void {
@@ -46,7 +47,7 @@ export class TeachersComponent implements OnInit, OnDestroy {
     this.hasSearched = true;
 
     if (!subject) {
-      alert('Please enter a subject name');
+      this.toastService.warning('Please enter a subject name');
       this.teachersBySubject = [];
       return;
     }
@@ -62,7 +63,7 @@ export class TeachersComponent implements OnInit, OnDestroy {
         },
         error: err => {
           this.isLoading = false;
-          alert(`Error loading teachers for subject ${subject}: ${err.message}`);
+          this.toastService.error(`Error loading teachers for subject ${subject}: ${err.message}`);
         }
       })
     );
@@ -74,7 +75,7 @@ export class TeachersComponent implements OnInit, OnDestroy {
 
   //   const adminUserId = this.authService.userId;
   //   if (!adminUserId) {
-  //     alert('Admin user ID not found. Please log in again.');
+  //     this.toastService.error('Admin user ID not found. Please log in again.');
   //     return;
   //   }
 
@@ -82,15 +83,15 @@ export class TeachersComponent implements OnInit, OnDestroy {
   //     this.adminService.ApproveTeacher(teacherId, adminUserId).subscribe({
   //       next: result => {
   //         if (result) {
-  //           alert('Teacher approved successfully');
+  //           this.toastService.success('Teacher approved successfully');
   //           // Update UI locally instead of reloading all data
   //           const teacher = this.allTeachers.find(t => t.id === teacherId);
   //           if (teacher) teacher.profileStatus = 'Approved';
   //         } else {
-  //           alert('Failed to approve teacher');
+  //           this.toastService.error('Failed to approve teacher');
   //         }
   //       },
-  //       error: err => alert(`Error approving teacher: ${err.message}`)
+  //       error: err => this.toastService.error(`Error approving teacher: ${err.message}`)
   //     })
   //   );
   // }
@@ -99,23 +100,23 @@ export class TeachersComponent implements OnInit, OnDestroy {
   //   if (!confirm('Are you sure you want to reject this teacher?')) return;
   //   const adminUserId = this.authService.userId;
   //   if (!adminUserId) {
-  //     alert('Admin user ID not found. Please log in again.');
+  //     this.toastService.error('Admin user ID not found. Please log in again.');
   //     return;
   //   }
   //   this.subscription.add(
   //     this.adminService.RejectTeacher(teacherId, adminUserId).subscribe({
   //       next: result => {
   //         if (result) {
-  //           alert('Teacher rejected successfully');
+  //           this.toastService.success('Teacher rejected successfully');
   //           // Update UI locally instead of reloading all data
   //           const teacher = this.allTeachers.find(t => t.id === teacherId);
   //           if (teacher) teacher.profileStatus = 'Rejected';
   //         }
   //         else {
-  //           alert('Failed to reject teacher');
+  //           this.toastService.error('Failed to reject teacher');
   //         }
   //       },
-  //       error: err => alert(`Error rejecting teacher: ${err.message}`)
+  //       error: err => this.toastService.error(`Error rejecting teacher: ${err.message}`)
   //     })
   //   );
 
@@ -126,7 +127,7 @@ export class TeachersComponent implements OnInit, OnDestroy {
     this.subscription.add(
       this.adminService.CountTeachers().subscribe({
         next: count => (this.teacherCount = count),
-        error: err => alert(`Error loading teacher count: ${err.message}`)
+        error: err => this.toastService.error(`Error loading teacher count: ${err.message}`)
       })
     );
   }
@@ -138,7 +139,7 @@ export class TeachersComponent implements OnInit, OnDestroy {
           this.allTeachers = teachers;
           console.log('All Teachers:', teachers);
         },
-        error: err => alert(`Error loading all teachers: ${err.message}`)
+        error: err => this.toastService.error(`Error loading all teachers: ${err.message}`)
       })
     );
   }

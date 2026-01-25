@@ -1,8 +1,8 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { 
-  ApiResponse, 
-  Certificate, 
-  DegreeType, 
+import {
+  ApiResponse,
+  Certificate,
+  DegreeType,
   GenerateCertificateResponse,
   VerifyCertificateRequest
 } from '../Interfaces/icertificate';
@@ -21,7 +21,7 @@ export class CertificateService {
   constructor(
     private http: HttpClient,
     @Inject(PLATFORM_ID) private platformId: any
-  ) {}
+  ) { }
 
   // Get student ID from localStorage (browser only)
   private getStudentId(): string | null {
@@ -103,7 +103,7 @@ export class CertificateService {
 
   // ========== BULK OPERATIONS ==========
 
-   // Bulk generate certificates for a class
+  // Bulk generate certificates for a class
   bulkGenerateForClass(classId: string, degreeType: DegreeType, academicYear?: string): Observable<ApiResponse<boolean>> {
     // FIX: Changed from POST to GET if that's what your backend expects
     let url = `${this.apiUrl}/bulk/class/${classId}/${degreeType}`;
@@ -222,8 +222,8 @@ export class CertificateService {
     if (!studentId) {
       throw new Error('Student ID not found in localStorage');
     }
-    
-    return saveToDb 
+
+    return saveToDb
       ? this.generateAndSaveCertificate(studentId, degreeType)
       : this.generateCertificate(studentId, degreeType);
   }
@@ -235,5 +235,22 @@ export class CertificateService {
       throw new Error('Student ID not found in localStorage');
     }
     return this.getCertificateFromDb(studentId, degreeType);
+  }
+  // Get certificate PDF file using certificateId (Parent usage)
+  getCertificatePdfById(certificateId: string,degreeType:DegreeType): Observable<Blob> {
+    return this.http.get(
+      `${this.apiUrl}/${certificateId}/${degreeType}/from-db`,
+      { responseType: 'blob' }
+    );
+  }
+  // Download certificate using loaded certificate object
+  downloadCertificateFromList(certificate: Certificate, degreeType: DegreeType): void {
+    const fileName =
+      certificate.fileName ||
+      `certificate_${certificate.certificateNumber}.pdf`;
+
+    this.getCertificatePdfById(certificate.studentId, degreeType).subscribe(blob => {
+      this.downloadPdf(blob, fileName);
+    });
   }
 }

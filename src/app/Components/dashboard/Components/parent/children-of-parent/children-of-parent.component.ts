@@ -7,8 +7,9 @@ import { ParentService } from '../../../../../Services/parent.service';
 import { istudentMinimalDto } from '../../../../../Interfaces/istudentMinimalDto';
 import { ApiResponse } from '../../../../../Interfaces/auth';
 import { CertificateService } from '../../../../../Services/certificate.service';
-import { Certificate } from '../../../../../Interfaces/icertificate';
+import { Certificate, DegreeType } from '../../../../../Interfaces/icertificate';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ToastService } from '../../../../../Services/UtilServices/toast.service';
 
 @Component({
   selector: 'app-children-of-parent',
@@ -38,7 +39,8 @@ export class ChildrenOfParentComponent implements OnInit {
     private parentService: ParentService,
     private certificateService: CertificateService,
     @Inject(PLATFORM_ID) private platformId: Object,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private toastService: ToastService
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
@@ -149,32 +151,13 @@ export class ChildrenOfParentComponent implements OnInit {
     console.log('Certificate details:', certificate);
   }
 
-  downloadCertificate(certificate: Certificate): void {
-    if (certificate.pdfData) {
-      // Convert Uint8Array to Blob
-      const pdfArray = new Uint8Array(certificate.pdfData);
-      const blob = new Blob([pdfArray], { type: 'application/pdf' });
-      const url = window.URL.createObjectURL(blob);
-
-      // Create download link
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = certificate.fileName || `certificate_${certificate.certificateNumber}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      // Clean up
-      window.URL.revokeObjectURL(url);
-    } else {
-      console.warn('No PDF data available for this certificate');
-      alert(this.translate.instant('PARENT_CHILDREN_TS.ERRORS.NO_PDF_DATA'));
-    }
+  downloadCertificate(certificate: Certificate, degreeType: DegreeType): void {
+    this.certificateService.downloadCertificateFromList(certificate, degreeType);
   }
 
-  downloadAllCertificates(student: istudentMinimalDto): void {
+  downloadAllCertificates(student: istudentMinimalDto, degreeType: DegreeType): void {
     if (!this.studentCertificates || this.studentCertificates.length === 0) {
-      alert(this.translate.instant('PARENT_CHILDREN_TS.ERRORS.NO_CERTIFICATES_DOWNLOAD'));
+      this.toastService.error(this.translate.instant('PARENT_CHILDREN_TS.ERRORS.NO_CERTIFICATES_DOWNLOAD'));
       return;
     }
 
@@ -182,21 +165,25 @@ export class ChildrenOfParentComponent implements OnInit {
     // In a real app, you might want to create a zip file or download individually
     const firstCertificate = this.studentCertificates.find(c => c.pdfData);
     if (firstCertificate) {
-      this.downloadCertificate(firstCertificate);
+      this.downloadCertificate(firstCertificate, degreeType);
     } else {
-      alert(this.translate.instant('PARENT_CHILDREN_TS.ERRORS.NO_PDF_DATA_AVAILABLE'));
+      this.toastService.error(this.translate.instant('PARENT_CHILDREN_TS.ERRORS.NO_PDF_DATA_AVAILABLE'));
     }
   }
 
-  previewCertificate(certificate: Certificate): void {
-    if (certificate.pdfData) {
-      const pdfArray = new Uint8Array(certificate.pdfData);
-      const blob = new Blob([pdfArray], { type: 'application/pdf' });
-      const url = window.URL.createObjectURL(blob);
-      window.open(url, '_blank');
-    } else {
-      alert(this.translate.instant('PARENT_CHILDREN_TS.ERRORS.PDF_PREVIEW_UNAVAILABLE'));
-    }
+  previewCertificate(studentId: string, degreeType: DegreeType): void {
+    this.certificateService
+      .getCertificatePdfById(studentId, degreeType)
+      .subscribe({
+        next: blob => {
+          this.certificateService.openPdfInNewTab(blob);
+        },
+        error: () => {
+          this.toastService.error(
+            this.translate.instant('PARENT_CHILDREN_TS.ERRORS.PDF_PREVIEW_UNAVAILABLE')
+          );
+        }
+      });
   }
 
   onStudentSelect(student: istudentMinimalDto): void {

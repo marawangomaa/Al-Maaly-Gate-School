@@ -139,9 +139,9 @@
                           <i class="bi bi-award"></i>
                           {{ "PARENT_CHILDREN.CERTIFICATES" | translate }}
                         </button>
-                        <button
+                        <!-- <button
                           class="btn btn-outline-success"
-                          (click)="downloadAllCertificates(student)"
+                          (click)="downloadAllCertificates(student, )"
                           title="{{
                             'PARENT_CHILDREN.DOWNLOAD_ALL' | translate
                           }}"
@@ -152,7 +152,7 @@
                         >
                           <i class="bi bi-download"></i>
                           {{ "PARENT_CHILDREN.DOWNLOAD_ALL" | translate }}
-                        </button>
+                        </button> -->
                       </div>
                     </td>
                   </tr>
@@ -414,17 +414,16 @@
                       </button>
                       <button
                         class="btn btn-sm btn-outline-success"
-                        (click)="downloadCertificate(certificate)"
+                        (click)="downloadCertificate(certificate, certificate.degreeType)"
                         title="{{
                           'PARENT_CHILDREN.DOWNLOAD_CERTIFICATE' | translate
                         }}"
-                        *ngIf="certificate.pdfData"
                       >
                         <i class="bi bi-download"></i>
                       </button>
                       <button
                         class="btn btn-sm btn-outline-info"
-                        (click)="previewCertificate(certificate)"
+                        (click)="previewCertificate(certificate.studentId, certificate.degreeType)"
                         title="{{
                           'PARENT_CHILDREN.PREVIEW_CERTIFICATE' | translate
                         }}"
