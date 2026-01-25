@@ -175,7 +175,8 @@
     "DATE": "Date",
     "TIME": "Time",
     "ATTEND_LECTURE": "Attend Lecture",
-    "ATTENDANCE_SUCCESS": "Your attendance has been recorded for the lecture"
+    "ATTENDANCE_SUCCESS": "Your attendance has been recorded for the lecture",
+    "UNTIL": "Until"
   },
   "STUDENT_CLASSES_TS": {
     "ERRORS": {
@@ -760,8 +761,7 @@
       "SUBJECT_REMOVE_FAILED": "Failed to remove subject",
       "BULK_MOVE_FAILED": "Failed to move classes"
     },
-    "MESSAGES":
-    {
+    "MESSAGES": {
       "UPDATE_SUCCESS": "Grade updated successfully",
       "CREATE_SUCCESS": "Grade created successfully",
       "DELETE_SUCCESS": "Grade deleted successfully",
@@ -791,8 +791,7 @@
       "SELECT_TARGET_GRADE": "Please select a target grade"
     },
     "UNKNOWN_CURRICULUM": "Unknown Curriculum",
-    "COMMON":
-    {
+    "COMMON": {
       "VALIDATION_ERROR": "Validation Error"
     }
   },

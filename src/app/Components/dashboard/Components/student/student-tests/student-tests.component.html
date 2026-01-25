@@ -41,9 +41,9 @@
         </p>
         <p class="text-muted mb-1">
           {{ "STUDENT_TESTS.FROM" | translate }}:
-          {{ test.start | date : "shortTime" }}
+          {{ test.start | date : "dd/MM/yyyy HH:mm" }}
           {{ "STUDENT_TESTS.TO" | translate }}:
-          {{ test.end | date : "shortTime" }}
+          {{ test.end | date : "dd/MM/yyyy HH:mm" }}
         </p>
 
         <div class="d-flex justify-content-between align-items-center mt-2">

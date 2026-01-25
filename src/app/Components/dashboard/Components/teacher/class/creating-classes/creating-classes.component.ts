@@ -10,6 +10,8 @@ import { SubjectService } from '../../../../../../Services/subject.service';
 import { TeacherService } from '../../../../../../Services/teacher.service';
 import { ClassViewDto } from '../../../../../../Interfaces/iclass';
 import { SubjectViewDto } from '../../../../../../Interfaces/isubject';
+import { ToastService } from '../../../../../../Services/UtilServices/toast.service';
+import { error } from 'node:console';
 
 interface ClassFormModel {
   classId: FormControl<string>;
@@ -29,9 +31,13 @@ interface ClassFormModel {
 export class CreatingClassesComponent implements OnInit {
 
   classForm!: FormGroup<ClassFormModel>;
-  classes: ClassViewDto[] | undefined= [];
-  subjects: SubjectViewDto[] | undefined= [];
+  classes: ClassViewDto[] | undefined = [];
+  subjects: SubjectViewDto[] | undefined = [];
   teacherId: string | null = null;
+
+  isConfirmModalOpen: boolean = false;
+  confirmModalMessage: string = '';
+  private confirmAction?: () => void;
 
   constructor(
     private fb: FormBuilder,
@@ -40,10 +46,12 @@ export class CreatingClassesComponent implements OnInit {
     private appointmentService: ClassappointmentService,
     @Inject(PLATFORM_ID) private platformId: Object,
     private translate: TranslateService,
-    private teacherService: TeacherService
+    private teacherService: TeacherService,
+    private toastService: ToastService
   ) { }
 
   ngOnInit(): void {
+
     // ✅ SSR-safe teacherId read
     if (isPlatformBrowser(this.platformId)) {
       this.teacherId = localStorage.getItem('teacherId');
@@ -56,30 +64,56 @@ export class CreatingClassesComponent implements OnInit {
       startTime: this.fb.control('', { validators: [Validators.required], nonNullable: true }),
       duration: this.fb.control(60, { validators: [Validators.required, Validators.min(10)], nonNullable: true }),
     });
+    const now = new Date();
+    this.classForm.controls.startTime.setValue(this.formatLocalTime(now));
 
     this.loadDropdowns();
+  }
+
+  //Modal  Methods
+  openConfirmAsync(message: string, action: () => Promise<void>): void {
+    this.confirmModalMessage = message;
+    this.confirmAction = action;
+    this.isConfirmModalOpen = true;
+  }
+  openConfirm(message: string, action: () => void): void {
+    this.confirmModalMessage = message;
+    this.confirmAction = action;
+    this.isConfirmModalOpen = true;
+  }
+
+  confirmYes(): void {
+    this.confirmAction?.();
+    this.closeConfirm();
+  }
+
+  closeConfirm(): void {
+    this.isConfirmModalOpen = false;
+    this.confirmModalMessage = '';
+    this.confirmAction = undefined;
   }
 
   loadDropdowns(): void {
 
     this.teacherService.getTeacherClasses(this.teacherId).subscribe(res => {
       this.classes = res.data;
-      console.log(res);
+      // console.log(res);
     });
 
     this.teacherService.getTeacherSubjects(this.teacherId).subscribe(res => {
       this.subjects = res.data;
-      console.log(res);
+      // console.log(res);
     });
   }
 
   get f() {
     return this.classForm.controls;
   }
-
   createClass(): void {
+    const confirmMsg = this.translate.instant('Confirm creating this class?');
+
     if (!this.teacherId) {
-      alert(this.translate.instant('CLASSES.ALERTS.TEACHER_ID_NOT_FOUND'));
+      this.toastService.error(this.translate.instant('CLASSES.ALERTS.TEACHER_ID_NOT_FOUND'), 'Error');
       return;
     }
 
@@ -90,32 +124,33 @@ export class CreatingClassesComponent implements OnInit {
 
     const form = this.classForm.getRawValue();
 
-    // FIX: Handle timezone issue - get local time components
-    const localStartDate = new Date(form.startTime);
+    const start = new Date(form.startTime);
 
-    // Get local time components (without timezone conversion)
-    const localStartTimeString = this.formatLocalTime(localStartDate);
-
-    // Calculate end time
-    const localEndDate = new Date(localStartDate.getTime() + form.duration * 60000);
-    const localEndTimeString = this.formatLocalTime(localEndDate);
+    const end = new Date(start.getTime() + form.duration * 60000);
 
     const body = {
       id: '',
       link: form.link,
-      startTime: localStartTimeString, // Use local time string
-      endTime: localEndTimeString,     // Use local time string
+      startTime: start.toISOString(),
+      endTime: end.toISOString(),
       status: 'Scheduled',
       classId: form.classId,
       subjectId: form.subjectId,
       teacherId: this.teacherId
     };
 
-    console.log('Creating appointment with:', body); // Debug log
-
-    this.appointmentService.create(body).subscribe(() => {
-      alert(this.translate.instant('CLASSES.ALERTS.APPOINTMENT_CREATED'));
-      this.classForm.reset({ duration: 60 });
+    // console.log('Creating appointment with:', body); // Debug log
+    this.openConfirm(confirmMsg, () => {
+      this.appointmentService.create(body).subscribe(() => {
+        next: () => {
+          this.toastService.created(this.translate.instant('CLASSES.ALERTS.APPOINTMENT_CREATED'), 'Success');
+          this.classForm.reset({ duration: 60 });
+        };
+        error: (err: any) => {
+          // console.error('Error creating appointment:', err);
+          this.toastService.error(this.translate.instant('CLASSES.ALERTS.ERROR_CREATING_APPOINTMENT'), 'Error');
+        };
+      });
     });
   }
 
@@ -126,10 +161,9 @@ export class CreatingClassesComponent implements OnInit {
     const day = String(date.getDate()).padStart(2, '0');
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = String(date.getSeconds()).padStart(2, '0');
 
-    // Format: YYYY-MM-DDTHH:mm:ss (local time)
-    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+    // Format: YYYY-MM-DDTHH:mm(local time)
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
   }
 
   // Alternative: If your backend expects UTC, use this method

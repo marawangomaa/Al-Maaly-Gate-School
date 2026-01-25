@@ -50,6 +50,24 @@ export class StudentTestsComponent implements OnInit {
     }
   }
 
+  private toLocalDate(dateStr: string): Date {
+    const d = new Date(dateStr);
+    return new Date(
+      d.getUTCFullYear(),
+      d.getUTCMonth(),
+      d.getUTCDate(),
+      d.getUTCHours(),
+      d.getUTCMinutes(),
+      d.getUTCSeconds()
+    );
+  }
+  private calculateStatus(start: Date, end: Date): 'Upcoming' | 'Running' | 'Finished' {
+    const now = new Date();
+
+    if (now < start) return 'Upcoming';
+    if (now >= start && now <= end) return 'Running';
+    return 'Finished';
+  }
   GetStudentEntity(StudentEntityId: string) {
     this._StudentProfile.GetStudentEntity(StudentEntityId).subscribe({
       next: (response: ApiResponse<any>) => {
@@ -70,12 +88,25 @@ export class StudentTestsComponent implements OnInit {
   GetClassExams(ClassId: string) {
     this._ClassExams.GetClassExamsForStudent(ClassId).subscribe({
       next: (response: ApiResponse<iclassExams[]>) => {
-        this.tests = response.data;
-        console.log(response.data, response.success);
+
+        this.tests = response.data.map(exam => {
+          const startLocal = this.toLocalDate(exam.start);
+          const endLocal = this.toLocalDate(exam.end);
+
+          return {
+            ...exam,
+            start: startLocal as any,
+            end: endLocal as any,
+            status: this.calculateStatus(startLocal, endLocal)
+          };
+        });
+
+        console.log(this.tests);
       },
       error: (error: ApiResponse<iclassExams[]>) => {
         console.log(error.message);
       }
     });
   }
+
 }

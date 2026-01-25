@@ -45,6 +45,11 @@
           {{ "STUDENT_CLASSES.DATE" | translate }}:
           {{ lec.startTime | date : "fullDate" }}
           {{ "STUDENT_CLASSES.TIME" | translate }}
+          {{ lec.startTime | date : "shortTime" }}
+          <span class="text-muted mb-2">{{
+            "STUDENT_CLASSES.UNTIL" | translate
+          }}</span>
+          {{ "STUDENT_CLASSES.TIME" | translate }}
           {{ lec.endTime | date : "shortTime" }}
         </p>
         <div class="d-flex justify-content-between align-items-center">

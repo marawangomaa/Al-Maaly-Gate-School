@@ -175,7 +175,8 @@
     "DATE": "التاريخ",
     "TIME": "الساعة",
     "ATTEND_LECTURE": "حضور المحاضرة",
-    "ATTENDANCE_SUCCESS": "تم تسجيل حضورك في محاضرة"
+    "ATTENDANCE_SUCCESS": "تم تسجيل حضورك في محاضرة",
+    "UNTIL": "حتى"
   },
   "STUDENT_CLASSES_TS": {
     "ERRORS": {
@@ -743,8 +744,7 @@
       "BULK_MOVE_MESSAGE": "هل أنت متأكد أنك تريد نقل {{count}} فصل إلى \"{{targetGradeName}}\"؟",
       "CONFIRM": "تأكيد"
     },
-    "ERRORS":
-    {
+    "ERRORS": {
       "LOAD_CURRICULA_FAILED": "فشل تحميل المناهج الدراسية",
       "LOAD_GRADES_FAILED": "فشل تحميل الصفوف",
       "LOAD_DETAILS_FAILED": "فشل تحميل تفاصيل الصف",
@@ -760,8 +760,8 @@
       "SUBJECT_ADD_FAILED": "فشل إضافة المادة الدراسية",
       "SUBJECT_REMOVE_FAILED": "فشل إزالة المادة الدراسية",
       "BULK_MOVE_FAILED": "فشل نقل الفصول"
-    },"MESSAGES":
-    {
+    },
+    "MESSAGES": {
       "UPDATE_SUCCESS": "تم تحديث الصف بنجاح",
       "CREATE_SUCCESS": "تم إنشاء الصف بنجاح",
       "DELETE_SUCCESS": "تم حذف الصف بنجاح",
@@ -790,9 +790,8 @@
       "SELECT_CLASSES_TO_MOVE": "الرجاء اختيار الفصول لنقلها",
       "SELECT_TARGET_GRADE": "الرجاء اختيار الصف الهدف"
     },
-    "UNKNOWN_CURRICULUM": "منهج غير معروف"
-    ,"COMMON":
-    {
+    "UNKNOWN_CURRICULUM": "منهج غير معروف",
+    "COMMON": {
       "VALIDATION_ERROR": "خطأ في التحقق"
     }
   },
