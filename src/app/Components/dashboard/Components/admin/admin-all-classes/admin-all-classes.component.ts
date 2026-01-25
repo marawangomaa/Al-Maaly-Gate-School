@@ -130,7 +130,7 @@ export class AdminAllClassesComponent implements OnInit, OnDestroy {
         this.loading = false;
       },
       error: (error) => {
-        console.error('Error loading classes:', error);
+        // console.error('Error loading classes:', error);
         this.toastService.error('Failed to load classes', 'Error');
         this.loading = false;
       }

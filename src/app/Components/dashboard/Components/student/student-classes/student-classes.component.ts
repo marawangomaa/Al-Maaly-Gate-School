@@ -45,12 +45,12 @@ export class StudentClassesComponent implements OnInit {
           this.getClassAppointments();
           return response.data.id;
         } else {
-          console.error(this.translate.instant('STUDENT_CLASSES_TS.ERRORS.FAILED_TO_GET_STUDENT_ID'), response.message);
+          // console.error(this.translate.instant('STUDENT_CLASSES_TS.ERRORS.FAILED_TO_GET_STUDENT_ID'), response.message);
           return null;
         }
       },
       error: (error: ApiResponse<any>) => {
-        console.error(this.translate.instant('STUDENT_CLASSES_TS.ERRORS.FAILED_TO_GET_STUDENT_ID'), error.message || error);
+        // console.error(this.translate.instant('STUDENT_CLASSES_TS.ERRORS.FAILED_TO_GET_STUDENT_ID'), error.message || error);
         return null;
       }
     });
@@ -86,7 +86,7 @@ export class StudentClassesComponent implements OnInit {
 
   getClassAppointments() {
     if (!this.classId) {
-      console.error(this.translate.instant('STUDENT_CLASSES_TS.ERRORS.NO_CLASS_ID'));
+      // console.error(this.translate.instant('STUDENT_CLASSES_TS.ERRORS.NO_CLASS_ID'));
       return;
     }
 
@@ -94,15 +94,15 @@ export class StudentClassesComponent implements OnInit {
       next: (response: ApiResponse<iclassAppointments[]>) => {
         if (response.success && response.data) {
           this.classes = response.data;
-          console.log(this.translate.instant('STUDENT_CLASSES_TS.INFO.APPOINTMENTS_LOADED'), response.data);
-          console.log(this.translate.instant('STUDENT_CLASSES_TS.INFO.TOTAL_APPOINTMENTS'), response.data.length);
+          // console.log(this.translate.instant('STUDENT_CLASSES_TS.INFO.APPOINTMENTS_LOADED'), response.data);
+          // console.log(this.translate.instant('STUDENT_CLASSES_TS.INFO.TOTAL_APPOINTMENTS'), response.data.length);
         } else {
-          console.log(this.translate.instant('STUDENT_CLASSES_TS.ERRORS.NO_APPOINTMENTS'), response.message);
+          // console.log(this.translate.instant('STUDENT_CLASSES_TS.ERRORS.NO_APPOINTMENTS'), response.message);
           this.classes = [];
         }
       },
       error: (error: ApiResponse<iclassAppointments>) => {
-        console.error(this.translate.instant('STUDENT_CLASSES_TS.ERRORS.LOADING_ERROR'), error.message || error);
+        // console.error(this.translate.instant('STUDENT_CLASSES_TS.ERRORS.LOADING_ERROR'), error.message || error);
         this.classes = [];
       }
     });

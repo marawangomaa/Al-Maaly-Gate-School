@@ -28,7 +28,7 @@ export class ClassGradesComponent implements OnInit {
   allStudents: Map<string, StudentModel[]> = new Map();
   existingDegrees: Map<string, any[]> = new Map();
   componentTypes: Map<string, DegreeComponentTypeDto[]> = new Map(); // Added back
-  
+
   // Exam type configuration
   examTypes: ExamTypeConfig[] = [
     { name: 'MidTerm1', type: 1, maxScore: 20, weight: 0.2 },
@@ -36,7 +36,7 @@ export class ClassGradesComponent implements OnInit {
     { name: 'MidTerm2', type: 3, maxScore: 20, weight: 0.2 },
     { name: 'Final2', type: 4, maxScore: 80, weight: 0.8 }
   ];
-  
+
   // UI State
   isLoadingClasses: boolean = true;
   isLoadingSubjects: boolean = true;
@@ -46,11 +46,11 @@ export class ClassGradesComponent implements OnInit {
   allExpanded: boolean = false;
   activeExamType: ExamTypeConfig = this.examTypes[0];
   savingStudentId: string | null = null;
-  
+
   // Current Teacher ID
   currentTeacherId: string | null = '';
   isBrowser: boolean;
-  
+
   // Forms
   studentForms: Map<string, FormGroup> = new Map();
 
@@ -76,7 +76,7 @@ export class ClassGradesComponent implements OnInit {
     this.isLoadingClasses = true;
     this.isLoadingSubjects = true;
     this.isLoadingStudents = true;
-    if(isPlatformBrowser(this.platformId)) {
+    if (isPlatformBrowser(this.platformId)) {
       this.currentTeacherId = localStorage.getItem('teacherId');
     }
 
@@ -84,7 +84,7 @@ export class ClassGradesComponent implements OnInit {
       next: (response) => {
         if (response.success && response.data) {
           this.teacherClasses = response.data;
-          
+
           this.teacherService.getTeacherSubjects(this.currentTeacherId).subscribe({
             next: (subjectsResponse) => {
               if (subjectsResponse.success && subjectsResponse.data) {
@@ -93,7 +93,7 @@ export class ClassGradesComponent implements OnInit {
                   ...subject,
                   componentTypes: []
                 }));
-                
+
                 this.loadComponentTypes();
                 this.loadStudentsForClasses();
               } else {
@@ -103,7 +103,7 @@ export class ClassGradesComponent implements OnInit {
             },
             error: (error) => {
               this.toastService.error('Failed to load subjects');
-              console.error('Subjects error:', error);
+              // console.error('Subjects error:', error);
               this.isLoadingSubjects = false;
             }
           });
@@ -114,7 +114,7 @@ export class ClassGradesComponent implements OnInit {
       },
       error: (error) => {
         this.toastService.error('Failed to load classes');
-        console.error('Classes error:', error);
+        // console.error('Classes error:', error);
         this.isLoadingClasses = false;
       }
     });
@@ -133,13 +133,13 @@ export class ClassGradesComponent implements OnInit {
           if (response.success && response.data) {
             const subjectId = this.teacherSubjects[index].id;
             const componentTypes = response.data.sort((a, b) => a.order - b.order);
-            
+
             // Store in map
             this.componentTypes.set(subjectId, componentTypes);
-            
+
             // Update subject with component types
             this.teacherSubjects[index].componentTypes = componentTypes;
-            
+
             // Adjust max scores
             this.adjustComponentMaxScores(subjectId, componentTypes);
           }
@@ -147,19 +147,19 @@ export class ClassGradesComponent implements OnInit {
       },
       error: (error) => {
         this.toastService.error('Failed to load component types');
-        console.error('Component types error:', error);
+        // console.error('Component types error:', error);
       }
     });
   }
 
   adjustComponentMaxScores(subjectId: string, componentTypes: DegreeComponentTypeDto[]): void {
     if (componentTypes.length === 0) return;
-    
+
     const totalComponentMax = componentTypes.reduce((sum, comp) => sum + comp.maxScore, 0);
-    
+
     const midtermRatio = 20 / totalComponentMax;
     const finalRatio = 80 / totalComponentMax;
-    
+
     componentTypes.forEach(component => {
       (component as any).midtermMaxScore = Math.round(component.maxScore * midtermRatio * 100) / 100;
       (component as any).finalMaxScore = Math.round(component.maxScore * finalRatio * 100) / 100;
@@ -184,7 +184,7 @@ export class ClassGradesComponent implements OnInit {
       },
       error: (error) => {
         this.toastService.error('Failed to load students');
-        console.error('Students error:', error);
+        // console.error('Students error:', error);
         this.isLoadingStudents = false;
       }
     });
@@ -196,14 +196,15 @@ export class ClassGradesComponent implements OnInit {
         next: (response) => {
           if (response.success && response.data) {
             this.existingDegrees.set(student.id, response.data.degrees);
-            
+
             if (!this.studentForms.has(student.id)) {
               this.initializeStudentForm(classId, student.id);
             }
           }
         },
         error: (error) => {
-          console.error(`Error loading degrees for student ${student.id}:`, error);
+          this.toastService.error(`Error loading degrees for student ${student.id}:`, error);
+          // console.error(`Error loading degrees for student ${student.id}:`, error);
           if (!this.studentForms.has(student.id)) {
             this.initializeStudentForm(classId, student.id);
           }
@@ -224,7 +225,7 @@ export class ClassGradesComponent implements OnInit {
     });
 
     this.initializeDegreesArray(form, studentId);
-    
+
     this.studentForms.set(studentId, form);
   }
 
@@ -235,16 +236,16 @@ export class ClassGradesComponent implements OnInit {
     this.teacherSubjects.forEach(subject => {
       const existingDegree = this.getExistingGrade(studentId, subject.id, this.activeExamType.type);
       const componentTypes = this.componentTypes.get(subject.id) || [];
-      
+
       const maxScore = this.activeExamType.maxScore;
-      
+
       const degreeForm = this.fb.group({
         subjectId: [subject.id],
         subjectName: [subject.subjectName],
         degreeType: [this.activeExamType.type],
         useComponents: [componentTypes.length > 0],
         score: [existingDegree?.score || null, [
-          Validators.min(0), 
+          Validators.min(0),
           Validators.max(maxScore)
         ]],
         maxScore: [maxScore, [Validators.required, Validators.min(0)]],
@@ -272,11 +273,11 @@ export class ClassGradesComponent implements OnInit {
 
     componentTypes.forEach(componentType => {
       const existingComponent = existingComponents?.find(c => c.componentTypeId === componentType.id);
-      
-      const componentMaxScore = isMidterm ? 
-        ((componentType as any).midtermMaxScore || componentType.maxScore) : 
+
+      const componentMaxScore = isMidterm ?
+        ((componentType as any).midtermMaxScore || componentType.maxScore) :
         ((componentType as any).finalMaxScore || componentType.maxScore);
-      
+
       const componentForm = this.fb.group({
         componentTypeId: [componentType.id],
         componentName: [componentType.componentName],
@@ -326,7 +327,7 @@ export class ClassGradesComponent implements OnInit {
       delete this.expandedStudentId[classId];
     } else {
       this.expandedStudentId[classId] = studentId;
-      
+
       const form = this.getStudentForm(classId, studentId);
       if (form) {
         this.initializeDegreesArray(form, studentId);
@@ -336,7 +337,7 @@ export class ClassGradesComponent implements OnInit {
 
   setActiveExamType(examType: ExamTypeConfig): void {
     this.activeExamType = examType;
-    
+
     Object.keys(this.expandedStudentId).forEach(classId => {
       const studentId = this.expandedStudentId[classId];
       const form = this.getStudentForm(classId, studentId);
@@ -390,8 +391,8 @@ export class ClassGradesComponent implements OnInit {
 
   getExistingGrade(studentId: string, subjectId: string, degreeType: number): any {
     const degrees = this.existingDegrees.get(studentId) || [];
-    return degrees.find(d => 
-      d.subjectId === subjectId && 
+    return degrees.find(d =>
+      d.subjectId === subjectId &&
       d.degreeType === degreeType.toString()
     );
   }
@@ -399,15 +400,15 @@ export class ClassGradesComponent implements OnInit {
   calculateStudentTotal(studentId: string): number {
     const degrees = this.existingDegrees.get(studentId) || [];
     let total = 0;
-    
+
     degrees.forEach(degree => {
       const examType = this.examTypes.find(et => et.type === parseInt(degree.degreeType));
       const weight = examType?.weight || 1;
-      
+
       if (degree.hasComponents && degree.components?.length > 0) {
         const componentTotal = degree.components.reduce((sum: number, comp: any) => sum + (comp.score || 0), 0);
         const componentMaxTotal = degree.components.reduce((sum: number, comp: any) => sum + (comp.maxScore || 0), 0);
-        
+
         if (componentMaxTotal > 0) {
           const percentage = (componentTotal / componentMaxTotal) * 100;
           total += (percentage * weight) / 100;
@@ -416,7 +417,7 @@ export class ClassGradesComponent implements OnInit {
         total += (degree.score || 0) * weight;
       }
     });
-    
+
     return Math.round(total * 100) / 100;
   }
 
@@ -435,11 +436,11 @@ export class ClassGradesComponent implements OnInit {
   calculateClassAverage(classId: string): number {
     const studentIds = this.getStudentsForClass(classId);
     if (studentIds.length === 0) return 0;
-    
+
     const totalAverage = studentIds.reduce((sum, studentId) => {
       return sum + this.calculateStudentAverage(studentId);
     }, 0);
-    
+
     return Math.round(totalAverage / studentIds.length);
   }
 
@@ -450,7 +451,7 @@ export class ClassGradesComponent implements OnInit {
       const score = (control as FormGroup).get('score')?.value || 0;
       return sum + (parseFloat(score) || 0);
     }, 0);
-    
+
     return Math.round(total * 100) / 100;
   }
 
@@ -461,7 +462,7 @@ export class ClassGradesComponent implements OnInit {
       const maxScore = (control as FormGroup).get('maxScore')?.value || 0;
       return sum + (parseFloat(maxScore) || 0);
     }, 0);
-    
+
     return Math.round(total * 100) / 100;
   }
 
@@ -480,13 +481,13 @@ export class ClassGradesComponent implements OnInit {
 
     const useComponents = event.target.checked;
     form.get('useComponents')?.setValue(useComponents);
-    
+
     const degreesArray = form.get('degrees') as FormArray;
     degreesArray.controls.forEach((degreeControl: AbstractControl) => {
       const degreeForm = degreeControl as FormGroup;
       const subjectId = degreeForm.get('subjectId')?.value;
       const componentTypes = this.componentTypes.get(subjectId) || [];
-      
+
       if (useComponents && componentTypes.length > 0) {
         degreeForm.get('useComponents')?.setValue(true);
         this.initializeComponents(degreeForm, [], componentTypes);
@@ -503,7 +504,7 @@ export class ClassGradesComponent implements OnInit {
     const useComponents = degreeForm.get('useComponents')?.value;
     const subjectId = degreeForm.get('subjectId')?.value;
     const componentTypes = this.componentTypes.get(subjectId) || [];
-    
+
     if (useComponents && componentTypes.length > 0) {
       this.initializeComponents(degreeForm, [], componentTypes);
     } else {
@@ -526,7 +527,7 @@ export class ClassGradesComponent implements OnInit {
       this.toastService.error('Form has invalid data');
       return;
     }
-    
+
     this.toastService.error('Draft saved successfully');
   }
 
@@ -539,10 +540,10 @@ export class ClassGradesComponent implements OnInit {
     }
 
     this.savingStudentId = studentId;
-    
+
     const formValue = form.value;
     const degreesInput: DegreeInput[] = [];
-    
+
     formValue.degrees.forEach((degree: any) => {
       if (degree.useComponents && degree.components && degree.components.length > 0) {
         const components: DegreeComponent[] = degree.components.map((comp: any) => ({
@@ -551,7 +552,7 @@ export class ClassGradesComponent implements OnInit {
           score: parseFloat(comp.score) || 0,
           maxScore: parseFloat(comp.maxScore) || 0
         }));
-        
+
         degreesInput.push({
           subjectId: degree.subjectId,
           degreeType: degree.degreeType,
@@ -559,7 +560,7 @@ export class ClassGradesComponent implements OnInit {
         });
       } else if (degree.score !== null && degree.score !== undefined) {
         const maxScore = degree.maxScore || this.activeExamType.maxScore;
-        
+
         degreesInput.push({
           subjectId: degree.subjectId,
           degreeType: degree.degreeType,
@@ -569,8 +570,8 @@ export class ClassGradesComponent implements OnInit {
       }
     });
 
-    const validDegrees = degreesInput.filter(d => 
-      (d.components && d.components.length > 0) || 
+    const validDegrees = degreesInput.filter(d =>
+      (d.components && d.components.length > 0) ||
       (d.score !== null && d.score !== undefined)
     );
 
@@ -596,7 +597,8 @@ export class ClassGradesComponent implements OnInit {
               }
             },
             error: (error) => {
-              console.error('Error reloading degrees:', error);
+              // console.error('Error reloading degrees:', error);
+              this.toastService.error('Error reloading degrees:', error);
             }
           });
         } else {

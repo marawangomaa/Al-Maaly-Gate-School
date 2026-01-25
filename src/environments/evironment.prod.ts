@@ -1,6 +1,6 @@
 export const environment = {
     production: true,
-    apiUrl: 'http://localhost:5000/api',
-    baseUrl: 'http://localhost:5000',
-    imageBaseUrl: 'http://localhost:5000'
+    apiUrl: 'http://72.62.178.68/api',
+    baseUrl: 'http://72.62.178.68',
+    imageBaseUrl: 'http://72.62.178.68'
 };

@@ -64,7 +64,7 @@ export class CreateTestComponent implements OnInit {
 
   ngOnInit() {
     this.getTeacherIdFromLocalStorage();
-    
+
     if (this.teacherId) {
       this.loadTeacherData();
     } else {
@@ -82,7 +82,7 @@ export class CreateTestComponent implements OnInit {
 
   loadTeacherData(): void {
     this.loading = true;
-    
+
     // Load teacher's classes
     this.teacherService.getTeacherClasses(this.teacherId!).subscribe({
       next: (res) => {
@@ -106,7 +106,7 @@ export class CreateTestComponent implements OnInit {
         if (res.success) {
           this.teacherSubjects = res.data || [];
           console.log('Teacher subjects loaded:', this.teacherSubjects);
-          
+
           // Load all questions (don't filter by subject for now)
           this.loadAllQuestions();
         } else {
@@ -132,7 +132,7 @@ export class CreateTestComponent implements OnInit {
 
   loadAllQuestions(): void {
     this.questionService.loadAll();
-    
+
     this.questions$ = this.questionService.questions$.pipe(
       map((questions: QuestionModel[]) => ({
         mcq: questions.filter(q => q.type === QuestionTypes.Choices),
