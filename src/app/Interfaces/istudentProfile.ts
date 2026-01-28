@@ -11,6 +11,7 @@ export interface istudentProfile {
     age: number;
     classId: string;
     accountStatus: AccountStatus;
+    pendingRole?: string;
     nationality: string;
     iqamaNumber: string;
     passportNumber: string;

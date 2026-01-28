@@ -2,42 +2,30 @@
   <!-- Header Section -->
   <div class="header-section">
     <h2>{{ 'teachers.management' | translate }}</h2>
-    
+    <br><br>
+    <button class="btn btn-primary mb-3 action-btn" (click)="openCreateTeacherModal()">
+      <i class="bi bi-plus-circle me-2"></i>{{ 'teachers.create.open' | translate }}
+    </button>
     <!-- Filter Buttons -->
     <div class="d-flex gap-2 flex-wrap mb-4">
-      <button
-        class="btn btn-outline-secondary"
-        [class.btn-primary]="selectedStatus === 'all'"
-        (click)="selectedStatus = 'all'"
-      >
+      <button class="btn btn-outline-secondary" [class.btn-primary]="selectedStatus === 'all'"
+        (click)="selectedStatus = 'all'">
         <i class="fas fa-users me-1"></i> {{ 'teachers.allTeachers' | translate }}
       </button>
-      <button
-        class="btn btn-outline-secondary"
-        [class.btn-primary]="selectedStatus === accountStatusEnum.Pending"
-        (click)="selectedStatus = accountStatusEnum.Pending"
-      >
+      <button class="btn btn-outline-secondary" [class.btn-primary]="selectedStatus === accountStatusEnum.Pending"
+        (click)="selectedStatus = accountStatusEnum.Pending">
         <i class="fas fa-clock me-1"></i> {{ 'teachers.pending' | translate }}
       </button>
-      <button
-        class="btn btn-outline-secondary"
-        [class.btn-primary]="selectedStatus === accountStatusEnum.Active"
-        (click)="selectedStatus = accountStatusEnum.Active"
-      >
+      <button class="btn btn-outline-secondary" [class.btn-primary]="selectedStatus === accountStatusEnum.Active"
+        (click)="selectedStatus = accountStatusEnum.Active">
         <i class="fas fa-check-circle me-1"></i> {{ 'teachers.active' | translate }}
       </button>
-      <button
-        class="btn btn-outline-secondary"
-        [class.btn-primary]="selectedStatus === accountStatusEnum.Rejected"
-        (click)="selectedStatus = accountStatusEnum.Rejected"
-      >
+      <button class="btn btn-outline-secondary" [class.btn-primary]="selectedStatus === accountStatusEnum.Rejected"
+        (click)="selectedStatus = accountStatusEnum.Rejected">
         <i class="fas fa-times-circle me-1"></i> {{ 'teachers.rejected' | translate }}
       </button>
-      <button
-        class="btn btn-outline-secondary"
-        [class.btn-primary]="selectedStatus === accountStatusEnum.Blocked"
-        (click)="selectedStatus = accountStatusEnum.Blocked"
-      >
+      <button class="btn btn-outline-secondary" [class.btn-primary]="selectedStatus === accountStatusEnum.Blocked"
+        (click)="selectedStatus = accountStatusEnum.Blocked">
         <i class="fas fa-ban me-1"></i> {{ 'teachers.blocked' | translate }}
       </button>
     </div>
@@ -61,7 +49,7 @@
             {{ getStatusName(teacher.accountStatus) }}
           </span>
         </div>
-        
+
         <div class="card-body">
           <!-- Teacher Info -->
           <div class="mb-3">
@@ -105,42 +93,26 @@
           <div class="d-flex justify-content-between align-items-center mt-4">
             <div class="d-flex gap-2 flex-wrap">
               <!-- Approve Button -->
-              <button
-                class="btn btn-success btn-sm"
-                *ngIf="isTeacherPending(teacher) || isTeacherRejected(teacher)"
-                (click)="ApproveTeacherAction(teacher.id)"
-                [title]="'teachers.approve' | translate"
-              >
+              <button class="btn btn-success btn-sm" *ngIf="isTeacherPending(teacher) || isTeacherRejected(teacher)"
+                (click)="ApproveTeacherAction(teacher.id)" [title]="'teachers.approve' | translate">
                 <i class="fas fa-check me-1"></i> {{ 'teachers.approve' | translate }}
               </button>
 
               <!-- Reject Button -->
-              <button
-                class="btn btn-outline-danger btn-sm"
-                *ngIf="isTeacherPending(teacher)"
-                (click)="RejectTeacherAction(teacher.id)"
-                [title]="'teachers.reject' | translate"
-              >
+              <button class="btn btn-outline-danger btn-sm" *ngIf="isTeacherPending(teacher)"
+                (click)="RejectTeacherAction(teacher.id)" [title]="'teachers.reject' | translate">
                 <i class="fas fa-times me-1"></i> {{ 'teachers.reject' | translate }}
               </button>
 
               <!-- Block Button -->
-              <button
-                class="btn btn-danger btn-sm"
-                *ngIf="isTeacherActive(teacher)"
-                (click)="BlockTeacherAction(teacher.id)"
-                [title]="'teachers.block' | translate"
-              >
+              <button class="btn btn-danger btn-sm" *ngIf="isTeacherActive(teacher)"
+                (click)="BlockTeacherAction(teacher.id)" [title]="'teachers.block' | translate">
                 <i class="fas fa-ban me-1"></i> {{ 'teachers.block' | translate }}
               </button>
 
               <!-- Unblock Button -->
-              <button
-                class="btn btn-warning btn-sm"
-                *ngIf="isTeacherBlocked(teacher)"
-                (click)="UnblockTeacherAction(teacher.id)"
-                [title]="'teachers.unblock' | translate"
-              >
+              <button class="btn btn-warning btn-sm" *ngIf="isTeacherBlocked(teacher)"
+                (click)="UnblockTeacherAction(teacher.id)" [title]="'teachers.unblock' | translate">
                 <i class="fas fa-unlock me-1"></i> {{ 'teachers.unblock' | translate }}
               </button>
             </div>
@@ -153,22 +125,16 @@
   <!-- Empty States -->
   <div *ngIf="!isLoading">
     <!-- No teachers in filtered category -->
-    <div
-      *ngIf="filteredTeachers().length === 0 && allTeachers.length > 0"
-      class="alert alert-info mt-4 text-center"
-    >
+    <div *ngIf="filteredTeachers().length === 0 && allTeachers.length > 0" class="alert alert-info mt-4 text-center">
       <i class="fas fa-info-circle me-2"></i>
-      {{ 'teachers.noTeachersInCategory' | translate }} 
+      {{ 'teachers.noTeachersInCategory' | translate }}
       <span *ngIf="selectedStatus !== 'all'">
         ({{ getStatusDisplayName(selectedStatus) | translate }})
       </span>
     </div>
 
     <!-- No teachers at all -->
-    <div
-      *ngIf="allTeachers.length === 0 && !isLoading"
-      class="text-center py-5"
-    >
+    <div *ngIf="allTeachers.length === 0 && !isLoading" class="text-center py-5">
       <i class="fas fa-chalkboard-teacher fa-4x text-muted mb-4"></i>
       <h4 class="mb-3">{{ 'teachers.noTeachers' | translate }}</h4>
       <p class="text-muted mb-4">{{ 'teachers.noTeachersInCategory' | translate }}</p>
@@ -199,3 +165,89 @@
   </div>
 </div>
 <div *ngIf="isConfirmModalOpen" class="modal-backdrop fade show" style="z-index: 1053"></div>
+
+<!-- CREATE TEACHER MODAL -->
+<div class="modal fade show d-block" *ngIf="isCreateTeacherModalOpen" tabindex="-1" style="background: rgba(0,0,0,.5);">
+
+
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{ 'teachers.create.title' | translate }}
+        </h5>
+        <button type="button" class="btn-close" (click)="closeCreateTeacherModal()">
+        </button>
+      </div>
+
+
+      <div class="modal-body">
+
+
+        <form (ngSubmit)="createTeacher()" #teacherForm="ngForm">
+
+
+          <div class="mb-3">
+            <label>Email</label>
+            <input class="form-control" name="email" type="email" [(ngModel)]="createTeacherModel.email" required />
+          </div>
+
+
+          <div class="mb-3">
+            <label>Username</label>
+            <input class="form-control" name="userName" [(ngModel)]="createTeacherModel.userName" required />
+          </div>
+
+
+          <div class="mb-3">
+            <label>Full Name</label>
+            <input class="form-control" name="fullName" [(ngModel)]="createTeacherModel.fullName" required />
+          </div>
+
+
+          <div class="mb-3">
+            <label>Gender</label>
+            <select class="form-select" name="gender" [(ngModel)]="createTeacherModel.gender" required>
+              <option value="">-- Select --</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
+
+
+          <div class="mb-3">
+            <label>Birth Date</label>
+            <input class="form-control" type="date" name="birthDay" [(ngModel)]="createTeacherModel.birthDay"
+              required />
+          </div>
+
+
+          <div class="mb-3">
+            <label>Contact Info</label>
+            <input class="form-control" name="contactInfo" [(ngModel)]="createTeacherModel.contactInfo" />
+          </div>
+
+
+          <div class="text-end">
+            <button type="button" class="btn btn-secondary me-2" (click)="closeCreateTeacherModal()">
+              {{ 'common.cancel' | translate }}
+            </button>
+
+
+            <button type="submit" class="btn btn-primary" [disabled]="isCreatingTeacher">
+              {{ isCreatingTeacher
+              ? ('common.loading' | translate)
+              : ('teachers.create.submit' | translate) }}
+            </button>
+          </div>
+
+
+        </form>
+
+
+      </div>
+    </div>
+  </div>
+</div>

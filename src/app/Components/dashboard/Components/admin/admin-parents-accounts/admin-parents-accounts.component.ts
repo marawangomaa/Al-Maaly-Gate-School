@@ -15,6 +15,7 @@ import { environment } from '../../../../../../environments/environment';
 import { ifileRecord } from '../../../../../Interfaces/ifileRecord';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ToastService } from '../../../../../Services/UtilServices/toast.service';
+import { AfterAuthService } from '../../../../../Services/after-auth.service';
 
 @Component({
   selector: 'app-admin-parent-accounts',
@@ -47,6 +48,20 @@ export class AdminParentsAccountsComponent {
   currentPdfUrl: SafeResourceUrl | null = null;
   showPdfViewer: boolean = false;
 
+  // Create Parent Model
+  createParentModel = {
+    email: '',
+    userName: '',
+    fullName: '',
+    gender: '',
+    birthDay: '',
+    contactInfo: ''
+  };
+
+
+  isCreatingParent = false;
+  isCreateParentModalOpen = false;
+
   private subscription = new Subscription();
 
   //Modal State
@@ -61,7 +76,8 @@ export class AdminParentsAccountsComponent {
     private authService: AuthService,
     private translate: TranslateService,
     private sanitizer: DomSanitizer,
-    private ToastService: ToastService
+    private ToastService: ToastService,
+    private AfterAuthService: AfterAuthService
   ) { }
 
   ngOnInit(): void {
@@ -71,7 +87,42 @@ export class AdminParentsAccountsComponent {
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
+  createParent(): void {
+    if (
+      !this.createParentModel.email ||
+      !this.createParentModel.userName ||
+      !this.createParentModel.fullName ||
+      !this.createParentModel.gender ||
+      !this.createParentModel.birthDay
+    ) {
+      this.ToastService.warning(
+        this.translate.instant('parents.messages.fillRequired')
+      );
+      return;
+    }
 
+
+    this.isCreatingParent = true;
+
+
+    this.AfterAuthService.createParent(this.createParentModel).subscribe({
+      next: res => {
+        this.ToastService.success(res.message);
+        this.isCreatingParent = false;
+
+
+        this.closeCreateParentModal();
+        this.LoadAllParents();
+      },
+      error: err => {
+        this.isCreatingParent = false;
+        this.ToastService.error(
+          err.error?.message ||
+          this.translate.instant('parents.messages.createFailed')
+        );
+      }
+    });
+  }
   // Updated GetParentDocs to open modal instead of opening in new tabs
   async GetParentDocs(parentAppUserId: string | undefined): Promise<void> {
     if (!parentAppUserId) {
@@ -224,9 +275,12 @@ export class AdminParentsAccountsComponent {
     );
   }
 
-  isParentPending(Parent: iparentViewDtoWithDocs): boolean {
-    return this.convertToAccountStatus(Parent.accountStatus) === AccountStatus.Pending;
-  }
+  isParentPending(parent: iparentViewDtoWithDocs): boolean {
+  // Check both pendingRole and accountStatus
+  return parent.accountStatus === AccountStatus.Pending || 
+         parent.pendingRole === 'parent' ||
+         this.convertToAccountStatus(parent.accountStatus) === AccountStatus.Pending;
+}
 
   isParentRejected(Parent: iparentViewDtoWithDocs): boolean {
     return this.convertToAccountStatus(Parent.accountStatus) === AccountStatus.Rejected;
@@ -498,6 +552,7 @@ export class AdminParentsAccountsComponent {
       this._parentService.GetAllParents().subscribe({
         next: (response: ApiResponse<iparentViewDtoWithDocs[]>) => {
           this.allparents = response.data || [];
+          this.LoadPendingParents();
           console.log('Loaded parents:', this.allparents);
           // Optionally calculate docCount for each parent if your backend doesn't provide it
           // this.allparents.forEach(parent => {
@@ -512,6 +567,60 @@ export class AdminParentsAccountsComponent {
       })
     );
   }
+  //loading pending AppUser as parent
+  private LoadPendingParents(): void {
+    this.subscription.add(
+      this.AfterAuthService.getPendingParents().subscribe({
+        next: pendingUsers => {
+
+          const pendingParents: iparentViewDtoWithDocs[] = pendingUsers.data!
+            .filter(u => u.pendingRole === 'parent')
+            .map(u => ({
+              id: u.id,
+              appUserId: u.id,
+              fullName: u.fullName,
+              email: u.email,
+              contactInfo: u.contactInfo,
+              gender: '',
+              accountStatus: AccountStatus.Pending,
+              type: 'Pending',
+              documents: [],
+            }));
+
+          const existingIds = new Set(this.allparents.map(p => p.id));
+          const newParents = pendingParents.filter(p => !existingIds.has(p.id));
+
+          this.allparents = [...this.allparents, ...newParents];
+        },
+        error: err => {
+          console.error('Failed to load pending parents:', err);
+          this.ToastService.error(
+            this.translate.instant('parents.messages.loadError')
+          );
+        }
+      })
+    );
+  }
+
+  openCreateParentModal(): void {
+    this.isCreateParentModalOpen = true;
+  }
+
+
+  closeCreateParentModal(): void {
+    this.isCreateParentModalOpen = false;
+
+
+    this.createParentModel = {
+      email: '',
+      userName: '',
+      fullName: '',
+      gender: '',
+      birthDay: '',
+      contactInfo: ''
+    };
+  }
+
   //Modal  Methods
   openConfirmAsync(message: string, action: () => Promise<void>): void {
     this.confirmModalMessage = message;

@@ -9,6 +9,7 @@ export interface iparentViewDto {
     type: string;
     accountStatus: AccountStatus;
     gender: string;
+    pendingRole?: string;
 }
 
 export interface iparentViewDtoWithDocs extends iparentViewDto {

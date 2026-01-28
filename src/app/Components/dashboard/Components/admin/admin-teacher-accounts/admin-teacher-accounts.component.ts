@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { AccountStatus } from '../../../../../Interfaces/AccountStatus';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ToastService } from '../../../../../Services/UtilServices/toast.service';
+import { AfterAuthService } from '../../../../../Services/after-auth.service';
 
 @Component({
   selector: 'app-admin-teacher-accounts',
@@ -25,6 +26,20 @@ export class AdminTeacherAccountsComponent implements OnInit, OnDestroy {
   hasSearched = false;
   isLoading = false;
 
+  // Create Teacher Model (binds to HTML)
+  createTeacherModel = {
+    email: '',
+    userName: '',
+    fullName: '',
+    gender: '',
+    birthDay: '',
+    contactInfo: ''
+  };
+
+  isCreatingTeacher = false;
+  // Create Teacher Modal State
+  isCreateTeacherModalOpen = false;
+
   accountStatusEnum = AccountStatus;
   selectedStatus: AccountStatus | 'all' = 'all';
 
@@ -39,7 +54,8 @@ export class AdminTeacherAccountsComponent implements OnInit, OnDestroy {
     private adminService: AdminManagementService,
     private authService: AuthService,
     private translate: TranslateService,
-    private ToastService: ToastService
+    private ToastService: ToastService,
+    private AfterAuthService: AfterAuthService
   ) { }
 
   ngOnInit(): void {
@@ -60,7 +76,7 @@ export class AdminTeacherAccountsComponent implements OnInit, OnDestroy {
   }
 
   isTeacherPending(teacher: Teacher): boolean {
-    return this.convertToAccountStatus(teacher.accountStatus) === AccountStatus.Pending;
+    return teacher.accountStatus === AccountStatus.Pending || teacher.pendingRole === 'teacher' || this.convertToAccountStatus(teacher.accountStatus) === AccountStatus.Pending;
   }
 
   isTeacherRejected(teacher: Teacher): boolean {
@@ -153,7 +169,7 @@ export class AdminTeacherAccountsComponent implements OnInit, OnDestroy {
     this.hasSearched = true;
 
     if (!subject) {
-      alert(this.translate.instant('teachers.messages.enterSubject'));
+      this.ToastService.warning(this.translate.instant('teachers.messages.enterSubject'));
       this.teachersBySubject = [];
       return;
     }
@@ -169,7 +185,7 @@ export class AdminTeacherAccountsComponent implements OnInit, OnDestroy {
         },
         error: err => {
           this.isLoading = false;
-          alert(`${this.translate.instant('teachers.messages.loadError')} ${subject}: ${err.message}`);
+          this.ToastService.error(`${this.translate.instant('teachers.messages.loadError')} ${subject}: ${err.message}`);
         }
       })
     );
@@ -287,6 +303,63 @@ export class AdminTeacherAccountsComponent implements OnInit, OnDestroy {
       );
     });
   }
+  //create teacher modal methods
+  openCreateTeacherModal(): void {
+    this.isCreateTeacherModalOpen = true;
+  }
+
+
+  closeCreateTeacherModal(): void {
+    this.isCreateTeacherModalOpen = false;
+
+
+    // Reset form when closing
+    this.createTeacherModel = {
+      email: '',
+      userName: '',
+      fullName: '',
+      gender: '',
+      birthDay: '',
+      contactInfo: ''
+    };
+  }
+  //create teacher method
+  createTeacher(): void {
+    if (
+      !this.createTeacherModel.email ||
+      !this.createTeacherModel.userName ||
+      !this.createTeacherModel.fullName ||
+      !this.createTeacherModel.gender ||
+      !this.createTeacherModel.birthDay
+    ) {
+      this.ToastService.warning(
+        this.translate.instant('teachers.messages.fillRequired')
+      );
+      return;
+    }
+
+
+    this.isCreatingTeacher = true;
+
+
+    this.AfterAuthService.createTeacher(this.createTeacherModel).subscribe({
+      next: res => {
+        this.ToastService.success(res.message);
+        this.isCreatingTeacher = false;
+
+
+        this.closeCreateTeacherModal();
+        this.LoadAllTeachers();
+      },
+      error: err => {
+        this.isCreatingTeacher = false;
+        this.ToastService.error(
+          err.error?.message ||
+          this.translate.instant('teachers.messages.createFailed')
+        );
+      }
+    });
+  }
 
   //Load all teachers
   private LoadAllTeachers(): void {
@@ -294,13 +367,47 @@ export class AdminTeacherAccountsComponent implements OnInit, OnDestroy {
     this.subscription.add(
       this.teacherService.GetAllTeachers().subscribe({
         next: teachers => {
-          this.allTeachers = teachers;
-          this.isLoading = false;
+          this.allTeachers = teachers.map(t => ({ ...t }));
+          this.LoadPendingAppUsers();
           console.log('All Teachers:', teachers);
+          this.isLoading = false;
         },
         error: err => {
           this.isLoading = false;
-          alert(`${this.translate.instant('teachers.messages.loadError')}: ${err.message}`);
+          this.ToastService.error(`${this.translate.instant('teachers.messages.loadError')}: ${err.message}`);
+        }
+      })
+    );
+  }
+  //load pending role users as teachers
+  private LoadPendingAppUsers(): void {
+    this.subscription.add(
+      this.AfterAuthService.getPendingTeachers().subscribe({
+        next: pendingUsers => {
+          const pendingTeachers: Teacher[] = pendingUsers.data!
+            .filter(u => u.pendingRole === 'teacher')
+            .map(u => ({
+              id: u.id,
+              fullName: u.fullName,
+              email: u.email,
+              contactInfo: u.contactInfo,
+              subjects: [],
+              classNames: [],
+              accountStatus: AccountStatus.Pending,
+              pendingRole: u.pendingRole,
+            }));
+
+          const existingIds = new Set(this.allTeachers.map(t => t.id));
+          const newTeachers = pendingTeachers.filter(t => !existingIds.has(t.id));
+
+          this.allTeachers = [...this.allTeachers, ...newTeachers];
+          this.isLoading = false;
+          console.log('All teachers including pending AppUsers:', this.allTeachers);
+        },
+        error: err => {
+          this.isLoading = false;
+          console.error('Failed to load pending AppUsers:', err);
+          this.ToastService.error(this.translate.instant('teachers.messages.loadError') + ': ' + err.message);
         }
       })
     );

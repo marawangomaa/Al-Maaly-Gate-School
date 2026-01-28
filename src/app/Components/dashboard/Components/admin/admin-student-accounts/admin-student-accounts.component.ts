@@ -13,6 +13,7 @@ import { ClassViewDto } from '../../../../../Interfaces/iclass';
 import { ClassService } from '../../../../../Services/class.service';
 import istudentUpdate from '../../../../../Interfaces/istudentUpdate';
 import { ToastService } from '../../../../../Services/UtilServices/toast.service';
+import { AfterAuthService } from '../../../../../Services/after-auth.service';
 
 @Component({
   selector: 'app-admin-student-accounts',
@@ -40,6 +41,20 @@ export class AdminStudentAccountsComponent implements OnInit, OnDestroy {
   nationality: string = '';
   iqamaNumber: string = '';
 
+  // Create Student Model (binds to HTML)
+  createStudentModel = {
+    email: '',
+    userName: '',
+    fullName: '',
+    gender: '',
+    birthDay: '',
+    contactInfo: ''
+  };
+
+  isCreatingStudent = false;
+  // Create Student Modal State
+  isCreateStudentModalOpen = false;
+
   private subscription = new Subscription();
 
   // Modal state
@@ -53,7 +68,8 @@ export class AdminStudentAccountsComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private translate: TranslateService,
     private _ClassService: ClassService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private AfterAuthService: AfterAuthService
   ) { }
 
   ngOnInit(): void {
@@ -90,9 +106,12 @@ export class AdminStudentAccountsComponent implements OnInit, OnDestroy {
     );
   }
 
-  isStudentsPending(student: istudentProfile): boolean {
-    return this.convertToAccountStatus(student.accountStatus) === AccountStatus.Pending;
-  }
+ isStudentsPending(student: istudentProfile): boolean {
+  // Check both pendingRole and accountStatus
+  return student.accountStatus === AccountStatus.Pending || 
+         student.pendingRole === 'student' ||
+         this.convertToAccountStatus(student.accountStatus) === AccountStatus.Pending;
+}
 
   isStudentsRejected(student: istudentProfile): boolean {
     return this.convertToAccountStatus(student.accountStatus) === AccountStatus.Rejected;
@@ -515,19 +534,112 @@ export class AdminStudentAccountsComponent implements OnInit, OnDestroy {
       );
     });
   }
+  //create student modal methods
+  openCreateStudentModal(): void {
+    this.isCreateStudentModalOpen = true;
+  }
+
+
+  closeCreateStudentModal(): void {
+    this.isCreateStudentModalOpen = false;
+
+
+    // Reset form when closing
+    this.createStudentModel = {
+      email: '',
+      userName: '',
+      fullName: '',
+      gender: '',
+      birthDay: '',
+      contactInfo: ''
+    };
+  }
+  //create student method
+  createStudent(): void {
+    if (
+      !this.createStudentModel.email ||
+      !this.createStudentModel.userName ||
+      !this.createStudentModel.fullName ||
+      !this.createStudentModel.gender ||
+      !this.createStudentModel.birthDay
+    ) {
+      this.toastService.warning(
+        this.translate.instant('teachers.messages.fillRequired')
+      );
+      return;
+    }
+
+
+    this.isCreatingStudent = true;
+
+
+    this.AfterAuthService.createStudent(this.createStudentModel).subscribe({
+      next: res => {
+        this.toastService.success(res.message);
+        this.isCreatingStudent = false;
+
+
+        this.closeCreateStudentModal();
+        this.LoadAllStudents();
+      },
+      error: err => {
+        this.isCreatingStudent = false;
+        this.toastService.error(
+          err.error?.message ||
+          this.translate.instant('teachers.messages.createFailed')
+        );
+      }
+    });
+  }
 
   private LoadAllStudents(): void {
     this.isLoading = true;
     this.subscription.add(
       this._StudentService.GetAllStudents().subscribe({
         next: (response: ApiResponse<istudentProfile[]>) => {
-          this.allStudents = response.data;
+          this.allStudents = response.data || [];
+          // Load pending AppUsers
+          this.LoadPendingAppUsers();
           this.isLoading = false;
           console.log('تم تحميل الطلاب:', this.allStudents.length);
         },
         error: err => {
           this.toastService.error(`خطأ في تحميل جميع الحسابات: ${err.message}`);
           this.isLoading = false;
+        }
+      })
+    );
+  }
+  private LoadPendingAppUsers(): void {
+    this.subscription.add(
+      this.AfterAuthService.getPendingStudents().subscribe({
+        next: pendingUsers => {
+          const pendingStudents = pendingUsers.data!
+            .filter(u => u.pendingRole === 'student')
+            .map(u => ({
+              id: u.id,
+              fullName: u.fullName,
+              email: u.email,
+              contactInfo: u.contactInfo,
+              classId: '',
+              accountStatus: AccountStatus.Pending,
+              pendingRole: u.pendingRole,
+              className: '',
+              appUserId: '',
+              classYear: '',
+              age: 0
+            } as istudentProfile));
+
+          // Avoid duplicates
+          const existingIds = new Set(this.allStudents.map(s => s.id));
+          const newStudents = pendingStudents.filter(s => !existingIds.has(s.id));
+
+          this.allStudents = [...this.allStudents, ...newStudents];
+          console.log('All students including pending AppUsers:', this.allStudents);
+        },
+        error: err => {
+          console.error('Failed to load pending AppUsers:', err);
+          this.toastService.error(`خطأ في تحميل الطلاب: ${err.message}`);
         }
       })
     );

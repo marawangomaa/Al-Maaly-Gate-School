@@ -649,3 +649,37 @@ a:focus-visible,
   outline: 2px solid var(--color-primary-400);
   outline-offset: 2px;
 }
+/* Fix modal z-index issues */
+.modal-backdrop {
+  z-index: 1040 !important;
+}
+
+.modal {
+  z-index: 1050 !important;
+}
+
+/* Ensure modals stack properly */
+.modal.fade.show {
+  z-index: 1060 !important;
+}
+
+.modal-backdrop.show {
+  z-index: 1040 !important;
+}
+
+/* Fix for nested modals */
+.modal.show .modal-backdrop {
+  z-index: 1039 !important;
+}
+
+.modal.show {
+  z-index: 1040 !important;
+}
+
+/* For glass modal effect */
+.glass-modal {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}

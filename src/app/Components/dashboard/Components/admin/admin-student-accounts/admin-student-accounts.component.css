@@ -197,4 +197,51 @@
   .form-grid {
     grid-template-columns: 1fr;
   }
+} 
+
+/* Reusable action buttons (Create / Add / Assign etc.) */
+.action-btn {
+display: inline-flex;
+align-items: center;
+gap: 0.5rem;
+
+
+padding: 0.6rem 1.25rem;
+font-weight: 600;
+font-size: 0.95rem;
+
+
+border-radius: 0.6rem;
+transition: all 0.25s ease-in-out;
+
+
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+
+/* Icon size */
+.action-btn i {
+font-size: 1.1rem;
+}
+
+
+/* Hover effect */
+.action-btn:hover {
+transform: translateY(-1px);
+box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+
+/* Active (click) */
+.action-btn:active {
+transform: translateY(0);
+box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+}
+
+
+/* Optional: disabled state */
+.action-btn:disabled {
+opacity: 0.65;
+box-shadow: none;
+cursor: not-allowed;
 }

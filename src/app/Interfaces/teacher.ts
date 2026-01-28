@@ -8,4 +8,5 @@ export interface Teacher {
     accountStatus: AccountStatus;
     subjects: string[];
     classNames: string[];
+    pendingRole?: string;
 }
