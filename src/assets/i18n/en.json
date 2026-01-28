@@ -1463,6 +1463,11 @@
       "rejectFailed": "Failed to reject teacher",
       "blockFailed": "Failed to block teacher",
       "unblockFailed": "Failed to unblock teacher"
+    },
+    "create": {
+      "open": "Add New Teacher",
+      "submit": "Create Teacher Account",
+      "title" : "Create New Teacher"
     }
   },
   "parents": {
@@ -1571,6 +1576,12 @@
       "reject": "Are you sure you want to reject this parent account?",
       "block": "Are you sure you want to block this parent account?",
       "unblock": "Are you sure you want to unblock this parent account?"
+    },
+    "create": {
+      "open": "Add New Parent",
+      "submit": "Create Parent Account",
+      "title" : "Create new Parent"
+
     }
   },
   "common": {
@@ -1615,6 +1626,12 @@
       "blocked": "Blocked",
       "rejected": "Rejected",
       "unknown": "Unknown"
+    },
+    "create":
+    {
+      "open": "Add New Student",
+      "submit": "Create Student",
+      "title" : "Create New Student"
     }
   },
   "NAV": {

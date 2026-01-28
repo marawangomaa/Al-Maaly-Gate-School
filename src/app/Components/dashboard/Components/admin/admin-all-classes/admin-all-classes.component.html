@@ -251,9 +251,8 @@
         <form #editClassForm="ngForm">
           <div class="mb-3">
             <label class="form-label">{{ "classes.modals.edit.className" | translate }} *</label>
-            <input type="text" class="form-control" [(ngModel)]="editClassData.className" 
-                   name="editClassName" required 
-                   placeholder="{{ 'classes.modals.edit.classNamePlaceholder' | translate }}" />
+            <input type="text" class="form-control" [(ngModel)]="editClassData.className" name="editClassName" required
+              placeholder="{{ 'classes.modals.edit.classNamePlaceholder' | translate }}" />
           </div>
 
           <div class="mb-3">
@@ -261,12 +260,12 @@
             <select class="form-control" [(ngModel)]="editClassData.gradeId" name="editGradeId" required>
               <option value="">{{ "classes.modals.edit.selectGrade" | translate }}</option>
               <option *ngFor="let grade of allGrades" [value]="grade.id">
-                {{ grade.gradeName }} 
+                {{ grade.gradeName }}
                 <span *ngIf="grade.curriculumName">({{ grade.curriculumName }})</span>
               </option>
             </select>
             <small class="text-muted" *ngIf="editClassData.gradeId">
-              {{ "classes.modals.edit.selectedGradeBelongsTo" | translate }}: 
+              {{ "classes.modals.edit.selectedGradeBelongsTo" | translate }}:
               <span class="badge bg-info">
                 {{ getGradeCurriculumName(editClassData.gradeId) }}
               </span>
@@ -279,8 +278,8 @@
         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
           {{ "COMMON.cancel" | translate }}
         </button>
-        <button type="button" class="btn btn-primary" (click)="updateClass()" 
-                [disabled]="!editClassData.className || !editClassData.gradeId">
+        <button type="button" class="btn btn-primary" (click)="updateClass()"
+          [disabled]="!editClassData.className || !editClassData.gradeId">
           {{ "COMMON.update" | translate }}
         </button>
       </div>
@@ -497,7 +496,7 @@
                         </td>
                         <td>
                           <button class="btn btn-sm btn-outline-warning"
-                            (click)="moveStudentToAnotherClass(student.id, selectedClass!.id)"
+                            (click)="openMoveStudentModal(student.id, selectedClass!.id)"
                             [title]="'classes.modals.details.moveStudent' | translate">
                             <i class="fas fa-exchange-alt"></i>
                           </button>
@@ -854,6 +853,52 @@
           [class.btn-warning]="confirmationType === 'warning'" [class.btn-primary]="confirmationType === 'info'"
           (click)="executeConfirmation()">
           {{ confirmButtonText }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Move Student Modal -->
+<div class="modal fade" id="moveStudentModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content glass-modal">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ "classes.modals.moveStudent.title" | translate }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="alert alert-info glass-alert mb-3">
+          <i class="fas fa-info-circle me-2"></i>
+          {{ "classes.modals.moveStudent.info" | translate }}
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">{{ "classes.modals.moveStudent.selectTargetClass" | translate }}</label>
+          <select class="form-select" [(ngModel)]="targetClassId" (ngModelChange)="onTargetClassChange($event)">
+            <option [ngValue]="null" disabled>{{ "classes.modals.moveStudent.chooseClass" | translate }}</option>
+            <option *ngFor="let cls of allClasses" [ngValue]="cls.id" [disabled]="cls.id === currentStudentClassId">
+              {{ cls.className }} ({{ cls.gradeName }})
+              <span *ngIf="cls.id === currentStudentClassId" class="text-muted">
+                - {{ "classes.modals.moveStudent.currentClass" | translate }}
+              </span>
+            </option>
+          </select>
+          <small class="text-muted" *ngIf="targetClassId && targetClassId === currentStudentClassId">
+            {{ "classes.modals.moveStudent.cannotSelectCurrent" | translate }}
+          </small>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          {{ "COMMON.cancel" | translate }}
+        </button>
+        <button type="button" class="btn btn-primary" 
+                [disabled]="!targetClassId || targetClassId === currentStudentClassId"
+                (click)="confirmMoveStudent()">
+          {{ "classes.modals.moveStudent.confirmMove" | translate }}
         </button>
       </div>
     </div>
