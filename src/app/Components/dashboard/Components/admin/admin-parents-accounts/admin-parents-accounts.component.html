@@ -47,11 +47,18 @@
   </div>
   <br><br>
 
-   <!-- CREATE PARENT BUTTON -->
+  <!-- CREATE PARENT BUTTON -->
   <button class="btn btn-primary mb-3 action-btn" (click)="openCreateParentModal()">
-        <i class="bi bi-plus-circle me-2"></i>{{ 'parents.create.open' | translate }}
-   </button>
+    <i class="bi bi-plus-circle me-2"></i>{{ 'parents.create.open' | translate }}
+  </button>
+  <br><br>
+  <button class="btn btn-primary mb-3 action-btn" (click)="parentFile.click()">
+    Import Parents from Excel
+  </button>
 
+
+  <input type="file" #parentFile hidden accept=".xlsx" (change)="onExcelSelected(parentFile, 'parent')" />
+  <br><br>
   <!-- Loading State -->
   <div *ngIf="isLoading" class="text-center py-5">
     <div class="spinner-border" role="status">

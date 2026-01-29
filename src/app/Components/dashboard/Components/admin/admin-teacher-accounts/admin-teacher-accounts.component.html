@@ -6,6 +6,13 @@
     <button class="btn btn-primary mb-3 action-btn" (click)="openCreateTeacherModal()">
       <i class="bi bi-plus-circle me-2"></i>{{ 'teachers.create.open' | translate }}
     </button>
+    <br><br>
+    <button class="btn btn-primary mb-3 action-btn" (click)="teacherFile.click()">
+      Import Teachers from Excel
+    </button>
+
+    <input type="file" #teacherFile hidden accept=".xlsx" (change)="onExcelSelected(teacherFile, 'teacher')" />
+    <br><br>
     <!-- Filter Buttons -->
     <div class="d-flex gap-2 flex-wrap mb-4">
       <button class="btn btn-outline-secondary" [class.btn-primary]="selectedStatus === 'all'"
