@@ -7,7 +7,14 @@
     <button class="btn btn-primary mb-3 action-btn" (click)="openCreateStudentModal()">
       <i class="bi bi-plus-circle me-2"></i>{{ 'students.create.open' | translate }}
     </button>
+    <br><br>
+    <button class="btn btn-primary mb-3 action-btn" (click)="studentFile.click()">
+      Import Students from Excel
+    </button>
 
+
+    <input type="file" #studentFile hidden accept=".xlsx" (change)="onExcelSelected(studentFile, 'student')" />
+    <br><br>
     <!-- Filter Buttons -->
     <div class="d-flex gap-2 flex-wrap mb-4">
       <button class="btn outline-btn" [class.btn-primary]="selectedStatus === 'all'" (click)="selectedStatus = 'all'">

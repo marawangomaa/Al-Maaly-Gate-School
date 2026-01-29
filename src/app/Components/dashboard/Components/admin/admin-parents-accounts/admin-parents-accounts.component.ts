@@ -16,6 +16,8 @@ import { ifileRecord } from '../../../../../Interfaces/ifileRecord';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ToastService } from '../../../../../Services/UtilServices/toast.service';
 import { AfterAuthService } from '../../../../../Services/after-auth.service';
+import { CreateUserExcelModel } from '../../../../../Interfaces/i-admin-users/create-user-excel-model';
+import * as xlsx from 'xlsx';
 
 @Component({
   selector: 'app-admin-parent-accounts',
@@ -276,11 +278,11 @@ export class AdminParentsAccountsComponent {
   }
 
   isParentPending(parent: iparentViewDtoWithDocs): boolean {
-  // Check both pendingRole and accountStatus
-  return parent.accountStatus === AccountStatus.Pending || 
-         parent.pendingRole === 'parent' ||
-         this.convertToAccountStatus(parent.accountStatus) === AccountStatus.Pending;
-}
+    // Check both pendingRole and accountStatus
+    return parent.accountStatus === AccountStatus.Pending ||
+      parent.pendingRole === 'parent' ||
+      this.convertToAccountStatus(parent.accountStatus) === AccountStatus.Pending;
+  }
 
   isParentRejected(Parent: iparentViewDtoWithDocs): boolean {
     return this.convertToAccountStatus(Parent.accountStatus) === AccountStatus.Rejected;
@@ -642,5 +644,100 @@ export class AdminParentsAccountsComponent {
     this.isConfirmModalOpen = false;
     this.confirmModalMessage = '';
     this.confirmAction = undefined;
+  }
+  //excel parsing and bulk create users
+  //excel to json
+  async parseExcelAndCreateUsers(
+    file: File,
+    userType: 'teacher' | 'student' | 'parent'
+  ) {
+    const reader = new FileReader();
+
+
+    reader.onload = (e: any) => {
+      const data = new Uint8Array(e.target.result);
+      const workbook = xlsx.read(data, {
+        type: 'array',
+        cellDates: true // 🔑 CRITICAL
+      });
+
+
+      const sheet = workbook.Sheets[workbook.SheetNames[0]];
+
+
+      const rows: any[] = xlsx.utils.sheet_to_json(sheet, {
+        raw: true,
+        defval: ''
+      });
+
+
+      const users: CreateUserExcelModel[] = rows.map((r, index) => {
+        let birthDate: Date | null = null;
+
+
+        if (r.BirthDay instanceof Date) {
+          birthDate = r.BirthDay;
+        }
+        else if (typeof r.BirthDay === 'number') {
+          const d = xlsx.SSF.parse_date_code(r.BirthDay);
+          birthDate = new Date(d.y, d.m - 1, d.d);
+        }
+        else if (typeof r.BirthDay === 'string' && r.BirthDay.includes('/')) {
+          const [m, d, y] = r.BirthDay.split('/').map(Number);
+          birthDate = new Date(y, m - 1, d);
+        }
+
+
+        if (!birthDate || isNaN(birthDate.getTime())) {
+          throw new Error(`❌ Invalid BirthDay at row ${index + 2}`);
+        }
+
+
+        return {
+          email: r.Email.trim(),
+          userName: r.UserName.trim(),
+          fullName: r.FullName.trim(),
+          gender: r.Gender.trim(),
+          birthDay: birthDate.toISOString().split('T')[0], // ✅ guaranteed valid
+          contactInfo: r.ContactInfo?.toString() || ''
+        };
+      });
+
+
+      console.log('✅ FINAL PAYLOAD', users);
+
+
+      this.AfterAuthService.bulkCreateUsers(userType, users).subscribe({
+        next: (res) => {
+          this.ToastService.success('Users uploaded successfully' + res.message)
+          this.LoadAllParents();
+          this.LoadPendingParents();
+        },
+        error: (err) => this.ToastService.error('Error uploading users: ' + err.message)
+      });
+    };
+
+
+    reader.readAsArrayBuffer(file);
+  }
+  public onExcelSelected(
+    input: HTMLInputElement,
+    userType: 'teacher' | 'student' | 'parent'
+  ) {
+    if (!input.files || input.files.length === 0) {
+      return;
+    }
+    const files = input.files;
+    if (!files || files.length === 0 || !files.item(0)) {
+      return;
+    }
+
+
+    const file = input.files[0];
+    this.parseExcelAndCreateUsers(file, userType);
+
+
+    // reset input so same file can be re-selected
+    input.value = '';
   }
 }

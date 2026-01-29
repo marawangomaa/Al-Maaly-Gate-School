@@ -14,6 +14,8 @@ import { ClassService } from '../../../../../Services/class.service';
 import istudentUpdate from '../../../../../Interfaces/istudentUpdate';
 import { ToastService } from '../../../../../Services/UtilServices/toast.service';
 import { AfterAuthService } from '../../../../../Services/after-auth.service';
+import { CreateUserExcelModel } from '../../../../../Interfaces/i-admin-users/create-user-excel-model';
+import * as xlsx from 'xlsx';
 
 @Component({
   selector: 'app-admin-student-accounts',
@@ -106,12 +108,12 @@ export class AdminStudentAccountsComponent implements OnInit, OnDestroy {
     );
   }
 
- isStudentsPending(student: istudentProfile): boolean {
-  // Check both pendingRole and accountStatus
-  return student.accountStatus === AccountStatus.Pending || 
-         student.pendingRole === 'student' ||
-         this.convertToAccountStatus(student.accountStatus) === AccountStatus.Pending;
-}
+  isStudentsPending(student: istudentProfile): boolean {
+    // Check both pendingRole and accountStatus
+    return student.accountStatus === AccountStatus.Pending ||
+      student.pendingRole === 'student' ||
+      this.convertToAccountStatus(student.accountStatus) === AccountStatus.Pending;
+  }
 
   isStudentsRejected(student: istudentProfile): boolean {
     return this.convertToAccountStatus(student.accountStatus) === AccountStatus.Rejected;
@@ -683,5 +685,100 @@ export class AdminStudentAccountsComponent implements OnInit, OnDestroy {
     this.isConfirmModalOpen = false;
     this.confirmModalMessage = '';
     this.confirmAction = undefined;
+  }
+  //excel parsing and bulk create users
+  //excel to json
+  async parseExcelAndCreateUsers(
+    file: File,
+    userType: 'teacher' | 'student' | 'parent'
+  ) {
+    const reader = new FileReader();
+
+
+    reader.onload = (e: any) => {
+      const data = new Uint8Array(e.target.result);
+      const workbook = xlsx.read(data, {
+        type: 'array',
+        cellDates: true // 🔑 CRITICAL
+      });
+
+
+      const sheet = workbook.Sheets[workbook.SheetNames[0]];
+
+
+      const rows: any[] = xlsx.utils.sheet_to_json(sheet, {
+        raw: true,
+        defval: ''
+      });
+
+
+      const users: CreateUserExcelModel[] = rows.map((r, index) => {
+        let birthDate: Date | null = null;
+
+
+        if (r.BirthDay instanceof Date) {
+          birthDate = r.BirthDay;
+        }
+        else if (typeof r.BirthDay === 'number') {
+          const d = xlsx.SSF.parse_date_code(r.BirthDay);
+          birthDate = new Date(d.y, d.m - 1, d.d);
+        }
+        else if (typeof r.BirthDay === 'string' && r.BirthDay.includes('/')) {
+          const [m, d, y] = r.BirthDay.split('/').map(Number);
+          birthDate = new Date(y, m - 1, d);
+        }
+
+
+        if (!birthDate || isNaN(birthDate.getTime())) {
+          throw new Error(`❌ Invalid BirthDay at row ${index + 2}`);
+        }
+
+
+        return {
+          email: r.Email.trim(),
+          userName: r.UserName.trim(),
+          fullName: r.FullName.trim(),
+          gender: r.Gender.trim(),
+          birthDay: birthDate.toISOString().split('T')[0], // ✅ guaranteed valid
+          contactInfo: r.ContactInfo?.toString() || ''
+        };
+      });
+
+
+      console.log('✅ FINAL PAYLOAD', users);
+
+
+      this.AfterAuthService.bulkCreateUsers(userType, users).subscribe({
+        next: (res) => {
+          this.toastService.success('Users uploaded successfully' + res.message)
+          this.LoadAllStudents();
+          this.LoadPendingAppUsers();
+        },
+        error: (err) => this.toastService.error('Error uploading users: ' + err.message)
+      });
+    };
+
+
+    reader.readAsArrayBuffer(file);
+  }
+  public onExcelSelected(
+    input: HTMLInputElement,
+    userType: 'teacher' | 'student' | 'parent'
+  ) {
+    if (!input.files || input.files.length === 0) {
+      return;
+    }
+    const files = input.files;
+    if (!files || files.length === 0 || !files.item(0)) {
+      return;
+    }
+
+
+    const file = input.files[0];
+    this.parseExcelAndCreateUsers(file, userType);
+
+
+    // reset input so same file can be re-selected
+    input.value = '';
   }
 }

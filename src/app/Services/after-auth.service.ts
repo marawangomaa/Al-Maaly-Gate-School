@@ -8,6 +8,7 @@ import { CreateTeacherRequest } from '../Interfaces/i-admin-users/create-teacher
 import { CreateStudentRequest } from '../Interfaces/i-admin-users/create-student-request';
 import { CreateParentRequest } from '../Interfaces/i-admin-users/create-parent-request';
 import { AppUser } from '../Interfaces/i-admin-users/app-user';
+import { CreateUserExcelModel } from '../Interfaces/i-admin-users/create-user-excel-model';
 
 @Injectable({
   providedIn: 'root'
@@ -58,6 +59,17 @@ export class AfterAuthService {
     return this.http.post<ApiResponse<string>>(
       `${this.baseUrl}/create-parent`,
       request,
+      { headers: this.headers }
+    );
+  }
+  // Bulk create users excel
+  bulkCreateUsers(
+    userType: 'teacher' | 'student' | 'parent',
+    users: CreateUserExcelModel[]
+  ): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(
+      `${this.baseUrl}/bulk-create-users`,
+      { userType, users },
       { headers: this.headers }
     );
   }
